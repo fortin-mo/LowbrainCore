@@ -1,0 +1,38 @@
+Class: 
+  Knight: 
+    id: 1
+    health: 22
+    strength: 8
+    intelligence: 5
+    dexterity: 5
+    defence: 8
+  Paladin:
+    id: 2
+    health: 20
+    strength: 9
+    intelligence: 2
+    dexterity: 4
+    defence: 10
+  Mage:
+    id: 3
+    health: 15
+    strength: 2
+    intelligence: 9
+    dexterity: 7
+    defence: 4
+  Archer:
+    id: 4
+    health: 15
+    strength: 4
+    intelligence: 5
+    dexterity: 10
+    defence: 5
+
+Settings: 
+  first_lvl_exp: 100
+  max_lvl: 99
+  max_stats: 99
+  next_lvl_exponential: 1.25
+  can_switch_class: false
+  points_per_lvl: 1
+  starting_points: 3
