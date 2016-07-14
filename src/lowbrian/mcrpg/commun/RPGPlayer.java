@@ -1,12 +1,12 @@
 package lowbrian.mcrpg.commun;
 
-import java.io.File;
-
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import lowbrain.mcrpg.main.PlayerListener;
+
+import java.io.File;
 
 public class RPGPlayer {
 	private Player player;
@@ -82,17 +82,17 @@ public class RPGPlayer {
 	        File f = new File(userdata, File.separator + this.player.getUniqueId() + ".yml");
 	        FileConfiguration playerData = YamlConfiguration.loadConfiguration(f);
 
-            playerData.set("Class.isSet", this.classIsSet);
-            playerData.set("Class.id", this.idClass);
+            playerData.set("Class.isSet", (Object) this.classIsSet);
+            playerData.set("Class.id", (Object)this.idClass);
             
-            playerData.set("Stats.health", this.health);
-            playerData.set("Stats.lvl", this.lvl);
-            playerData.set("Stats.strength", this.strength);
-            playerData.set("Stats.intelligence", this.intelligence);
-            playerData.set("Stats.dexterity", this.dexterity);
-            playerData.set("Stats.defence", this.defence);
-            playerData.set("Stats.points", this.points);
-            playerData.set("Stats.experience", this.experience);
+            playerData.set("Stats.health",(Object) this.health);
+            playerData.set("Stats.lvl", (Object)this.lvl);
+            playerData.set("Stats.strength", (Object)this.strength);
+            playerData.set("Stats.intelligence", (Object)this.intelligence);
+            playerData.set("Stats.dexterity", (Object)this.dexterity);
+            playerData.set("Stats.defence", (Object)this.defence);
+            playerData.set("Stats.points", (Object)this.points);
+            playerData.set("Stats.experience", (Object)this.experience);
             
             playerData.save(f);
 		} catch (Exception e) {
