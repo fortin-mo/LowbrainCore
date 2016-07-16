@@ -26,6 +26,7 @@ public class Main extends JavaPlugin {
     public void onEnable() {
 		this.getLogger().info("Loading LowbrainMCRPG.jar");
 	    this.saveDefaultConfig();
+
 		settings = new Settings(this.getConfig());
 
         PlayerListener playerListener = new PlayerListener(this);
@@ -53,5 +54,11 @@ public class Main extends JavaPlugin {
     public void SaveData(){
 		connectedPlayers.forEach((uuid, rpgPlayer) -> rpgPlayer.SaveData());
 	}
+
+	public void debugMessage(Object msg){
+	    if(this.settings.isDebug()){
+	        this.getLogger().info("[DEBUG] : " + msg);
+        }
+    }
 }
 

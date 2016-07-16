@@ -61,10 +61,7 @@ public class RPGPlayer {
         nextLvl = playerData.getDouble("Stats.nextLvl");
 		kills = playerData.getInt("Stas.kills");
 		deaths = playerData.getInt("Stats.deaths");
-
-		if(this.health > 0) {
-			player.setMaxHealth(15 * (1 + this.health / 50) );
-		}
+		setPlayerMaxHealth();
 	}
 
 	/**
@@ -133,23 +130,44 @@ public class RPGPlayer {
 		if((maxLevel < 0 || this.lvl < maxLevel)){
 			this.lvl += 1;
 
-			switch (this.idClass){
-				case 1:
-					addHealth(1,false);
-					break;
-				case 2:
-					addStrength(1,false);
-					break;
-				case 3:
-					addIntelligence(1,false);
-					break;
-				case 4:
-					addDexterity(1,false);
-					break;
+			RPGClass rc = new RPGClass(PlayerListener.plugin.settings.getLstClassId().get(this.idClass + 1));
+
+			for (String attribute :
+					rc.getBonusAttributes()) {
+				switch (attribute){
+					case "health":
+						addHealth(1,false);
+						break;
+					case "strength":
+						addStrength(1,false);
+						break;
+					case "intelligence":
+						addIntelligence(1,false);
+						break;
+					case "dexterity":
+						addDexterity(1,false);
+						break;
+					case "magicResistance":
+						addMagicResistance(1,false);
+						break;
+					case "defence":
+						addDefence(1,false);
+						break;
+					case "all":
+						addHealth(1,false);
+						addDefence(1,false);
+						addMagicResistance(1,false);
+						addDexterity(1,false);
+						addIntelligence(1,false);
+						addHealth(1,false);
+						addStrength(1,false);
+						break;
+				}
 			}
 
+
 			points += PlayerListener.plugin.settings.getPoints_per_lvl();
-			double lvlExponential = PlayerListener.plugin.settings.getNext_lvl_exponential();
+			double lvlExponential = PlayerListener.plugin.settings.getNext_lvl_multiplier();
 			this.nextLvl += this.nextLvl * lvlExponential;
 		}
 		player.setHealth(player.getMaxHealth());
@@ -176,6 +194,10 @@ public class RPGPlayer {
 			this.health = rc.getHealth();
 			this.magicResistance = rc.getMagicResistance();
 			this.idClass = id;
+			this.experience = 0;
+			this.nextLvl = PlayerListener.plugin.settings.getFirst_lvl_exp();
+			this.lvl = 1;
+			this.getPlayer().sendMessage("You are now a " + rc.getName());
 		}
 		else if(PlayerListener.plugin.settings.isCan_switch_class()){
 			RPGClass oldClass = new RPGClass(this.idClass);
@@ -394,6 +416,7 @@ public class RPGPlayer {
 	 */
 	public void setHealth(int health) {
 		this.health = health;
+		setPlayerMaxHealth();
 	}
 	/**
 	 * add health to current player
@@ -412,16 +435,18 @@ public class RPGPlayer {
 			double dif = Math.abs(oldHealth - this.health);
 			
 			this.points -= dif;
-			
+			setPlayerMaxHealth();
 			this.player.sendMessage("Health incremented by " + dif);
 		}
 		else if(!usePoints){
 			this.health += nb;
 			if(maxStats >= 0 && this.health > maxStats){
 				this.health = maxStats;
+				setPlayerMaxHealth();
 				this.player.sendMessage("Health set to " + maxStats);
 				return;
 			}
+			setPlayerMaxHealth();
 			this.player.sendMessage("Health incremented by " + nb);
 		}
 		else{
@@ -595,6 +620,13 @@ public class RPGPlayer {
 
 	public void setMagicResistance(int magicResistance) {
 		this.magicResistance = magicResistance;
+	}
+
+	/**
+	 * set player maximum health based on rpg player health points
+     */
+	public void setPlayerMaxHealth(){
+		player.setMaxHealth(0.40404 * this.health + 10 );
 	}
 
 	public String toString(){

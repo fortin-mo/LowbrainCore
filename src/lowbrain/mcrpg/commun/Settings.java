@@ -2,6 +2,9 @@ package lowbrain.mcrpg.commun;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Moofy on 14/07/2016.
  */
@@ -10,7 +13,7 @@ public class Settings {
     private double first_lvl_exp= 100;
     private int max_lvl= 99;
     private int max_stats= 99;
-    private double next_lvl_exponential= 1.25;
+    private double next_lvl_multiplier= 1.25;
     private boolean can_switch_class= false;
     private int points_per_lvl= 1;
     private int starting_points= 3;
@@ -19,13 +22,15 @@ public class Settings {
     private double exp_loss_on_death = 25;
     private double exp_on_player_kill = 10;
     private boolean allow_stats_reset = true;
+    private boolean debug = false;
+    private List<Integer> lstClassId = new ArrayList<Integer>();
 
     public Settings(FileConfiguration config){
         setCan_switch_class(config.getBoolean("Settings.can_switch_class"));
         setFirst_lvl_exp(config.getDouble("Settings.first_lvl_exp"));
         setMax_lvl(config.getInt("Settings.max_lvl"));
         setMax_stats(config.getInt("Settings.max_stats"));
-        setNext_lvl_exponential(config.getDouble("Settings.next_lvl_exponential"));
+        setNext_lvl_multiplier(config.getDouble("Settings.next_lvl_multiplier"));
         setPoints_per_lvl(config.getInt("Settings.points_per_lvl"));
         setStarting_points(config.getInt("Settings.starting_points"));
         setAuto_save(config.getBoolean("Settings.auto_save"));
@@ -33,6 +38,8 @@ public class Settings {
         setExp_loss_on_death(config.getDouble("Settings.exp_loss_on_death"));
         setExp_on_player_kill(config.getDouble("Settings.exp_on_player_kill"));
         setAllow_stats_reset(config.getBoolean("Settings.allow_stats_reset"));
+        setDebug(config.getBoolean("Settings.debug"));
+        setLstClassId(config.getIntegerList("Class"));
     }
 
     public double getFirst_lvl_exp() {
@@ -59,12 +66,12 @@ public class Settings {
         this.max_stats = max_stats;
     }
 
-    public double getNext_lvl_exponential() {
-        return next_lvl_exponential;
+    public double getNext_lvl_multiplier() {
+        return next_lvl_multiplier;
     }
 
-    public void setNext_lvl_exponential(double next_lvl_exponential) {
-        this.next_lvl_exponential = next_lvl_exponential;
+    public void setNext_lvl_multiplier(double next_lvl_multiplier) {
+        this.next_lvl_multiplier = next_lvl_multiplier;
     }
 
     public boolean isCan_switch_class() {
@@ -129,5 +136,21 @@ public class Settings {
 
     public void setAllow_stats_reset(boolean allow_stats_reset) {
         this.allow_stats_reset = allow_stats_reset;
+    }
+
+    public boolean isDebug() {
+        return debug;
+    }
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
+    }
+
+    public List<Integer> getLstClassId() {
+        return lstClassId;
+    }
+
+    public void setLstClassId(List<Integer> lstClassId) {
+        this.lstClassId = lstClassId;
     }
 }

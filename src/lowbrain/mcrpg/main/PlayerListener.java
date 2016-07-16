@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,6 +17,8 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 
 import lowbrain.mcrpg.commun.RPGPlayer;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 
@@ -80,7 +83,16 @@ public class PlayerListener implements Listener {
             if(rpKiller != null){
                 double diffLvl = Math.abs(rpKilled.getLvl() - rpKiller.getLvl());
                 rpKiller.addKills(1);
-                rpKiller.addExp(plugin.settings.getExp_on_player_kill() * diffLvl);
+                double xpGained = 0.0;
+                if(diffLvl == 0){
+                    xpGained = plugin.settings.getExp_on_player_kill() * rpKiller.getLvl() * 0.5;
+                }else if(rpKilled.getLvl() < rpKiller.getLvl()){
+                    xpGained = plugin.settings.getExp_on_player_kill() / (diffLvl * 0.5) * rpKiller.getLvl() * 0.5;
+                }else{
+                    xpGained = plugin.settings.getExp_on_player_kill() * (diffLvl * 0.5) * rpKiller.getLvl() * 0.5;
+                }
+                rpKiller.addExp(xpGained);
+
             }
 
             rpKilled.addExp(-(plugin.settings.getExp_loss_on_death() / 100 * rpKilled.getExperience()));
@@ -113,6 +125,11 @@ public class PlayerListener implements Listener {
         boolean arrowAttact = false;
         boolean normalAttack = false;
 
+        double range = 2;
+
+        plugin.debugMessage("inital damage : " + e.getDamage());
+
+        //DEFINING CAUSE OF DAMAGE
         if (e.getDamager() instanceof Player) {
             damager = plugin.connectedPlayers.get(e.getDamager().getUniqueId());
             normalAttack  = true;
@@ -145,16 +162,36 @@ public class PlayerListener implements Listener {
             normalAttack  = true;
         }
 
-        if(arrowAttact && damager != null){
-            e.setDamage(e.getDamage() * (damager.getDexterity() + damager.getStrength()) / 50);
-        }
-        else if(normalAttack && damager != null){
-            e.setDamage(e.getDamage() * damager.getStrength() / 50);
-        }
-        else if(magicAttack && damager != null){
-            e.setDamage(e.getDamage() * damager.getIntelligence() / 50);
+        //APLLYING MAGIC EFFECT BY ATTACKER
+        if(damager != null && !magicAttack){
+            double chanceOfMagicEffect = damager.getIntelligence() * 0.5 /100;
+            double rdm = Math.random();
+            if(rdm < chanceOfMagicEffect){
+                PotionEffect effect = CreateMagicAttack(damager);
+                if(e.getEntity() instanceof LivingEntity){
+                    ((LivingEntity) e.getEntity()).addPotionEffect(effect);
+                }
+            }
         }
 
+        //APPLYING DAMAGE CHANGE DEPENDING ON OFFENCIVE ATTRIBUTES
+        if(arrowAttact && damager != null){
+            double baseDamage = e.getDamage() * (damager.getDexterity() + (damager.getStrength() * 0.5)) * 0.025;
+            double rdm = (baseDamage - range) + (Math.random() * (baseDamage + range));
+            e.setDamage(rdm);
+        }
+        else if(normalAttack && damager != null){
+            double baseDamage = e.getDamage() * damager.getStrength() * 0.025;
+            double rdm = (baseDamage - range) + (Math.random() * (baseDamage + range));
+            e.setDamage(rdm);
+        }
+        else if(magicAttack && damager != null){
+            double baseDamage = e.getDamage() * (damager.getIntelligence() + damager.getDexterity() * 0.25) * 0.025;
+            double rdm = (baseDamage - range) + (Math.random() * (baseDamage + range));
+            e.setDamage(rdm);
+        }
+
+        //APPYING DAMAGE CHANGE DEPENDING ON DEFENCIVE ATTRIBUTES
         if(e.getEntity() instanceof Player){
             damagee = plugin.connectedPlayers.get(e.getEntity().getUniqueId());
             if(arrowAttact || normalAttack){
@@ -162,8 +199,15 @@ public class PlayerListener implements Listener {
             }
             else if(magicAttack){
                 e.setDamage(e.getDamage() / (0.75 + ((damagee.getMagicResistance() + (damagee.getIntelligence() * 0.5)))/50));
+
+                double changeOfRemovingEffect = (damager.getMagicResistance()*0.5 +damagee.getIntelligence() * 0.125) /200;
+                double rdm = Math.random();
+                if(rdm < changeOfRemovingEffect){
+                    RemoveBadPotionEffect(damagee.getPlayer());
+                }
             }
         }
+        plugin.debugMessage("final damage : " + e.getDamage());
     }
 
     /**
@@ -176,7 +220,9 @@ public class PlayerListener implements Listener {
             //set new force
             Arrow ar = (Arrow) e.getProjectile();
             RPGPlayer rpPlayer = plugin.connectedPlayers.get(e.getEntity().getUniqueId());
+            plugin.debugMessage("inital fall distance : " + ar.getFallDistance());
             ar.setFallDistance( (float)(ar.getFallDistance() * rpPlayer.getStrength() / 100));
+            plugin.debugMessage("inital fall distance : " + ar.getFallDistance());
 
             if(rpPlayer.getDexterity() < 50) {
                 Double precision = rpPlayer.getDexterity() / 50;
@@ -235,5 +281,76 @@ public class PlayerListener implements Listener {
     	Player p = e.getPlayer();
         plugin.connectedPlayers.get(p.getUniqueId()).SaveData();
         plugin.connectedPlayers.remove(p.getUniqueId());
+    }
+
+    /**
+     * create damaging effect depending on player attributes
+     * @param p
+     * @return
+     */
+    private PotionEffect CreateMagicAttack(RPGPlayer p){
+        int rdm = 1 + (int)(Math.random() * 7);
+        int duration = (int)(0.2 * (p.getIntelligence() * 0.75 + p.getDexterity() * 0.25) + 1);
+        int amplifier = (int)(0.2 * p.getIntelligence() + 1);
+        PotionEffect effect;
+        PotionEffectType type = PotionEffectType.POISON;
+        switch (rdm){
+            case 1:
+                type = PotionEffectType.BLINDNESS;
+                break;
+            case 2:
+                type = PotionEffectType.CONFUSION;
+                break;
+            case 3:
+                type = PotionEffectType.HARM;
+                break;
+            case 4:
+                type = PotionEffectType.POISON;
+                break;
+            case 5:
+                type = PotionEffectType.SLOW;
+                break;
+            case 6:
+                type = PotionEffectType.WEAKNESS;
+                break;
+            case 7:
+                type = PotionEffectType.WITHER;
+                break;
+        }
+
+        effect = new PotionEffect(type, duration * 20, amplifier, true,true, Color.SILVER);
+        return effect;
+    }
+
+    private PotionEffect CreateMagicDefence(RPGPlayer p){
+        return null;
+    }
+
+    /**
+     * remove bad potion effect from player
+     * @param p
+     */
+    private void RemoveBadPotionEffect(Player p){
+        if(p.hasPotionEffect(PotionEffectType.BLINDNESS)){
+            p.removePotionEffect(PotionEffectType.BLINDNESS);
+        }
+        if(p.hasPotionEffect(PotionEffectType.CONFUSION)){
+            p.removePotionEffect(PotionEffectType.CONFUSION);
+        }
+        if(p.hasPotionEffect(PotionEffectType.HARM)){
+            p.removePotionEffect(PotionEffectType.HARM);
+        }
+        if(p.hasPotionEffect(PotionEffectType.POISON)){
+            p.removePotionEffect(PotionEffectType.POISON);
+        }
+        if(p.hasPotionEffect(PotionEffectType.SLOW)){
+            p.removePotionEffect(PotionEffectType.SLOW);
+        }
+        if(p.hasPotionEffect(PotionEffectType.WEAKNESS)){
+            p.removePotionEffect(PotionEffectType.WEAKNESS);
+        }
+        if(p.hasPotionEffect(PotionEffectType.WITHER)){
+            p.removePotionEffect(PotionEffectType.WITHER);
+        }
     }
 }

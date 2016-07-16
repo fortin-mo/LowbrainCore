@@ -4,7 +4,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import lowbrain.mcrpg.main.PlayerListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RPGClass {
+
 	private int strength = 0;
 	private int intelligence = 0;
 	private int dexterity = 0;
@@ -13,6 +17,7 @@ public class RPGClass {
 	private String name = "";
 	private int magicResistance = 0;
 	private int id = -1;
+	private List<String> bonusAttributes = new ArrayList<String>();
 	
 	public RPGClass(int id){
 		this.id = id;
@@ -21,30 +26,14 @@ public class RPGClass {
 	
 	public void Initialize(){
 		FileConfiguration config = PlayerListener.plugin.getConfig();
-		switch (this.id) {
-            case 1:
-                name = "Knight";
-                break;
-            case 2:
-                name = "Paladin";
-                break;
-            case 3:
-                name = "Mage";
-                break;
-            case 4:
-                name = "Archer";
-                break;
-            default:
-                return;
-		}
-
-
-		health = config.getInt("Class."+name+".health");
-		strength = config.getInt("Class."+name+".strength");
-		defence = config.getInt("Class."+name+".defence");
-		dexterity = config.getInt("Class."+name+".dexterity");
-		intelligence = config.getInt("Class."+name+".intelligence");
-		magicResistance = config.getInt("Class."+name+".magicResistance");
+		name = config.getString("Class."+ id +".name");
+		health = config.getInt("Class."+id+".health");
+		strength = config.getInt("Class."+id+".strength");
+		defence = config.getInt("Class."+id+".defence");
+		dexterity = config.getInt("Class."+id+".dexterity");
+		intelligence = config.getInt("Class."+id+".intelligence");
+		magicResistance = config.getInt("Class."+id+".magicResistance");
+		bonusAttributes = config.getStringList("Class."+id+".bonusAttributes");
 	}
 
 	public int getStrength() {
@@ -71,6 +60,7 @@ public class RPGClass {
 		return name;
 	}
 
+
 	public int getId() {
 		return id;
 	}
@@ -87,8 +77,14 @@ public class RPGClass {
 		s += "Dexterity: " + dexterity + "\n";
 		s += "Intelligence: " + intelligence + "\n";
 		s += "Magic Resistance: " + magicResistance + "\n";
+		s += "Bonus Attributes: " + bonusAttributes + "\n";
 		s += "Id: " + id + "\n";
 
 		return s;
+	}
+
+
+	public List<String> getBonusAttributes() {
+		return bonusAttributes;
 	}
 }

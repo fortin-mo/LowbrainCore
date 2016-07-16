@@ -111,35 +111,28 @@ public class RPGCommand implements CommandExecutor{
                         }
 						break;
 					case "class":
-						RPGClass k = new RPGClass(1);
-						RPGClass pa = new RPGClass(2);
-						RPGClass a = new RPGClass(3);
-						RPGClass m = new RPGClass(4);
+						String msg = "";
 
-
-						String msg = "-----------------------------" + "\n";
-                        msg += k.toString() + "\n";
-                        msg += "-----------------------------" + "\n";
-						msg += pa.toString() + "\n";
-                        msg += "-----------------------------" + "\n";
-						msg += a.toString() + "\n";
-                        msg += "-----------------------------" + "\n";
-						msg += m.toString() + "\n";
-
+                        for (int id :
+                                plugin.settings.getLstClassId()) {
+                            RPGClass rc = new RPGClass(id);
+                            msg += "-----------------------------" + "\n";
+                            msg += rc.toString() + "\n";
+                        }
 						sender.sendMessage(msg);
 						break;
 					case "setclass":
 						if(args.length == 2){
 							try {
 								int idClass = Integer.parseInt(args[1]);
-								if(idClass >= 1 && idClass <= 4){
+								if(plugin.settings.getLstClassId().contains(idClass)){
 									rp.SetClass(idClass, false);
 								}
 								else{
 									sender.sendMessage("Wrong class id !: Use \"/mcrpg class\" to show all classes");
 								}
 							}catch (Exception e){
-								sender.sendMessage("Wrong arguments type ! Must be a number between 1 and 4 include");
+								sender.sendMessage("Invalid arguments !");
                                 return false;
 							}
 						}
@@ -166,8 +159,10 @@ public class RPGCommand implements CommandExecutor{
 						sender.sendMessage("Stats saved !");
 						break;
 					case "save-all":
-						plugin.SaveData();
-						sender.sendMessage("All stats saved !");
+					    if(sender.isOp()) {
+                            plugin.SaveData();
+                            sender.sendMessage("All stats saved !");
+                        }
 						break;
 				}
 				return true;
