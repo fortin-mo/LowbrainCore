@@ -199,12 +199,15 @@ public class PlayerListener implements Listener {
             }
             else if(magicAttack){
                 e.setDamage(e.getDamage() / (0.75 + ((damagee.getMagicResistance() + (damagee.getIntelligence() * 0.5)))/50));
+            }
 
-                double changeOfRemovingEffect = (damager.getMagicResistance()*0.5 +damagee.getIntelligence() * 0.125) /200;
-                double rdm = Math.random();
-                if(rdm < changeOfRemovingEffect){
-                    RemoveBadPotionEffect(damagee.getPlayer());
-                }
+            double changeOfRemovingEffect = (damager.getMagicResistance()*0.333 +damagee.getIntelligence() * 0.125) /200;
+            double rdm = Math.random();
+            if(rdm < changeOfRemovingEffect){
+                RemoveBadPotionEffect(damagee.getPlayer());
+            }
+            else{
+                ReducingBadPotionEffect(damagee);
             }
         }
         plugin.debugMessage("final damage : " + e.getDamage());
@@ -352,5 +355,24 @@ public class PlayerListener implements Listener {
         if(p.hasPotionEffect(PotionEffectType.WITHER)){
             p.removePotionEffect(PotionEffectType.WITHER);
         }
+    }
+
+    /**
+     * reducing player potion effect depending on attributes
+     * @param rp
+     */
+    private void ReducingBadPotionEffect(RPGPlayer rp){
+        double reduction = -0.01 * (rp.getMagicResistance()*0.75 + rp.getIntelligence() * 0.25) + 1;
+        double minReduction = reduction < 0.84 ? reduction + 0.15 : 0.99;
+        double rdm = reduction + (Math.random() * minReduction);//top lvl will have reduction of 99%
+
+        for (PotionEffect pe : rp.getPlayer().getActivePotionEffects()) {
+            int newDuration = (int)(pe.getDuration() * rdm);
+            int newAmplifier = (int)(pe.getAmplifier() * rdm);
+            PotionEffect tmp = new PotionEffect(pe.getType(),newDuration,newAmplifier);
+            rp.getPlayer().removePotionEffect(pe.getType());
+            rp.getPlayer().addPotionEffect(tmp);
+        }
+
     }
 }

@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a78d8515-e588-4e56-ac33-4f32766633d5" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/LowbrainMCRPG.jar" afterPath="$PROJECT_DIR$/target/LowbrainMCRPG.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config.yml" afterPath="$PROJECT_DIR$/config.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plugin.yml" afterPath="$PROJECT_DIR$/plugin.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/commun/RPGClass.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/commun/RPGClass.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/commun/RPGPlayer.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/commun/RPGPlayer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/commun/Settings.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/commun/Settings.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/main/Main.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/main/Main.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/main/PlayerListener.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/main/PlayerListener.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/main/RPGCommand.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/main/RPGCommand.java" />
     </list>
     <ignored path="LowbrainMCRPG.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -31,7 +23,7 @@
       <file leaf-file-name="RPGPlayer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/commun/RPGPlayer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="756">
+            <state relative-caret-position="-111">
               <caret line="246" column="18" selection-start-line="246" selection-start-column="18" selection-end-line="246" selection-end-column="18" />
               <folding>
                 <element signature="e#7076#7077#0" expanded="true" />
@@ -96,54 +88,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PlayerListener.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="PlayerListener.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/main/PlayerListener.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-363">
-              <caret line="202" column="116" selection-start-line="202" selection-start-column="116" selection-end-line="202" selection-end-column="116" />
+            <state relative-caret-position="402">
+              <caret line="200" column="31" selection-start-line="200" selection-start-column="31" selection-end-line="200" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#840#841#0" expanded="true" />
                 <element signature="e#873#874#0" expanded="true" />
+                <element signature="method#onPlayerShootBow#0;class#PlayerListener#0" expanded="false" />
                 <element signature="method#onPlayerJoin#0;class#PlayerListener#0" expanded="false" />
                 <element signature="method#onPlayerQuit#0;class#PlayerListener#0" expanded="false" />
                 <element signature="method#CreateMagicAttack#0;class#PlayerListener#0" expanded="false" />
-                <element signature="e#13370#13371#0" expanded="true" />
-                <element signature="e#13397#13398#0" expanded="true" />
-                <element signature="method#RemoveBadPotionEffect#0;class#PlayerListener#0" expanded="false" />
+                <element signature="e#13434#13435#0" expanded="true" />
+                <element signature="e#13461#13462#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Settings.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/commun/Settings.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1802">
-              <caret line="152" column="42" selection-start-line="152" selection-start-column="42" selection-end-line="152" selection-end-column="42" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#763#772#0" expanded="true" />
-                <element signature="e#2426#2427#0" expanded="true" />
-                <element signature="e#2488#2489#0" expanded="true" />
-                <element signature="e#4067#4068#0" expanded="true" />
-                <element signature="e#4095#4096#0" expanded="true" />
-                <element signature="e#4138#4139#0" expanded="true" />
-                <element signature="e#4172#4173#0" expanded="true" />
-                <element signature="e#4216#4217#0" expanded="true" />
-                <element signature="e#4249#4250#0" expanded="true" />
-                <element signature="e#4308#4309#0" expanded="true" />
-                <element signature="e#4352#4353#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="config.yml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="config.yml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="518">
-              <caret line="82" column="0" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
+            <state relative-caret-position="722">
+              <caret line="94" column="20" selection-start-line="94" selection-start-column="20" selection-end-line="94" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -667,12 +636,12 @@
             <element signature="imports" expanded="true" />
             <element signature="e#840#841#0" expanded="true" />
             <element signature="e#873#874#0" expanded="true" />
+            <element signature="method#onPlayerShootBow#0;class#PlayerListener#0" expanded="false" />
             <element signature="method#onPlayerJoin#0;class#PlayerListener#0" expanded="false" />
             <element signature="method#onPlayerQuit#0;class#PlayerListener#0" expanded="false" />
             <element signature="method#CreateMagicAttack#0;class#PlayerListener#0" expanded="false" />
-            <element signature="e#13370#13371#0" expanded="true" />
-            <element signature="e#13397#13398#0" expanded="true" />
-            <element signature="method#RemoveBadPotionEffect#0;class#PlayerListener#0" expanded="false" />
+            <element signature="e#13434#13435#0" expanded="true" />
+            <element signature="e#13461#13462#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -777,9 +746,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/main/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#344#361#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="722">
+          <caret line="94" column="20" selection-start-line="94" selection-start-column="20" selection-end-line="94" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/commun/Settings.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1802">
+        <state relative-caret-position="1088">
           <caret line="152" column="42" selection-start-line="152" selection-start-column="42" selection-end-line="152" selection-end-column="42" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -798,13 +786,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/main/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/commun/RPGPlayer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+        <state relative-caret-position="-111">
+          <caret line="246" column="18" selection-start-line="246" selection-start-column="18" selection-end-line="246" selection-end-column="18" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#344#361#0" expanded="true" />
+            <element signature="e#7076#7077#0" expanded="true" />
+            <element signature="e#7097#7098#0" expanded="true" />
+            <element signature="method#getClassName#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#addStrength#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#addIntelligence#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#addDexterity#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#addHealth#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#addDefence#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#addMagicResistance#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#setLvl#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#addLevel#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#ErrorMessageNotEnoughPoints#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="e#15516#15517#0" expanded="true" />
+            <element signature="e#15561#15562#0" expanded="true" />
+            <element signature="e#15674#15675#0" expanded="true" />
+            <element signature="e#15729#15730#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -833,54 +835,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/commun/RPGPlayer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="756">
-          <caret line="246" column="18" selection-start-line="246" selection-start-column="18" selection-end-line="246" selection-end-column="18" />
-          <folding>
-            <element signature="e#7076#7077#0" expanded="true" />
-            <element signature="e#7097#7098#0" expanded="true" />
-            <element signature="method#getClassName#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#addStrength#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#addIntelligence#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#addDexterity#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#addHealth#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#addDefence#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#addMagicResistance#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#setLvl#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#addLevel#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#ErrorMessageNotEnoughPoints#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="e#15516#15517#0" expanded="true" />
-            <element signature="e#15561#15562#0" expanded="true" />
-            <element signature="e#15674#15675#0" expanded="true" />
-            <element signature="e#15729#15730#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/main/PlayerListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-363">
-          <caret line="202" column="116" selection-start-line="202" selection-start-column="116" selection-end-line="202" selection-end-column="116" />
+        <state relative-caret-position="402">
+          <caret line="200" column="31" selection-start-line="200" selection-start-column="31" selection-end-line="200" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#840#841#0" expanded="true" />
             <element signature="e#873#874#0" expanded="true" />
+            <element signature="method#onPlayerShootBow#0;class#PlayerListener#0" expanded="false" />
             <element signature="method#onPlayerJoin#0;class#PlayerListener#0" expanded="false" />
             <element signature="method#onPlayerQuit#0;class#PlayerListener#0" expanded="false" />
             <element signature="method#CreateMagicAttack#0;class#PlayerListener#0" expanded="false" />
-            <element signature="e#13370#13371#0" expanded="true" />
-            <element signature="e#13397#13398#0" expanded="true" />
-            <element signature="method#RemoveBadPotionEffect#0;class#PlayerListener#0" expanded="false" />
+            <element signature="e#13434#13435#0" expanded="true" />
+            <element signature="e#13461#13462#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="518">
-          <caret line="82" column="0" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
