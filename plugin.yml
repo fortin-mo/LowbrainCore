@@ -1,0 +1,34 @@
+main: lowbrain.mcrpg.main.Main
+name: LowbrainMCRPG
+version: 0.1.0
+author: Lowbrain
+description:
+commands:
+   mcrpg:
+      usage: |
+                  Use /help mcrpg [subcommand] for more information
+                  /mcrpg stats - show your player stats
+                  /mcrpg stats <player> - show stats of player
+                  /mcrpg class - show all class basic attributes
+                  /mcrpg setclass <number> - set your class [1,2,3,4]
+                  /mcrpg add defence <number > 0> - add <number> defence
+                  /mcrpg add strength <number > 0> - add <number> strength
+                  /mcrpg add health <number > 0> - add <number> health
+                  /mcrpg add dexterity <number > 0> - add <number> dexterity
+                  /mcrpg add magicResistance <number > 0> - add <number> magicResistance
+                  /mcrpg add intelligence <number > 0> - add <number> intelligence
+                  /mcrpg +defence - add 1 defence
+                  /mcrpg +strength - add 1 strength
+                  /mcrpg +health - add 1 health
+                  /mcrpg +dexterity - add 1 dexterity
+                  /mcrpg +magicResistance - add 1 magic resistance
+                  /mcrpg reset - reset your attributes to your default class
+                  /mcrpg reset <new class number> - reset your attributes to your new class
+                  /mcrpg nextlvl - show how much xp is need for next lvl
+                  /mcrpg save-all - save all player stats
+                  /mcrpg save - save your stats
+                  /mcrpg xpneeded - amount of xp needed left to achieve next level
+
+
+
+

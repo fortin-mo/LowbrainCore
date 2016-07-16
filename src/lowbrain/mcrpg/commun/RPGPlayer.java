@@ -1,4 +1,4 @@
-package lowbrian.mcrpg.commun;
+package lowbrain.mcrpg.commun;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -10,17 +10,20 @@ import java.io.File;
 
 public class RPGPlayer {
 	private Player player;
-	private int strength = -1;
-	private int intelligence = -1;
-	private int dexterity = -1;
-	private int health = -1;
-	private int defence = -1;
-	private double nextLvl = -1;
-	private int idClass = -1;
+	private int strength = 0;
+	private int intelligence = 0;
+	private int dexterity = 0;
+	private int health = 0;
+	private int defence = 0;
+	private double nextLvl = 0;
+	private int idClass = 0;
+	private int magicResistance = 0;
 	private boolean classIsSet = false;
-	private int points = -1;
-	private double experience = -1;
-	private int lvl = -1;
+	private int points = 0;
+	private double experience = 0;
+	private int lvl = 0;
+	private int kills = 0;
+	private int deaths = 0;
 	
 	/**
 	 * contruct player with bukkit.Player
@@ -43,20 +46,27 @@ public class RPGPlayer {
 		File userdata = new File(PlayerListener.plugin.getDataFolder(), File.separator + "PlayerDB");
         File f = new File(userdata, File.separator + player.getUniqueId() + ".yml");
         FileConfiguration playerData = YamlConfiguration.loadConfiguration(f);
-        
+
         strength = playerData.getInt("Stats.strength");
         intelligence = playerData.getInt("Stats.intelligence");
         health = playerData.getInt("Stats.health");
         defence = playerData.getInt("Stats.defence");
         dexterity = playerData.getInt("Stats.dexterity");
+		magicResistance = playerData.getInt("Stats.magicResistance");
         classIsSet = playerData.getBoolean("Class.isSet");
         idClass = playerData.getInt("Class.id");
         experience = playerData.getDouble("Stats.experience");
         points = playerData.getInt("Stats.points");
         lvl = playerData.getInt("Stats.lvl");
-        nextLvl = playerData.getDouble("Stats.next_lvl");
+        nextLvl = playerData.getDouble("Stats.nextLvl");
+		kills = playerData.getInt("Stas.kills");
+		deaths = playerData.getInt("Stats.deaths");
+
+		if(this.health > 0) {
+			player.setMaxHealth(15 * (1 + this.health / 50) );
+		}
 	}
-	
+
 	/**
 	 * return experience needed for next level
 	 * @return
@@ -82,17 +92,21 @@ public class RPGPlayer {
 	        File f = new File(userdata, File.separator + this.player.getUniqueId() + ".yml");
 	        FileConfiguration playerData = YamlConfiguration.loadConfiguration(f);
 
-            playerData.set("Class.isSet", (Object) this.classIsSet);
-            playerData.set("Class.id", (Object)this.idClass);
+            playerData.set("Class.isSet", this.classIsSet);
+            playerData.set("Class.id", this.idClass);
             
-            playerData.set("Stats.health",(Object) this.health);
-            playerData.set("Stats.lvl", (Object)this.lvl);
-            playerData.set("Stats.strength", (Object)this.strength);
-            playerData.set("Stats.intelligence", (Object)this.intelligence);
-            playerData.set("Stats.dexterity", (Object)this.dexterity);
-            playerData.set("Stats.defence", (Object)this.defence);
-            playerData.set("Stats.points", (Object)this.points);
-            playerData.set("Stats.experience", (Object)this.experience);
+            playerData.set("Stats.health",this.health);
+            playerData.set("Stats.lvl", this.lvl);
+            playerData.set("Stats.strength", this.strength);
+            playerData.set("Stats.intelligence", this.intelligence);
+            playerData.set("Stats.dexterity", this.dexterity);
+			playerData.set("Stats.magicResistance",this.magicResistance);
+            playerData.set("Stats.defence", this.defence);
+            playerData.set("Stats.points", this.points);
+            playerData.set("Stats.experience", this.experience);
+			playerData.set("Stats.nextLvl", this.nextLvl);
+			playerData.set("Stats.kills",kills);
+			playerData.set("Stats.deaths",deaths);
             
             playerData.save(f);
 		} catch (Exception e) {
@@ -104,40 +118,66 @@ public class RPGPlayer {
 	 * add experience to current player
 	 * @param exp
 	 */
-	public void AddExp(double exp){
+	public void addExp(double exp){
 		this.experience += exp;
 		if(this.experience >= nextLvl){
-			this.LevelUP();
+			this.levelUP();
 		}
 	}
 	
 	/**
 	 * level up add one level... increment player points
 	 */
-	public void LevelUP(){
-		double maxLevel = PlayerListener.plugin.getConfig().getInt("Settings.max_lvl");
+	public void levelUP(){
+		double maxLevel = PlayerListener.plugin.settings.getMax_lvl();
 		if((maxLevel < 0 || this.lvl < maxLevel)){
 			this.lvl += 1;
-			points += PlayerListener.plugin.getConfig().getDouble("Settings.points_per_lvl");
-			double lvlExponential = PlayerListener.plugin.getConfig().getDouble("Settings.next_lvl_exponential");
-			this.nextLvl = Math.pow(this.nextLvl,lvlExponential);
+
+			switch (this.idClass){
+				case 1:
+					addHealth(1,false);
+					break;
+				case 2:
+					addStrength(1,false);
+					break;
+				case 3:
+					addIntelligence(1,false);
+					break;
+				case 4:
+					addDexterity(1,false);
+					break;
+			}
+
+			points += PlayerListener.plugin.settings.getPoints_per_lvl();
+			double lvlExponential = PlayerListener.plugin.settings.getNext_lvl_exponential();
+			this.nextLvl += this.nextLvl * lvlExponential;
+		}
+		player.setHealth(player.getMaxHealth());
+		player.sendMessage("LEVEL UP !!!! You are now lvl " + this.lvl);
+	}
+
+	public void reset(int idClass){
+		if(PlayerListener.plugin.settings.isAllow_stats_reset()){
+			SetClass(idClass,true);
 		}
 	}
-	
+
 	/**
 	 * Set class of the current player (add default class attributes)
 	 * @param id
 	 */
-	public void SetClass(int id){
-		if(!classIsSet){
+	public void SetClass(int id, boolean override){
+		if(!classIsSet || override){
 			RPGClass rc = new RPGClass(id);
 			this.defence = rc.getDefence();
 			this.dexterity = rc.getDexterity();
 			this.intelligence = rc.getIntelligence();
 			this.strength = rc.getStrength();
 			this.health = rc.getHealth();
+			this.magicResistance = rc.getMagicResistance();
+			this.idClass = id;
 		}
-		else if(PlayerListener.plugin.getConfig().getBoolean("Settings.allow_switch_class")){
+		else if(PlayerListener.plugin.settings.isCan_switch_class()){
 			RPGClass oldClass = new RPGClass(this.idClass);
 			RPGClass newClass = new RPGClass(id);
 			
@@ -163,6 +203,7 @@ public class RPGPlayer {
 		else{
 			this.getPlayer().sendMessage("You cannot switch class !");
 		}
+		this.classIsSet = true;
 	}
 
 	public double getStrength() {
@@ -232,7 +273,7 @@ public class RPGPlayer {
 	 * @param usePoints
 	 */
 	public void addStrength(int nb, boolean usePoints){
-		int maxStats = PlayerListener.plugin.getConfig().getInt("Settings.max_stats");
+		int maxStats = PlayerListener.plugin.settings.getMax_stats();
 		int oldStrength = this.strength;
 		if(usePoints && this.points >= nb){
 			this.strength += nb;
@@ -275,7 +316,7 @@ public class RPGPlayer {
 	 * @param usePoints
 	 */
 	public void addIntelligence(int nb, boolean usePoints){
-		int maxStats = PlayerListener.plugin.getConfig().getInt("Settings.max_stats");
+		int maxStats = PlayerListener.plugin.settings.getMax_stats();
 		int oldIntelligence = this.intelligence;
 		if(usePoints && this.points >= nb){
 			this.intelligence += nb;
@@ -318,7 +359,7 @@ public class RPGPlayer {
 	 * @param usePoints
 	 */
 	public void addDexterity(int nb, boolean usePoints){
-		int maxStats = PlayerListener.plugin.getConfig().getInt("Settings.max_stats");
+		int maxStats = PlayerListener.plugin.settings.getMax_stats();
 		int oldDexterity = this.dexterity;
 		if(usePoints && this.points >= nb){
 			this.dexterity += nb;
@@ -360,7 +401,7 @@ public class RPGPlayer {
 	 * @param usePoints
 	 */
 	public void addHealth(int nb, boolean usePoints){
-		int maxStats = PlayerListener.plugin.getConfig().getInt("Settings.max_stats");
+		int maxStats = PlayerListener.plugin.settings.getMax_stats();
 		int oldHealth = this.health;
 		if(usePoints && this.points >= nb){
 			this.health += nb;
@@ -403,7 +444,7 @@ public class RPGPlayer {
 	 * @param usePoints
 	 */
 	public void addDefence(int nb, boolean usePoints){
-		int maxStats = PlayerListener.plugin.getConfig().getInt("Settings.max_stats");
+		int maxStats = PlayerListener.plugin.settings.getMax_stats();
 		int oldDefence = this.defence;
 		if(usePoints && this.points >= nb){
 			this.defence += nb;
@@ -425,6 +466,41 @@ public class RPGPlayer {
 				return;
 			}
 			this.player.sendMessage("Defence incremented by " + nb);
+		}
+		else{
+			this.ErrorMessageNotEnoughPoints();
+			return;
+		}
+	}
+
+	/**
+	 * add magic resistance to current player
+	 * @param nb
+	 * @param usePoints
+     */
+	public void addMagicResistance(int nb, boolean usePoints){
+		int maxStats = PlayerListener.plugin.settings.getMax_stats();
+		int oldMagicResistance = this.defence;
+		if(usePoints && this.points >= nb){
+			this.magicResistance += nb;
+			if(maxStats >= 0 && this.defence > maxStats){
+				this.magicResistance = maxStats;
+			}
+
+			double dif = Math.abs(oldMagicResistance - this.defence);
+
+			this.points -= dif;
+
+			this.player.sendMessage("Magic Resistance incremented by " + dif);
+		}
+		else if(!usePoints){
+			this.magicResistance += nb;
+			if(maxStats >= 0 && this.magicResistance > maxStats){
+				this.magicResistance = maxStats;
+				this.player.sendMessage("Magic Resistance set to " + maxStats);
+				return;
+			}
+			this.player.sendMessage("Magic Resistance incremented by " + nb);
 		}
 		else{
 			this.ErrorMessageNotEnoughPoints();
@@ -465,7 +541,7 @@ public class RPGPlayer {
 	 * @param lvl
 	 */
 	public void setLvl(int lvl) {
-		int maxLvl = PlayerListener.plugin.getConfig().getInt("Settings.max_lvl");
+		int maxLvl = PlayerListener.plugin.settings.getMax_lvl();
 		this.lvl = lvl;
 		if(maxLvl >= 0 && this.lvl > maxLvl){
 			this.lvl = maxLvl;
@@ -479,8 +555,8 @@ public class RPGPlayer {
 	public void addLevel(int nbLvl){
 		int oldLvl = this.lvl;
 		this.lvl += nbLvl;
-		int maxLvl = PlayerListener.plugin.getConfig().getInt("Settings.max_lvl");
-		int nbPointsPerLevel = PlayerListener.plugin.getConfig().getInt("Settings.points_per_lvl");
+		int maxLvl = PlayerListener.plugin.settings.getMax_lvl();
+		int nbPointsPerLevel = PlayerListener.plugin.settings.getPoints_per_lvl();
 		
 		if(maxLvl >= 0 && this.lvl > maxLvl){
 			this.lvl = maxLvl;
@@ -495,6 +571,48 @@ public class RPGPlayer {
 	private void ErrorMessageNotEnoughPoints(){
 		this.player.sendMessage("Not enough points !");
 		this.player.sendMessage("You currently have " + this.points + " points");
+	}
+
+	public int getKills() {
+		return kills;
+	}
+
+	public void addKills(int kills) {
+		this.kills += kills;
+	}
+
+	public int getDeaths() {
+		return this.deaths;
+	}
+
+	public void addDeaths(int deaths) {
+		this.deaths += deaths;
+	}
+
+	public int getMagicResistance() {
+		return magicResistance;
+	}
+
+	public void setMagicResistance(int magicResistance) {
+		this.magicResistance = magicResistance;
+	}
+
+	public String toString(){
+		String s = "Level: " + lvl + "\n";
+		s += "Class: " + getClassName() + "\n";
+		s += "Defence: " + defence + "\n";
+		s += "Strength: " + strength + "\n";
+		s += "Health: " + health + "\n";
+		s += "Dexterity: " + dexterity + "\n";
+		s += "Intelligence: " + intelligence + "\n";
+		s += "Magic Resistance: " + magicResistance + "\n";
+		s += "Kills: " + kills + "\n";
+		s += "Deaths: " + deaths + "\n";
+		s += "Points left: " + points + "\n";
+		s += "Experience: " + experience + "\n";
+		s += "Next lvl in: " + (nextLvl - experience) + " xp" + "\n";
+
+		return s;
 	}
 }
 

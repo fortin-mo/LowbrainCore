@@ -1,12 +1,12 @@
 package lowbrain.mcrpg.main;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import lowbrain.mcrpg.commun.*;
 
-import lowbrian.mcrpg.commun.RPGPlayer;
 
 /**
  * Main plugin class
@@ -14,10 +14,10 @@ import lowbrian.mcrpg.commun.RPGPlayer;
  *
  */
 public class Main extends JavaPlugin {
-	 
-	FileConfiguration config;
-	PlayerListener playerListener = new PlayerListener(this);
-	public static List<RPGPlayer> lstPlayer = new ArrayList<RPGPlayer>();
+
+	public static Map<UUID, RPGPlayer> connectedPlayers = new HashMap<UUID, RPGPlayer>();
+	public static Settings settings;
+
 	
 	/**
 	 * called when the plugin is initially enabled
@@ -25,16 +25,33 @@ public class Main extends JavaPlugin {
 	@Override
     public void onEnable() {
 		this.getLogger().info("Loading LowbrainMCRPG.jar");
-		this.config = this.getConfig();
 	    this.saveDefaultConfig();
-	    getServer().getPluginManager().registerEvents(this.playerListener, this);
-	    this.getCommand("rpg").setExecutor(new RPGCommand(this));
+		settings = new Settings(this.getConfig());
+
+        PlayerListener playerListener = new PlayerListener(this);
+
+	    getServer().getPluginManager().registerEvents(playerListener, this);
+	    this.getCommand("mcrpg").setExecutor(new RPGCommand(this));
 	    this.getLogger().info("[LowbrainMCRPG] " + getDescription().getVersion() + " enabled!");
+
+		if(this.settings.isAuto_save()) {
+			Bukkit.getServer().getScheduler().runTaskTimer((Plugin) this, new Runnable() {
+				@Override
+				public void run() {
+					SaveData();
+				}
+			}, 0, settings.getSave_interval() * 20);
+		}
     }
    
     @Override
     public void onDisable() {
-       this.config = null;
+    	SaveData();
+		Bukkit.getServer().getScheduler().cancelTasks(this);
     }
+
+    public void SaveData(){
+		connectedPlayers.forEach((uuid, rpgPlayer) -> rpgPlayer.SaveData());
+	}
 }
 
