@@ -2,6 +2,7 @@ package lowbrain.mcrpg.main;
 
 import lowbrain.mcrpg.commun.RPGClass;
 import lowbrain.mcrpg.commun.RPGPlayer;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,7 +30,7 @@ public class RPGCommand implements CommandExecutor{
 				switch (args[0].toLowerCase()){
                     case "xpneeded":
                         double xp = rp.getNextLvl() - rp.getExperience();
-                        sender.sendMessage("You will reach lvl " + (rp.getLvl()+1) + " in " + xp + " xp");
+                        sender.sendMessage(ChatColor.GREEN +"You will reach lvl " + (rp.getLvl()+1) + " in " + xp + " xp");
                         break;
 					case "add":
 					    int amount = 0;
@@ -41,12 +42,12 @@ public class RPGCommand implements CommandExecutor{
                                 amount = Integer.parseInt(args[2]);
                             }
                             catch (Exception e){
-                                sender.sendMessage("Invalid arguments !. Please use help command");
+                                sender.sendMessage(ChatColor.GREEN +"Invalid arguments !. Please use help command");
                                 return false;
                             }
                         }
                         if(amount <= 0){
-                            sender.sendMessage("Please use a number higher then 0!");
+                            sender.sendMessage(ChatColor.GREEN +"Please use a number higher then 0!");
                             return false;
                         }
                         switch (args[1].toLowerCase()){
@@ -69,7 +70,7 @@ public class RPGCommand implements CommandExecutor{
                                 rp.addMagicResistance(amount,true);
                                 break;
                             default:
-                                sender.sendMessage("There is no such attributes !");
+                                sender.sendMessage(ChatColor.GREEN +"There is no such attributes !");
                                 return false;
                         }
                         return true;
@@ -97,17 +98,17 @@ public class RPGCommand implements CommandExecutor{
 							if(p != null){
 								RPGPlayer rp2 = plugin.connectedPlayers.get(p.getUniqueId());
 								if(rp2 != null){
-                                    sender.sendMessage(rp2.toString());
+                                    sender.sendMessage(ChatColor.GREEN +rp2.toString());
 								}else{
-									sender.sendMessage("This player is not connected !");
+									sender.sendMessage(ChatColor.GREEN +"This player is not connected !");
 								}
 							}
 							else{
-								sender.sendMessage("This player is not connected !");
+								sender.sendMessage(ChatColor.GREEN +"This player is not connected !");
 							}
 						}
 						else{
-						    sender.sendMessage(rp.toString());
+						    sender.sendMessage(ChatColor.GREEN +rp.toString());
                         }
 						break;
 					case "class":
@@ -119,7 +120,7 @@ public class RPGCommand implements CommandExecutor{
                             msg += "-----------------------------" + "\n";
                             msg += rc.toString() + "\n";
                         }
-						sender.sendMessage(msg);
+						sender.sendMessage(ChatColor.GREEN +msg);
 						break;
 					case "setclass":
 						if(args.length == 2){
@@ -129,10 +130,10 @@ public class RPGCommand implements CommandExecutor{
 									rp.SetClass(idClass, false);
 								}
 								else{
-									sender.sendMessage("Wrong class id !: Use \"/mcrpg class\" to show all classes");
+									sender.sendMessage(ChatColor.GREEN + "Wrong class id !: Use \"/mcrpg class\" to show all classes");
 								}
 							}catch (Exception e){
-								sender.sendMessage("Invalid arguments !");
+								sender.sendMessage(ChatColor.GREEN +"Invalid arguments !");
                                 return false;
 							}
 						}
@@ -143,7 +144,7 @@ public class RPGCommand implements CommandExecutor{
 								int idClass = Integer.parseInt(args[1]);
 								rp.reset(idClass);
 							}catch (Exception e){
-								sender.sendMessage("Wrong arguments type ! Must be a number between 1 and 4 include");
+								sender.sendMessage(ChatColor.GREEN +"Wrong arguments type ! Must be a number between 1 and 4 include");
                                 return false;
 							}
 						}
@@ -152,16 +153,16 @@ public class RPGCommand implements CommandExecutor{
 						}
 						break;
 					case "nextlvl":
-						sender.sendMessage("Next level achieved at " + rp.getNextLvl() + " xp");
+						sender.sendMessage(ChatColor.GREEN +"Next level achieved at " + rp.getNextLvl() + " xp");
 						break;
 					case "save":
 						rp.SaveData();
-						sender.sendMessage("Stats saved !");
+						sender.sendMessage(ChatColor.GREEN +"Stats saved !");
 						break;
 					case "save-all":
 					    if(sender.isOp()) {
                             plugin.SaveData();
-                            sender.sendMessage("All stats saved !");
+                            sender.sendMessage(ChatColor.GREEN +"All stats saved !");
                         }
 						break;
 				}

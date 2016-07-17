@@ -1,5 +1,6 @@
 package lowbrain.mcrpg.commun;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -171,7 +172,7 @@ public class RPGPlayer {
 			this.nextLvl += this.nextLvl * lvlExponential;
 		}
 		player.setHealth(player.getMaxHealth());
-		player.sendMessage("LEVEL UP !!!! You are now lvl " + this.lvl);
+		SendMessage("LEVEL UP !!!! You are now lvl " + this.lvl);
 	}
 
 	public void reset(int idClass){
@@ -197,14 +198,14 @@ public class RPGPlayer {
 			this.experience = 0;
 			this.nextLvl = PlayerListener.plugin.settings.getFirst_lvl_exp();
 			this.lvl = 1;
-			this.getPlayer().sendMessage("You are now a " + rc.getName());
+			SendMessage("You are now a " + rc.getName());
 		}
 		else if(PlayerListener.plugin.settings.isCan_switch_class()){
 			RPGClass oldClass = new RPGClass(this.idClass);
 			RPGClass newClass = new RPGClass(id);
 			
 			if(this.idClass == id){
-				this.getPlayer().sendMessage("You are already a " + oldClass.getName());
+				SendMessage("You are already a " + oldClass.getName());
 				return;
 			}
 			
@@ -219,11 +220,10 @@ public class RPGPlayer {
 			this.intelligence += newClass.getIntelligence();
 			this.strength += newClass.getStrength();
 			this.health += newClass.getHealth();
-			
-			this.getPlayer().sendMessage("You are now a " + newClass.getName());
+			SendMessage("You are now a " + newClass.getName());
 		}
 		else{
-			this.getPlayer().sendMessage("You cannot switch class !");
+			SendMessage("You cannot switch class !");
 		}
 		this.classIsSet = true;
 	}
@@ -307,16 +307,16 @@ public class RPGPlayer {
 			
 			this.points -= dif;
 			
-			this.player.sendMessage("Strength incremented by " + dif);
+			SendMessage("Strength incremented by " + dif);
 		}
 		else if(!usePoints){
 			this.strength += nb;
 			if(maxStats >= 0 && this.strength > maxStats){
 				this.strength = maxStats;
-				this.player.sendMessage("Strength set to " + maxStats);
+				SendMessage("Strength set to " + maxStats);
 				return;
 			}
-			this.player.sendMessage("Strength incremented by " + nb);
+			SendMessage("Strength incremented by " + nb);
 		}
 		else{
 			this.ErrorMessageNotEnoughPoints();
@@ -350,16 +350,16 @@ public class RPGPlayer {
 			
 			this.points -= dif;
 			
-			this.player.sendMessage("Intelligence incremented by " + dif);
+			SendMessage("Intelligence incremented by " + dif);
 		}
 		else if(!usePoints){
 			this.intelligence += nb;
 			if(maxStats >= 0 && this.intelligence > maxStats){
 				this.intelligence = maxStats;
-				this.player.sendMessage("Intelligence set to " + maxStats);
+				SendMessage("Intelligence set to " + maxStats);
 				return;
 			}
-			this.player.sendMessage("Intelligence incremented by " + nb);
+			SendMessage("Intelligence incremented by " + nb);
 		}
 		else{
 			this.ErrorMessageNotEnoughPoints();
@@ -393,16 +393,16 @@ public class RPGPlayer {
 			
 			this.points -= dif;
 			
-			this.player.sendMessage("Dexterity incremented by " + dif);
+			SendMessage("Dexterity incremented by " + dif);
 		}
 		else if(!usePoints){
 			this.dexterity += nb;
 			if(maxStats >= 0 && this.dexterity > maxStats){
 				this.dexterity = maxStats;
-				this.player.sendMessage("Dexterity set to " + maxStats);
+				SendMessage("Dexterity set to " + maxStats);
 				return;
 			}
-			this.player.sendMessage("Dexterity incremented by " + nb);
+			SendMessage("Dexterity incremented by " + nb);
 		}
 		else{
 			this.ErrorMessageNotEnoughPoints();
@@ -436,18 +436,18 @@ public class RPGPlayer {
 			
 			this.points -= dif;
 			setPlayerMaxHealth();
-			this.player.sendMessage("Health incremented by " + dif);
+			SendMessage("Health incremented by " + dif);
 		}
 		else if(!usePoints){
 			this.health += nb;
 			if(maxStats >= 0 && this.health > maxStats){
 				this.health = maxStats;
 				setPlayerMaxHealth();
-				this.player.sendMessage("Health set to " + maxStats);
+				SendMessage("Health set to " + maxStats);
 				return;
 			}
 			setPlayerMaxHealth();
-			this.player.sendMessage("Health incremented by " + nb);
+			SendMessage("Health incremented by " + nb);
 		}
 		else{
 			this.ErrorMessageNotEnoughPoints();
@@ -481,16 +481,16 @@ public class RPGPlayer {
 			
 			this.points -= dif;
 			
-			this.player.sendMessage("Defence incremented by " + dif);
+			SendMessage("Defence incremented by " + dif);
 		}
 		else if(!usePoints){
 			this.defence += nb;
 			if(maxStats >= 0 && this.defence > maxStats){
 				this.defence = maxStats;
-				this.player.sendMessage("Defence set to " + maxStats);
+				SendMessage("Defence set to " + maxStats);
 				return;
 			}
-			this.player.sendMessage("Defence incremented by " + nb);
+			SendMessage("Defence incremented by " + nb);
 		}
 		else{
 			this.ErrorMessageNotEnoughPoints();
@@ -516,16 +516,16 @@ public class RPGPlayer {
 
 			this.points -= dif;
 
-			this.player.sendMessage("Magic Resistance incremented by " + dif);
+			SendMessage("Magic Resistance incremented by " + dif);
 		}
 		else if(!usePoints){
 			this.magicResistance += nb;
 			if(maxStats >= 0 && this.magicResistance > maxStats){
 				this.magicResistance = maxStats;
-				this.player.sendMessage("Magic Resistance set to " + maxStats);
+				SendMessage("Magic Resistance set to " + maxStats);
 				return;
 			}
-			this.player.sendMessage("Magic Resistance incremented by " + nb);
+			SendMessage("Magic Resistance incremented by " + nb);
 		}
 		else{
 			this.ErrorMessageNotEnoughPoints();
@@ -594,8 +594,8 @@ public class RPGPlayer {
 	 * send error message to current player
 	 */
 	private void ErrorMessageNotEnoughPoints(){
-		this.player.sendMessage("Not enough points !");
-		this.player.sendMessage("You currently have " + this.points + " points");
+		SendMessage("Not enough points !");
+		SendMessage("You currently have " + this.points + " points");
 	}
 
 	public int getKills() {
@@ -627,6 +627,10 @@ public class RPGPlayer {
      */
 	public void setPlayerMaxHealth(){
 		player.setMaxHealth(0.40404 * this.health + 10 );
+	}
+
+	private void SendMessage(String msg){
+		this.getPlayer().sendMessage(ChatColor.GREEN + msg);
 	}
 
 	public String toString(){

@@ -38,9 +38,9 @@ public class PlayerListener implements Listener {
     public void onPlayerExpChange(PlayerExpChangeEvent e){
         Player p = e.getPlayer();
         RPGPlayer rp = plugin.connectedPlayers.get(p.getUniqueId());
+        plugin.debugMessage("Player gains " + e.getAmount() + " xp");
         rp.addExp(e.getAmount());
     }
-
 
     /**
      * called when a player dies
@@ -50,6 +50,9 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e){
         if(e.getEntity() instanceof Player){
+
+            plugin.debugMessage("Player dies !");
+
             RPGPlayer rpKiller = null;
             Player killed = e.getEntity();
             RPGPlayer rpKilled = plugin.connectedPlayers.get(killed.getUniqueId());
@@ -61,21 +64,25 @@ public class PlayerListener implements Listener {
                 if(killed.getLastDamageCause().getEntity() instanceof Arrow){
                     if(((Arrow) killed.getLastDamageCause().getEntity()).getShooter() != null && ((Arrow) killed.getLastDamageCause().getEntity()).getShooter() instanceof Player){
                         rpKiller = plugin.connectedPlayers.get((((Player) ((Arrow) killed.getLastDamageCause().getEntity()).getShooter()).getPlayer().getUniqueId()));
+                        plugin.debugMessage("Killed by arrow!");
                     }
                 }
                 else if(killed.getLastDamageCause().getEntity() instanceof TippedArrow){
                     if(((TippedArrow) killed.getLastDamageCause().getEntity()).getShooter() != null && ((TippedArrow) killed.getLastDamageCause().getEntity()).getShooter() instanceof Player){
                         rpKiller = plugin.connectedPlayers.get((((Player) ((TippedArrow) killed.getLastDamageCause().getEntity()).getShooter()).getPlayer().getUniqueId()));
+                        plugin.debugMessage("Killed by tipped arrow!");
                     }
                 }
                 else if(killed.getLastDamageCause().getEntity() instanceof SpectralArrow){
                     if(((SpectralArrow) killed.getLastDamageCause().getEntity()).getShooter() != null && ((SpectralArrow) killed.getLastDamageCause().getEntity()).getShooter() instanceof Player){
                         rpKiller = plugin.connectedPlayers.get((((Player) ((SpectralArrow) killed.getLastDamageCause().getEntity()).getShooter()).getPlayer().getUniqueId()));
+                        plugin.debugMessage("Killed by spectral arrow!");
                     }
                 }
                 else if(killed.getLastDamageCause().getEntity() instanceof ThrownPotion){
                     if(((ThrownPotion) killed.getLastDamageCause().getEntity()).getShooter() != null && ((ThrownPotion) killed.getLastDamageCause().getEntity()).getShooter() instanceof Player){
                         rpKiller = plugin.connectedPlayers.get((((Player) ((ThrownPotion) killed.getLastDamageCause().getEntity()).getShooter()).getPlayer().getUniqueId()));
+                        plugin.debugMessage("Killed by potion!");
                     }
                 }
             }
@@ -92,7 +99,7 @@ public class PlayerListener implements Listener {
                     xpGained = plugin.settings.getExp_on_player_kill() * (diffLvl * 0.5) * rpKiller.getLvl() * 0.5;
                 }
                 rpKiller.addExp(xpGained);
-
+                plugin.debugMessage("Killer gains "+ xpGained+" xp!");
             }
 
             rpKilled.addExp(-(plugin.settings.getExp_loss_on_death() / 100 * rpKilled.getExperience()));
@@ -132,30 +139,35 @@ public class PlayerListener implements Listener {
         //DEFINING CAUSE OF DAMAGE
         if (e.getDamager() instanceof Player) {
             damager = plugin.connectedPlayers.get(e.getDamager().getUniqueId());
+            plugin.debugMessage("Attacked by another player");
             normalAttack  = true;
         } else if (e.getDamager() instanceof Arrow) {
             Arrow ar = (Arrow) e.getDamager();
             if (ar.getShooter() instanceof Player) {
                 damager = plugin.connectedPlayers.get(e.getDamager().getUniqueId());
             }
+            plugin.debugMessage("Attacked by arrow");
             arrowAttact = true;
         } else if (e.getDamager() instanceof TippedArrow) {
             TippedArrow ar = (TippedArrow) e.getDamager();
             if (ar.getShooter() instanceof Player) {
                 damager = plugin.connectedPlayers.get(e.getDamager().getUniqueId());
             }
+            plugin.debugMessage("Attacked by tipped arrow");
             arrowAttact = true;
         } else if (e.getDamager() instanceof SpectralArrow) {
             SpectralArrow ar = (SpectralArrow) e.getDamager();
             if (ar.getShooter() instanceof Player) {
                 damager = plugin.connectedPlayers.get(e.getDamager().getUniqueId());
             }
+            plugin.debugMessage("Attacked by spectral arrow");
             arrowAttact = true;
         } else if (e.getDamager() instanceof ThrownPotion) {
             ThrownPotion pot = (ThrownPotion) e.getDamager();
             if (pot.getShooter() instanceof Player) {
                 damager = plugin.connectedPlayers.get(e.getDamager().getUniqueId());
             }
+            plugin.debugMessage("Attacked by potion");
             magicAttack = true;
         }
         else{
@@ -165,13 +177,14 @@ public class PlayerListener implements Listener {
 
         //APLLYING MAGIC EFFECT BY ATTACKER
         if(damager != null && !magicAttack){
+            plugin.debugMessage("From " + damager.getPlayer().getName());
             double chanceOfMagicEffect = damager.getIntelligence() * 0.5 /100;
             double rdm = Math.random();
             if(rdm < chanceOfMagicEffect){
                 PotionEffect effect = CreateMagicAttack(damager);
                 if(e.getEntity() instanceof LivingEntity){
                     ((LivingEntity) e.getEntity()).addPotionEffect(effect);
-                    plugin.debugMessage("magic effect added");
+                    plugin.debugMessage("magic effect added : " + effect.getType().getName() + ", " + effect.getDuration()/20 + ", " + effect.getAmplifier());
                 }
             }
         }
@@ -193,6 +206,7 @@ public class PlayerListener implements Listener {
             double rdm = (baseDamage - range) + (Math.random() * (baseDamage + range));
             e.setDamage(rdm);
         }
+        plugin.debugMessage("New damage after offencive attributes : " + e.getDamage());
 
         //APPYING DAMAGE CHANGE DEPENDING ON DEFENCIVE ATTRIBUTES
         if(e.getEntity() instanceof Player){
@@ -218,6 +232,30 @@ public class PlayerListener implements Listener {
     }
 
     /**
+     * When a player consume a potion
+     * @param e
+     */
+    public void onPlayerConsumePotion(PlayerItemConsumeEvent e){
+        if(e.getItem() != null && e.getItem().getType().equals(Material.POTION)){
+            RPGPlayer rp = plugin.connectedPlayers.get(e.getPlayer().getUniqueId());
+            if(rp != null) {
+                double multiplier = 0.01 * (rp.getIntelligence()) + 1;
+                double max = multiplier < 1.9 ? multiplier + 0.1 : 2;
+                double min = multiplier >= 1.1 ? multiplier - 0.1 : 1;
+                double rdm = min + (Math.random() * max);//top lvl will have multiplier of 2%
+
+                for (PotionEffect pe : rp.getPlayer().getActivePotionEffects()) {
+                    int newDuration = (int) (pe.getDuration() * rdm);
+                    PotionEffect tmp = new PotionEffect(pe.getType(), newDuration, pe.getAmplifier());
+                    rp.getPlayer().removePotionEffect(pe.getType());
+                    rp.getPlayer().addPotionEffect(tmp);
+                }
+                plugin.debugMessage("effect duration multiply by " + multiplier);
+            }
+        }
+    }
+
+    /**
      * called when a player shoots with a  bow
      * @param e
      */
@@ -240,7 +278,6 @@ public class PlayerListener implements Listener {
             }
         }
     }
-
 
     /**
      * called when a player join the server
@@ -298,7 +335,7 @@ public class PlayerListener implements Listener {
     private PotionEffect CreateMagicAttack(RPGPlayer p){
         int rdm = 1 + (int)(Math.random() * 7);
         int duration = (int)(0.2 * (p.getIntelligence() * 0.75 + p.getDexterity() * 0.25) + 1);
-        int amplifier = (int)(0.2 * p.getIntelligence() + 1);
+        int amplifier = (int)(0.040404 * p.getIntelligence());
         PotionEffect effect;
         PotionEffectType type = PotionEffectType.POISON;
         switch (rdm){
@@ -377,6 +414,6 @@ public class PlayerListener implements Listener {
             rp.getPlayer().removePotionEffect(pe.getType());
             rp.getPlayer().addPotionEffect(tmp);
         }
-
+        plugin.debugMessage("all effect reduced by " + reduction);
     }
 }

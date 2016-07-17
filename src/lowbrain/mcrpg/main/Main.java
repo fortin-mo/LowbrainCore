@@ -53,6 +53,7 @@ public class Main extends JavaPlugin {
 
     public void SaveData(){
 		connectedPlayers.forEach((uuid, rpgPlayer) -> rpgPlayer.SaveData());
+		debugMessage("Data saved correctly");
 	}
 
 	public void debugMessage(Object msg){
