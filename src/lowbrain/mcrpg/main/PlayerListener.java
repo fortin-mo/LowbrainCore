@@ -162,6 +162,7 @@ public class PlayerListener implements Listener {
             normalAttack  = true;
         }
 
+
         //APLLYING MAGIC EFFECT BY ATTACKER
         if(damager != null && !magicAttack){
             double chanceOfMagicEffect = damager.getIntelligence() * 0.5 /100;
@@ -170,9 +171,11 @@ public class PlayerListener implements Listener {
                 PotionEffect effect = CreateMagicAttack(damager);
                 if(e.getEntity() instanceof LivingEntity){
                     ((LivingEntity) e.getEntity()).addPotionEffect(effect);
+                    plugin.debugMessage("magic effect added");
                 }
             }
         }
+
 
         //APPLYING DAMAGE CHANGE DEPENDING ON OFFENCIVE ATTRIBUTES
         if(arrowAttact && damager != null){
@@ -201,10 +204,11 @@ public class PlayerListener implements Listener {
                 e.setDamage(e.getDamage() / (0.75 + ((damagee.getMagicResistance() + (damagee.getIntelligence() * 0.5)))/50));
             }
 
-            double changeOfRemovingEffect = (damager.getMagicResistance()*0.333 +damagee.getIntelligence() * 0.125) /200;
+            double changeOfRemovingEffect = (damagee.getMagicResistance()*0.333 +damagee.getIntelligence() * 0.125) /200;
             double rdm = Math.random();
             if(rdm < changeOfRemovingEffect){
                 RemoveBadPotionEffect(damagee.getPlayer());
+                plugin.debugMessage("all effect removed");
             }
             else{
                 ReducingBadPotionEffect(damagee);
@@ -223,9 +227,9 @@ public class PlayerListener implements Listener {
             //set new force
             Arrow ar = (Arrow) e.getProjectile();
             RPGPlayer rpPlayer = plugin.connectedPlayers.get(e.getEntity().getUniqueId());
-            plugin.debugMessage("inital fall distance : " + ar.getFallDistance());
-            ar.setFallDistance( (float)(ar.getFallDistance() * rpPlayer.getStrength() / 100));
-            plugin.debugMessage("inital fall distance : " + ar.getFallDistance());
+            //plugin.debugMessage("inital fall distance : " + ar.getFallDistance());
+            //ar.setFallDistance( (float)(ar.getFallDistance() * rpPlayer.getStrength() / 100));
+            //plugin.debugMessage("inital fall distance : " + ar.getFallDistance());
 
             if(rpPlayer.getDexterity() < 50) {
                 Double precision = rpPlayer.getDexterity() / 50;

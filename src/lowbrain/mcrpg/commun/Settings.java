@@ -39,7 +39,7 @@ public class Settings {
         setExp_on_player_kill(config.getDouble("Settings.exp_on_player_kill"));
         setAllow_stats_reset(config.getBoolean("Settings.allow_stats_reset"));
         setDebug(config.getBoolean("Settings.debug"));
-        setLstClassId(config.getIntegerList("Class"));
+        setLstClassId(config.getIntegerList("Class.list"));
     }
 
     public double getFirst_lvl_exp() {

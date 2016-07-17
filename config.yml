@@ -13,6 +13,12 @@
 # bonus Attributes will add a point to the attributes on level up. Can also be a list : dexterity,strength or all
 #
 Class:
+  list:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
   1:
     name: Knight
     health: 22
