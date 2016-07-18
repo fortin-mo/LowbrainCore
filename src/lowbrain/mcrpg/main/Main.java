@@ -35,13 +35,13 @@ public class Main extends JavaPlugin {
 	    this.getCommand("mcrpg").setExecutor(new RPGCommand(this));
 	    this.getLogger().info("[LowbrainMCRPG] " + getDescription().getVersion() + " enabled!");
 
-		if(this.settings.isAuto_save()) {
+		if(this.settings.auto_save) {
 			Bukkit.getServer().getScheduler().runTaskTimer((Plugin) this, new Runnable() {
 				@Override
 				public void run() {
 					SaveData();
 				}
-			}, 0, settings.getSave_interval() * 20);
+			}, 0, settings.save_interval * 20);
 		}
     }
    
@@ -57,7 +57,7 @@ public class Main extends JavaPlugin {
 	}
 
 	public void debugMessage(Object msg){
-	    if(this.settings.isDebug()){
+	    if(this.settings.debug){
 	        this.getLogger().info("[DEBUG] : " + msg);
         }
     }

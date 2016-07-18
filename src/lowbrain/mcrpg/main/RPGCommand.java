@@ -69,6 +69,9 @@ public class RPGCommand implements CommandExecutor{
                             case "magicresistance":
                                 rp.addMagicResistance(amount,true);
                                 break;
+							case "agility":
+								rp.addAgility(amount,true);
+								break;
                             default:
                                 sender.sendMessage(ChatColor.GREEN +"There is no such attributes !");
                                 return false;
@@ -92,6 +95,9 @@ public class RPGCommand implements CommandExecutor{
 					case "+dexterity":
 						rp.addDexterity(1,true);
 						break;
+					case "+agility":
+						rp.addAgility(1,true);
+						break;
 					case "stats":
 						if(args.length == 2){
 							Player p = plugin.getServer().getPlayer(args[1]);
@@ -111,11 +117,11 @@ public class RPGCommand implements CommandExecutor{
 						    sender.sendMessage(ChatColor.GREEN +rp.toString());
                         }
 						break;
-					case "class":
+					case "classes":
 						String msg = "";
 
                         for (int id :
-                                plugin.settings.getLstClassId()) {
+                                plugin.settings.lstClassId) {
                             RPGClass rc = new RPGClass(id);
                             msg += "-----------------------------" + "\n";
                             msg += rc.toString() + "\n";
@@ -126,7 +132,7 @@ public class RPGCommand implements CommandExecutor{
 						if(args.length == 2){
 							try {
 								int idClass = Integer.parseInt(args[1]);
-								if(plugin.settings.getLstClassId().contains(idClass)){
+								if(plugin.settings.lstClassId.contains(idClass)){
 									rp.SetClass(idClass, false);
 								}
 								else{

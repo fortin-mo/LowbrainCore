@@ -9,7 +9,7 @@ commands:
                   Use /help mcrpg [subcommand] for more information
                   /mcrpg stats - show your player stats
                   /mcrpg stats <player> - show stats of player
-                  /mcrpg class - show all class basic attributes
+                  /mcrpg classes - show all class basic attributes
                   /mcrpg setclass <number> - set your class [1,2,3,4]
                   /mcrpg add defence <number > 0> - add <number> defence
                   /mcrpg add strength <number > 0> - add <number> strength

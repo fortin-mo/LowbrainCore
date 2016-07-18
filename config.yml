@@ -1,18 +1,19 @@
 # Each class has 88 points at start
 # You can edit to your preference
 # You can add new classes but follow the structure
-# Class.id must be sorted from 1 to infinite
+# Classes.id must be sorted from 1 to infinite
 # You can't add or remove attributes
 #
 # healt with increase player maximum life
 # strength will increase player damage with hand weapon or bow(but less). Will increase bow distance
 # intelligence will increase player resistance to magic(less), increase damage with potion and increase chance of random effects with weapons
+#   it will also increase potion duration when consumed and increase player mana and mana regeneration
 # dexterity will increase bow shooting precision and bow damage
 # defence will reduce damage(except for potion)
 # magic resistance will reduce damage taken from potion and reduce chance of weapon random effects
 # bonus Attributes will add a point to the attributes on level up. Can also be a list : dexterity,strength or all
 #
-Class:
+Classes:
   list:
     - 1
     - 2
@@ -27,7 +28,11 @@ Class:
     dexterity: 10
     defence: 16
     magicResistance: 10
+    agility: 0
     bonusAttributes: health
+    powers:
+      - healing
+      - strength
   2:
     name: Paladin
     health: 20
@@ -36,7 +41,11 @@ Class:
     dexterity: 8
     defence: 22
     magicResistance: 10
+    agility: 0
     bonusAttributes: strength
+    powers:
+      - healing
+      - strength
   3:
     name: Mage
     health: 16
@@ -45,7 +54,9 @@ Class:
     dexterity: 14
     defence: 8
     magicResistance: 22
+    agility: 0
     bonusAttributes: magicResistance
+    powers: all
   4:
     name: Hunter
     health: 17
@@ -54,7 +65,13 @@ Class:
     dexterity: 26
     defence: 10
     magicResistance: 14
+    agility: 0
     bonusAttributes: dexterity
+    powers:
+      - healing
+      - night_vision
+      - invisibility
+      - jump_boost
   5:
     name: Shaman
     health: 18
@@ -63,7 +80,18 @@ Class:
     dexterity: 5
     defence: 10
     magicResistance: 15
+    agility: 0
     bonusAttributes: intelligence
+    powers:
+      - healing
+      - health_boost
+      - absorption
+      - regeneration
+      - resistance
+      - fire_resistance
+      - strength
+      - night_vision
+      - jump_boost
 # 99:
 #   name: MasterRACE
 #   health: 99
@@ -73,6 +101,80 @@ Class:
 #   defence: 99
 #   magicResistance: 99
 #   bonusAttributes: all
+
+Powers:
+  healing:
+    mana: 7
+    min_level: 0
+    min_intelligence: 10
+    range: 25
+  fire_resistance:
+    mana: 10
+    min_level: 30
+    min_intelligence: 50
+    range: 25
+  resistance:
+    mana: 10
+    min_level: 30
+    min_intelligence: 10
+    range: 25
+  water_breathing:
+    mana: 7
+    min_level: 10
+    min_intelligence: 20
+    range: 25
+  invisibility:
+    mana: 20
+    min_level: 30
+    min_intelligence: 60
+    range: 25
+  regeneration:
+    mana: 5
+    min_level: 5
+    min_intelligence: 10
+    range: 25
+  jump_boost:
+    mana: 5
+    min_level: 0
+    min_intelligence: 10
+    range: 25
+  strength:
+    mana: 20
+    min_level: 30
+    min_intelligence: 50
+    range: 25
+  haste:
+    mana: 7
+    min_level: 10
+    min_intelligence: 20
+    range: 25
+  speed:
+    mana: 15
+    min_level: 25
+    min_intelligence: 35
+    range: 25
+  night_vision:
+    mana: 10
+    min_level: 10
+    min_intelligence: 15
+    range: 25
+  health_boost:
+    mana: 10
+    min_level: 0
+    min_intelligence: 10
+    range: 25
+  absorption:
+    mana: 10
+    min_level: 15
+    min_intelligence: 20
+    range: 25
+  saturation:
+    mana: 7
+    min_level: 10
+    min_intelligence: 15
+    range: 25
+
+
 
 # first_lvl_exp: experience needed for the first level
 # max_lvl: maximum level. -1 = infinite
@@ -86,13 +188,14 @@ Class:
 # save_interval: interval in seconde between each save
 # exp_loss_on_death: amount(%) of experience loss when player dies
 # exp_on_player_kill: base experiece when player kills another player. Will increase if the lvl difference is high
+# mana_regen_interval: interval in seconds between each regeneration. mana regeneration is calculated with player intelligence
+#   if you reduce the interval, regeneration will be faster and vice verca.
 
 
 Settings:
   first_lvl_exp: 75
   max_lvl: 99
   max_stats: 99
-  next_lvl_multiplier: 1.1
   can_switch_class: false
   allow_stats_reset: true
   points_per_lvl: 2
@@ -102,3 +205,96 @@ Settings:
   exp_loss_on_death: 25
   exp_on_player_kill: 25
   debug: false
+  mana_regen_interval: 5
+  automatic_server_difficulty: true
+  maths:
+    next_lvl_multiplier: 1.1
+    natural_xp_gain_multiplier: 1.0
+    on_player_kills_player:
+      killer_level_gain_multiplier: 0.5
+      level_difference_multiplier: 0.5
+    on_player_attack_entity:
+      chance_of_creating_magic_attack:
+        maximum: 0.5
+        minimum: 0.0
+        intelligence_effect: 1.0
+        dexterity_effect: 0.0
+      creating_magic_attact: #duration = (max - min / max_stats) * (intelligence * 0.75 + dexterity * 0.25) + min
+        maximum_duration: 10.0
+        minimum_duration: 0.0
+        intelligence_on_duration: 0.75
+        dexterity_on_duration: 0.25
+        maximum_harm_amplifier: 3.0
+        maximum_poison_amplifier: 4.0
+        maximum_slow_amplifier: 5.0
+        maximum_weakness_amplifier: 5.0
+        maximum_wither_amplifier: 5.0
+        minimum_harm_amplifier: 3.0
+        minimum_poison_amplifier: 4.0
+        minimum_slow_amplifier: 5.0
+        minimum_weakness_amplifier: 5.0
+        minimum_wither_amplifier: 5.0
+        intelligence_on_harm_amplifier: 1.0
+        intelligence_on_poison_amplifier: 1.0
+        intelligence_on_slow_amplifier: 1.0
+        intelligence_on_weakness_amplifier: 1.0
+        intelligence_on_wither_amplifier: 1.0
+      reducing_bad_potion_effect:
+        maximum: 0.01
+        minimum: 1.0
+        range: 0.15
+        magic_resistance_effect: 0.75
+        intelligence_effect: 0.25
+      normal_attack_damage:
+        strength_effect_on_multiplier: 1.0
+        dexterity_effect_on_multiplier: 0.0
+        maximum_damage_multiplier: 2.5
+        minimum_damage_multiplier: 0.05
+        range: 2.0
+      potion_attack_damage:
+        intelligence_effect_on_multiplier: 85
+        dexterity_effect_on_multiplier: 0.15
+        maximum_damage_multiplier: 2.5
+        minimum_damage_multiplier: 0.05
+        range: 2.0
+      arrow_attack_damage:
+        strength_effect_on_multiplier: 0.333
+        dexterity_effect_on_multiplier: 0.666
+        maximum_damage_multiplier: 2.5
+        minimum_damage_multiplier: 0.05
+        range: 2.0
+      normal_and_arrow_attack_defence:
+        defence_effect: 1.0
+        maximum_damage_multiplier: 0.3333
+        minimum_damage_multiplier: 1.0
+      potion_attack_defence:
+        intelligence_effect: 0.15
+        magic_resistance_effect: 0.85
+        maximum_damage_multiplier: 0.3333
+        minimum_damage_multiplier: 1.0
+      chance_of_removing_magic_effect:
+        maximum: 0.25
+        minimum: 0.0
+        magic_resistance_effect_on_multiplier: 0.70
+        intelligence_effect_on_multiplier: 0.2
+        dexterity_effect_on_multiplier: 0.1
+    on_player_shoot_bow:
+      min_dexterity_for_max_precision: 50
+      range: 1.5
+    on_player_consume_potion:
+      multiplier_range: 0.1
+      maximum_multiplier: 2
+      minimum_multiplier: 1
+      intelligence_effect: 1.0
+
+    player_attributes:
+      movement_speed:
+        max_value: 0.4
+        min_value: 0.15
+        agility_effect: 1.0
+      attack_speed:
+      luck:
+
+
+
+
