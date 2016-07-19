@@ -40,61 +40,83 @@ public class MathSettings {
     public double creating_magic_attack_intelligence_on_weakness_amplifier = 1.0;
     public double creating_magic_attack_intelligence_on_wither_amplifier = 1.0;
 
-    //reducing_bad_potion_effect_=
-    public double reducing_bad_potion_effect_maximum = 0.01;
-    public double reducing_bad_potion_effect_minimum = 1.0;
-    public double reducing_bad_potion_effect_range = 0.15;
-    public double reducing_bad_potion_effect_magic_resistance_effect = 0.75;
-    public double reducing_bad_potion_effect_intelligence_effect = 0.25;
-
     //normal_attack_damage_=
-    public double normal_attack_damage_strength_effect_on_multiplier = 1.0;
-    public double normal_attack_damage_dexterity_effect_on_multiplier = 0.0;
-    public double normal_attack_damage_maximum_damage_multiplier = 2.5;
-    public double normal_attack_damage_minimum_damage_multiplier = 0.05;
-    public double normal_attack_damage_range = 2.0;
+    public double attack_by_weapon_strength = 1.0;
+    public double attack_by_weapon_dexterity = 0.0;
+    public double attack_by_weapon_maximum = 2.5;
+    public double attack_by_weapon_minimum = 0.05;
+    public double attack_by_weapon_range = 2.0;
 
     //potion_attack_damage_=
-    public double potion_attack_damage_intelligence_effect_on_multiplier = 85;
-    public double potion_attack_damage_dexterity_effect_on_multiplier = 0.15;
-    public double potion_attack_damage_maximum_damage_multiplier = 2.5;
-    public double potion_attack_damage_minimum_damage_multiplier = 0.05;
-    public double potion_attack_damage_range = 2.0;
+    public double attack_by_potion_intelligence = 0.85;
+    public double attack_by_potion_dexterity = 0.15;
+    public double attack_by_potion_maximum = 2.5;
+    public double attack_by_potion_minimum = 0.05;
+    public double attack_by_potion_range = 2.0;
 
     //arrow_attack_damage_=
-    public double arrow_attack_damage_strength_effect_on_multiplier = 0.333;
-    public double arrow_attack_damage_dexterity_effect_on_multiplier = 0.666;
-    public double arrow_attack_damage_maximum_damage_multiplier = 2.5;
-    public double arrow_attack_damage_minimum_damage_multiplier = 0.05;
-    public double arrow_attack_damage_range = 2.0;
-
-    //normal_and_arrow_attack_defence_=
-    public double normal_and_arrow_attack_defence_defence_effect = 1.0;
-    public double normal_and_arrow_attack_defence_maximum_damage_multiplier = 0.3333;
-    public double normal_and_arrow_attack_defence_minimum_damage_multiplier = 1.0;
-
-    //potion_attack_defence_=
-    public double potion_attack_defence_intelligence_effect = 0.15;
-    public double potion_attack_defence_magic_resistance_effect = 0.85;
-    public double potion_attack_defence_maximum_damage_multiplier = 0.3333;
-    public double potion_attack_defence_minimum_damage_multiplier = 1.0;
+    public double attack_by_projectile_strength = 0.333;
+    public double attack_by_projectile_dexterity = 0.666;
+    public double attack_by_projectile_maximum = 2.5;
+    public double attack_by_projectile_minimum = 0.05;
+    public double attack_by_projectile_range = 2.0;
 
     //chance_of_removing_magic_effect_=
     public double chance_of_removing_magic_effect_maximum = 0.25;
     public double chance_of_removing_magic_effect_minimum = 0.0;
-    public double chance_of_removing_magic_effect_magic_resistance_effect_on_multiplier = 0.7;
-    public double chance_of_removing_magic_effect_intelligence_effect_on_multiplier = 0.2;
-    public double chance_of_removing_magic_effect_dexterity_effect_on_multiplier = 0.1;
+    public double chance_of_removing_magic_effect_magic_resistance = 0.7;
+    public double chance_of_removing_magic_effect_intelligence = 0.2;
+    public double chance_of_removing_magic_effect_dexterity = 0.1;
 
     //on_player_shoot_bow_=
     public double on_player_shoot_bow_min_dexterity_for_max_precision = 50;
     public double on_player_shoot_bow_range = 1.5;
 
     //on_player_consume_potion_=
-    public double on_player_consume_potion_multiplier_range = 0.1;
-    public double on_player_consume_potion_maximum_multiplier = 2;
-    public double on_player_consume_potion_minimum_multiplier = 1;
-    public double on_player_consume_potion_intelligence_effect = 1.0;
+    public double on_player_consume_potion_range = 0.1;
+    public double on_player_consume_potion_maximum = 2;
+    public double on_player_consume_potion_minimum = 1;
+    public double on_player_consume_potion_intelligence = 1.0;
+
+    //reducing_bad_potion_effect_=
+    public double reducing_bad_potion_effect_maximum = 0.01;
+    public double reducing_bad_potion_effect_minimum = 1.0;
+    public double reducing_bad_potion_effect_range = 0.15;
+    public double reducing_bad_potion_effect_magic_resistance = 0.75;
+    public double reducing_bad_potion_effect_intelligence = 0.25;
+
+    public double damaged_by_magic_maximum = 0.333;
+    public double damaged_by_magic_minimum = 1.0;
+    public double damaged_by_magic_intelligence = 0.15;
+    public double damaged_by_magic_magic_resistance = 0.85;
+
+    public double damaged_by_fire_maximum = 0.333;
+    public double damaged_by_fire_minimum = 1.0;
+    public double damaged_by_fire_defence = 0.25;
+    public double damaged_by_fire_magic_resistance = 0.6;
+    public double damaged_by_fire_intelligence = 0.15;
+
+    public double damaged_by_explosion_maximum = 0.3333;
+    public double damaged_by_explosion_minimum = 1.0;
+    public double damaged_by_explosion_defence = 0.85;
+    public double damaged_by_explosion_strength = 0.15;
+
+    public double damaged_by_fall_maximum = 0.5;
+    public double damaged_by_fall_minimum = 1.0;
+    public double damaged_by_fall_defence = 0.25;
+    public double damaged_by_fall_agility = 0.75;
+
+    public double damaged_by_contact_maximum = 0.3333;
+    public double damaged_by_contact_minimum = 1.0;
+    public double damaged_by_contact_defence = 1.0;
+
+    public double damaged_by_projectile_maximum = 0.3333;
+    public double damaged_by_projectile_minimum = 1.0;
+    public double damaged_by_projectile_defence = 1.0;
+
+    public double damaged_by_weapon_maximum = 0.3333;
+    public double damaged_by_weapon_minimum = 1.0;
+    public double damaged_by_weapon_defence = 1.0;
 
 
     public MathSettings(FileConfiguration config) {

@@ -808,29 +808,42 @@ public class RPGPlayer {
 		return s;
 	}
 
-	private void SetAttackSpeed(){
+	private void setAttackSpeed(){
 		double value = 0.131313 * (agility * 0.85 + dexterity * 0.15) + 2;
 		this.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(value);
 	}
 
-	private void SetKnockBackResistance(){
+	private void setKnockBackResistance(){
 		double value = 0.01 * (strength * 0.5 + defence * 0.5);
 		this.getPlayer().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(value);
 	}
 
-	private void SetFollowRange(){
+	private void setFollowRange(){
 		double value = -0.636364 * (agility * 0.5 + intelligence * 0.25 + dexterity * 0.25 ) + 64;
-		this.getPlayer().getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(32);
+		this.getPlayer().getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(value);
 	}
 
-	private void SetMovementSpeed(){
+	private void setMovementSpeed(){
 		float value = 0.002525F * agility + 0.15F;
 		this.getPlayer().setWalkSpeed(value);
 	}
 
-	private void SetLuck(){
+	private void setLuck(){
 		double value = 5.17172 * (agility * 0.15 + intelligence * 0.85);
 		this.getPlayer().getAttribute(Attribute.GENERIC_LUCK).setBaseValue(0);
+	}
+
+	/**
+	 * reset player generic attributes when changes are made
+     */
+	private void AttributeHasChanged(){
+		setPlayerMaxHealth();
+		setLuck();
+		setMana();
+		setKnockBackResistance();
+		setAttackSpeed();
+		setMovementSpeed();
+		setFollowRange();
 	}
 
 	/**

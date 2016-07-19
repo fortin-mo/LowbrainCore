@@ -239,61 +239,121 @@ Settings:
         intelligence_on_slow_amplifier: 1.0
         intelligence_on_weakness_amplifier: 1.0
         intelligence_on_wither_amplifier: 1.0
+      by_weapon:
+        strength: 1.0
+        dexterity: 0.0
+        maximum: 2.5
+        minimum: 0.05
+        range: 2.0
+      by_potion:
+        intelligence: 85
+        dexterity: 0.15
+        maximum: 2.5
+        minimum: 0.05
+        range: 2.0
+      by_projectile:
+        strength: 0.333
+        dexterity: 0.666
+        maximum: 2.5
+        minimum: 0.05
+        range: 2.0
+    on_player_get_damaged:
+      by_magic:
+        maximum: 0.333
+        minimum: 1.0
+        intelligence: 0.15
+        magic_resistance: 0.85
+      by_fire:
+        maximum: 0.333
+        minimum: 1.0
+        defence: 0.25
+        magic_resistance: 0.6
+        intelligence: 0.15
+      by_explosion:
+        maximum: 0.3333
+        minimum: 1.0
+        defence: 0.85
+        strength: 0.15
+      by_fall:
+        maximum: 0.5
+        minimum: 1.0
+        defence: 0.25
+        agility: 0.75
+      by_contact:
+        maximum: 0.3333
+        minimum: 1.0
+        defence: 1.0
+      by_projectile:
+        maximum: 0.3333
+        minimum: 1.0
+        defence: 1.0
+      by_weapon:
+        maximum: 0.3333
+        minimum: 1.0
+        defence: 1.0
       reducing_bad_potion_effect:
         maximum: 0.01
         minimum: 1.0
         range: 0.15
-        magic_resistance_effect: 0.75
-        intelligence_effect: 0.25
-      normal_attack_damage:
-        strength_effect_on_multiplier: 1.0
-        dexterity_effect_on_multiplier: 0.0
-        maximum_damage_multiplier: 2.5
-        minimum_damage_multiplier: 0.05
-        range: 2.0
-      potion_attack_damage:
-        intelligence_effect_on_multiplier: 85
-        dexterity_effect_on_multiplier: 0.15
-        maximum_damage_multiplier: 2.5
-        minimum_damage_multiplier: 0.05
-        range: 2.0
-      arrow_attack_damage:
-        strength_effect_on_multiplier: 0.333
-        dexterity_effect_on_multiplier: 0.666
-        maximum_damage_multiplier: 2.5
-        minimum_damage_multiplier: 0.05
-        range: 2.0
-      normal_and_arrow_attack_defence:
-        defence_effect: 1.0
-        maximum_damage_multiplier: 0.3333
-        minimum_damage_multiplier: 1.0
-      potion_attack_defence:
-        intelligence_effect: 0.15
-        magic_resistance_effect: 0.85
-        maximum_damage_multiplier: 0.3333
-        minimum_damage_multiplier: 1.0
+        magic_resistance: 0.75
+        intelligence: 0.25
       chance_of_removing_magic_effect:
-        maximum: 0.25
-        minimum: 0.0
-        magic_resistance_effect_on_multiplier: 0.70
-        intelligence_effect_on_multiplier: 0.2
-        dexterity_effect_on_multiplier: 0.1
+      	maximum: 0.25
+      	minimum: 0.0
+      	magic_resistance: 0.70
+      	intelligence: 0.2
+      	dexterity: 0.1
     on_player_shoot_bow:
-      min_dexterity_for_max_precision: 50
+      min_dexterity_for_max_precision: 50.0
       range: 1.5
     on_player_consume_potion:
-      multiplier_range: 0.1
-      maximum_multiplier: 2
-      minimum_multiplier: 1
-      intelligence_effect: 1.0
-
+      range: 0.1
+      maximum: 2.0
+      minimum: 1.0
+      intelligence: 1.0
     player_attributes:
       movement_speed:
-        max_value: 0.4
-        min_value: 0.15
-        agility_effect: 1.0
+        maximum: 0.4
+        minimum: 0.15
+        agility: 1.0
+        dexterity: 0.0
       attack_speed:
+        maximum: 15.0
+        minimum: 2.0
+        agility: 0.85
+        dexterity: 0.15
+        strength: 0.0
+      total_mana:
+        maximum: 45.0
+        minimum: 5.0
+        intelligence: 1.0
+      total_health:
+        maximum: 50.0
+        minimum: 10.0
+        health: 1.0
+      mana_regen:
+        maximum: 5.0
+        minimum: 0.0
+        intelligence: 1.0
       luck:
+        maximum: 512
+        minimum: 0
+        intelligence: 0.85
+        dexterity: 0.0
+        agility: 0.15
+      knockback_resistance:
+        maximum: 0.99
+        minimum: 0.0
+        strength: 0.5
+        dexterity: 0.0
+        agility: 0.0
+        defence: 0.5
+      mob_follow_range:
+        maximum: 1
+        minimum: 64
+        agility: 0.5
+        intelligence: 0.25
+        dexterity: 0.25
 
 
 
