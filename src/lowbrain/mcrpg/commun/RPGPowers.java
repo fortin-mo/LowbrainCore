@@ -49,6 +49,8 @@ public class RPGPowers {
         int duration = 0;
         int amplifier = 0;
 
+        if(to == null) to = from; //if null cast to self
+
         switch (this.name){
             case"healing":
                 break;
@@ -80,6 +82,10 @@ public class RPGPowers {
                 break;
 
         }
+        return true;
+    }
+
+    private boolean Healing(RPGPlayer from, RPGPlayer to){
         return true;
     }
 

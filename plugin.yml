@@ -1,6 +1,6 @@
 main: lowbrain.mcrpg.main.Main
 name: LowbrainMCRPG
-version: 1.0.0
+version: 1.0.7
 author: Lowbrain
 description:
 commands:
@@ -11,23 +11,23 @@ commands:
                   /mcrpg stats <player> - show stats of player
                   /mcrpg classes - show all class basic attributes
                   /mcrpg setclass <number> - set your class [1,2,3,4]
-                  /mcrpg add defence <number > 0> - add <number> defence
-                  /mcrpg add strength <number > 0> - add <number> strength
-                  /mcrpg add health <number > 0> - add <number> health
-                  /mcrpg add dexterity <number > 0> - add <number> dexterity
-                  /mcrpg add magicResistance <number > 0> - add <number> magicResistance
-                  /mcrpg add intelligence <number > 0> - add <number> intelligence
-                  /mcrpg +defence - add 1 defence
-                  /mcrpg +strength - add 1 strength
-                  /mcrpg +health - add 1 health
-                  /mcrpg +dexterity - add 1 dexterity
-                  /mcrpg +magicResistance - add 1 magic resistance
+                  /mcrpg add defence <number > 0> - add <number> defence or def
+                  /mcrpg add strength <number > 0> - add <number> strength o str
+                  /mcrpg add health <number > 0> - add <number> health or hp
+                  /mcrpg add dexterity <number > 0> - add <number> dexterity or dext
+                  /mcrpg add magicResistance <number > 0> - add <number> magicResistance or mr
+                  /mcrpg add intelligence <number > 0> - add <number> intelligence or int
+                  /mcrpg +defence or +def - add 1 defence
+                  /mcrpg +strength or +str - add 1 strength
+                  /mcrpg +health or +hp - add 1 health
+                  /mcrpg +dexterity or +dext - add 1 dexterity
+                  /mcrpg +magicResistance or +mr - add 1 magic resistance
                   /mcrpg reset - reset your attributes to your default class
                   /mcrpg reset <new class number> - reset your attributes to your new class
                   /mcrpg nextlvl - show how much xp is need for next lvl
                   /mcrpg save-all - save all player stats
                   /mcrpg save - save your stats
-                  /mcrpg xpneeded - amount of xp needed left to achieve next level
+                  /mcrpg xp - amount of xp needed left to achieve next level
 
 
 

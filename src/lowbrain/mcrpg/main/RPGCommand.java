@@ -28,7 +28,7 @@ public class RPGCommand implements CommandExecutor{
 			if(args.length > 0){
 
 				switch (args[0].toLowerCase()){
-                    case "xpneeded":
+                    case "xp":
                         double xp = rp.getNextLvl() - rp.getExperience();
                         sender.sendMessage(ChatColor.GREEN +"You will reach lvl " + (rp.getLvl()+1) + " in " + xp + " xp");
                         break;
@@ -52,24 +52,31 @@ public class RPGCommand implements CommandExecutor{
                         }
                         switch (args[1].toLowerCase()){
                             case "defence":
+							case "def":
                                 rp.addDefence(amount,true);
                                 break;
                             case "health":
+							case "hp":
                                 rp.addHealth(amount,true);
                                 break;
                             case "dexterity":
+							case "dext":
                                 rp.addDexterity(amount,true);
                                 break;
                             case "strength":
+							case "str":
                                 rp.addStrength(amount,true);
                                 break;
                             case "intelligence":
+							case "int":
                                 rp.addIntelligence(amount,true);
                                 break;
                             case "magicresistance":
+							case "mr":
                                 rp.addMagicResistance(amount,true);
                                 break;
 							case "agility":
+							case "agi":
 								rp.addAgility(amount,true);
 								break;
                             default:
@@ -78,24 +85,31 @@ public class RPGCommand implements CommandExecutor{
                         }
                         return true;
 					case "+defence":
+					case "+def":
 						rp.addDefence(1,true);
 						break;
 					case "+strength":
+					case "+str":
 						rp.addStrength(1,true);
 						break;
 					case "+intelligence":
+					case "+int":
 						rp.addIntelligence(1,true);
 						break;
 					case "+health":
+					case "+hp":
 						rp.addHealth(1,true);
 						break;
 					case "+magicresistance":
+					case "+mr":
 						rp.addMagicResistance(1,true);
 						break;
 					case "+dexterity":
+					case "+dext":
 						rp.addDexterity(1,true);
 						break;
 					case "+agility":
+					case "+agi":
 						rp.addAgility(1,true);
 						break;
 					case "stats":
