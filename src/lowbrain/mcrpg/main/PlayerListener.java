@@ -1,5 +1,6 @@
 package lowbrain.mcrpg.main;
 
+import lowbrain.mcrpg.commun.Helper;
 import org.bukkit.Difficulty;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -25,7 +26,7 @@ public class PlayerListener implements Listener {
 
     public PlayerListener(Main instance) {
         plugin = instance;
-        max_stats = plugin.settings.max_stats <= 0 ? 99 : plugin.settings.max_stats;
+        max_stats = plugin.config.max_stats <= 0 ? 100 : plugin.config.max_stats;
     }
 
     /**
@@ -38,95 +39,68 @@ public class PlayerListener implements Listener {
             RPGPlayer damagee = plugin.connectedPlayers.get(e.getEntity().getUniqueId());
 
             // multiplier = a * x + b : where a = max-min/max_stats, and b = min
-            double multiplier = 1;
-            double min = 1;
-            double max = 1;
-            double x = 0;
+            float multiplier = 1;
 
             plugin.debugMessage("Damage caused by : " + e.getCause().name());
             plugin.debugMessage("Initial damage : " +e.getDamage());
 
             //FALL DAMAGE
-            if(e.getCause() == EntityDamageEvent.DamageCause.FALL){
-                max = plugin.settings.math.damaged_by_fall_maximum;
-                min = plugin.settings.math.damaged_by_fall_minimum;
-                x = damagee.getAgility() * plugin.settings.math.damaged_by_fall_agility
-                        + damagee.getDefence() * plugin.settings.math.damaged_by_fall_defence;
+            if(e.getCause() == EntityDamageEvent.DamageCause.FALL && plugin.config.math.damaged_by_fall_enable){
+               multiplier = Helper.getDamagedByFall(damagee,plugin.config);
             }
 
             //FIRE DAMAGE
-            else if(e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK
+            else if((e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK
                     || e.getCause() == EntityDamageEvent.DamageCause.FIRE
                     || e.getCause() == EntityDamageEvent.DamageCause.DRAGON_BREATH
-                    || e.getCause() == EntityDamageEvent.DamageCause.LIGHTNING){
+                    || e.getCause() == EntityDamageEvent.DamageCause.LIGHTNING) && plugin.config.math.damaged_by_fire_enable){
 
-                max = plugin.settings.math.damaged_by_fire_maximum;
-                min = plugin.settings.math.damaged_by_fire_minimum;
-                x = damagee.getMagicResistance() * plugin.settings.math.damaged_by_fire_magic_resistance
-                        + damagee.getDefence() * plugin.settings.math.damaged_by_fire_defence
-                        + damagee.getIntelligence() * plugin.settings.math.damaged_by_fire_intelligence;
+                multiplier = Helper.getDamagedByFire(damagee,plugin.config);
             }
 
             //EXPLOSION
-            else if(e.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION
-                    || e.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION){
+            else if((e.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION
+                    || e.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION)&& plugin.config.math.damaged_by_explosion_enable){
 
-                max = plugin.settings.math.damaged_by_explosion_maximum;
-                min = plugin.settings.math.damaged_by_explosion_minimum;
-                x = damagee.getDefence() * plugin.settings.math.damaged_by_explosion_defence
-                        + damagee.getStrength() * plugin.settings.math.damaged_by_explosion_strength;
+                multiplier = Helper.getDamagedByExplosion(damagee,plugin.config);
             }
 
             //MAGIC POTION DAMAGE
-            else if(e.getCause() == EntityDamageEvent.DamageCause.MAGIC
+            else if((e.getCause() == EntityDamageEvent.DamageCause.MAGIC
                     || e.getCause() == EntityDamageEvent.DamageCause.WITHER
-                    || e.getCause() == EntityDamageEvent.DamageCause.POISON){
+                    || e.getCause() == EntityDamageEvent.DamageCause.POISON) && plugin.config.math.damaged_by_magic_enable){
 
-                max = plugin.settings.math.damaged_by_magic_maximum;
-                min = plugin.settings.math.damaged_by_magic_minimum;
-                x = (damagee.getMagicResistance() * plugin.settings.math.damaged_by_magic_magic_resistance
-                        + damagee.getIntelligence() * plugin.settings.math.damaged_by_magic_intelligence);
+                multiplier = Helper.getDamagedByMagic(damagee,plugin.config);
 
-                double minChance = plugin.settings.math.chance_of_removing_magic_effect_minimum;
-                double maxChance = plugin.settings.math.chance_of_removing_magic_effect_maximum;
+                float changeOfRemovingEffect = -1F;
 
-                double changeOfRemovingEffect = Gradient(maxChance,minChance)
-                        * (damagee.getMagicResistance()* plugin.settings.math.chance_of_removing_magic_effect_magic_resistance
-                        + damagee.getIntelligence() * plugin.settings.math.chance_of_removing_magic_effect_intelligence
-                        + damagee.getDexterity() * plugin.settings.math.chance_of_removing_magic_effect_dexterity)
-                        +minChance;
+                if(plugin.config.math.chance_of_removing_magic_effect_enable){
+                    changeOfRemovingEffect = Helper.getChangeOfRemovingPotionEffect(damagee,plugin.config);
+                }
 
                 double rdm = Math.random();
                 if(rdm < changeOfRemovingEffect){
                     RemoveBadPotionEffect(damagee.getPlayer());
                     plugin.debugMessage("all effect removed");
                 }
-                else{
+                else if(plugin.config.math.reducing_bad_potion_effect_enable){
                     ReducingBadPotionEffect(damagee);
                 }
             }
 
-            else if(e.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK){
-                max = plugin.settings.math.damaged_by_weapon_maximum;
-                min = plugin.settings.math.damaged_by_weapon_minimum;
-                x = damagee.getDefence() * plugin.settings.math.damaged_by_weapon_defence;
+            else if(e.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && plugin.config.math.damaged_by_weapon_enable){
+                multiplier = Helper.getDamagedByWeapon(damagee,plugin.config);
             }
 
             //ARROW
-            else if(e.getCause() == EntityDamageEvent.DamageCause.PROJECTILE){
-                max = plugin.settings.math.damaged_by_projectile_maximum;
-                min = plugin.settings.math.damaged_by_projectile_minimum;
-                x = damagee.getDefence() * plugin.settings.math.damaged_by_projectile_defence;
+            else if(e.getCause() == EntityDamageEvent.DamageCause.PROJECTILE && plugin.config.math.damaged_by_projectile_enable){
+                multiplier = Helper.getDamagedByProjectile(damagee,plugin.config);
             }
 
             //CONTACT
-            else if(e.getCause() == EntityDamageEvent.DamageCause.CONTACT){
-                max = plugin.settings.math.damaged_by_contact_maximum;
-                min = plugin.settings.math.damaged_by_contact_minimum;
-                x = damagee.getDefence() * plugin.settings.math.damaged_by_contact_defence;
+            else if(e.getCause() == EntityDamageEvent.DamageCause.CONTACT && plugin.config.math.damaged_by_contact_enable){
+                multiplier = Helper.getDamagedByContact(damagee,plugin.config);
             }
-
-            multiplier = Gradient(max,min) * x + min;
 
             plugin.debugMessage("Deffencive damage multiplier : " + multiplier);
             e.setDamage(e.getDamage() * multiplier);
@@ -142,8 +116,8 @@ public class PlayerListener implements Listener {
     public void onPlayerExpChange(PlayerExpChangeEvent e){
         Player p = e.getPlayer();
         RPGPlayer rp = plugin.connectedPlayers.get(p.getUniqueId());
-        plugin.debugMessage("Player gains " + e.getAmount() + " xp");
-        rp.addExp(e.getAmount());
+        plugin.debugMessage("Player gains " + e.getAmount() * plugin.config.math.natural_xp_gain_multiplier + " xp");
+        rp.addExp(e.getAmount() * plugin.config.math.natural_xp_gain_multiplier);
     }
 
     /**
@@ -195,17 +169,17 @@ public class PlayerListener implements Listener {
                 rpKiller.addKills(1);
                 double xpGained = 0.0;
                 if(diffLvl == 0){
-                    xpGained = plugin.settings.exp_on_player_kill * rpKiller.getLvl() * plugin.settings.math.killer_level_gain_multiplier;
+                    xpGained = plugin.config.exp_on_player_kill * rpKiller.getLvl() * plugin.config.math.killer_level_gain_multiplier;
                 }else if(rpKilled.getLvl() < rpKiller.getLvl()){
-                    xpGained = plugin.settings.exp_on_player_kill / (diffLvl * plugin.settings.math.level_difference_multiplier) * rpKiller.getLvl() * plugin.settings.math.killer_level_gain_multiplier;
+                    xpGained = plugin.config.exp_on_player_kill / (diffLvl * plugin.config.math.level_difference_multiplier) * rpKiller.getLvl() * plugin.config.math.killer_level_gain_multiplier;
                 }else{
-                    xpGained = plugin.settings.exp_on_player_kill * (diffLvl * plugin.settings.math.level_difference_multiplier) * rpKiller.getLvl() * plugin.settings.math.killer_level_gain_multiplier;
+                    xpGained = plugin.config.exp_on_player_kill * (diffLvl * plugin.config.math.level_difference_multiplier) * rpKiller.getLvl() * plugin.config.math.killer_level_gain_multiplier;
                 }
                 rpKiller.addExp(xpGained);
                 plugin.debugMessage("Killer gains "+ xpGained+" xp!");
             }
 
-            rpKilled.addExp(-(plugin.settings.exp_loss_on_death / 100 * rpKilled.getExperience()));
+            rpKilled.addExp(-(plugin.config.exp_loss_on_death / 100 * rpKilled.getExperience()));
             rpKilled.addDeaths(1);
         }
     }
@@ -267,10 +241,10 @@ public class PlayerListener implements Listener {
         //APLLYING MAGIC EFFECT BY ATTACKER
         if(damager != null && !magicAttack){
             plugin.debugMessage("From " + damager.getPlayer().getName());
-            double chanceOfMagicEffect = Gradient(plugin.settings.math.chance_of_creating_magic_attack_maximum,plugin.settings.math.chance_of_removing_magic_effect_minimum)
-                    * (damager.getIntelligence() * plugin.settings.math.chance_of_creating_magic_attack_intelligence_effect
-                    + damager.getDexterity() * plugin.settings.math.chance_of_creating_magic_attack_dexterity_effect)
-                    + plugin.settings.math.chance_of_creating_magic_attack_minimum;
+            double chanceOfMagicEffect = Gradient(plugin.config.math.chance_of_creating_magic_attack_maximum,plugin.config.math.chance_of_removing_magic_effect_minimum)
+                    * (damager.getIntelligence() * plugin.config.math.chance_of_creating_magic_attack_intelligence_effect
+                    + damager.getDexterity() * plugin.config.math.chance_of_creating_magic_attack_dexterity_effect)
+                    + plugin.config.math.chance_of_creating_magic_attack_minimum;
 
             double rdm = Math.random();
             if(rdm < chanceOfMagicEffect){
@@ -288,39 +262,39 @@ public class PlayerListener implements Listener {
 
         //APPLYING DAMAGE CHANGE DEPENDING ON OFFENCIVE ATTRIBUTES
         if(arrowAttact && damager != null){
-            max = plugin.settings.math.attack_by_projectile_maximum;
-            min = plugin.settings.math.attack_by_projectile_minimum;
-            multiplier_range = plugin.settings.math.attack_by_projectile_range;
+            max = plugin.config.math.attack_by_projectile_maximum;
+            min = plugin.config.math.attack_by_projectile_minimum;
+            multiplier_range = plugin.config.math.attack_by_projectile_range;
 
             double baseDamage = e.getDamage() * Gradient(max,min)
-                    * (damager.getDexterity() * plugin.settings.math.attack_by_projectile_dexterity
-                    + damager.getStrength() * plugin.settings.math.attack_by_projectile_strength) + min;
+                    * (damager.getDexterity() * plugin.config.math.attack_by_projectile_dexterity
+                    + damager.getStrength() * plugin.config.math.attack_by_projectile_strength) + min;
 
             double rdm = (baseDamage - multiplier_range) + (Math.random() * (baseDamage + multiplier_range));
 
             e.setDamage(rdm);
         }
         else if(normalAttack && damager != null){
-            max = plugin.settings.math.attack_by_weapon_maximum;
-            min = plugin.settings.math.attack_by_weapon_minimum;
-            multiplier_range = plugin.settings.math.attack_by_weapon_range;
+            max = plugin.config.math.attack_by_weapon_maximum;
+            min = plugin.config.math.attack_by_weapon_minimum;
+            multiplier_range = plugin.config.math.attack_by_weapon_range;
 
             double baseDamage = e.getDamage() * Gradient(max,min) *
-                    (damager.getDexterity() * plugin.settings.math.attack_by_weapon_dexterity
-                            +  damager.getStrength() * plugin.settings.math.attack_by_weapon_strength)
+                    (damager.getDexterity() * plugin.config.math.attack_by_weapon_dexterity
+                            +  damager.getStrength() * plugin.config.math.attack_by_weapon_strength)
                     + min;
 
             double rdm = (baseDamage - multiplier_range) + (Math.random() * (baseDamage + multiplier_range));
             e.setDamage(rdm);
         }
         else if(magicAttack && damager != null){
-            max = plugin.settings.math.attack_by_potion_maximum;
-            min = plugin.settings.math.attack_by_potion_minimum;
-            multiplier_range = plugin.settings.math.attack_by_potion_range;
+            max = plugin.config.math.attack_by_potion_maximum;
+            min = plugin.config.math.attack_by_potion_minimum;
+            multiplier_range = plugin.config.math.attack_by_potion_range;
 
             double baseDamage = e.getDamage() * Gradient(max,min)
-                    * (damager.getDexterity() * plugin.settings.math.attack_by_potion_dexterity
-                    + damager.getIntelligence() * plugin.settings.math.attack_by_potion_intelligence) + min;
+                    * (damager.getDexterity() * plugin.config.math.attack_by_potion_dexterity
+                    + damager.getIntelligence() * plugin.config.math.attack_by_potion_intelligence) + min;
 
             double rdm = (baseDamage - multiplier_range) + (Math.random() * (baseDamage + multiplier_range));
             e.setDamage(rdm);
@@ -335,28 +309,28 @@ public class PlayerListener implements Listener {
         if(e.getEntity() instanceof Player){
             damagee = plugin.connectedPlayers.get(e.getEntity().getUniqueId());
             if(arrowAttact || normalAttack){
-                max = plugin.settings.math.normal_and_arrow_attack_defence_maximum_damage_multiplier;
-                min = plugin.settings.math.normal_and_arrow_attack_defence_minimum_damage_multiplier;
+                max = plugin.config.math.normal_and_arrow_attack_defence_maximum_damage_multiplier;
+                min = plugin.config.math.normal_and_arrow_attack_defence_minimum_damage_multiplier;
 
-                e.setDamage(e.getDamage() * Gradient(max,min) * damagee.getDefence() * plugin.settings.math.normal_and_arrow_attack_defence_defence_effect + min);
+                e.setDamage(e.getDamage() * Gradient(max,min) * damagee.getDefence() * plugin.config.math.normal_and_arrow_attack_defence_defence_effect + min);
             }
             else if(magicAttack){
-                max = plugin.settings.math.potion_attack_defence_maximum_damage_multiplier;
-                min = plugin.settings.math.potion_attack_defence_minimum_damage_multiplier;
+                max = plugin.config.math.potion_attack_defence_maximum_damage_multiplier;
+                min = plugin.config.math.potion_attack_defence_minimum_damage_multiplier;
 
                 e.setDamage(e.getDamage() * Gradient(max,min)
-                        * (damagee.getMagicResistance() * plugin.settings.math.potion_attack_defence_magic_resistance_effect
-                        + damagee.getIntelligence() * plugin.settings.math.potion_attack_defence_intelligence_effect)
+                        * (damagee.getMagicResistance() * plugin.config.math.potion_attack_defence_magic_resistance_effect
+                        + damagee.getIntelligence() * plugin.config.math.potion_attack_defence_intelligence_effect)
                         + min);
             }
 
-            max = plugin.settings.math.chance_of_removing_magic_effect_maximum;
-            min = plugin.settings.math.chance_of_removing_magic_effect_minimum;
+            max = plugin.config.math.chance_of_removing_magic_effect_maximum;
+            min = plugin.config.math.chance_of_removing_magic_effect_minimum;
 
             double changeOfRemovingEffect = Gradient(max,min)
-                    * (damagee.getMagicResistance()* plugin.settings.math.chance_of_removing_magic_effect_magic_resistance_effect_on_multiplier
-                    + damagee.getIntelligence() * plugin.settings.math.chance_of_removing_magic_effect_intelligence_effect_on_multiplier
-                    + damagee.getDexterity() * plugin.settings.math.chance_of_removing_magic_effect_dexterity_effect_on_multiplier)
+                    * (damagee.getMagicResistance()* plugin.config.math.chance_of_removing_magic_effect_magic_resistance_effect_on_multiplier
+                    + damagee.getIntelligence() * plugin.config.math.chance_of_removing_magic_effect_intelligence_effect_on_multiplier
+                    + damagee.getDexterity() * plugin.config.math.chance_of_removing_magic_effect_dexterity_effect_on_multiplier)
                     +min;
 
             double rdm = Math.random();
@@ -382,12 +356,12 @@ public class PlayerListener implements Listener {
             RPGPlayer rp = plugin.connectedPlayers.get(e.getPlayer().getUniqueId());
             if(rp != null) {
 
-                double max = plugin.settings.math.on_player_consume_potion_maximum;
-                double min = plugin.settings.math.on_player_consume_potion_minimum;
-                double range = plugin.settings.math.on_player_consume_potion_range;
+                double max = plugin.config.math.on_player_consume_potion_maximum;
+                double min = plugin.config.math.on_player_consume_potion_minimum;
+                double range = plugin.config.math.on_player_consume_potion_range;
 
                 double multiplier = Gradient(max,min)
-                        * (rp.getIntelligence() * plugin.settings.math.on_player_consume_potion_intelligence)
+                        * (rp.getIntelligence() * plugin.config.math.on_player_consume_potion_intelligence)
                         + min;
                 double maxMultiplier = multiplier < (max-range) ? multiplier + range : max;
                 double minMultiplier = multiplier >= (min+range) ? multiplier - range : min;
@@ -427,11 +401,11 @@ public class PlayerListener implements Listener {
             //ar.setFallDistance( (float)(ar.getFallDistance() * rpPlayer.getStrength() / 100));
             //plugin.debugMessage("inital fall distance : " + ar.getFallDistance());
 
-            if(rpPlayer.getDexterity() < plugin.settings.math.on_player_shoot_bow_min_dexterity_for_max_precision) {
-                double precision = rpPlayer.getDexterity() / plugin.settings.math.on_player_shoot_bow_min_dexterity_for_max_precision;
+            if(rpPlayer.getDexterity() < plugin.config.math.on_player_shoot_bow_min_dexterity_for_max_precision) {
+                double precision = rpPlayer.getDexterity() / plugin.config.math.on_player_shoot_bow_min_dexterity_for_max_precision;
                 //ex: with 10dext : rdm between 0.2 and 1.8
                 //ex: with 50dext : rdm between 1 and 1 = 100%
-                double rdm = precision + (Math.random() * (plugin.settings.math.on_player_shoot_bow_range - precision));
+                double rdm = precision + (Math.random() * (plugin.config.math.on_player_shoot_bow_range - precision));
                 ar.setVelocity(new Vector(ar.getVelocity().getX() * rdm, ar.getVelocity().getY() * rdm, ar.getVelocity().getZ() * rdm));
             }
         }
@@ -469,12 +443,12 @@ public class PlayerListener implements Listener {
         int duration = 0;
         int amplifier = 0;
 
-        double max = plugin.settings.math.creating_magic_attack_maximum_duration;
-        double min = plugin.settings.math.creating_magic_attack_minimum_duration;
+        double max = plugin.config.math.creating_magic_attack_maximum_duration;
+        double min = plugin.config.math.creating_magic_attack_minimum_duration;
 
         duration = (int)(Gradient(max,min)
-                * (p.getIntelligence() * plugin.settings.math.creating_magic_attack_intelligence_on_duration
-                + p.getDexterity() * plugin.settings.math.creating_magic_attack_dexterity_on_duration)
+                * (p.getIntelligence() * plugin.config.math.creating_magic_attack_intelligence_on_duration
+                + p.getDexterity() * plugin.config.math.creating_magic_attack_dexterity_on_duration)
                 + min);
 
         PotionEffect effect;
@@ -491,28 +465,28 @@ public class PlayerListener implements Listener {
             case 3:
                 type = PotionEffectType.HARM;
                 duration = 1;
-                amplifier = (int)(Gradient(plugin.settings.math.creating_magic_attack_maximum_harm_amplifier,plugin.settings.math.creating_magic_attack_minimum_harm_amplifier)
-                        * p.getIntelligence() * plugin.settings.math.creating_magic_attack_intelligence_on_harm_amplifier);
+                amplifier = (int)(Gradient(plugin.config.math.creating_magic_attack_maximum_harm_amplifier,plugin.config.math.creating_magic_attack_minimum_harm_amplifier)
+                        * p.getIntelligence() * plugin.config.math.creating_magic_attack_intelligence_on_harm_amplifier);
                 break;
             case 4:
                 type = PotionEffectType.POISON;
-                amplifier = (int)(Gradient(plugin.settings.math.creating_magic_attack_maximum_poison_amplifier,plugin.settings.math.creating_magic_attack_minimum_poison_amplifier)
-                        * p.getIntelligence() * plugin.settings.math.creating_magic_attack_intelligence_on_poison_amplifier);
+                amplifier = (int)(Gradient(plugin.config.math.creating_magic_attack_maximum_poison_amplifier,plugin.config.math.creating_magic_attack_minimum_poison_amplifier)
+                        * p.getIntelligence() * plugin.config.math.creating_magic_attack_intelligence_on_poison_amplifier);
                 break;
             case 5:
                 type = PotionEffectType.SLOW;
-                amplifier = (int)(Gradient(plugin.settings.math.creating_magic_attack_maximum_slow_amplifier,plugin.settings.math.creating_magic_attack_minimum_slow_amplifier)
-                        * p.getIntelligence() * plugin.settings.math.creating_magic_attack_intelligence_on_slow_amplifier);
+                amplifier = (int)(Gradient(plugin.config.math.creating_magic_attack_maximum_slow_amplifier,plugin.config.math.creating_magic_attack_minimum_slow_amplifier)
+                        * p.getIntelligence() * plugin.config.math.creating_magic_attack_intelligence_on_slow_amplifier);
                 break;
             case 6:
                 type = PotionEffectType.WEAKNESS;
-                amplifier = (int)(Gradient(plugin.settings.math.creating_magic_attack_maximum_weakness_amplifier,plugin.settings.math.creating_magic_attack_minimum_weakness_amplifier)
-                        * p.getIntelligence() * plugin.settings.math.creating_magic_attack_intelligence_on_weakness_amplifier);
+                amplifier = (int)(Gradient(plugin.config.math.creating_magic_attack_maximum_weakness_amplifier,plugin.config.math.creating_magic_attack_minimum_weakness_amplifier)
+                        * p.getIntelligence() * plugin.config.math.creating_magic_attack_intelligence_on_weakness_amplifier);
                 break;
             case 7:
                 type = PotionEffectType.WITHER;
-                amplifier = (int)(Gradient(plugin.settings.math.creating_magic_attack_maximum_wither_amplifier,plugin.settings.math.creating_magic_attack_minimum_wither_amplifier)
-                        * p.getIntelligence() * plugin.settings.math.creating_magic_attack_intelligence_on_wither_amplifier);
+                amplifier = (int)(Gradient(plugin.config.math.creating_magic_attack_maximum_wither_amplifier,plugin.config.math.creating_magic_attack_minimum_wither_amplifier)
+                        * p.getIntelligence() * plugin.config.math.creating_magic_attack_intelligence_on_wither_amplifier);
                 break;
         }
 
@@ -557,17 +531,8 @@ public class PlayerListener implements Listener {
      * @param rp
      */
     private void ReducingBadPotionEffect(RPGPlayer rp){
-        double min = plugin.settings.math.reducing_bad_potion_effect_minimum;
-        double max = plugin.settings.math.reducing_bad_potion_effect_maximum;
-        double range = plugin.settings.math.reducing_bad_potion_effect_range;
 
-        double reduction = Gradient(max,min)
-                * (rp.getMagicResistance()*plugin.settings.math.reducing_bad_potion_effect_magic_resistance
-                + rp.getIntelligence()) * plugin.settings.math.reducing_bad_potion_effect_intelligence
-                + min;
-
-        double minReduction = reduction < (min - range) ? reduction + range : min;
-        double rdm = reduction + (Math.random() * minReduction);//top lvl will have reduction of 99%
+        float rdm = Helper.getReducingPotionEffect(rp,plugin.config);
 
         for (PotionEffect pe : rp.getPlayer().getActivePotionEffects()) {
             int newDuration = (int)(pe.getDuration() * rdm);
@@ -576,7 +541,7 @@ public class PlayerListener implements Listener {
             rp.getPlayer().removePotionEffect(pe.getType());
             rp.getPlayer().addPotionEffect(tmp);
         }
-        plugin.debugMessage("all effect reduced by " + reduction);
+        plugin.debugMessage("all effect reduced by " + rdm);
     }
 
     /**

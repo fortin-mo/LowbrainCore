@@ -1,0 +1,91 @@
+# Each class has 88 points at start
+# You can edit to your preference
+# You can add new classes but follow the structure
+# Classes.id must be sorted from 1 to infinite
+# You can't add or remove attributes
+#
+# healt with increase player maximum life
+# strength will increase player damage with hand weapon or bow(but less). Will increase bow distance
+# intelligence will increase player resistance to magic(less), increase damage with potion and increase chance of random effects with weapons
+#   it will also increase potion duration when consumed and increase player mana and mana regeneration
+# dexterity will increase bow shooting precision and bow damage
+# defence will reduce damage(except for potion)
+# magic resistance will reduce damage taken from potion and reduce chance of weapon random effects
+# bonus Attributes will add a point to the attributes on level up. Can also be a list : dexterity,strength or all
+
+knight:
+  tag: kg
+  health: 18
+  strength: 15
+  intelligence: 5
+  dexterity: 5
+  defence: 11
+  magic_resistance: 5
+  agility: 0
+  bonus_attributes:
+   -health
+  powers:
+
+paladin:
+  tag: pa
+  health: 15
+  strength: 19
+  intelligence: 1
+  dexterity: 3
+  defence: 17
+  magic_resistance: 5
+  agility: 0
+  bonus_attributes:
+   - strength
+  powers:
+
+mage:
+  tag: ma
+  health: 11
+  strength: 1
+  intelligence: 18
+  dexterity: 9
+  defence: 3
+  magic_resistance: 17
+  agility: 0
+  bonus_attributes:
+   - magic_resistance
+  powers:
+  - healing
+  - absorption
+  - health_boost
+  - regeneration
+  - speed
+
+hunter:
+  tag: hun
+  health: 12
+  strength: 6
+  intelligence: 5
+  dexterity: 22
+  defence: 5
+  magic_resistance: 9
+  agility: 0
+  bonus_attributes:
+   - dexterity
+  powers:
+   - healing
+   - invisibility
+   - jump_boost
+
+shaman:
+  tag: sha
+  health: 13
+  strength: 15
+  intelligence: 15
+  dexterity: 1
+  defence: 5
+  magic_resistance: 10
+  agility: 0
+  bonus_attributes:
+   - intelligence
+  powers:
+   - healing
+   - health_boost
+   - absorption
+   - regeneration

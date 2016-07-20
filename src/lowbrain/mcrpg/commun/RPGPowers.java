@@ -12,15 +12,15 @@ public class RPGPowers {
     private int minLevel;
     private int minIntelligence;
     private String name;
-    private double range;
+    private float range;
 
     public RPGPowers(String name){
         this.name = name;
-        FileConfiguration config = PlayerListener.plugin.getConfig();
-        this.mana = config.getDouble("Powers." + this.name + ".mana");
-        this.minLevel = config.getInt("Powers." + this.name + ".min_level");
-        this.minIntelligence = config.getInt("Powers." + this.name + ".min_intelligence");
-        this.range = config.getDouble("Powers." + this.name + ".range");
+        FileConfiguration config = PlayerListener.plugin.powersConfig;
+        this.mana = config.getDouble(this.name + ".mana");
+        this.minLevel = config.getInt(this.name + ".min_level");
+        this.minIntelligence = config.getInt(this.name + ".min_intelligence");
+        this.range = (float)config.getDouble(this.name + ".range");
     }
 
     public double getMana() {
@@ -39,7 +39,7 @@ public class RPGPowers {
         return name;
     }
 
-    public double getRange() {
+    public float getRange() {
         return range;
     }
 

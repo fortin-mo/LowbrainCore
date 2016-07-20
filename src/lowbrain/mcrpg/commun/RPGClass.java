@@ -3,12 +3,14 @@ package lowbrain.mcrpg.commun;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import lowbrain.mcrpg.main.PlayerListener;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 
 public class RPGClass {
 
 	private int strength = 0;
+	private String tag = "";
 	private int intelligence = 0;
 	private int dexterity = 0;
 	private int health = 0;
@@ -16,31 +18,31 @@ public class RPGClass {
 	private String name = "";
 	private int magicResistance = 0;
 	private int agility = 0;
-	private int id = -1;
 	private List<String> bonusAttributes = new ArrayList<String>();
 	private Map<String, RPGPowers> powers = new HashMap<String, RPGPowers>();
 	
-	public RPGClass(int id){
-		this.id = id;
+	public RPGClass(String name){
+		this.name = name;
 		Initialize();
 	}
 	
 	public void Initialize(){
-		FileConfiguration config = PlayerListener.plugin.getConfig();
-		name = config.getString("Classes."+ id +".name");
-		health = config.getInt("Classes."+id+".health");
-		strength = config.getInt("Classes."+id+".strength");
-		defence = config.getInt("Classes."+id+".defence");
-		dexterity = config.getInt("Classes."+id+".dexterity");
-		intelligence = config.getInt("Classes."+id+".intelligence");
-		magicResistance = config.getInt("Classes."+id+".magicResistance");
-		agility = config.getInt("Classes."+id+".agility");
-		bonusAttributes = config.getStringList("Classes."+id+".bonusAttributes");
-		SetPowers(config);
+		FileConfiguration config = PlayerListener.plugin.classesConfig;
+		tag = config.getString(name+".tag");
+		health = config.getInt(name+".health");
+		strength = config.getInt(name+".strength");
+		defence = config.getInt(name+".defence");
+		dexterity = config.getInt(name+".dexterity");
+		intelligence = config.getInt(name+".intelligence");
+		magicResistance = config.getInt(name+".magic_resistance");
+		agility = config.getInt(name+".agility");
+		bonusAttributes = config.getStringList(name+".bonus_attributes");
+		SetPowers();
 	}
 
 	public String toString() {
 		String s = "Name: " + name + "\n";
+		s += "Tag: " + tag + "\n";
 		s += "Defence: " + defence + "\n";
 		s += "Strength: " + strength + "\n";
 		s += "Health: " + health + "\n";
@@ -53,7 +55,13 @@ public class RPGClass {
 			s += bonusAttributes + ", ";
 		}
 		s += "\n";
-		s += "Id: " + id + "\n";
+
+		s += "Powers: ";
+		for (RPGPowers powa :
+				powers.values()) {
+			s += powa.getName() + ", ";
+		}
+		s += "\n";
 
 		return s;
 	}
@@ -82,10 +90,6 @@ public class RPGClass {
 		return name;
 	}
 
-	public int getId() {
-		return id;
-	}
-
 	public int getMagicResistance() {
 		return magicResistance;
 	}
@@ -104,15 +108,17 @@ public class RPGClass {
 
 	/**
 	 * set the list of powers available for a particular class
-	 * @param config
      */
-	private void SetPowers(FileConfiguration config){
-		List<String> tmp = config.getStringList("Classes."+id+".powers");
-		for (String name :
+	private void SetPowers(){
+		List<String> tmp = PlayerListener.plugin.classesConfig.getStringList(name+".powers");
+		for (String n :
 				tmp) {
-			powers.put(name,new RPGPowers(name));
+			powers.put(name,new RPGPowers(n));
 		}
 	}
 
 
+	public String getTag() {
+		return tag;
+	}
 }

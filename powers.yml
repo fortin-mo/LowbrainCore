@@ -1,0 +1,86 @@
+healing:
+  mana: 7
+  min_level: 0
+  min_intelligence: 10
+  range: 25
+fire_resistance:
+  mana: 10
+  min_level: 30
+  min_intelligence: 50
+  range: 25
+resistance:
+  mana: 10
+  min_level: 30
+  min_intelligence: 10
+  range: 25
+water_breathing:
+  mana: 7
+  min_level: 10
+  min_intelligence: 20
+  range: 25
+invisibility:
+  mana: 20
+  min_level: 30
+  min_intelligence: 60
+  range: 25
+regeneration:
+  mana: 5
+  min_level: 5
+  min_intelligence: 10
+  range: 25
+jump_boost:
+  mana: 5
+  min_level: 0
+  min_intelligence: 10
+  range: 25
+strength:
+  mana: 20
+  min_level: 30
+  min_intelligence: 50
+  range: 25
+haste:
+  mana: 7
+  min_level: 10
+  min_intelligence: 20
+  range: 25
+speed:
+  mana: 15
+  min_level: 25
+  min_intelligence: 35
+  range: 25
+night_vision:
+  mana: 10
+  min_level: 10
+  min_intelligence: 15
+  range: 25
+health_boost:
+  mana: 10
+  min_level: 0
+  min_intelligence: 10
+  range: 25
+absorption:
+  mana: 10
+  min_level: 15
+  min_intelligence: 20
+  range: 25
+saturation:
+  mana: 7
+  min_level: 10
+  min_intelligence: 15
+  range: 25
+
+cast:
+  healing:
+  fire_resistance:
+  resistance:
+  water_breathing:
+  invisibility:
+  regeneration:
+  jump_boost:
+  strength:
+  haste:
+  speed:
+  night_vision:
+  health_boost:
+  absorption:
+  saturation:

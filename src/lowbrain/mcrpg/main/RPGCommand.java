@@ -2,8 +2,8 @@ package lowbrain.mcrpg.main;
 
 import lowbrain.mcrpg.commun.RPGClass;
 import lowbrain.mcrpg.commun.RPGPlayer;
+import lowbrain.mcrpg.commun.RPGRace;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,13 +24,14 @@ public class RPGCommand implements CommandExecutor{
 		if (cmd.getName().equalsIgnoreCase("mcrpg")&& sender instanceof Player) {
 
 			RPGPlayer rp = plugin.connectedPlayers.get(((Player) sender).getUniqueId());
+			if(rp == null)return false;
 
 			if(args.length > 0){
 
 				switch (args[0].toLowerCase()){
                     case "xp":
                         double xp = rp.getNextLvl() - rp.getExperience();
-                        sender.sendMessage(ChatColor.GREEN +"You will reach lvl " + (rp.getLvl()+1) + " in " + xp + " xp");
+						rp.SendMessage("You will reach lvl " + (rp.getLvl()+1) + " in " + xp + " xp");
                         break;
 					case "add":
 					    int amount = 0;
@@ -42,75 +43,72 @@ public class RPGCommand implements CommandExecutor{
                                 amount = Integer.parseInt(args[2]);
                             }
                             catch (Exception e){
-                                sender.sendMessage(ChatColor.GREEN +"Invalid arguments !. Please use help command");
-                                return false;
+								rp.SendMessage("Invalid arguments !. Please use help command");
                             }
                         }
                         if(amount <= 0){
-                            sender.sendMessage(ChatColor.GREEN +"Please use a number higher then 0!");
-                            return false;
+							rp.SendMessage("Please use a number higher then 0!");
                         }
                         switch (args[1].toLowerCase()){
                             case "defence":
 							case "def":
-                                rp.addDefence(amount,true);
+                                rp.addDefence(amount,true,true);
                                 break;
                             case "health":
 							case "hp":
-                                rp.addHealth(amount,true);
+                                rp.addHealth(amount,true,true);
                                 break;
                             case "dexterity":
 							case "dext":
-                                rp.addDexterity(amount,true);
+                                rp.addDexterity(amount,true,true);
                                 break;
                             case "strength":
 							case "str":
-                                rp.addStrength(amount,true);
+                                rp.addStrength(amount,true,true);
                                 break;
                             case "intelligence":
 							case "int":
-                                rp.addIntelligence(amount,true);
+                                rp.addIntelligence(amount,true,true);
                                 break;
                             case "magicresistance":
 							case "mr":
-                                rp.addMagicResistance(amount,true);
+                                rp.addMagicResistance(amount,true,true);
                                 break;
 							case "agility":
 							case "agi":
-								rp.addAgility(amount,true);
+								rp.addAgility(amount,true,true);
 								break;
                             default:
-                                sender.sendMessage(ChatColor.GREEN +"There is no such attributes !");
-                                return false;
+								rp.SendMessage("There is no such attributes !");
                         }
                         return true;
 					case "+defence":
 					case "+def":
-						rp.addDefence(1,true);
+						rp.addDefence(1,true,true);
 						break;
 					case "+strength":
 					case "+str":
-						rp.addStrength(1,true);
+						rp.addStrength(1,true,true);
 						break;
 					case "+intelligence":
 					case "+int":
-						rp.addIntelligence(1,true);
+						rp.addIntelligence(1,true,true);
 						break;
 					case "+health":
 					case "+hp":
-						rp.addHealth(1,true);
+						rp.addHealth(1,true,true);
 						break;
 					case "+magicresistance":
 					case "+mr":
-						rp.addMagicResistance(1,true);
+						rp.addMagicResistance(1,true,true);
 						break;
 					case "+dexterity":
 					case "+dext":
-						rp.addDexterity(1,true);
+						rp.addDexterity(1,true,true);
 						break;
 					case "+agility":
 					case "+agi":
-						rp.addAgility(1,true);
+						rp.addAgility(1,true,true);
 						break;
 					case "stats":
 						if(args.length == 2){
@@ -118,72 +116,102 @@ public class RPGCommand implements CommandExecutor{
 							if(p != null){
 								RPGPlayer rp2 = plugin.connectedPlayers.get(p.getUniqueId());
 								if(rp2 != null){
-                                    sender.sendMessage(ChatColor.GREEN +rp2.toString());
+									rp.SendMessage(rp2.toString());
 								}else{
-									sender.sendMessage(ChatColor.GREEN +"This player is not connected !");
+									rp.SendMessage("This player is not connected !");
 								}
 							}
 							else{
-								sender.sendMessage(ChatColor.GREEN +"This player is not connected !");
+								rp.SendMessage("This player is not connected !");
 							}
 						}
 						else{
-						    sender.sendMessage(ChatColor.GREEN +rp.toString());
+							rp.SendMessage(rp.toString());
                         }
 						break;
 					case "classes":
-						String msg = "";
-
-                        for (int id :
-                                plugin.settings.lstClassId) {
-                            RPGClass rc = new RPGClass(id);
-                            msg += "-----------------------------" + "\n";
-                            msg += rc.toString() + "\n";
-                        }
-						sender.sendMessage(ChatColor.GREEN +msg);
+						String cls = "";
+						for (String s :
+								plugin.classesConfig.getKeys(false)) {
+							RPGClass rc = new RPGClass(s);
+							cls += "-----------------------------" + "\n";
+							cls += rc.toString() + "\n";
+						}
+						sender.sendMessage(ChatColor.GREEN +cls);
+						break;
+					case "races":
+						String rcs = "";
+						for (String s :
+								plugin.racesConfig.getKeys(false)) {
+							RPGRace rr = new RPGRace(s);
+							rcs += "-----------------------------" + "\n";
+							rcs += rr.toString() + "\n";
+						}
+						sender.sendMessage(ChatColor.GREEN +rcs);
 						break;
 					case "setclass":
 						if(args.length == 2){
-							try {
-								int idClass = Integer.parseInt(args[1]);
-								if(plugin.settings.lstClassId.contains(idClass)){
-									rp.SetClass(idClass, false);
-								}
-								else{
-									sender.sendMessage(ChatColor.GREEN + "Wrong class id !: Use \"/mcrpg class\" to show all classes");
-								}
-							}catch (Exception e){
-								sender.sendMessage(ChatColor.GREEN +"Invalid arguments !");
-                                return false;
+							if(plugin.classesConfig.getKeys(false).contains(args[1])){
+								rp.setClass(args[1], false);
+							}
+							else{
+								rp.SendMessage("Wrong class !: Use \"/mcrpg class\" to show all classes");
+							}
+						}
+						break;
+					case "setrace":
+						if(args.length == 2){
+							if(plugin.racesConfig.getKeys(false).contains(args[1])){
+								rp.setRace(args[1], false);
+							}
+							else{
+								rp.SendMessage("Wrong race !: Use \"/mcrpg races\" to show all races");
 							}
 						}
 						break;
 					case "reset":
-						if(args.length >= 2){
-							try {
-								int idClass = Integer.parseInt(args[1]);
-								rp.reset(idClass);
-							}catch (Exception e){
-								sender.sendMessage(ChatColor.GREEN +"Wrong arguments type ! Must be a number between 1 and 4 include");
-                                return false;
+						if(args.length == 2){
+								if(plugin.classesConfig.getKeys(false).contains(args[1])){
+									rp.reset(args[1],null);
+								}
+								else{
+									rp.SendMessage("There is no such class !");
+								}
+						}
+						else if(args.length == 3){
+							if(plugin.classesConfig.getKeys(false).contains(args[1]) && plugin.racesConfig.getKeys(false).contains(args[2])){
+								rp.reset(args[1],args[2]);
+							}
+							else{
+								sender.sendMessage(ChatColor.GREEN + "There is no such class or race !");
 							}
 						}
 						else{
-							rp.reset(rp.getIdClass());
+							rp.reset(rp.getClassName(),rp.getRaceName());
 						}
 						break;
+					case "completereset":
+							if(args.length == 2 && args[1].toLowerCase().equals("yes")){
+								rp.resetAll();
+							}
+							else{
+								rp.SendMessage("You must validate your choice with yes! : /mcrpg completereset yes");
+							}
+						break;
 					case "nextlvl":
-						sender.sendMessage(ChatColor.GREEN +"Next level achieved at " + rp.getNextLvl() + " xp");
+						rp.SendMessage("Next level achieved at " + rp.getNextLvl() + " xp");
 						break;
 					case "save":
 						rp.SaveData();
-						sender.sendMessage(ChatColor.GREEN +"Stats saved !");
+						rp.SendMessage("Stats saved !");
 						break;
 					case "save-all":
 					    if(sender.isOp()) {
                             plugin.SaveData();
-                            sender.sendMessage(ChatColor.GREEN +"All stats saved !");
+							rp.SendMessage("All stats saved !");
                         }
+						break;
+					case "cast":
 						break;
 				}
 				return true;

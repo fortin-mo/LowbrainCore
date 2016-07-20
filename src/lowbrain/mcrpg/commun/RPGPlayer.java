@@ -11,8 +11,6 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class RPGPlayer {
 	private Player player;
@@ -21,19 +19,22 @@ public class RPGPlayer {
 	private int dexterity = 0;
 	private int health = 0;
 	private int defence = 0;
-	private double nextLvl = 0;
-	private int idClass = 0;
+	private float nextLvl = 0;
+	private String className = "";
 	private int magicResistance = 0;
 	private boolean classIsSet = false;
 	private int points = 0;
-	private double experience = 0;
+	private float experience = 0;
 	private int lvl = 0;
 	private int kills = 0;
 	private int deaths = 0;
-	private double mana = 0;
-	private double currentMana = 0;
+	private float mana = 0;
+	private float currentMana = 0;
 	private BukkitTask manaRegenTask = null;
 	private RPGClass rpgClass = null;
+	private RPGRace rpgRace = null;
+	private String raceName = "";
+	private boolean raceIsSet = false;
 	private int agility = 0;
 
 	//========================================================= CONSTRUCTOR====================================
@@ -61,25 +62,29 @@ public class RPGPlayer {
 
 		//When the player file is created for the first time...
 		if (!f.exists()) {
-			playerData.createSection("Class");
-			playerData.set("Class.isSet", false);
-			playerData.set("Class.id", "");
+			playerData.createSection("class");
+			playerData.set("class.is_set", false);
+			playerData.set("class.name", "");
 
-			playerData.createSection("Stats");
-			playerData.set("Stats.health", 0);
-			playerData.set("Stats.lvl", 1);
-			playerData.set("Stats.strength", 0);
-			playerData.set("Stats.intelligence", 0);
-			playerData.set("Stats.dexterity", 0);
-			playerData.set("Stats.defence", 0);
-			playerData.set("Stats.magicResistance", 0);
-			playerData.set("Stats.points", getSettings().starting_points);
-			playerData.set("Stats.experience", 0);
-			playerData.set("Stats.nextLvl",getSettings().first_lvl_exp);
-			playerData.set("Stats.kills",0);
-			playerData.set("Stats.deaths",0);
-			playerData.set("Stats.currentMana",0);
-			playerData.set("Stats.agility",0);
+			playerData.createSection("race");
+			playerData.set("race.is_set", false);
+			playerData.set("race.name", "");
+
+			playerData.createSection("stats");
+			playerData.set("stats.health", 0);
+			playerData.set("stats.lvl", 1);
+			playerData.set("stats.strength", 0);
+			playerData.set("stats.intelligence", 0);
+			playerData.set("stats.dexterity", 0);
+			playerData.set("stats.defence", 0);
+			playerData.set("stats.magic_resistance", 0);
+			playerData.set("stats.points", getSettings().starting_points);
+			playerData.set("stats.experience", 0);
+			playerData.set("stats.next_Lvl",getSettings().first_lvl_exp);
+			playerData.set("stats.kills",0);
+			playerData.set("stats.deaths",0);
+			playerData.set("stats.current_mana",0);
+			playerData.set("stats.agility",0);
 			try {
 				playerData.save(f);
 			} catch (IOException e) {
@@ -87,24 +92,28 @@ public class RPGPlayer {
 			}
 		}
 
-        strength = playerData.getInt("Stats.strength");
-        intelligence = playerData.getInt("Stats.intelligence");
-        health = playerData.getInt("Stats.health");
-        defence = playerData.getInt("Stats.defence");
-        dexterity = playerData.getInt("Stats.dexterity");
-		magicResistance = playerData.getInt("Stats.magicResistance");
-        classIsSet = playerData.getBoolean("Class.isSet");
-        idClass = playerData.getInt("Class.id");
-        experience = playerData.getDouble("Stats.experience");
-        points = playerData.getInt("Stats.points");
-        lvl = playerData.getInt("Stats.lvl");
-        nextLvl = playerData.getDouble("Stats.nextLvl");
-		kills = playerData.getInt("Stas.kills");
-		deaths = playerData.getInt("Stats.deaths");
-		currentMana = playerData.getDouble("Stats.currentMana");
-		agility = playerData.getInt("Stats.agility");
+        strength = playerData.getInt("stats.strength");
+        intelligence = playerData.getInt("stats.intelligence");
+        health = playerData.getInt("stats.health");
+        defence = playerData.getInt("stats.defence");
+        dexterity = playerData.getInt("stats.dexterity");
+		magicResistance = playerData.getInt("stats.magic_resistance");
+        classIsSet = playerData.getBoolean("class.is_set");
+        className = playerData.getString("class.name");
+		raceIsSet = playerData.getBoolean("race.is_set");
+		raceName = playerData.getString("race.name");
+        experience = (float)playerData.getDouble("stats.experience");
+        points = playerData.getInt("stats.points");
+        lvl = playerData.getInt("stats.lvl");
+        nextLvl = (float)playerData.getDouble("stats.next_Lvl");
+		kills = playerData.getInt("stats.kills");
+		deaths = playerData.getInt("stats.deaths");
+		currentMana = (float)playerData.getDouble("stats.current_mana");
+		agility = playerData.getInt("stats.agility");
 
-		this.rpgClass = new RPGClass(idClass);
+		this.rpgClass = new RPGClass(className);
+		this.rpgRace = new RPGRace(raceName);
+
 		AttributeHasChanged();
 		setDisplayName();
 		StartManaRegenTask();
@@ -121,7 +130,13 @@ public class RPGPlayer {
      * @return
      */
 	public boolean castSpell(String name, RPGPlayer to){
-		RPGPowers powa = this.rpgClass.getPowers().get(name);
+
+		RPGPowers powa = this.rpgClass.getPowers().containsKey(name)
+				? this.rpgClass.getPowers().get(name)
+				: this.rpgRace.getPowers().containsKey(name)
+				? this.rpgRace.getPowers().get(name)
+				: null;
+
 		if(powa == null){
 			SendMessage("You can't cast this spell !");
 			return false;
@@ -170,23 +185,26 @@ public class RPGPlayer {
 	        File f = new File(userdata, File.separator + this.player.getUniqueId() + ".yml");
 	        FileConfiguration playerData = YamlConfiguration.loadConfiguration(f);
 
-            playerData.set("Class.isSet", this.classIsSet);
-            playerData.set("Class.id", this.idClass);
+            playerData.set("class.is_set", this.classIsSet);
+            playerData.set("class.name", this.className);
+
+			playerData.set("race.is_set", this.raceIsSet);
+			playerData.set("race.name", this.raceName);
             
-            playerData.set("Stats.health",this.health);
-            playerData.set("Stats.lvl", this.lvl);
-            playerData.set("Stats.strength", this.strength);
-            playerData.set("Stats.intelligence", this.intelligence);
-            playerData.set("Stats.dexterity", this.dexterity);
-			playerData.set("Stats.magicResistance",this.magicResistance);
-            playerData.set("Stats.defence", this.defence);
-            playerData.set("Stats.points", this.points);
-            playerData.set("Stats.experience", this.experience);
-			playerData.set("Stats.nextLvl", this.nextLvl);
-			playerData.set("Stats.kills",kills);
-			playerData.set("Stats.deaths",deaths);
-			playerData.set("Stat.currentMana", currentMana);
-			playerData.set("Stats.agility",agility);
+            playerData.set("stats.health",this.health);
+            playerData.set("stats.lvl", this.lvl);
+            playerData.set("stats.strength", this.strength);
+            playerData.set("stats.intelligence", this.intelligence);
+            playerData.set("stats.dexterity", this.dexterity);
+			playerData.set("stats.magic_resistance",this.magicResistance);
+            playerData.set("stats.defence", this.defence);
+            playerData.set("stats.points", this.points);
+            playerData.set("stats.experience", this.experience);
+			playerData.set("stats.next_lvl", this.nextLvl);
+			playerData.set("stats.kills",kills);
+			playerData.set("stats.deaths",deaths);
+			playerData.set("stats.current_mana", currentMana);
+			playerData.set("stats.agility",agility);
             
             playerData.save(f);
 		} catch (Exception e) {
@@ -210,43 +228,7 @@ public class RPGPlayer {
 		if((maxLevel < 0 || this.lvl < maxLevel)){
 			this.lvl += 1;
 
-			for (String attribute :
-					this.rpgClass.getBonusAttributes()) {
-				switch (attribute){
-					case "health":
-						addHealth(1,false);
-						break;
-					case "strength":
-						addStrength(1,false);
-						break;
-					case "intelligence":
-						addIntelligence(1,false);
-						break;
-					case "dexterity":
-						addDexterity(1,false);
-						break;
-					case "magicResistance":
-						addMagicResistance(1,false);
-						break;
-					case "defence":
-						addDefence(1,false);
-						break;
-					case "agility":
-						addAgility(1,false);
-						break;
-					case "all":
-						addHealth(1,false);
-						addDefence(1,false);
-						addMagicResistance(1,false);
-						addDexterity(1,false);
-						addIntelligence(1,false);
-						addHealth(1,false);
-						addStrength(1,false);
-						addAgility(1, false);
-						break;
-				}
-			}
-
+			AddBonusAttributes(1);
 
 			points += getSettings().points_per_lvl;
 			double lvlExponential = getSettings().math.next_lvl_multiplier;
@@ -258,9 +240,42 @@ public class RPGPlayer {
 		SendMessage("LEVEL UP !!!! You are now lvl " + this.lvl);
 	}
 
-	public void reset(int idClass){
+	public void reset(String c, String r){
 		if(getSettings().allow_stats_reset){
-			SetClass(idClass,true);
+			setClass(c,true);
+			setRace(r, true);
+		}
+	}
+
+	public void resetAll(){
+		if(getSettings().allow_complete_reset){
+			strength = 0;
+			intelligence = 0;
+			health = 0;
+			defence = 0;
+			dexterity = 0;
+			magicResistance = 0;
+			classIsSet = false;
+			className = "";
+			raceIsSet = false;
+			rpgClass = null;
+			rpgRace = null;
+			raceName = "";
+			experience = 0;
+			points = getSettings().starting_points;
+			lvl = 1;
+			nextLvl = getSettings().first_lvl_exp;
+			kills = 0;
+			deaths = 0;
+			currentMana = 0;
+			agility = 0;
+
+			AttributeHasChanged();
+			setDisplayName();
+			SendMessage("Your stats have been reset to zero !");
+		}
+		else{
+			SendMessage("You are not allowed to completely reset your stats !");
 		}
 	}
 
@@ -280,63 +295,10 @@ public class RPGPlayer {
 	}
 
 	/**
-	 * Set class of the current player (add default class attributes)
-	 * @param id
-	 */
-	public void SetClass(int id, boolean override){
-		if(!classIsSet || override){
-			this.rpgClass = new RPGClass(id);
-			this.defence = rpgClass.getDefence();
-			this.dexterity = rpgClass.getDexterity();
-			this.intelligence = rpgClass.getIntelligence();
-			this.strength = rpgClass.getStrength();
-			this.health = rpgClass.getHealth();
-			this.magicResistance = rpgClass.getMagicResistance();
-			this.agility = rpgClass.getAgility();
-			this.idClass = id;
-			this.experience = 0;
-			this.nextLvl = getSettings().first_lvl_exp;
-			this.lvl = 1;
-			SendMessage("You are now a " + rpgClass.getName());
-			AttributeHasChanged();
-		}
-		else if(getSettings().can_switch_class){
-			if(this.idClass == id){
-				SendMessage("You are already a " + rpgClass.getName());
-				return;
-			}
-
-			RPGClass newClass = new RPGClass(id);
-
-			this.defence -= rpgClass.getDefence();
-			this.dexterity -= rpgClass.getDexterity();
-			this.intelligence -= rpgClass.getIntelligence();
-			this.strength -= rpgClass.getStrength();
-			this.health -= rpgClass.getHealth();
-			this.agility -= rpgClass.getAgility();
-
-			this.defence += newClass.getDefence();
-			this.dexterity += newClass.getDexterity();
-			this.intelligence += newClass.getIntelligence();
-			this.strength += newClass.getStrength();
-			this.health += newClass.getHealth();
-			this.agility += newClass.getAgility();
-			this.idClass = id;
-			this.rpgClass = newClass;
-			AttributeHasChanged();
-			SendMessage("You are now a " + newClass.getName());
-		}
-		else{
-			SendMessage("You cannot switch class !");
-		}
-		this.classIsSet = true;
-	}
-
-	/**
 	 * set current player experience
 	 * @param experience
 	 */
-	public void setExperience(double experience) {
+	public void setExperience(float experience) {
 		this.experience = experience;
 	}
 	
@@ -356,7 +318,7 @@ public class RPGPlayer {
 	 * @param nb
 	 * @param usePoints
 	 */
-	public void addStrength(int nb, boolean usePoints){
+	public void addStrength(int nb, boolean usePoints,boolean callChange){
 		int maxStats = getSettings().max_stats;
 		int oldStrength = this.strength;
 		if(usePoints && this.points >= nb){
@@ -368,7 +330,7 @@ public class RPGPlayer {
 			double dif = Math.abs(oldStrength - this.strength);
 			
 			this.points -= dif;
-			AttributeHasChanged();
+			if(callChange)AttributeHasChanged();
 			SendMessage("Strength incremented by " + dif);
 		}
 		else if(!usePoints){
@@ -379,7 +341,7 @@ public class RPGPlayer {
 			}else {
 				SendMessage("Strength incremented by " + nb);
 			}
-			AttributeHasChanged();
+			if(callChange)AttributeHasChanged();
 		}
 		else{
 			this.ErrorMessageNotEnoughPoints();
@@ -403,7 +365,7 @@ public class RPGPlayer {
 	 * @param nb
 	 * @param usePoints
 	 */
-	public void addIntelligence(int nb, boolean usePoints){
+	public void addIntelligence(int nb, boolean usePoints,boolean callChange){
 		int maxStats = getSettings().max_stats;
 		int oldIntelligence = this.intelligence;
 		if(usePoints && this.points >= nb){
@@ -415,7 +377,7 @@ public class RPGPlayer {
 			double dif = Math.abs(oldIntelligence - this.intelligence);
 			
 			this.points -= dif;
-			AttributeHasChanged();
+			if(callChange)AttributeHasChanged();
 			SendMessage("Intelligence incremented by " + dif);
 
 		}
@@ -428,7 +390,7 @@ public class RPGPlayer {
 			else{
 				SendMessage("Intelligence incremented by " + nb);
 			}
-			AttributeHasChanged();
+			if(callChange)AttributeHasChanged();
 		}
 		else{
 			this.ErrorMessageNotEnoughPoints();
@@ -452,7 +414,7 @@ public class RPGPlayer {
 	 * @param nb
 	 * @param usePoints
 	 */
-	public void addDexterity(int nb, boolean usePoints){
+	public void addDexterity(int nb, boolean usePoints,boolean callChange){
 		int maxStats = getSettings().max_stats;
 		int oldDexterity = this.dexterity;
 		if(usePoints && this.points >= nb){
@@ -464,7 +426,7 @@ public class RPGPlayer {
 			double dif = Math.abs(oldDexterity - this.dexterity);
 			
 			this.points -= dif;
-			AttributeHasChanged();
+			if(callChange)AttributeHasChanged();
 			SendMessage("Dexterity incremented by " + dif);
 		}
 		else if(!usePoints){
@@ -475,7 +437,7 @@ public class RPGPlayer {
 			}else {
 				SendMessage("Dexterity incremented by " + nb);
 			}
-			AttributeHasChanged();
+			if(callChange)AttributeHasChanged();
 		}
 		else{
 			this.ErrorMessageNotEnoughPoints();
@@ -493,12 +455,13 @@ public class RPGPlayer {
 		else if(this.health < 0) this.health = 0;
 		setPlayerMaxHealth();
 	}
+
 	/**
 	 * add health to current player
 	 * @param nb
 	 * @param usePoints
 	 */
-	public void addHealth(int nb, boolean usePoints){
+	public void addHealth(int nb, boolean usePoints,boolean callChange){
 		int maxStats = getSettings().max_stats;
 		int oldHealth = this.health;
 		if(usePoints && this.points >= nb){
@@ -510,7 +473,7 @@ public class RPGPlayer {
 			double dif = Math.abs(oldHealth - this.health);
 			
 			this.points -= dif;
-			AttributeHasChanged();
+			if(callChange)AttributeHasChanged();
 			SendMessage("Health incremented by " + dif);
 		}
 		else if(!usePoints){
@@ -521,7 +484,7 @@ public class RPGPlayer {
 			}else{
 				SendMessage("Health incremented by " + nb);
 			}
-			AttributeHasChanged();
+			if(callChange)AttributeHasChanged();
 		}
 		else{
 			this.ErrorMessageNotEnoughPoints();
@@ -545,7 +508,7 @@ public class RPGPlayer {
 	 * @param nb
 	 * @param usePoints
 	 */
-	public void addDefence(int nb, boolean usePoints){
+	public void addDefence(int nb, boolean usePoints,boolean callChange){
 		int maxStats = getSettings().max_stats;
 		int oldDefence = this.defence;
 		if(usePoints && this.points >= nb){
@@ -557,7 +520,7 @@ public class RPGPlayer {
 			double dif = Math.abs(oldDefence - this.defence);
 			
 			this.points -= dif;
-			AttributeHasChanged();
+			if(callChange)AttributeHasChanged();
 			SendMessage("Defence incremented by " + dif);
 		}
 		else if(!usePoints){
@@ -568,7 +531,7 @@ public class RPGPlayer {
 			}else{
 				SendMessage("Defence incremented by " + nb);
 			}
-			AttributeHasChanged();
+			if(callChange)AttributeHasChanged();
 		}
 		else{
 			this.ErrorMessageNotEnoughPoints();
@@ -592,7 +555,7 @@ public class RPGPlayer {
 	 * @param nb
 	 * @param usePoints
      */
-	public void addMagicResistance(int nb, boolean usePoints){
+	public void addMagicResistance(int nb, boolean usePoints,boolean callChange){
 		int maxStats = getSettings().max_stats;
 		int oldMagicResistance = this.defence;
 		if(usePoints && this.points >= nb){
@@ -602,7 +565,7 @@ public class RPGPlayer {
 			}
 
 			double dif = Math.abs(oldMagicResistance - this.defence);
-			AttributeHasChanged();
+			if(callChange)AttributeHasChanged();
 			this.points -= dif;
 
 			SendMessage("Magic Resistance incremented by " + dif);
@@ -615,7 +578,7 @@ public class RPGPlayer {
 			} else{
 				SendMessage("Magic Resistance incremented by " + nb);
 			}
-			AttributeHasChanged();
+			if(callChange)AttributeHasChanged();
 		}
 		else{
 			this.ErrorMessageNotEnoughPoints();
@@ -639,7 +602,7 @@ public class RPGPlayer {
 	 * @param nb
 	 * @param usePoints
 	 */
-	public void addAgility(int nb, boolean usePoints){
+	public void addAgility(int nb, boolean usePoints,boolean callChange){
 		int maxStats = getSettings().max_stats;
 		int oldAgility = this.agility;
 		if(usePoints && this.points >= nb){
@@ -650,7 +613,7 @@ public class RPGPlayer {
 
 			double dif = Math.abs(oldAgility - this.agility);
 			this.points -= dif;
-			AttributeHasChanged();
+			if(callChange)AttributeHasChanged();
 			SendMessage("Agility incremented by " + dif);
 		}
 		else if(!usePoints){
@@ -661,7 +624,7 @@ public class RPGPlayer {
 			}else{
 				SendMessage("Agility incremented by " + nb);
 			}
-			AttributeHasChanged();
+			if(callChange)AttributeHasChanged();
 		}
 		else{
 			this.ErrorMessageNotEnoughPoints();
@@ -714,43 +677,7 @@ public class RPGPlayer {
 			this.points += dif * nbPointsPerLevel;
 			if(this.points < 0) this.points = 0;
 
-			for (String attribute :
-					this.rpgClass.getBonusAttributes()) {
-				switch (attribute){
-					case "health":
-						addHealth(dif,false);
-						break;
-					case "strength":
-						addStrength(dif,false);
-						break;
-					case "intelligence":
-						addIntelligence(dif,false);
-						break;
-					case "dexterity":
-						addDexterity(dif,false);
-						break;
-					case "magicResistance":
-						addMagicResistance(dif,false);
-						break;
-					case "defence":
-						addDefence(dif,false);
-						break;
-					case "agility":
-						addAgility(dif,false);
-						break;
-					case "all":
-						addHealth(dif,false);
-						addDefence(dif,false);
-						addMagicResistance(dif,false);
-						addDexterity(dif,false);
-						addIntelligence(dif,false);
-						addHealth(dif,false);
-						addStrength(dif,false);
-						addAgility(dif, false);
-						break;
-				}
-			}
-			
+			AddBonusAttributes(dif);
 		}
 	}
 
@@ -766,8 +693,125 @@ public class RPGPlayer {
 		return magicResistance;
 	}
 
-	public void setCurrentMana(double currentMana) {
+	public void setCurrentMana(float currentMana) {
 		this.currentMana = currentMana;
+	}
+
+	public void setRaceName(String raceName) {
+		this.raceName = raceName;
+	}
+
+	public void setRace(String n, boolean override){
+		if(!raceIsSet || override){
+			this.rpgClass = new RPGClass(n);
+			this.defence = rpgClass.getDefence();
+			this.dexterity = rpgClass.getDexterity();
+			this.intelligence = rpgClass.getIntelligence();
+			this.strength = rpgClass.getStrength();
+			this.health = rpgClass.getHealth();
+			this.magicResistance = rpgClass.getMagicResistance();
+			this.agility = rpgClass.getAgility();
+			this.className = n;
+			this.experience = 0;
+			this.nextLvl = getSettings().first_lvl_exp;
+			this.lvl = 1;
+			SendMessage("You are now a " + rpgClass.getName());
+			AttributeHasChanged();
+		}
+		else if(getSettings().can_switch_race){
+			if(this.raceName == n){
+				SendMessage("You are already a " + rpgRace.getName());
+				return;
+			}
+
+			RPGRace newRace = new RPGRace(n);
+
+			this.defence -= rpgRace.getDefence();
+			this.dexterity -= rpgRace.getDexterity();
+			this.intelligence -= rpgRace.getIntelligence();
+			this.strength -= rpgRace.getStrength();
+			this.health -= rpgRace.getHealth();
+			this.agility -= rpgRace.getAgility();
+
+			AddBonusAttributes(this.lvl * -1 - 1);
+
+			this.defence += newRace.getDefence();
+			this.dexterity += newRace.getDexterity();
+			this.intelligence += newRace.getIntelligence();
+			this.strength += newRace.getStrength();
+			this.health += newRace.getHealth();
+			this.agility += newRace.getAgility();
+			this.raceName = n;
+			this.rpgRace = newRace;
+
+			AddBonusAttributes(this.lvl -1);
+
+			SendMessage("You are now a " + newRace.getName());
+		}
+		else{
+			SendMessage("You cannot switch race !");
+		}
+		this.raceIsSet = true;
+	}
+
+	/**
+	 * Set class of the current player (add default class attributes)
+	 */
+	public void setClass(String n, boolean override){
+		if(!classIsSet || override){
+			this.rpgClass = new RPGClass(n);
+			this.defence = rpgClass.getDefence();
+			this.dexterity = rpgClass.getDexterity();
+			this.intelligence = rpgClass.getIntelligence();
+			this.strength = rpgClass.getStrength();
+			this.health = rpgClass.getHealth();
+			this.magicResistance = rpgClass.getMagicResistance();
+			this.agility = rpgClass.getAgility();
+			this.className = n;
+			this.experience = 0;
+			this.nextLvl = getSettings().first_lvl_exp;
+			this.lvl = 1;
+			SendMessage("You are now a " + rpgClass.getName());
+			AttributeHasChanged();
+		}
+		else if(getSettings().can_switch_class){
+			if(this.className == n){
+				SendMessage("You are already a " + rpgClass.getName());
+				return;
+			}
+
+			RPGClass newClass = new RPGClass(n);
+
+			this.defence -= rpgClass.getDefence();
+			this.dexterity -= rpgClass.getDexterity();
+			this.intelligence -= rpgClass.getIntelligence();
+			this.strength -= rpgClass.getStrength();
+			this.health -= rpgClass.getHealth();
+			this.agility -= rpgClass.getAgility();
+
+			AddBonusAttributes(this.lvl * -1 - 1);
+
+			this.defence += newClass.getDefence();
+			this.dexterity += newClass.getDexterity();
+			this.intelligence += newClass.getIntelligence();
+			this.strength += newClass.getStrength();
+			this.health += newClass.getHealth();
+			this.agility += newClass.getAgility();
+			this.className = n;
+			this.rpgClass = newClass;
+
+			AddBonusAttributes(this.lvl -1);
+
+			SendMessage("You are now a " + newClass.getName());
+		}
+		else{
+			SendMessage("You cannot switch class !");
+		}
+		this.classIsSet = true;
+	}
+
+	public void setRaceIsSet(boolean raceIsSet) {
+		this.raceIsSet = raceIsSet;
 	}
 
 	//=============================================== END OF ADD AND SETTER ===============================
@@ -775,21 +819,50 @@ public class RPGPlayer {
 	//================================================ GETTER ==============================================
 
 	public String toString(){
-		String s = "Level: " + lvl + "\n";
-		s += "Class: " + getClassName() + "\n";
-		s += "Defence: " + defence + "\n";
-		s += "Strength: " + strength + "\n";
-		s += "Health: " + health + "\n";
-		s += "Dexterity: " + dexterity + "\n";
-		s += "Intelligence: " + intelligence + "\n";
-		s += "Magic Resistance: " + magicResistance + "\n";
-		s += "Kills: " + kills + "\n";
-		s += "Deaths: " + deaths + "\n";
-		s += "Points left: " + points + "\n";
-		s += "Experience: " + experience + "\n";
-		s += "Next lvl in: " + (nextLvl - experience) + " xp" + "\n";
+		if(classIsSet && raceIsSet) {
+			String s = "Level: " + lvl + "\n";
+			s += "Class: " + getClassName() + "\n";
+			s += "Race: " + getRaceName() + "\n";
+			s += "Defence: " + defence + "\n";
+			s += "Strength: " + strength + "\n";
+			s += "Health: " + health + "\n";
+			s += "Dexterity: " + dexterity + "\n";
+			s += "Intelligence: " + intelligence + "\n";
+			s += "Magic Resistance: " + magicResistance + "\n";
+			s += "Kills: " + kills + "\n";
+			s += "Deaths: " + deaths + "\n";
+			s += "Points left: " + points + "\n";
+			s += "Experience: " + experience + "\n";
+			s += "Next lvl in: " + (nextLvl - experience) + " xp" + "\n";
 
-		return s;
+			s += "Powers: ";
+			for (RPGPowers powa :
+					rpgClass.getPowers().values()) {
+				s += powa.getName() + ", ";
+			}
+			for (RPGPowers powa :
+					rpgRace.getPowers().values()) {
+				s += powa.getName() + ", ";
+			}
+			s += "\n";
+
+			return s;
+		}
+		return "You must set your class and your race first !";
+	}
+
+	public RPGRace getRpgRace() {
+		return rpgRace;
+	}
+
+	public RPGClass getRpgClass(){ return rpgClass; }
+
+	public String getRaceName() {
+		return raceName;
+	}
+
+	public boolean isRaceIsSet() {
+		return raceIsSet;
 	}
 
 	/**
@@ -804,32 +877,32 @@ public class RPGPlayer {
 	 * return experience needed for next level
 	 * @return
 	 */
-	public double getNextLvl(){
+	public float getNextLvl(){
 		return this.nextLvl;
 	}
 
-	public double getStrength() {
+	public int getStrength() {
 		return strength;
 	}
 
-	public double getIntelligence() {
+	public int getIntelligence() {
 		return intelligence;
 	}
 
-	public double getDexterity() {
+	public int getDexterity() {
 		return dexterity;
 	}
 
-	public double getHealth() {
+	public int getHealth() {
 		return health;
 	}
 
-	public double getDefence() {
+	public int getDefence() {
 		return defence;
 	}
 
-	public int getIdClass() {
-		return idClass;
+	public String getClassName() {
+		return className;
 	}
 
 	public boolean isClassIsSet() {
@@ -840,7 +913,7 @@ public class RPGPlayer {
 		return points;
 	}
 
-	public double getExperience() {
+	public float getExperience() {
 		return experience;
 	}
 
@@ -848,16 +921,11 @@ public class RPGPlayer {
 		return lvl;
 	}
 
-	public String getClassName(){
-		RPGClass rc = new RPGClass(this.idClass);
-		return rc.getName();
-	}
-
-	public double getMana() {
+	public float getMana() {
 		return mana;
 	}
 
-	public double getCurrentMana() {
+	public float getCurrentMana() {
 		return currentMana;
 	}
 
@@ -878,72 +946,66 @@ public class RPGPlayer {
 	//============================================PRIVATE MEHODES FOR PLAYER ATTRIBUTES======================
 
 	private void setAttackSpeed(){
-		double value = Gradient(getSettings().math.attribute_attack_speed_maximum, getSettings().math.attribute_attack_speed_minimum)
-				* (agility * getSettings().math.attribute_attack_speed_agility
-				+ dexterity * getSettings().math.attribute_attack_speed_dexterity
-				+ strength * getSettings().math.attribute_attack_speed_strength)
-				+ getSettings().math.attribute_attack_speed_minimum;
-		this.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(value);
+		if(getSettings().math.attribute_attack_speed_enable) {
+			this.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(Helper.getPlayerAttackSpeed(this,getSettings()));
+		}
 	}
 
 	private void setKnockBackResistance(){
-		double value = Gradient(getSettings().math.attribute_knockback_resistance_maximum,getSettings().math.attribute_knockback_resistance_minimum)
-				* (strength * getSettings().math.attribute_knockback_resistance_strength
-				+ defence * getSettings().math.attribute_knockback_resistance_defence
-				+ dexterity * getSettings().math.attribute_knockback_resistance_dexterity
-				+ agility * getSettings().math.attribute_knockback_resistance_agility);
-		this.getPlayer().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(value);
+		if(getSettings().math.attribute_knockback_resistance_enable) {
+			this.getPlayer().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(Helper.getPlayerKnockbackResistance(this,getSettings()));
+		}
 	}
 
 	private void setFollowRange(){
-		double value = Gradient(getSettings().math.attribute_mob_follow_range_maximum,getSettings().math.attribute_mob_follow_range_minimum)
-				* (agility * getSettings().math.attribute_mob_follow_range_agility
-				+ intelligence * getSettings().math.attribute_mob_follow_range_intelligence
-				+ dexterity * getSettings().math.attribute_mob_follow_range_dexterity)
-				+ getSettings().math.attribute_mob_follow_range_minimum;
-		this.getPlayer().getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(value);
+		if(getSettings().math.attribute_mob_follow_range_enable){
+			this.getPlayer().getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(Helper.getPlayerMobFollowRange(this,getSettings()));
+		}
 	}
 
 	private void setMovementSpeed(){
-		double value = Gradient(getSettings().math.attribute_movement_speed_maximum,getSettings().math.attribute_movement_speed_minimum)
-				* (agility * getSettings().math.attribute_movement_speed_agility
-				+ dexterity * getSettings().math.attribute_movement_speed_dexterity)
-				+ getSettings().math.attribute_movement_speed_minimum;
-		this.getPlayer().setWalkSpeed((float)value);
+		if(getSettings().math.attribute_movement_speed_enable){
+			this.getPlayer().setWalkSpeed(Helper.getPlayerMovementSpeed(this,getSettings()));
+		}
+
 	}
 
 	/**
 	 * set player maximum health based on rpg player health points
 	 */
 	private void setPlayerMaxHealth(){
-		double value = Gradient(getSettings().math.attribute_total_health_maximum,getSettings().math.attribute_total_health_minimum)
-				* health * getSettings().math.attribute_total_health_health
-				+ getSettings().math.attribute_total_health_minimum;
-		player.setMaxHealth(value);
+		if(getSettings().math.attribute_total_health_enable) {
+			//double value = Gradient(this.rpgRace.getMax_health(), this.rpgRace.getBase_health())
+			//		* health * getSettings().math.attribute_total_health_health
+			//		+ this.rpgRace.getBase_health();
+			//player.setMaxHealth(value);
+			player.setMaxHealth(Helper.getPlayerMaxHealth(this,getSettings()));
+		}
 	}
 
 	/**
 	 * reset player mana
 	 */
 	private void setMana() {
-		this.mana = Gradient(getSettings().math.attribute_total_mana_maximum,getSettings().math.attribute_total_mana_minimum)
-				* this.intelligence * getSettings().math.attribute_total_mana_intelligence
-				+ getSettings().math.attribute_total_mana_minimum;
+		if(getSettings().math.attribute_total_mana_enable) {
+			this.mana = Helper.getPlayerMaxMana(this, getSettings());
+		}
+		//this.mana = (float)Gradient(this.rpgRace.getMax_mana(),this.rpgRace.getBase_mana())
+		//		* this.intelligence * getSettings().math.attribute_total_mana_intelligence
+		//		+ this.rpgRace.getBase_mana();
 	}
 
 	/**
 	 * set player display name with current level
 	 */
 	private void setDisplayName(){
-		getPlayer().setDisplayName(getPlayer().getName() + " [" + this.lvl + "]" );
+		getPlayer().setDisplayName("["+this.rpgClass.getTag()+"] " + getPlayer().getName() + " [" + this.lvl + "]" );
 	}
 
 	private void setLuck(){
-		double value = Gradient(getSettings().math.attribute_luck_maximum,getSettings().math.attribute_luck_minimum)
-				* (agility * getSettings().math.attribute_luck_agility
-				+ intelligence * getSettings().math.attribute_luck_intelligence
-				+ dexterity * getSettings().math.attribute_luck_dexterity);
-		this.getPlayer().getAttribute(Attribute.GENERIC_LUCK).setBaseValue(value);
+		if(getSettings().math.attribute_luck_enable){
+			this.getPlayer().getAttribute(Attribute.GENERIC_LUCK).setBaseValue(Helper.getPlayerLuck(this, getSettings()));
+		}
 	}
 
 	//==================================================END OF PRIVATE METHODES==============================
@@ -954,13 +1016,15 @@ public class RPGPlayer {
 	 * reset player generic attributes when changes are made
      */
 	private void AttributeHasChanged(){
-		setPlayerMaxHealth();
-		setLuck();
-		setMana();
-		setKnockBackResistance();
-		setAttackSpeed();
-		setMovementSpeed();
-		setFollowRange();
+		if(classIsSet && raceIsSet) {
+			setPlayerMaxHealth();
+			setLuck();
+			setMana();
+			setKnockBackResistance();
+			setAttackSpeed();
+			setMovementSpeed();
+			setFollowRange();
+		}
 	}
 
 	/**
@@ -978,11 +1042,11 @@ public class RPGPlayer {
 		if(currentMana == mana){
 			return;
 		}
-		double regen = Gradient(getSettings().math.attribute_mana_regen_maximum,getSettings().math.attribute_mana_regen_minimum)
-				* this.intelligence * getSettings().math.attribute_mana_regen_intelligence
-				+ getSettings().math.attribute_mana_regen_minimum;
-		this.currentMana += regen;
-		if(this.currentMana > mana)this.currentMana = mana;
+		if(getSettings().math.attribute_mana_regen_enable){
+			float regen = Helper.getPlayerManaRegen(this,getSettings());
+			this.currentMana += regen;
+			if(this.currentMana > mana)this.currentMana = mana;
+		}
 	}
 
 	/**
@@ -1008,17 +1072,102 @@ public class RPGPlayer {
 		}
 	}
 
-	private double Gradient(double max, double min){
-		double maxstats = getSettings().max_stats <= 0 ? 99 : getSettings().max_stats;
-		return (max - min)/ maxstats;
+	private Config getSettings(){
+		return PlayerListener.plugin.config;
 	}
 
-	private Settings getSettings(){
-		return PlayerListener.plugin.settings;
+	public void SendMessage(String msg){
+		SendMessage(ChatColor.GREEN + msg);
 	}
 
-	private void SendMessage(String msg){
-		this.getPlayer().sendMessage(ChatColor.GREEN + msg);
+	public void SendMessage(String msg, ChatColor color){
+		SendMessage(msg, color,"");
+	}
+
+	public void SendMessage(String msg, String prefix){
+		SendMessage(msg,ChatColor.GREEN, prefix);
+	}
+
+	public void SendMessage(String msg, ChatColor color, String prefix){
+		this.getPlayer().sendMessage(prefix + color + msg);
+	}
+
+	private void AddBonusAttributes(int nb){
+		for (String attribute :
+				this.rpgClass.getBonusAttributes()) {
+			switch (attribute){
+				case "health":
+					addHealth(nb,false,false);
+					break;
+				case "strength":
+					addStrength(nb,false,false);
+					break;
+				case "intelligence":
+					addIntelligence(nb,false,false);
+					break;
+				case "dexterity":
+					addDexterity(nb,false,false);
+					break;
+				case "magic_resistance":
+					addMagicResistance(nb,false,false);
+					break;
+				case "defence":
+					addDefence(nb,false,false);
+					break;
+				case "agility":
+					addAgility(nb,false,false);
+					break;
+				case "all":
+					addHealth(nb,false,false);
+					addDefence(nb,false,false);
+					addMagicResistance(nb,false,false);
+					addDexterity(nb,false,false);
+					addIntelligence(nb,false,false);
+					addHealth(nb,false,false);
+					addStrength(nb,false,false);
+					addAgility(nb, false,false);
+					break;
+			}
+		}
+
+		for (String attribute :
+				this.rpgRace.getBonusAttributes()) {
+			switch (attribute){
+				case "health":
+					addHealth(nb,false,false);
+					break;
+				case "strength":
+					addStrength(nb,false,false);
+					break;
+				case "intelligence":
+					addIntelligence(nb,false,false);
+					break;
+				case "dexterity":
+					addDexterity(nb,false,false);
+					break;
+				case "magic_resistance":
+					addMagicResistance(nb,false,false);
+					break;
+				case "defence":
+					addDefence(nb,false,false);
+					break;
+				case "agility":
+					addAgility(nb,false,false);
+					break;
+				case "all":
+					addHealth(nb,false,false);
+					addDefence(nb,false,false);
+					addMagicResistance(nb,false,false);
+					addDexterity(nb,false,false);
+					addIntelligence(nb,false,false);
+					addHealth(nb,false,false);
+					addStrength(nb,false,false);
+					addAgility(nb, false,false);
+					break;
+			}
+		}
+		
+		AttributeHasChanged();
 	}
 
 	//===============================================END OF PRIVATE METHODES HELPER===============================

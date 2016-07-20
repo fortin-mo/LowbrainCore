@@ -1,0 +1,72 @@
+human:
+  tag: hum
+  health:
+  strength:
+  intelligence:
+  dexterity:
+  defence:
+  magic_resistance:
+  agility:
+  max_health: 50
+  max_mana: 25
+  base_health: 10
+  base_mana: 5
+  bonus_attributes:
+  powers:
+    - healing
+    - saturation
+
+elf:
+  tag: elf
+  health: 0.0
+  strength: 0.0
+  intelligence: 0.0
+  dexterity: 0.0
+  defence: 0.0
+  magic_resistance: 0.0
+  agility: 0.0
+  max_health: 40
+  max_mana: 35
+  base_health: 10
+  base_mana: 5
+  bonus_attributes:
+  powers:
+   - healing
+   - night_vision
+orc:
+  tag: orc
+  health: 0.0
+  strength: 0.0
+  intelligence: 0.0
+  dexterity: 0.0
+  defence: 0.0
+  magic_resistance: 0.0
+  agility: 0.0
+  max_health: 45
+  max_mana: 30
+  base_health: 10
+  base_mana: 5
+  bonus_attributes:
+  powers:
+    - strength
+    - haste
+    - saturation
+deamon:
+  tag: deam
+  health: 0.0
+  strength: 0.0
+  intelligence: 0.0
+  dexterity: 0.0
+  defence: 0.0
+  magic_resistance: 0.0
+  agility: 0.0
+  max_health: 30
+  max_mana: 45
+  base_health: 10
+  base_mana: 5
+  bonus_attributes:
+  powers:
+   - invisibiliy
+   - resistance
+   - fire_resistance
+   - water_breathing

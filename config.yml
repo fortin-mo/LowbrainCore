@@ -1,181 +1,3 @@
-# Each class has 88 points at start
-# You can edit to your preference
-# You can add new classes but follow the structure
-# Classes.id must be sorted from 1 to infinite
-# You can't add or remove attributes
-#
-# healt with increase player maximum life
-# strength will increase player damage with hand weapon or bow(but less). Will increase bow distance
-# intelligence will increase player resistance to magic(less), increase damage with potion and increase chance of random effects with weapons
-#   it will also increase potion duration when consumed and increase player mana and mana regeneration
-# dexterity will increase bow shooting precision and bow damage
-# defence will reduce damage(except for potion)
-# magic resistance will reduce damage taken from potion and reduce chance of weapon random effects
-# bonus Attributes will add a point to the attributes on level up. Can also be a list : dexterity,strength or all
-#
-Classes:
-  list:
-    - 1
-    - 2
-    - 3
-    - 4
-    - 5
-  1:
-    name: Knight
-    health: 22
-    strength: 20
-    intelligence: 10
-    dexterity: 10
-    defence: 16
-    magicResistance: 10
-    agility: 0
-    bonusAttributes: health
-    powers:
-      - healing
-      - strength
-  2:
-    name: Paladin
-    health: 20
-    strength: 24
-    intelligence: 4
-    dexterity: 8
-    defence: 22
-    magicResistance: 10
-    agility: 0
-    bonusAttributes: strength
-    powers:
-      - healing
-      - strength
-  3:
-    name: Mage
-    health: 16
-    strength: 6
-    intelligence: 22
-    dexterity: 14
-    defence: 8
-    magicResistance: 22
-    agility: 0
-    bonusAttributes: magicResistance
-    powers: all
-  4:
-    name: Hunter
-    health: 17
-    strength: 11
-    intelligence: 10
-    dexterity: 26
-    defence: 10
-    magicResistance: 14
-    agility: 0
-    bonusAttributes: dexterity
-    powers:
-      - healing
-      - night_vision
-      - invisibility
-      - jump_boost
-  5:
-    name: Shaman
-    health: 18
-    strength: 20
-    intelligence: 20
-    dexterity: 5
-    defence: 10
-    magicResistance: 15
-    agility: 0
-    bonusAttributes: intelligence
-    powers:
-      - healing
-      - health_boost
-      - absorption
-      - regeneration
-      - resistance
-      - fire_resistance
-      - strength
-      - night_vision
-      - jump_boost
-# 99:
-#   name: MasterRACE
-#   health: 99
-#   strength: 99
-#   intelligence: 99
-#   dexterity: 99
-#   defence: 99
-#   magicResistance: 99
-#   bonusAttributes: all
-
-Powers:
-  healing:
-    mana: 7
-    min_level: 0
-    min_intelligence: 10
-    range: 25
-  fire_resistance:
-    mana: 10
-    min_level: 30
-    min_intelligence: 50
-    range: 25
-  resistance:
-    mana: 10
-    min_level: 30
-    min_intelligence: 10
-    range: 25
-  water_breathing:
-    mana: 7
-    min_level: 10
-    min_intelligence: 20
-    range: 25
-  invisibility:
-    mana: 20
-    min_level: 30
-    min_intelligence: 60
-    range: 25
-  regeneration:
-    mana: 5
-    min_level: 5
-    min_intelligence: 10
-    range: 25
-  jump_boost:
-    mana: 5
-    min_level: 0
-    min_intelligence: 10
-    range: 25
-  strength:
-    mana: 20
-    min_level: 30
-    min_intelligence: 50
-    range: 25
-  haste:
-    mana: 7
-    min_level: 10
-    min_intelligence: 20
-    range: 25
-  speed:
-    mana: 15
-    min_level: 25
-    min_intelligence: 35
-    range: 25
-  night_vision:
-    mana: 10
-    min_level: 10
-    min_intelligence: 15
-    range: 25
-  health_boost:
-    mana: 10
-    min_level: 0
-    min_intelligence: 10
-    range: 25
-  absorption:
-    mana: 10
-    min_level: 15
-    min_intelligence: 20
-    range: 25
-  saturation:
-    mana: 7
-    min_level: 10
-    min_intelligence: 15
-    range: 25
-
-
-
 # first_lvl_exp: experience needed for the first level
 # max_lvl: maximum level. -1 = infinite
 # max_stats: maximum attributes for each stats. -1 = infinite
@@ -192,12 +14,14 @@ Powers:
 #   if you reduce the interval, regeneration will be faster and vice verca.
 
 
-Settings:
+settings:
   first_lvl_exp: 75
-  max_lvl: 99
-  max_stats: 99
+  max_lvl: 100
+  max_stats: 100
   can_switch_class: false
-  allow_stats_reset: true
+  can_switch_race: false
+  allow_stats_reset: false;
+  allow_complete_reset: false;
   points_per_lvl: 2
   starting_points: 3
   auto_save: true
@@ -208,152 +32,196 @@ Settings:
   mana_regen_interval: 5
   automatic_server_difficulty: true
   maths:
-    next_lvl_multiplier: 1.1
-    natural_xp_gain_multiplier: 1.0
-    on_player_kills_player:
-      killer_level_gain_multiplier: 0.5
-      level_difference_multiplier: 0.5
-    on_player_attack_entity:
-      chance_of_creating_magic_attack:
-        maximum: 0.5
-        minimum: 0.0
-        intelligence_effect: 1.0
-        dexterity_effect: 0.0
-      creating_magic_attact: #duration = (max - min / max_stats) * (intelligence * 0.75 + dexterity * 0.25) + min
-        maximum_duration: 10.0
-        minimum_duration: 0.0
-        intelligence_on_duration: 0.75
-        dexterity_on_duration: 0.25
-        maximum_harm_amplifier: 3.0
-        maximum_poison_amplifier: 4.0
-        maximum_slow_amplifier: 5.0
-        maximum_weakness_amplifier: 5.0
-        maximum_wither_amplifier: 5.0
-        minimum_harm_amplifier: 3.0
-        minimum_poison_amplifier: 4.0
-        minimum_slow_amplifier: 5.0
-        minimum_weakness_amplifier: 5.0
-        minimum_wither_amplifier: 5.0
-        intelligence_on_harm_amplifier: 1.0
-        intelligence_on_poison_amplifier: 1.0
-        intelligence_on_slow_amplifier: 1.0
-        intelligence_on_weakness_amplifier: 1.0
-        intelligence_on_wither_amplifier: 1.0
-      by_weapon:
-        strength: 1.0
-        dexterity: 0.0
-        maximum: 2.5
-        minimum: 0.05
-        range: 2.0
-      by_potion:
-        intelligence: 85
-        dexterity: 0.15
-        maximum: 2.5
-        minimum: 0.05
-        range: 2.0
-      by_projectile:
-        strength: 0.333
-        dexterity: 0.666
-        maximum: 2.5
-        minimum: 0.05
-        range: 2.0
-    on_player_get_damaged:
-      by_magic:
-        maximum: 0.333
-        minimum: 1.0
-        intelligence: 0.15
-        magic_resistance: 0.85
-      by_fire:
-        maximum: 0.333
-        minimum: 1.0
-        defence: 0.25
-        magic_resistance: 0.6
-        intelligence: 0.15
-      by_explosion:
-        maximum: 0.3333
-        minimum: 1.0
-        defence: 0.85
-        strength: 0.15
-      by_fall:
-        maximum: 0.5
-        minimum: 1.0
-        defence: 0.25
-        agility: 0.75
-      by_contact:
-        maximum: 0.3333
-        minimum: 1.0
-        defence: 1.0
-      by_projectile:
-        maximum: 0.3333
-        minimum: 1.0
-        defence: 1.0
-      by_weapon:
-        maximum: 0.3333
-        minimum: 1.0
-        defence: 1.0
-      reducing_bad_potion_effect:
-        maximum: 0.01
-        minimum: 1.0
-        range: 0.15
-        magic_resistance: 0.75
-        intelligence: 0.25
-      chance_of_removing_magic_effect:
-      	maximum: 0.25
-      	minimum: 0.0
-      	magic_resistance: 0.70
-      	intelligence: 0.2
-      	dexterity: 0.1
-    on_player_shoot_bow:
-      min_dexterity_for_max_precision: 50.0
-      range: 1.5
-    on_player_consume_potion:
-      range: 0.1
-      maximum: 2.0
-      minimum: 1.0
-      intelligence: 1.0
-    player_attributes:
-      movement_speed:
-        maximum: 0.4
-        minimum: 0.15
-        agility: 1.0
-        dexterity: 0.0
-      attack_speed:
-        maximum: 15.0
-        minimum: 2.0
-        agility: 0.85
-        dexterity: 0.15
-        strength: 0.0
-      total_mana:
-        maximum: 45.0
-        minimum: 5.0
-        intelligence: 1.0
-      total_health:
-        maximum: 50.0
-        minimum: 10.0
-        health: 1.0
-      mana_regen:
-        maximum: 5.0
-        minimum: 0.0
-        intelligence: 1.0
-      luck:
-        maximum: 512
-        minimum: 0
-        intelligence: 0.85
-        dexterity: 0.0
-        agility: 0.15
-      knockback_resistance:
-        maximum: 0.99
-        minimum: 0.0
-        strength: 0.5
-        dexterity: 0.0
-        agility: 0.0
-        defence: 0.5
-      mob_follow_range:
-        maximum: 1
-        minimum: 64
-        agility: 0.5
-        intelligence: 0.25
-        dexterity: 0.25
+   next_lvl_multiplier: 1.1
+   natural_xp_gain_multiplier: 1.0
+  on_player_kills_player:
+   enable: true
+   killer_level_gain_multiplier: 0.5
+   level_difference_multiplier: 0.5
+  on_player_attack_entity:
+   chance_of_creating_magic_attack:
+    enable: true
+    function:
+    maximum: 0.5
+    minimum: 0.0
+    intelligence_effect: 1.0
+    dexterity_effect: 0.0
+   creating_magic_attact: #duration = (max - min / max_stats) * (intelligence * 0.75 + dexterity * 0.25) + min
+    enable: true
+    maximum_duration: 10.0
+    minimum_duration: 0.0
+    intelligence_on_duration: 0.75
+    dexterity_on_duration: 0.25
+    maximum_harm_amplifier: 3.0
+    maximum_poison_amplifier: 4.0
+    maximum_slow_amplifier: 5.0
+    maximum_weakness_amplifier: 5.0
+    maximum_wither_amplifier: 5.0
+    minimum_harm_amplifier: 3.0
+    minimum_poison_amplifier: 4.0
+    minimum_slow_amplifier: 5.0
+    minimum_weakness_amplifier: 5.0
+    minimum_wither_amplifier: 5.0
+    intelligence_on_harm_amplifier: 1.0
+    intelligence_on_poison_amplifier: 1.0
+    intelligence_on_slow_amplifier: 1.0
+    intelligence_on_weakness_amplifier: 1.0
+    intelligence_on_wither_amplifier: 1.0
+   by_weapon:
+    enable: true
+    function:
+    strength: 1.0
+    dexterity: 0.0
+    maximum: 2.5
+    minimum: 0.05
+    range: 2.0
+   by_potion:
+    enable: true
+    function:
+    intelligence: 85
+    dexterity: 0.15
+    maximum: 2.5
+    minimum: 0.05
+    range: 2.0
+   by_projectile:
+    enable: true
+    function:
+    strength: 0.333
+    dexterity: 0.666
+    maximum: 2.5
+    minimum: 0.05
+    range: 2.0
+  on_player_get_damaged:
+   by_magic:
+    enable: true
+    function:
+    maximum: 0.333
+    minimum: 1.0
+    intelligence: 0.15
+    magic_resistance: 0.85
+   by_fire:
+    enable: true
+    function:
+    maximum: 0.333
+    minimum: 1.0
+    defence: 0.25
+    magic_resistance: 0.6
+    intelligence: 0.15
+   by_explosion:
+    enable: true
+    function:
+    maximum: 0.3333
+    minimum: 1.0
+    defence: 0.85
+    strength: 0.15
+   by_fall:
+    enable: true
+    function:
+    maximum: 0.5
+    minimum: 1.0
+    defence: 0.25
+    agility: 0.75
+   by_contact:
+    enable: true
+    function:
+    maximum: 0.3333
+    minimum: 1.0
+    defence: 1.0
+   by_projectile:
+    enable: true
+    function:
+    maximum: 0.3333
+    minimum: 1.0
+    defence: 1.0
+   by_weapon:
+    enable: true
+    function:
+    maximum: 0.3333
+    minimum: 1.0
+    defence: 1.0
+   reducing_bad_potion_effect:
+    enable: true
+    function:
+    maximum: 0.01
+    minimum: 1.0
+    range: 0.15
+    magic_resistance: 0.75
+    intelligence: 0.25
+   chance_of_removing_magic_effect:
+    enable: true
+    function:
+    maximum: 0.25
+    minimum: 0.0
+    magic_resistance: 0.70
+    intelligence: 0.2
+    dexterity: 0.1
+  on_player_shoot_bow:
+   enable: true
+   function:
+   min_dexterity_for_max_precision: 50.0
+   range: 1.5
+  on_player_consume_potion:
+   enable: true
+   function:
+   range: 0.1
+   maximum: 2.0
+   minimum: 1.0
+   intelligence: 1.0
+  player_attributes:
+   movement_speed:
+    enable: true
+    function:
+    maximum: 0.4
+    minimum: 0.15
+    agility: 1.0
+    dexterity: 0.0
+   attack_speed:
+    enable: true
+    function:
+    maximum: 15.0
+    minimum: 2.0
+    agility: 0.85
+    dexterity: 0.15
+    strength: 0.0
+   total_mana:
+    enable: true
+    function:
+    intelligence: 1.0
+   total_health:
+    enable: true
+    function:
+    heath: 1.0
+   mana_regen:
+    enable: true
+    function:
+    maximum: 5.0
+    minimum: 0.0
+    intelligence: 1.0
+   luck:
+    enable: true
+    function:
+    maximum: 512
+    minimum: 0
+    intelligence: 0.85
+    dexterity: 0.0
+    agility: 0.15
+   knockback_resistance:
+    enable: true
+    function:
+    maximum: 0.99
+    minimum: 0.0
+    strength: 0.5
+    dexterity: 0.0
+    agility: 0.0
+    defence: 0.5
+   mob_follow_range:
+    enable: true
+    function:
+    maximum: 1
+    minimum: 64
+    agility: 0.5
+    intelligence: 0.25
+    dexterity: 0.25
 
 
 
