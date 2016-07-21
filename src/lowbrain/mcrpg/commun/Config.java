@@ -15,12 +15,12 @@ public class Config {
     public int max_stats= 99;
     public boolean can_switch_class= false;
     public boolean can_switch_race = false;
+    public boolean allow_deduction_points = false;
     public int points_per_lvl= 1;
     public int starting_points= 3;
     public boolean auto_save= true;
     public int save_interval= 360;
     public float exp_loss_on_death = 25;
-    public float exp_on_player_kill = 10;
     public boolean allow_stats_reset = false;
     public boolean allow_complete_reset = false;
     public boolean debug = false;
@@ -31,6 +31,7 @@ public class Config {
 
 
     public Config(FileConfiguration config){
+        allow_deduction_points = config.getBoolean("settings.allow_deduction_points");
         can_switch_class = config.getBoolean("settings.can_switch_class");
         can_switch_race = config.getBoolean("settings.can_switch_race");
         first_lvl_exp = (float)config.getDouble("settings.first_lvl_exp");
@@ -41,7 +42,6 @@ public class Config {
         auto_save = config.getBoolean("settings.auto_save");
         save_interval = config.getInt("settings.save_interval");
         exp_loss_on_death = (float)config.getDouble("settings.exp_loss_on_death");
-        exp_on_player_kill = (float)config.getDouble("settings.exp_on_player_kill");
         allow_stats_reset = config.getBoolean("settings.allow_stats_reset");
         allow_complete_reset = config.getBoolean("settings.allow_complete_reset");
         debug = config.getBoolean("settings.debug");

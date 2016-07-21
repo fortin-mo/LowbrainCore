@@ -1,5 +1,7 @@
 package lowbrain.mcrpg.commun;
 
+import lowbrain.mcrpg.Powa.Powa;
+import lowbrain.mcrpg.Powa.PowaFactory;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import lowbrain.mcrpg.main.PlayerListener;
@@ -19,7 +21,7 @@ public class RPGClass {
 	private int magicResistance = 0;
 	private int agility = 0;
 	private List<String> bonusAttributes = new ArrayList<String>();
-	private Map<String, RPGPowers> powers = new HashMap<String, RPGPowers>();
+	private Map<String, Powa> powers = new HashMap<String, Powa>();
 	
 	public RPGClass(String name){
 		this.name = name;
@@ -57,7 +59,7 @@ public class RPGClass {
 		s += "\n";
 
 		s += "Powers: ";
-		for (RPGPowers powa :
+		for (Powa powa :
 				powers.values()) {
 			s += powa.getName() + ", ";
 		}
@@ -102,7 +104,7 @@ public class RPGClass {
 		return agility;
 	}
 
-	public Map<String, RPGPowers> getPowers() {
+	public Map<String, Powa> getPowers() {
 		return powers;
 	}
 
@@ -113,7 +115,7 @@ public class RPGClass {
 		List<String> tmp = PlayerListener.plugin.classesConfig.getStringList(name+".powers");
 		for (String n :
 				tmp) {
-			powers.put(name,new RPGPowers(n));
+			powers.put(name, PowaFactory.createPowa(n));
 		}
 	}
 

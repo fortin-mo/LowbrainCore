@@ -1,86 +1,314 @@
+# mana: mana required to cast the spell
+# min_level : level required to be able to cast the spell. set to 0 for none
+# min_intelligence: intelligence required to be able to cast the spell. set to 0 for none
+# range : maximum distance in block between you and the other player... if set to 0 will only be able to cast to self
+
+# cast
+# duration:
+#   fonction: set a function if you want, ex: 0.5 * (0.75 * {0} + 0.25 * {1}) + 0, intelligence, dexterity
+#   maximum: maximum duration at top level in second
+#   minimum: minimum duration at low level in second
+#   range: gennerate a range
+#   intelligence: the amount by wich intelligence is multipled by
+#   dexterity: the amount by wich dexterity is multipled by
+# amplifier:
+#   fonction: set a function if you want, ex: 0.5 * (0.75 * {0} + 0.25 * {1}) + 0, intelligence, dexterity
+#   maximum: maximum amplifier at top level
+#   minimum: minimum amplifier at low level
+#   range: generate a range
+#   intelligence: the amount by wich intelligence is multiplied by
+#   dexterity: the amount by wich dexterity is multiplied by
+
 healing:
   mana: 7
   min_level: 0
   min_intelligence: 10
-  range: 25
+  cast_range: 25
+  cast:
+   duration:
+    function:
+    maximum: 0.05
+    minimum: 10
+    range:
+    intelligence:
+    dexterity:
+   amplifier:
+    function:
+    maximium:
+    minimum:
+    range: 0.0
+    intelligence: 1
+    dexterity: 0
+
 fire_resistance:
   mana: 10
   min_level: 30
   min_intelligence: 50
-  range: 25
+  cast_range: 25
+  cast:
+   duration:
+    function:
+    maximum:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+   amplifier:
+    function:
+    maximium:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+
 resistance:
   mana: 10
   min_level: 30
   min_intelligence: 10
-  range: 25
+  cast_range: 25
+  cast:
+   duration:
+    function:
+    maximum:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+   amplifier:
+    function:
+    maximium:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+
 water_breathing:
   mana: 7
   min_level: 10
   min_intelligence: 20
-  range: 25
+  cast_range: 25
+  cast:
+   duration:
+    function:
+    maximum:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+   amplifier:
+    function:
+    maximium:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+
 invisibility:
   mana: 20
   min_level: 30
   min_intelligence: 60
-  range: 25
+  cast_range: 25
+  cast:
+   duration:
+    function:
+    maximum:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+   amplifier:
+    function:
+    maximium:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+
 regeneration:
   mana: 5
   min_level: 5
   min_intelligence: 10
-  range: 25
+  cast_range: 25
+  cast:
+   duration:
+    function:
+    maximum:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+   amplifier:
+    function:
+    maximium:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+
 jump_boost:
   mana: 5
   min_level: 0
   min_intelligence: 10
-  range: 25
+  cast_range: 25
+  cast:
+   duration:
+    function:
+    maximum:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+   amplifier:
+    function:
+    maximium:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+
 strength:
   mana: 20
   min_level: 30
   min_intelligence: 50
-  range: 25
+  cast_range: 25
+  cast:
+   duration:
+    function:
+    maximum:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+   amplifier:
+    function:
+    maximium:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+
 haste:
   mana: 7
   min_level: 10
   min_intelligence: 20
-  range: 25
+  cast_range: 25
+  cast:
+   duration:
+    function:
+    maximum:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+   amplifier:
+    function:
+    maximium:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+
 speed:
   mana: 15
   min_level: 25
   min_intelligence: 35
-  range: 25
+  cast_range: 25
+  cast:
+   duration:
+    function:
+    maximum:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+   amplifier:
+    function:
+    maximium:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+
 night_vision:
   mana: 10
   min_level: 10
   min_intelligence: 15
-  range: 25
+  cast_range: 25
+  cast:
+   duration:
+    function:
+    maximum:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+   amplifier:
+    function:
+    maximium:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+
 health_boost:
   mana: 10
   min_level: 0
   min_intelligence: 10
-  range: 25
+  cast_range: 25
+  cast:
+   duration:
+    function:
+    maximum:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+   amplifier:
+    function:
+    maximium:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+
 absorption:
   mana: 10
   min_level: 15
   min_intelligence: 20
-  range: 25
+  cast_range: 25
+  cast:
+   duration:
+    function:
+    maximum:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+   amplifier:
+    function:
+    maximium:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+
 saturation:
   mana: 7
   min_level: 10
   min_intelligence: 15
-  range: 25
-
-cast:
-  healing:
-  fire_resistance:
-  resistance:
-  water_breathing:
-  invisibility:
-  regeneration:
-  jump_boost:
-  strength:
-  haste:
-  speed:
-  night_vision:
-  health_boost:
-  absorption:
-  saturation:
+  cast_range: 25
+  cast:
+   duration:
+    function:
+    maximum:
+    minimum:
+    range:
+    intelligence:
+    dexterity:
+   amplifier:
+    function:
+    maximium:
+    minimum:
+    range:
+    intelligence:
+    dexterity:

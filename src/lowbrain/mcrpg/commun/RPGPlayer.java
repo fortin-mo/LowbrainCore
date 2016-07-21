@@ -1,5 +1,6 @@
 package lowbrain.mcrpg.commun;
 
+import lowbrain.mcrpg.Powa.Powa;
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -131,7 +132,7 @@ public class RPGPlayer {
      */
 	public boolean castSpell(String name, RPGPlayer to){
 
-		RPGPowers powa = this.rpgClass.getPowers().containsKey(name)
+		Powa powa = this.rpgClass.getPowers().containsKey(name)
 				? this.rpgClass.getPowers().get(name)
 				: this.rpgRace.getPowers().containsKey(name)
 				? this.rpgRace.getPowers().get(name)
@@ -142,11 +143,11 @@ public class RPGPlayer {
 			return false;
 		}
 
-		if(to != null && powa.getRange() == 0){
+		if(to != null && powa.getCast_range() == 0){
 			SendMessage("You cannot cast this spell on others !");
 			return false;
 		}
-		if(to != null && powa.getRange() > 0){
+		if(to != null && powa.getCast_range() > 0){
 			double x = this.getPlayer().getLocation().getX() - to.getPlayer().getLocation().getX();
 			double y = this.getPlayer().getLocation().getY() - to.getPlayer().getLocation().getY();
 			double z = this.getPlayer().getLocation().getZ() - to.getPlayer().getLocation().getZ();
@@ -154,7 +155,7 @@ public class RPGPlayer {
 			double distance = Math.sqrt(x*x + y*y + z*z);
 
 			if(powa.getMana() < distance){
-				SendMessage("The player is to far away ! Range : " + powa.getRange() + "/" + distance);
+				SendMessage("The player is to far away ! Range : " + powa.getCast_range() + "/" + distance);
 				return false;
 			}
 		}
@@ -292,6 +293,9 @@ public class RPGPlayer {
 		if(this.experience >= nextLvl){
 			this.levelUP();
 		}
+		else if (this.experience < 0 ){
+			this.experience = 0;
+		}
 	}
 
 	/**
@@ -320,14 +324,28 @@ public class RPGPlayer {
 	 */
 	public void addStrength(int nb, boolean usePoints,boolean callChange){
 		int maxStats = getSettings().max_stats;
-		int oldStrength = this.strength;
-		if(usePoints && this.points >= nb){
+		if(nb == 0){
+			return;
+		}
+		else if(!getSettings().allow_deduction_points && nb < 0){
+			SendMessage("You are not allowed to deduct attribute points !");
+			return;
+		}
+		else if (getSettings().allow_deduction_points && nb < 0 && this.strength == 0){
+			SendMessage("You cannot deduct any more points !");
+			return;
+		}
+		else if(usePoints && this.points >= nb){
+			int oldStrength = this.strength;
 			this.strength += nb;
 			if(maxStats >= 0 && this.strength > maxStats){
 				this.strength = maxStats;
 			}
+			else if(this.strength < 0){
+				this.strength = 0;
+			}
 			
-			double dif = Math.abs(oldStrength - this.strength);
+			int dif = this.strength - oldStrength;
 			
 			this.points -= dif;
 			if(callChange)AttributeHasChanged();
@@ -367,14 +385,27 @@ public class RPGPlayer {
 	 */
 	public void addIntelligence(int nb, boolean usePoints,boolean callChange){
 		int maxStats = getSettings().max_stats;
-		int oldIntelligence = this.intelligence;
-		if(usePoints && this.points >= nb){
+		if(nb == 0){
+			return;
+		}
+		else if(!getSettings().allow_deduction_points && nb < 0){
+			SendMessage("You are not allowed to deduct attribute points !");
+			return;
+		}
+		else if (getSettings().allow_deduction_points && nb < 0 && this.intelligence == 0){
+			SendMessage("You cannot deduct any more points !");
+			return;
+		}
+		else if(usePoints && this.points >= nb){
+			int oldIntelligence = this.intelligence;
 			this.intelligence += nb;
 			if(maxStats >= 0 && this.intelligence > maxStats){
 				this.intelligence = maxStats;
 			}
-			
-			double dif = Math.abs(oldIntelligence - this.intelligence);
+			else if(this.intelligence < 0){
+				this.intelligence = 0;
+			}
+			int dif = this.intelligence - oldIntelligence;
 			
 			this.points -= dif;
 			if(callChange)AttributeHasChanged();
@@ -416,14 +447,27 @@ public class RPGPlayer {
 	 */
 	public void addDexterity(int nb, boolean usePoints,boolean callChange){
 		int maxStats = getSettings().max_stats;
-		int oldDexterity = this.dexterity;
-		if(usePoints && this.points >= nb){
+		if(nb == 0){
+			return;
+		}
+		else if(!getSettings().allow_deduction_points && nb < 0){
+			SendMessage("You are not allowed to deduct attribute points !");
+			return;
+		}
+		else if (getSettings().allow_deduction_points && nb < 0 && this.dexterity == 0){
+			SendMessage("You cannot deduct any more points !");
+			return;
+		}
+		else if(usePoints && this.points >= nb){
+			int oldDexterity = this.dexterity;
 			this.dexterity += nb;
 			if(maxStats >= 0 && this.dexterity > maxStats){
 				this.dexterity = maxStats;
 			}
-			
-			double dif = Math.abs(oldDexterity - this.dexterity);
+			else if(this.dexterity < 0 ){
+				this.dexterity = 0;
+			}
+			int dif = this.dexterity - oldDexterity;
 			
 			this.points -= dif;
 			if(callChange)AttributeHasChanged();
@@ -463,14 +507,26 @@ public class RPGPlayer {
 	 */
 	public void addHealth(int nb, boolean usePoints,boolean callChange){
 		int maxStats = getSettings().max_stats;
-		int oldHealth = this.health;
-		if(usePoints && this.points >= nb){
+		if(nb == 0){
+			return;
+		}
+		else if(!getSettings().allow_deduction_points && nb < 0){
+			SendMessage("You are not allowed to deduct attribute points !");
+			return;
+		}
+		else if (getSettings().allow_deduction_points && nb < 0 && this.health == 0){
+			SendMessage("You cannot deduct any more points !");
+			return;
+		}
+		else if(usePoints && this.points >= nb){
+			int oldHealth = this.health;
 			this.health += nb;
 			if(maxStats >= 0 && this.health > maxStats){
 				this.health = maxStats;
 			}
-			
-			double dif = Math.abs(oldHealth - this.health);
+			else if (this.health < 0 )this.health = 0;
+
+			int dif = this.health - oldHealth;
 			
 			this.points -= dif;
 			if(callChange)AttributeHasChanged();
@@ -510,14 +566,27 @@ public class RPGPlayer {
 	 */
 	public void addDefence(int nb, boolean usePoints,boolean callChange){
 		int maxStats = getSettings().max_stats;
-		int oldDefence = this.defence;
-		if(usePoints && this.points >= nb){
+
+		if(nb == 0){
+			return;
+		}
+		else if(!getSettings().allow_deduction_points && nb < 0){
+			SendMessage("You are not allowed to deduct attribute points !");
+			return;
+		}
+		else if (getSettings().allow_deduction_points && nb < 0 && this.defence == 0){
+			SendMessage("You cannot deduct any more points !");
+			return;
+		}
+		else if(usePoints && this.points >= nb){
+			int oldDefence = this.defence;
 			this.defence += nb;
 			if(maxStats >= 0 && this.defence > maxStats){
 				this.defence = maxStats;
 			}
+			else if (this.defence < 0 ) this.defence = 0;
 			
-			double dif = Math.abs(oldDefence - this.defence);
+			double dif = this.defence - oldDefence;
 			
 			this.points -= dif;
 			if(callChange)AttributeHasChanged();
@@ -557,14 +626,27 @@ public class RPGPlayer {
      */
 	public void addMagicResistance(int nb, boolean usePoints,boolean callChange){
 		int maxStats = getSettings().max_stats;
-		int oldMagicResistance = this.defence;
-		if(usePoints && this.points >= nb){
+
+		if(nb == 0){
+			return;
+		}
+		else if(!getSettings().allow_deduction_points && nb < 0){
+			SendMessage("You are not allowed to deduct attribute points !");
+			return;
+		}
+		else if (getSettings().allow_deduction_points && nb < 0 && this.magicResistance == 0){
+			SendMessage("You cannot deduct any more points !");
+			return;
+		}
+		else if(usePoints && this.points >= nb){
+			int oldMagicResistance = this.defence;
 			this.magicResistance += nb;
 			if(maxStats >= 0 && this.defence > maxStats){
 				this.magicResistance = maxStats;
 			}
+			else if (this.magicResistance < 0)this.magicResistance = 0;
 
-			double dif = Math.abs(oldMagicResistance - this.defence);
+			double dif = this.magicResistance - oldMagicResistance;
 			if(callChange)AttributeHasChanged();
 			this.points -= dif;
 
@@ -604,14 +686,27 @@ public class RPGPlayer {
 	 */
 	public void addAgility(int nb, boolean usePoints,boolean callChange){
 		int maxStats = getSettings().max_stats;
-		int oldAgility = this.agility;
-		if(usePoints && this.points >= nb){
+
+		if(nb == 0){
+			return;
+		}
+		else if(!getSettings().allow_deduction_points && nb < 0){
+			SendMessage("You are not allowed to deduct attribute points !");
+			return;
+		}
+		else if (getSettings().allow_deduction_points && nb < 0 && this.agility == 0){
+			SendMessage("You cannot deduct any more points !");
+			return;
+		}
+		else if(usePoints && this.points >= nb){
+			int oldAgility = this.agility;
 			this.agility += nb;
 			if(maxStats >= 0 && this.agility > maxStats){
 				this.agility = maxStats;
 			}
+			else if (this.agility < 0) this.agility = 0;
 
-			double dif = Math.abs(oldAgility - this.agility);
+			double dif = this.agility - oldAgility;
 			this.points -= dif;
 			if(callChange)AttributeHasChanged();
 			SendMessage("Agility incremented by " + dif);
@@ -836,11 +931,11 @@ public class RPGPlayer {
 			s += "Next lvl in: " + (nextLvl - experience) + " xp" + "\n";
 
 			s += "Powers: ";
-			for (RPGPowers powa :
+			for (Powa powa :
 					rpgClass.getPowers().values()) {
 				s += powa.getName() + ", ";
 			}
-			for (RPGPowers powa :
+			for (Powa powa :
 					rpgRace.getPowers().values()) {
 				s += powa.getName() + ", ";
 			}

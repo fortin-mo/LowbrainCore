@@ -164,16 +164,16 @@ public class PlayerListener implements Listener {
                 }
             }
 
-            if(rpKiller != null){
-                double diffLvl = Math.abs(rpKilled.getLvl() - rpKiller.getLvl());
+            if(rpKiller != null && plugin.config.math.player_kills_player_exp_enable){
+                int diffLvl = Math.abs(rpKilled.getLvl() - rpKiller.getLvl());
                 rpKiller.addKills(1);
-                double xpGained = 0.0;
+                float xpGained = 0.0F;
                 if(diffLvl == 0){
-                    xpGained = plugin.config.exp_on_player_kill * rpKiller.getLvl() * plugin.config.math.killer_level_gain_multiplier;
+                    xpGained = plugin.config.math.killer_base_exp * rpKiller.getLvl() * plugin.config.math.killer_level_gain_multiplier;
                 }else if(rpKilled.getLvl() < rpKiller.getLvl()){
-                    xpGained = plugin.config.exp_on_player_kill / (diffLvl * plugin.config.math.level_difference_multiplier) * rpKiller.getLvl() * plugin.config.math.killer_level_gain_multiplier;
+                    xpGained = plugin.config.math.killer_base_exp / (diffLvl * plugin.config.math.level_difference_multiplier) * rpKiller.getLvl() * plugin.config.math.killer_level_gain_multiplier;
                 }else{
-                    xpGained = plugin.config.exp_on_player_kill * (diffLvl * plugin.config.math.level_difference_multiplier) * rpKiller.getLvl() * plugin.config.math.killer_level_gain_multiplier;
+                    xpGained = plugin.config.math.killer_base_exp * (diffLvl * plugin.config.math.level_difference_multiplier) * rpKiller.getLvl() * plugin.config.math.killer_level_gain_multiplier;
                 }
                 rpKiller.addExp(xpGained);
                 plugin.debugMessage("Killer gains "+ xpGained+" xp!");
@@ -242,8 +242,8 @@ public class PlayerListener implements Listener {
         if(damager != null && !magicAttack){
             plugin.debugMessage("From " + damager.getPlayer().getName());
             double chanceOfMagicEffect = Gradient(plugin.config.math.chance_of_creating_magic_attack_maximum,plugin.config.math.chance_of_removing_magic_effect_minimum)
-                    * (damager.getIntelligence() * plugin.config.math.chance_of_creating_magic_attack_intelligence_effect
-                    + damager.getDexterity() * plugin.config.math.chance_of_creating_magic_attack_dexterity_effect)
+                    * (damager.getIntelligence() * plugin.config.math.chance_of_creating_magic_attack_intelligence
+                    + damager.getDexterity() * plugin.config.math.chance_of_creating_magic_attack_dexterity)
                     + plugin.config.math.chance_of_creating_magic_attack_minimum;
 
             double rdm = Math.random();

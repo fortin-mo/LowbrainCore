@@ -11,13 +11,15 @@ public class MathSettings {
     public float natural_xp_gain_multiplier = 1F;
     public float killer_level_gain_multiplier = 0.5F;
     public float level_difference_multiplier = 0.5F;
+    public float killer_base_exp = 25F;
+    public boolean player_kills_player_exp_enable = true;
 
     //on_player_attack_entity =
     //chance_of_creating_magic_attact_:
     public float chance_of_creating_magic_attack_maximum = 0.5F;
     public float chance_of_creating_magic_attack_minimum = 0.0F;
-    public float chance_of_creating_magic_attack_intelligence_effect = 1.0F;
-    public float chance_of_creating_magic_attack_dexterity_effect = 0.0F;
+    public float chance_of_creating_magic_attack_intelligence = 1.0F;
+    public float chance_of_creating_magic_attack_dexterity = 0.0F;
 
     //creating_magic_attack_=
     public boolean creating_magic_attack_enable = true;

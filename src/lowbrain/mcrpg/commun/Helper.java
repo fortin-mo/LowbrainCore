@@ -441,9 +441,13 @@ public class Helper {
         }
     }
 
+    //PLAYER DEATH
+
+
+
     //PRIVATES
 
-    private static String FormatStringWithValues(String[] st, RPGPlayer p){
+    public static String FormatStringWithValues(String[] st, RPGPlayer p){
 
         for (int i = 1; i < st.length; i++) {
             switch (st[i].trim().toLowerCase()){
