@@ -154,6 +154,11 @@ public class RPGCommand implements CommandExecutor{
 							if(plugin.classesConfig.getKeys(false).contains(args[1])){
 								rp.setClass(args[1], false);
 							}
+							else if(args[1].equalsIgnoreCase("rdm") || args[1].equalsIgnoreCase("random")){
+								int max = plugin.classesConfig.getKeys(false).size() - 1;
+								int rdm = 0 + ((int)Math.random() * max);
+								rp.setClass((String)plugin.classesConfig.getKeys(false).toArray()[rdm],false);
+							}
 							else{
 								rp.SendMessage("Wrong class !: Use \"/mcrpg class\" to show all classes");
 							}
@@ -163,6 +168,11 @@ public class RPGCommand implements CommandExecutor{
 						if(args.length == 2){
 							if(plugin.racesConfig.getKeys(false).contains(args[1])){
 								rp.setRace(args[1], false);
+							}
+							else if(args[1].equalsIgnoreCase("rdm") || args[1].equalsIgnoreCase("random")){
+								int max = plugin.racesConfig.getKeys(false).size() - 1;
+								int rdm = 0 + ((int)Math.random() * max);
+								rp.setRace((String)plugin.racesConfig.getKeys(false).toArray()[rdm],false);
 							}
 							else{
 								rp.SendMessage("Wrong race !: Use \"/mcrpg races\" to show all races");
@@ -212,6 +222,24 @@ public class RPGCommand implements CommandExecutor{
                         }
 						break;
 					case "cast":
+						if(args.length == 2){
+						 	rp.castSpell(args[1],null);
+						}
+						else if(args.length == 3){
+							Player p = plugin.getServer().getPlayer(args[2]);
+							if(p == null){
+								rp.SendMessage("Player not available !");
+							}
+							else {
+								RPGPlayer to = plugin.connectedPlayers.get(p.getUniqueId());
+								if(to == null){
+									rp.SendMessage("Player not available !");
+								}
+								else{
+									rp.castSpell(args[1],to);
+								}
+							}
+						}
 						break;
 				}
 				return true;

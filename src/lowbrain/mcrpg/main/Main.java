@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.*;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -19,10 +20,10 @@ import lowbrain.mcrpg.commun.*;
 public class Main extends JavaPlugin {
 
 	public static Map<UUID, RPGPlayer> connectedPlayers = new HashMap<UUID, RPGPlayer>();
-	public static Config config;
-	public FileConfiguration classesConfig;
-	public FileConfiguration racesConfig;
-	public FileConfiguration powersConfig;
+	public Config config;
+	public static FileConfiguration classesConfig;
+	public static FileConfiguration racesConfig;
+	public static FileConfiguration powersConfig;
 
 	private File classf, racef, powerf;
 	/**
@@ -34,6 +35,13 @@ public class Main extends JavaPlugin {
 		this.getLogger().info("Loading LowbrainMCRPG.jar");
 
 		InitialisingConfigFile();
+
+		if(!evatulateFunction()){
+			this.getLogger().info("[ERROR] functions in config file and not correctly formated !!!");
+			this.getLogger().info("[ERROR] LowbrainMCRPG.jar cannot load !");
+			this.onDisable();
+			return;
+		}
 
         PlayerListener playerListener = new PlayerListener(this);
 
@@ -84,8 +92,6 @@ public class Main extends JavaPlugin {
 		}catch (Exception e){
 			e.printStackTrace();
 		}
-
-
 	}
    
     @Override
@@ -104,5 +110,40 @@ public class Main extends JavaPlugin {
 	        this.getLogger().info("[DEBUG] : " + msg);
         }
     }
+
+    private boolean evatulateFunction(){
+    	List<String> functions = new ArrayList<String>();
+		recursiveConfigFunctionSearch(this.getConfig().getConfigurationSection("settings"),functions);
+
+		for (String key: this.powersConfig.getKeys(false)
+			 ) {
+			recursiveConfigFunctionSearch(this.powersConfig.getConfigurationSection(key),functions);
+		}
+
+
+		boolean succeed = true;
+		try{
+			for (String funct :
+					functions) {
+				Helper.eval(Helper.FormatStringWithValues(funct.split(","),null));
+			}
+		}
+		catch(Exception e){
+			succeed = false;
+		}
+
+    	return succeed;
+	}
+
+	private void recursiveConfigFunctionSearch(ConfigurationSection start, List<String> functions){
+		for (String key: start.getKeys(false)) {
+			if(key.equals("function") && !Helper.StringIsNullOrEmpty(start.getString(key))){
+				functions.add(start.getString(key));
+			}
+			else if(start.getConfigurationSection(key) != null){
+				recursiveConfigFunctionSearch(start.getConfigurationSection(key),functions);
+			}
+		}
+	}
 }
 

@@ -16,25 +16,25 @@
 knight:
   tag: kg
   health: 18
-  strength: 15
+  strength: 14
   intelligence: 5
   dexterity: 5
-  defence: 11
-  magic_resistance: 5
-  agility: 0
+  defence: 9
+  magic_resistance: 4
+  agility: 5
   bonus_attributes:
    -health
   powers:
 
 paladin:
   tag: pa
-  health: 15
+  health: 14
   strength: 19
   intelligence: 1
   dexterity: 3
-  defence: 17
-  magic_resistance: 5
-  agility: 0
+  defence: 16
+  magic_resistance: 4
+  agility: 3
   bonus_attributes:
    - strength
   powers:
@@ -47,10 +47,11 @@ mage:
   dexterity: 9
   defence: 3
   magic_resistance: 17
-  agility: 0
+  agility: 1
   bonus_attributes:
    - magic_resistance
   powers:
+  - resistance
   - healing
   - absorption
   - health_boost
@@ -61,11 +62,11 @@ hunter:
   tag: hun
   health: 12
   strength: 6
-  intelligence: 5
-  dexterity: 22
-  defence: 5
-  magic_resistance: 9
-  agility: 0
+  intelligence: 4
+  dexterity: 20
+  defence: 4
+  magic_resistance: 5
+  agility: 9
   bonus_attributes:
    - dexterity
   powers:
@@ -75,13 +76,13 @@ hunter:
 
 shaman:
   tag: sha
-  health: 13
-  strength: 15
+  health: 5
+  strength: 5
   intelligence: 15
-  dexterity: 1
-  defence: 5
+  dexterity: 0
+  defence: 10
   magic_resistance: 10
-  agility: 0
+  agility: 15
   bonus_attributes:
    - intelligence
   powers:

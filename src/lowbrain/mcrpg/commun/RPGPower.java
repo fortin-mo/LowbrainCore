@@ -1,34 +1,37 @@
-package lowbrain.mcrpg.Powa;
+package lowbrain.mcrpg.commun;
 
-import lowbrain.mcrpg.commun.Helper;
-import lowbrain.mcrpg.commun.RPGPlayer;
 import lowbrain.mcrpg.main.PlayerListener;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 /**
  * Created by moo on 2016-07-21.
  */
-public abstract class Powa {
+public class RPGPower {
     private double mana;
     private int minLevel;
     private int minIntelligence;
     private String name;
     private float cast_range;
 
-    protected float maximum_duration;
-    protected float minimum_duration;
-    protected float maximum_amplifier;
-    protected float minimum_amplifier;
-    protected float duration_range;
-    protected float amplifier_range;
-    protected float amplifier_intelligence;
-    protected float amplifier_dexterity;
-    protected float duration_intelligence;
-    protected float duration_dexterity;
-    protected String amplifier_function;
-    protected String duration_function;
+    private float maximum_duration;
+    private float minimum_duration;
+    private float maximum_amplifier;
+    private float minimum_amplifier;
+    private float duration_range;
+    private float amplifier_range;
+    private float amplifier_intelligence;
+    private float amplifier_dexterity;
+    private float duration_intelligence;
+    private float duration_dexterity;
+    private String amplifier_function;
+    private String duration_function;
+    private PotionEffectType potionEffectType;
 
-    public Powa(String name){
+
+
+    public RPGPower(String name){
         this.name = name;
         FileConfiguration config = PlayerListener.plugin.powersConfig;
         this.mana = config.getDouble(this.name + ".mana");
@@ -49,6 +52,8 @@ public abstract class Powa {
         this.duration_intelligence = (float)config.getDouble(this.name + ".cast.duration.intelligence");
         this.duration_dexterity = (float)config.getDouble(this.name + ".cast.duration.dexterity");
         this.duration_function = config.getString(this.name + ".cast.duration.function");
+
+        this.setPotionEffectType();
     }
 
     public double getMana() {
@@ -71,10 +76,10 @@ public abstract class Powa {
         return cast_range;
     }
     
-    protected int getCastDuration(RPGPlayer from){
+    private int getCastDuration(RPGPlayer from){
         float result = 0F;
-        if(Helper.StringIsNullOrEmplty(duration_function)) {
-            result =  (float)(Helper.Gradient(maximum_duration,minimum_duration,PlayerListener.plugin.config)
+        if(Helper.StringIsNullOrEmpty(duration_function)) {
+            result =  (float)(PlayerListener.Gradient(maximum_duration,minimum_duration)
                     * (from.getIntelligence() * duration_intelligence
                     + from.getDexterity() * duration_dexterity)
                     + minimum_duration);
@@ -97,11 +102,11 @@ public abstract class Powa {
         
         return (int)(result * 20);
     }
-    
-    protected int getCastAmplifier(RPGPlayer from){
+
+    private int getCastAmplifier(RPGPlayer from){
         float result = 0F;
-        if(Helper.StringIsNullOrEmplty(amplifier_function)) {
-            result =  (float)(Helper.Gradient(maximum_amplifier,minimum_amplifier,PlayerListener.plugin.config)
+        if(Helper.StringIsNullOrEmpty(amplifier_function)) {
+            result =  (float)(PlayerListener.Gradient(maximum_amplifier,minimum_amplifier)
                     * (from.getIntelligence() * amplifier_intelligence
                     + from.getDexterity() * amplifier_dexterity)
                     + minimum_amplifier);
@@ -125,6 +130,62 @@ public abstract class Powa {
         return (int)(result * 20);
     }
 
-    public abstract boolean Cast(RPGPlayer from, RPGPlayer to);
+    private void setPotionEffectType(){
+        switch (this.name){
+            case"healing":
+                this.potionEffectType = PotionEffectType.HEAL;
+                break;
+            case"fire_resistance":
+                this.potionEffectType = PotionEffectType.FIRE_RESISTANCE;
+                break;
+            case"resistance":
+                this.potionEffectType = PotionEffectType.DAMAGE_RESISTANCE;
+                break;
+            case"water_breathing":
+                this.potionEffectType = PotionEffectType.WATER_BREATHING;
+                break;
+            case"invisibility":
+                this.potionEffectType = PotionEffectType.INVISIBILITY;
+                break;
+            case"regeneration":
+                this.potionEffectType = PotionEffectType.REGENERATION;
+                break;
+            case"jump_boost":
+                this.potionEffectType = PotionEffectType.JUMP;
+                break;
+            case"strength":
+                this.potionEffectType = PotionEffectType.INCREASE_DAMAGE;
+                break;
+            case"haste":
+                this.potionEffectType = PotionEffectType.FAST_DIGGING;
+                break;
+            case"speed":
+                this.potionEffectType = PotionEffectType.SPEED;
+                break;
+            case"night_vision":
+                this.potionEffectType = PotionEffectType.NIGHT_VISION;
+                break;
+            case"health_boost":
+                this.potionEffectType = PotionEffectType.HEALTH_BOOST;
+                break;
+            case"absorption":
+                this.potionEffectType = PotionEffectType.ABSORPTION;
+                break;
+            case"saturation":
+                this.potionEffectType = PotionEffectType.SATURATION;
+                break;
+        }
+    }
+
+    public boolean Cast(RPGPlayer from, RPGPlayer to){
+        try{
+            PotionEffect p =  new PotionEffect(this.potionEffectType,this.getCastDuration(from),this.getCastAmplifier(from),true,true);
+            p.apply(to.getPlayer());
+            return true;
+        }catch (Exception e){
+
+        }
+        return false;
+    }
 
 }

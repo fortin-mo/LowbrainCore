@@ -10,13 +10,13 @@ import java.util.List;
  */
 public class Config {
 
-    public float first_lvl_exp= 100;
-    public int max_lvl= 99;
-    public int max_stats= 99;
+    public float first_lvl_exp= 75;
+    public int max_lvl= 100;
+    public int max_stats= 100;
     public boolean can_switch_class= false;
     public boolean can_switch_race = false;
     public boolean allow_deduction_points = false;
-    public int points_per_lvl= 1;
+    public int points_per_lvl= 2;
     public int starting_points= 3;
     public boolean auto_save= true;
     public int save_interval= 360;

@@ -1,8 +1,8 @@
 package lowbrain.mcrpg.commun;
 
-import lowbrain.mcrpg.Powa.Powa;
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -81,7 +81,7 @@ public class RPGPlayer {
 			playerData.set("stats.magic_resistance", 0);
 			playerData.set("stats.points", getSettings().starting_points);
 			playerData.set("stats.experience", 0);
-			playerData.set("stats.next_Lvl",getSettings().first_lvl_exp);
+			playerData.set("stats.next_lvl",getSettings().first_lvl_exp);
 			playerData.set("stats.kills",0);
 			playerData.set("stats.deaths",0);
 			playerData.set("stats.current_mana",0);
@@ -106,7 +106,7 @@ public class RPGPlayer {
         experience = (float)playerData.getDouble("stats.experience");
         points = playerData.getInt("stats.points");
         lvl = playerData.getInt("stats.lvl");
-        nextLvl = (float)playerData.getDouble("stats.next_Lvl");
+        nextLvl = (float)playerData.getDouble("stats.next_lvl");
 		kills = playerData.getInt("stats.kills");
 		deaths = playerData.getInt("stats.deaths");
 		currentMana = (float)playerData.getDouble("stats.current_mana");
@@ -132,7 +132,7 @@ public class RPGPlayer {
      */
 	public boolean castSpell(String name, RPGPlayer to){
 
-		Powa powa = this.rpgClass.getPowers().containsKey(name)
+		RPGPower powa = this.rpgClass.getPowers().containsKey(name)
 				? this.rpgClass.getPowers().get(name)
 				: this.rpgRace.getPowers().containsKey(name)
 				? this.rpgRace.getPowers().get(name)
@@ -798,19 +798,22 @@ public class RPGPlayer {
 
 	public void setRace(String n, boolean override){
 		if(!raceIsSet || override){
-			this.rpgClass = new RPGClass(n);
-			this.defence = rpgClass.getDefence();
-			this.dexterity = rpgClass.getDexterity();
-			this.intelligence = rpgClass.getIntelligence();
-			this.strength = rpgClass.getStrength();
-			this.health = rpgClass.getHealth();
-			this.magicResistance = rpgClass.getMagicResistance();
-			this.agility = rpgClass.getAgility();
-			this.className = n;
+			this.rpgRace = new RPGRace(n);
+
+			this.defence += rpgRace.getDefence();
+			this.dexterity += rpgRace.getDexterity();
+			this.intelligence += rpgRace.getIntelligence();
+			this.strength += rpgRace.getStrength();
+			this.health += rpgRace.getHealth();
+			this.magicResistance += rpgRace.getMagicResistance();
+			this.agility += rpgRace.getAgility();
+
+			this.raceName = n;
 			this.experience = 0;
 			this.nextLvl = getSettings().first_lvl_exp;
 			this.lvl = 1;
-			SendMessage("You are now a " + rpgClass.getName());
+			SendMessage("You are now a " + rpgRace.getName());
+			this.raceIsSet = true;
 			AttributeHasChanged();
 		}
 		else if(getSettings().can_switch_race){
@@ -820,6 +823,7 @@ public class RPGPlayer {
 			}
 
 			RPGRace newRace = new RPGRace(n);
+			this.raceIsSet = true;
 
 			this.defence -= rpgRace.getDefence();
 			this.dexterity -= rpgRace.getDexterity();
@@ -855,18 +859,21 @@ public class RPGPlayer {
 	public void setClass(String n, boolean override){
 		if(!classIsSet || override){
 			this.rpgClass = new RPGClass(n);
-			this.defence = rpgClass.getDefence();
-			this.dexterity = rpgClass.getDexterity();
-			this.intelligence = rpgClass.getIntelligence();
-			this.strength = rpgClass.getStrength();
-			this.health = rpgClass.getHealth();
-			this.magicResistance = rpgClass.getMagicResistance();
-			this.agility = rpgClass.getAgility();
+
+			this.defence += rpgClass.getDefence();
+			this.dexterity += rpgClass.getDexterity();
+			this.intelligence += rpgClass.getIntelligence();
+			this.strength += rpgClass.getStrength();
+			this.health += rpgClass.getHealth();
+			this.magicResistance += rpgClass.getMagicResistance();
+			this.agility += rpgClass.getAgility();
+
 			this.className = n;
 			this.experience = 0;
 			this.nextLvl = getSettings().first_lvl_exp;
 			this.lvl = 1;
 			SendMessage("You are now a " + rpgClass.getName());
+			this.classIsSet = true;
 			AttributeHasChanged();
 		}
 		else if(getSettings().can_switch_class){
@@ -875,6 +882,7 @@ public class RPGPlayer {
 				return;
 			}
 
+			this.classIsSet = true;
 			RPGClass newClass = new RPGClass(n);
 
 			this.defence -= rpgClass.getDefence();
@@ -924,18 +932,27 @@ public class RPGPlayer {
 			s += "Dexterity: " + dexterity + "\n";
 			s += "Intelligence: " + intelligence + "\n";
 			s += "Magic Resistance: " + magicResistance + "\n";
+			s += "Agility: " + agility + "\n";
 			s += "Kills: " + kills + "\n";
 			s += "Deaths: " + deaths + "\n";
 			s += "Points left: " + points + "\n";
 			s += "Experience: " + experience + "\n";
 			s += "Next lvl in: " + (nextLvl - experience) + " xp" + "\n";
 
+			s += "Attack speed : " + this.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_SPEED).getBaseValue()+ "\n";
+			s += "Movement speed : " + this.getPlayer().getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue()+ "\n";
+			s += "Mana regen : " + PlayerListener.getPlayerManaRegen(this)+ "\n";
+			s += "Max mana : " + this.getMana()+ "\n";
+			s += "Max health : " + this.getPlayer().getMaxHealth()+ "\n";
+			s += "Luck : " + this.getPlayer().getAttribute(Attribute.GENERIC_LUCK).getBaseValue()+ "\n";
+			s += "Knockback resistance : " + this.getPlayer().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getBaseValue()+ "\n";
+
 			s += "Powers: ";
-			for (Powa powa :
+			for (RPGPower powa :
 					rpgClass.getPowers().values()) {
 				s += powa.getName() + ", ";
 			}
-			for (Powa powa :
+			for (RPGPower powa :
 					rpgRace.getPowers().values()) {
 				s += powa.getName() + ", ";
 			}
@@ -1042,25 +1059,20 @@ public class RPGPlayer {
 
 	private void setAttackSpeed(){
 		if(getSettings().math.attribute_attack_speed_enable) {
-			this.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(Helper.getPlayerAttackSpeed(this,getSettings()));
+			this.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(PlayerListener.getPlayerAttackSpeed(this));
 		}
 	}
 
 	private void setKnockBackResistance(){
 		if(getSettings().math.attribute_knockback_resistance_enable) {
-			this.getPlayer().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(Helper.getPlayerKnockbackResistance(this,getSettings()));
-		}
-	}
-
-	private void setFollowRange(){
-		if(getSettings().math.attribute_mob_follow_range_enable){
-			this.getPlayer().getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(Helper.getPlayerMobFollowRange(this,getSettings()));
+			this.getPlayer().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(PlayerListener.getPlayerKnockbackResistance(this));
 		}
 	}
 
 	private void setMovementSpeed(){
 		if(getSettings().math.attribute_movement_speed_enable){
-			this.getPlayer().setWalkSpeed(Helper.getPlayerMovementSpeed(this,getSettings()));
+			//this.getPlayer().getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)
+			this.getPlayer().setWalkSpeed(PlayerListener.getPlayerMovementSpeed(this));
 		}
 
 	}
@@ -1070,11 +1082,7 @@ public class RPGPlayer {
 	 */
 	private void setPlayerMaxHealth(){
 		if(getSettings().math.attribute_total_health_enable) {
-			//double value = Gradient(this.rpgRace.getMax_health(), this.rpgRace.getBase_health())
-			//		* health * getSettings().math.attribute_total_health_health
-			//		+ this.rpgRace.getBase_health();
-			//player.setMaxHealth(value);
-			player.setMaxHealth(Helper.getPlayerMaxHealth(this,getSettings()));
+			this.getPlayer().setMaxHealth(PlayerListener.getPlayerMaxHealth(this));
 		}
 	}
 
@@ -1083,7 +1091,7 @@ public class RPGPlayer {
 	 */
 	private void setMana() {
 		if(getSettings().math.attribute_total_mana_enable) {
-			this.mana = Helper.getPlayerMaxMana(this, getSettings());
+			this.mana = PlayerListener.getPlayerMaxMana(this);
 		}
 		//this.mana = (float)Gradient(this.rpgRace.getMax_mana(),this.rpgRace.getBase_mana())
 		//		* this.intelligence * getSettings().math.attribute_total_mana_intelligence
@@ -1094,12 +1102,14 @@ public class RPGPlayer {
 	 * set player display name with current level
 	 */
 	private void setDisplayName(){
-		getPlayer().setDisplayName("["+this.rpgClass.getTag()+"] " + getPlayer().getName() + " [" + this.lvl + "]" );
+		if(classIsSet && raceIsSet) {
+			getPlayer().setDisplayName("[" + this.rpgClass.getTag() + "] " + getPlayer().getName() + " [" + this.lvl + "]");
+		}
 	}
 
 	private void setLuck(){
 		if(getSettings().math.attribute_luck_enable){
-			this.getPlayer().getAttribute(Attribute.GENERIC_LUCK).setBaseValue(Helper.getPlayerLuck(this, getSettings()));
+			this.getPlayer().getAttribute(Attribute.GENERIC_LUCK).setBaseValue(PlayerListener.getPlayerLuck(this));
 		}
 	}
 
@@ -1118,7 +1128,6 @@ public class RPGPlayer {
 			setKnockBackResistance();
 			setAttackSpeed();
 			setMovementSpeed();
-			setFollowRange();
 		}
 	}
 
@@ -1138,7 +1147,7 @@ public class RPGPlayer {
 			return;
 		}
 		if(getSettings().math.attribute_mana_regen_enable){
-			float regen = Helper.getPlayerManaRegen(this,getSettings());
+			float regen = PlayerListener.getPlayerManaRegen(this);
 			this.currentMana += regen;
 			if(this.currentMana > mana)this.currentMana = mana;
 		}
@@ -1148,14 +1157,14 @@ public class RPGPlayer {
 	 * start a new mana regeneration task on the server
      */
 	private void StartManaRegenTask(){
-		if(PlayerListener.plugin != null){
-			this.manaRegenTask = PlayerListener.plugin.getServer().getScheduler().runTaskTimer(PlayerListener.plugin, new Runnable() {
-				@Override
-				public void run() {
-					RegenMana();
-				}
-			}, 0, getSettings().mana_regen_interval * 20);
-		}
+		this.manaRegenTask = PlayerListener.plugin.getServer().getScheduler().runTaskTimer(PlayerListener.plugin, new Runnable() {
+			@Override
+			public void run() {
+				RegenMana();
+			}
+		}, 0, getSettings().mana_regen_interval * 20);
+
+		PlayerListener.plugin.debugMessage("Start regen mana task !");
 	}
 
 	/**
@@ -1172,7 +1181,7 @@ public class RPGPlayer {
 	}
 
 	public void SendMessage(String msg){
-		SendMessage(ChatColor.GREEN + msg);
+		SendMessage(msg,ChatColor.GREEN,"");
 	}
 
 	public void SendMessage(String msg, ChatColor color){
@@ -1266,5 +1275,6 @@ public class RPGPlayer {
 	}
 
 	//===============================================END OF PRIVATE METHODES HELPER===============================
+	
 }
 

@@ -1,6 +1,6 @@
 main: lowbrain.mcrpg.main.Main
 name: LowbrainMCRPG
-version: 1.0.7
+version: 1.0.0
 author: Lowbrain
 description:
 commands:
@@ -10,20 +10,37 @@ commands:
                   /mcrpg stats - show your player stats
                   /mcrpg stats <player> - show stats of player
                   /mcrpg classes - show all class basic attributes
-                  /mcrpg setclass <number> - set your class [1,2,3,4]
-                  /mcrpg add defence <number > 0> - add <number> defence or def
-                  /mcrpg add strength <number > 0> - add <number> strength o str
-                  /mcrpg add health <number > 0> - add <number> health or hp
-                  /mcrpg add dexterity <number > 0> - add <number> dexterity or dext
-                  /mcrpg add magicResistance <number > 0> - add <number> magicResistance or mr
-                  /mcrpg add intelligence <number > 0> - add <number> intelligence or int
-                  /mcrpg +defence or +def - add 1 defence
-                  /mcrpg +strength or +str - add 1 strength
-                  /mcrpg +health or +hp - add 1 health
-                  /mcrpg +dexterity or +dext - add 1 dexterity
-                  /mcrpg +magicResistance or +mr - add 1 magic resistance
+                  /mcrpg setclass <name> - set your class
+                  /mcrpg setclass rdm/random - set a random class
+                  /mcrpg races - show all races basic attributes
+                  /mcrpg setrace <name> - set your race
+                  /mcrpg setrace rdm/random - set a random race
+                  /mcrpg cast <spell name> - cast a spell to yourself
+                  /mcrpg cast <spell name> <player name> - cast a spell to someone
+
+                  /mcrpg add defence <number>  - add <number> defence or def
+                  /mcrpg add strength <number>  - add <number> strength o str
+                  /mcrpg add health <number>  - add <number> health or hp
+                  /mcrpg add dexterity <number>  - add <number> dexterity or dext
+                  /mcrpg add magicResistance <number>  - add <number> magicResistance or mr
+                  /mcrpg add intelligence <number>  - add <number> intelligence or int
+                  /mcrpg +defence - add 1 defence
+                  /mcrpg +def - add 1 defence
+                  /mcrpg +strength - add 1 strength
+                  /mcrpg +str - add 1 strength
+                  /mcrpg +health - add 1 health
+                  /mcrpg +hp - add 1 health
+                  /mcrpg +dexterity - add 1 dexterity
+                  /mcrpg +dext - add 1 dexterity
+                  /mcrpg +magicResistance - add 1 magic resistance
+                  /mcrpg +mr - add 1 magic resistance
+                  /mcrpg +agility - add 1 agility
+                  /mcrpg +ag - add 1 agility
+
                   /mcrpg reset - reset your attributes to your default class
-                  /mcrpg reset <new class number> - reset your attributes to your new class
+                  /mcrpg completereset true - reset you whole character (incluing level gained and xp)
+                  /mcrpg reset <class> - reset your attributes to your new class
+                  /mcrpg reset <class> <race>  - reset your attributes to your new class and new race
                   /mcrpg nextlvl - show how much xp is need for next lvl
                   /mcrpg save-all - save all player stats
                   /mcrpg save - save your stats
