@@ -1,5 +1,7 @@
 package lowbrain.mcrpg.commun;
 
+import lowbrain.mcrpg.rpg.RPGPlayer;
+
 import java.text.MessageFormat;
 import java.util.Arrays;
 

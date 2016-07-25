@@ -1,0 +1,181 @@
+EMERALD_SWORD:
+ enable: true
+ name: Emerald sword
+ material: DIAMOND_SWORD
+ display_color: a
+ recipe:
+  shape: -E-,-E-,-S-
+  ingredients:
+   - E,EMERALD
+   - S,STICK
+ attributes:
+  attack_speed:
+   attribute_name: attackSpeed
+   name: Attack Speed
+   amount: -2.4
+   operation: 0
+   slots: mainhand
+  attack_damage:
+   attribute_name: attackDamage
+   name: Attack
+   amount: 7
+   operation: 0
+   slots: mainhand
+EMERALD_AXE:
+ enable: true
+ name: Emerald Axe
+ material: DIAMOND_AXE
+ display_color: a
+ recipe:
+  shape: EE-,ES-,-S-
+  ingredients:
+   - E,EMERALD
+   - S,STICK
+ attributes:
+  attack_speed:
+   attribute_name: attackSpeed
+   name: Attack Speed
+   amount: -3
+   operation: 0
+   slots: mainhand
+  attack_damage:
+   attribute_name: attackDamage
+   name: Attack
+   amount: 8.5
+   operation: 0
+   slots: mainhand
+EMERALD_KATANA:
+ enable: true
+ name: Emerald Katana
+ material: DIAMOND_SWORD
+ display_color: a
+ recipe:
+  shape: -EE,-E-,-S-
+  ingredients:
+   - E,EMERALD
+   - S,STICK
+ attributes:
+  attack_speed:
+   attribute_name: attackSpeed
+   name: Attack Speed
+   amount: -2.8
+   operation: 0
+   slots: mainhand
+  attack_damage:
+   attribute_name: attackDamage
+   name: Attack
+   amount: 8
+   operation: 0
+   slots: mainhand
+DIAMOND_KATANA:
+ enable: true
+ name: Diamond Katana
+ material: DIAMOND_SWORD
+ display_color: 1
+ recipe:
+  shape: -EE,-E-,-S-
+  ingredients:
+   - E,DIAMOND
+   - S,STICK
+ attributes:
+  attack_speed:
+   attribute_name: attackSpeed
+   name: Attack Speed
+   amount: -2.8
+   operation: 0
+   slots: mainhand
+  attack_damage:
+   attribute_name: attackDamage
+   name: Attack
+   amount: 7.5
+   operation: 0
+   slots: mainhand
+
+EMERALD_HELMET:
+ enable: true
+ name: Emerald Helmet
+ material: DIAMOND_HELMET
+ display_color: a
+ recipe:
+  shape: ---,EEE,E-E
+  ingredients:
+   - E,EMERALD
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 4
+   operation: 0
+   slots: mainhand
+  armor_toughness:
+   attribute_name: armorToughness
+   name: toughness
+   amount: 2
+   operation: 0
+   slots: head
+EMERALD_CHESTPLATE:
+ enable: true
+ name: Emerald Chestplate
+ material: DIAMOND_CHESTPLATE
+ display_color: a
+ recipe:
+  shape: E-E,EEE,EEE
+  ingredients:
+   - E,EMERALD
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 7
+   operation: 0
+   slots: chest
+  armor_toughness:
+   attribute_name: armorToughness
+   name: toughness
+   amount: 2
+   operation: 0
+   slots: chest
+EMERALD_BOOTS:
+ enable: true
+ name: Emerald Boots
+ material: DIAMOND_BOOTS
+ display_color: a
+ recipe:
+  shape: ---,E-E,E-E
+  ingredients:
+   - E,EMERALD
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 4
+   operation: 0
+   slots: feet
+  armor_toughness:
+   attribute_name: armorToughness
+   name: toughness
+   amount: 2
+   operation: 0
+   slots: feet
+EMERALD_LEGGINGS:
+ enable: true
+ name: Emerald Leggings
+ material: DIAMOND_LEGGINGS
+ display_color: a
+ recipe:
+  shape: EEE,E-E,E-E
+  ingredients:
+   - E,EMERALD
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 6
+   operation: 0
+   slots: legs
+  armor_toughness:
+   attribute_name: armorToughness
+   name: toughness
+   amount: 2
+   operation: 0
+   slots: legs

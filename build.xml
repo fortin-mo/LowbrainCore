@@ -9,6 +9,7 @@
             <fileset file="races.yml"></fileset>
             <fileset file="powers.yml"></fileset>
             <fileset file="classes.yml"></fileset>
+            <fileset file="weaponsarmor.yml"></fileset>
         </jar>
     </target>
 </project>

@@ -1,8 +1,8 @@
 package lowbrain.mcrpg.main;
 
-import lowbrain.mcrpg.commun.RPGClass;
-import lowbrain.mcrpg.commun.RPGPlayer;
-import lowbrain.mcrpg.commun.RPGRace;
+import lowbrain.mcrpg.rpg.RPGClass;
+import lowbrain.mcrpg.rpg.RPGPlayer;
+import lowbrain.mcrpg.rpg.RPGRace;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

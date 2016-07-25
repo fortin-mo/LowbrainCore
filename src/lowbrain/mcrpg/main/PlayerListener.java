@@ -1,6 +1,5 @@
 package lowbrain.mcrpg.main;
 
-import lowbrain.mcrpg.commun.Config;
 import lowbrain.mcrpg.commun.Helper;
 import org.bukkit.Difficulty;
 import org.bukkit.Material;
@@ -14,7 +13,7 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 
-import lowbrain.mcrpg.commun.RPGPlayer;
+import lowbrain.mcrpg.rpg.RPGPlayer;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;

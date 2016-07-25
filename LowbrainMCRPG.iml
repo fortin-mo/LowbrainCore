@@ -14,16 +14,6 @@
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="inheritedJdk" />
-    <orderEntry type="module-library">
-      <library name="spigot-api-1.10.2-R0.1-SNAPSHOT-shaded.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/spigot-api-1.10.2-R0.1-SNAPSHOT-shaded.jar!/" />
-        </CLASSES>
-        <JAVADOC>
-          <root url="https://hub.spigotmc.org/javadocs/spigot/" />
-        </JAVADOC>
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="spigot-1.10.2" level="project" />
   </component>
 </module>
