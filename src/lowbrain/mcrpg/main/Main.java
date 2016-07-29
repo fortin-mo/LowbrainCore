@@ -18,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import lowbrain.mcrpg.commun.*;
+import org.bukkit.scoreboard.*;
 
 
 /**
@@ -33,6 +34,7 @@ public class Main extends JavaPlugin {
 	public static FileConfiguration racesConfig;
 	public static FileConfiguration powersConfig;
 	public static FileConfiguration weaponsConfig;
+	public static boolean useHolographicDisplays;
 
 	private File classf, racef, powerf, weaponsf;
 	/**
@@ -44,6 +46,9 @@ public class Main extends JavaPlugin {
 		this.getLogger().info("Loading LowbrainMCRPG.jar");
 
 		InitialisingConfigFile();
+		useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
+		String enabled = useHolographicDisplays ? "enabled" : "disabled";
+		debugMessage("HologramDisplays is "+enabled+" !");
 
 		if(!evatulateFunction()){
 			this.getLogger().info("[ERROR] functions in config file and not correctly formated !!!");
@@ -51,7 +56,6 @@ public class Main extends JavaPlugin {
 			this.onDisable();
 			return;
 		}
-
         PlayerListener playerListener = new PlayerListener(this);
 
 	    getServer().getPluginManager().registerEvents(playerListener, this);
@@ -66,6 +70,10 @@ public class Main extends JavaPlugin {
 				}
 			}, 0, config.save_interval * 20);
 		}
+
+
+		ScoreboardManager manager = Bukkit.getScoreboardManager();
+
     }
 
     private void InitialisingConfigFile(){
@@ -190,7 +198,6 @@ public class Main extends JavaPlugin {
 						this.getLogger().info("Missing attributes section for " + weapon);
 						return false;
 					}
-
 					net.minecraft.server.v1_10_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(customWeapon);
 					NBTTagCompound compound = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
 					NBTTagList modifiers = new NBTTagList();
@@ -212,11 +219,35 @@ public class Main extends JavaPlugin {
 
 						modifiers.add(modifier);
 					}
+
+					ConfigurationSection enchts = weaponsConfig.getConfigurationSection(weapon + ".enchantments");
+					NBTTagList enchModifiers = new NBTTagList();
+					if (enchts != null) {
+						for (String ench :
+								enchts.getKeys(false)) {
+							NBTTagCompound modifier = new NBTTagCompound();
+							modifier.set("id", new NBTTagInt(attributes.getInt(ench +".id")));
+							modifier.set("lvl", new NBTTagInt(attributes.getInt(ench +".lvl")));
+
+							enchModifiers.add(modifier);
+						}
+					}
+
 					if(!modifiers.isEmpty()) {
 						compound.set("AttributeModifiers", modifiers);
+					}
+					compound.set("ench", enchModifiers);
+
+					if(!modifiers.isEmpty() || !enchModifiers.isEmpty()){
 						nmsStack.setTag(compound);
 						customWeapon = CraftItemStack.asBukkitCopy(nmsStack);
 					}
+
+					int durability = weaponsConfig.getInt(weapon +".durability");
+					if(durability > 0){
+						customWeapon.setDurability((short)(customWeapon.getType().getMaxDurability() - durability));
+					}
+
 
 					ShapedRecipe customRecipe = new ShapedRecipe(customWeapon);
 

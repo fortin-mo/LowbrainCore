@@ -2,6 +2,7 @@ main: lowbrain.mcrpg.main.Main
 name: LowbrainMCRPG
 version: 1.0.0
 author: Lowbrain
+softdepend: [HolographicDisplays]
 description:
 commands:
    mcrpg:

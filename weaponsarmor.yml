@@ -106,7 +106,7 @@ EMERALD_HELMET:
    name: armor
    amount: 4
    operation: 0
-   slots: mainhand
+   slots: head
   armor_toughness:
    attribute_name: armorToughness
    name: toughness
@@ -177,5 +177,102 @@ EMERALD_LEGGINGS:
    attribute_name: armorToughness
    name: toughness
    amount: 2
+   operation: 0
+   slots: legs
+
+FEATHER_HELMET:
+ enable: true
+ name: Helmet of lightweight
+ material: LEATHER_HELMET
+ display_color: d
+ durability: 450
+ recipe:
+  shape: DDD,LLL,L-L
+  ingredients:
+   - D,DIAMOND
+   - L,LEATHER
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 2
+   operation: 0
+   slots: mainhand
+  movement_speed:
+   attribute_name: movementSpeed
+   name: movement speed
+   amount: 0.05
+   operation: 0
+   slots: head
+FEATHER_CHESTPLATE:
+ enable: true
+ name: Chestplate of lightweight
+ material: LEATHER_CHESTPLATE
+ display_color: d
+ durability: 450
+ recipe:
+  shape: D-D,LLL,DDD
+  ingredients:
+   - D,DIAMOND
+   - L,LEATHER
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 3
+   operation: 0
+   slots: chest
+  armor_toughness:
+   attribute_name: movementSpeed
+   name: movement speed
+   amount: 0.05
+   operation: 0
+   slots: chest
+FEATHER_BOOTS:
+ enable: true
+ name: Boots of lightweight
+ material: LEATHER_BOOTS
+ display_color: d
+ durability: 450
+ recipe:
+  shape: ---,L-L,D-D
+  ingredients:
+   - D,DIAMOND
+   - L,LEATHER
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 2
+   operation: 0
+   slots: feet
+  movement_speed:
+   attribute_name: movementSpeed
+   name: movement speed
+   amount: 0.05
+   operation: 0
+   slots: feet
+FEATHER_LEGGINGS:
+ enable: true
+ name: Leggings of lightweight
+ material: LEATHER_LEGGINGS
+ display_color: d
+ durability: 450
+ recipe:
+  shape: DDD,L-L,L-L
+  ingredients:
+   - D,DIAMOND
+   - L,LEATHER
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 3
+   operation: 0
+   slots: legs
+  movement_speed:
+   attribute_name: movementSpeed
+   name: movement speed
+   amount: 0.05
    operation: 0
    slots: legs

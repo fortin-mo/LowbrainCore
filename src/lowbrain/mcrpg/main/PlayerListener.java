@@ -1,12 +1,13 @@
 package lowbrain.mcrpg.main;
 
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import lowbrain.mcrpg.commun.Helper;
-import org.bukkit.Difficulty;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
@@ -14,9 +15,16 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 
 import lowbrain.mcrpg.rpg.RPGPlayer;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.bukkit.util.io.BukkitObjectInputStream;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 
 public class PlayerListener implements Listener {
@@ -24,9 +32,24 @@ public class PlayerListener implements Listener {
 	public static Main plugin;
     private static int max_stats;
 
+
     public PlayerListener(Main instance) {
         plugin = instance;
         max_stats = plugin.config.max_stats <= 0 ? 100 : plugin.config.max_stats;
+    }
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent e){
+        /*RPGPlayer rp = plugin.connectedPlayers.get(e.getPlayer().getUniqueId());
+        if(rp == null)return;
+        if(e.getItem() == null) return;
+
+        if(e.getItem() instanceof FireBallStaff && e.getAction().equals(Action.LEFT_CLICK_AIR)){
+            plugin.debugMessage(e.getItem().getDurability());
+            //e.getItem().setDurability((short)(e.getItem().getDurability() + 1));
+            e.getPlayer().launchProjectile(Fireball.class,e.getPlayer().getLocation().getDirection().multiply(1.5));
+            plugin.debugMessage(e.getItem().getDurability());
+        }*/
     }
 
     /**
@@ -44,7 +67,7 @@ public class PlayerListener implements Listener {
             plugin.debugMessage("Initial damage : " +e.getDamage());
 
             //FALL DAMAGE
-            if(e.getCause().equals(EntityDamageEvent.DamageCause.FALL) && plugin.config.math.damaged_by_fall_enable){
+            if(e.getCause().equals(EntityDamageEvent.DamageCause.FALL) && plugin.config.math.onPlayerGetDamaged.fall_enable){
                 plugin.debugMessage("Damage caused by : " + e.getCause().name());
                 multiplier = getDamagedByFall(damagee);
             }
@@ -53,14 +76,14 @@ public class PlayerListener implements Listener {
             else if((e.getCause().equals(EntityDamageEvent.DamageCause.FIRE_TICK)
                     || e.getCause().equals(EntityDamageEvent.DamageCause.FIRE)
                     || e.getCause().equals(EntityDamageEvent.DamageCause.DRAGON_BREATH)
-                    || e.getCause().equals(EntityDamageEvent.DamageCause.LIGHTNING)) && plugin.config.math.damaged_by_fire_enable){
+                    || e.getCause().equals(EntityDamageEvent.DamageCause.LIGHTNING)) && plugin.config.math.onPlayerGetDamaged.fire_enable){
                 plugin.debugMessage("Damage caused by : " + e.getCause().name());
                 multiplier = getDamagedByFire(damagee);
             }
 
             //EXPLOSION
             else if((e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)
-                    || e.getCause().equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION))&& plugin.config.math.damaged_by_explosion_enable){
+                    || e.getCause().equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION))&& plugin.config.math.onPlayerGetDamaged.explosion_enable){
                 plugin.debugMessage("Damage caused by : " + e.getCause().name());
                 multiplier = getDamagedByExplosion(damagee);
             }
@@ -68,13 +91,13 @@ public class PlayerListener implements Listener {
             //MAGIC POTION DAMAGE
             else if((e.getCause().equals(EntityDamageEvent.DamageCause.MAGIC)
                     || e.getCause().equals(EntityDamageEvent.DamageCause.WITHER)
-                    || e.getCause().equals(EntityDamageEvent.DamageCause.POISON)) && plugin.config.math.damaged_by_magic_enable){
+                    || e.getCause().equals(EntityDamageEvent.DamageCause.POISON)) && plugin.config.math.onPlayerGetDamaged.magic_enable){
                 plugin.debugMessage("Damage caused by : " + e.getCause().name());
                 multiplier = getDamagedByMagic(damagee);
 
                 float changeOfRemovingEffect = -1F;
 
-                if(plugin.config.math.chance_of_removing_magic_effect_enable){
+                if(plugin.config.math.onPlayerGetDamaged.chanceOfRemovingMagicEffect.enable){
                     changeOfRemovingEffect = getChangeOfRemovingPotionEffect(damagee);
                 }
 
@@ -83,24 +106,24 @@ public class PlayerListener implements Listener {
                     RemoveBadPotionEffect(damagee.getPlayer());
                     plugin.debugMessage("all effect removed");
                 }
-                else if(plugin.config.math.reducing_bad_potion_effect_enable){
+                else if(plugin.config.math.onPlayerGetDamaged.reducingBadPotionEffect.enable){
                     ReducingBadPotionEffect(damagee);
                 }
             }
 
-            else if(e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK) && plugin.config.math.damaged_by_weapon_enable){
+            else if(e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK) && plugin.config.math.onPlayerGetDamaged.weapon_enable){
                 plugin.debugMessage("Damage caused by : " + e.getCause().name());
                 multiplier = getDamagedByWeapon(damagee);
             }
 
             //ARROW
-            else if(e.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE) && plugin.config.math.damaged_by_projectile_enable){
+            else if(e.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE) && plugin.config.math.onPlayerGetDamaged.projectile_enable){
                 plugin.debugMessage("Damage caused by : " + e.getCause().name());
                 multiplier = getDamagedByProjectile(damagee);
             }
 
             //CONTACT
-            else if(e.getCause().equals(EntityDamageEvent.DamageCause.CONTACT) && plugin.config.math.damaged_by_contact_enable){
+            else if(e.getCause().equals(EntityDamageEvent.DamageCause.CONTACT) && plugin.config.math.onPlayerGetDamaged.contact_enable){
                 plugin.debugMessage("Damage caused by : " + e.getCause().name());
                 multiplier = getDamagedByContact(damagee);
             }
@@ -189,8 +212,14 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerItemHeld(PlayerItemHeldEvent e){
-        Player p = e.getPlayer();
+        /*Player p = e.getPlayer();
         RPGPlayer rp = plugin.connectedPlayers.get(p.getUniqueId());
+
+        ItemStack item = e.getPlayer().getItemInHand();
+
+        if(item != null){
+
+        }*/
         //TODO
     }
 
@@ -222,14 +251,14 @@ public class PlayerListener implements Listener {
         } else if (e.getDamager() instanceof Arrow) {
             Arrow ar = (Arrow) e.getDamager();
             if (ar.getShooter() instanceof Player) {
-                damager = plugin.connectedPlayers.get(e.getDamager().getUniqueId());
+                damager = plugin.connectedPlayers.get(((Player)((Arrow) e.getDamager()).getShooter()).getUniqueId());
             }
             plugin.debugMessage("Attacked by arrow");
             arrowAttact = true;
         } else if (e.getDamager() instanceof ThrownPotion) {
             ThrownPotion pot = (ThrownPotion) e.getDamager();
             if (pot.getShooter() instanceof Player) {
-                damager = plugin.connectedPlayers.get(e.getDamager().getUniqueId());
+                damager = plugin.connectedPlayers.get(((Player)((ThrownPotion) e.getDamager()).getShooter()).getUniqueId());
             }
             plugin.debugMessage("Attacked by potion");
             magicAttack = true;
@@ -240,12 +269,12 @@ public class PlayerListener implements Listener {
 
 
         //APLLYING MAGIC EFFECT BY ATTACKER
-        if(damager != null && !magicAttack && plugin.config.math.creating_magic_attack_enable){
+        if(damager != null && !magicAttack && plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.enable){
             plugin.debugMessage("From " + damager.getPlayer().getName());
-            double chanceOfMagicEffect = Gradient(plugin.config.math.chance_of_creating_magic_attack_maximum,plugin.config.math.chance_of_removing_magic_effect_minimum)
-                    * (damager.getIntelligence() * plugin.config.math.chance_of_creating_magic_attack_intelligence
-                    + damager.getDexterity() * plugin.config.math.chance_of_creating_magic_attack_dexterity)
-                    + plugin.config.math.chance_of_creating_magic_attack_minimum;
+            double chanceOfMagicEffect = Gradient(plugin.config.math.onPlayerAttackEntity.chanceOfCreatingMagicAttack.maximum,plugin.config.math.onPlayerAttackEntity.chanceOfCreatingMagicAttack.minimum)
+                    * (damager.getIntelligence() * plugin.config.math.onPlayerAttackEntity.chanceOfCreatingMagicAttack.intelligence
+                    + damager.getDexterity() * plugin.config.math.onPlayerAttackEntity.chanceOfCreatingMagicAttack.dexterity)
+                    + plugin.config.math.onPlayerAttackEntity.chanceOfCreatingMagicAttack.minimum;
 
             double rdm = Math.random();
             if(rdm < chanceOfMagicEffect){
@@ -258,17 +287,42 @@ public class PlayerListener implements Listener {
         }
 
         //APPLYING DAMAGE CHANGE DEPENDING ON OFFENCIVE ATTRIBUTES
-        if(arrowAttact && damager != null && plugin.config.math.attack_by_projectile_enable){
+        if(arrowAttact && damager != null && plugin.config.math.onPlayerAttackEntity.attackEntityBy.projectile_enable){
             e.setDamage(getAttackByProjectile(damager,e.getDamage()));
         }
-        else if(normalAttack && damager != null && plugin.config.math.attack_by_weapon_enable){
+        else if(normalAttack && damager != null && plugin.config.math.onPlayerAttackEntity.attackEntityBy.weapon_enable){
             e.setDamage(getAttackByWeapon(damager,e.getDamage()));
         }
-        else if(magicAttack && damager != null && plugin.config.math.attack_by_potion_enable){
+        else if(magicAttack && damager != null && plugin.config.math.onPlayerAttackEntity.attackEntityBy.potion_enable){
             e.setDamage(getAttackByPotion(damager,e.getDamage()));
         }
 
         if(damager != null) {
+
+            if(plugin.useHolographicDisplays){
+                plugin.debugMessage("hologram added !");
+                NumberFormat formatter = new DecimalFormat("#0.00");
+                Location loc = e.getEntity().getLocation().add(0,3,0);
+                Hologram holoDamage = HologramsAPI.createHologram(plugin,loc);
+                holoDamage.appendTextLine(ChatColor.RED + formatter.format(e.getDamage()));
+
+                new BukkitRunnable() {
+
+                    // We don't want the task to run indefinitely
+                    int ticksRun;
+
+                    @Override
+                    public void run() {
+                        ticksRun++;
+                        holoDamage.teleport(loc.add(-0.25,-0.25,0.0));
+                        if (ticksRun > 100) { // 100 ticks = 5 seconds
+                            holoDamage.delete();
+                            cancel();
+                        }
+                    }
+                }.runTaskTimer(plugin, 1L, 1L);
+            }
+
             plugin.debugMessage("inital damage : " + oldDamage);
             double damageMultiplier = e.getDamage() / oldDamage;
             plugin.debugMessage("Offencive damage multiplier : " + damageMultiplier);
@@ -283,7 +337,7 @@ public class PlayerListener implements Listener {
      */
     @EventHandler
     public void onPlayerConsumePotion(PlayerItemConsumeEvent e){
-        if(e.getItem() != null && e.getItem().getType().equals(Material.POTION) && plugin.config.math.on_player_consume_potion_enable){
+        if(e.getItem() != null && e.getItem().getType().equals(Material.POTION) && plugin.config.math.onPlayerConsumePotion.enable){
             RPGPlayer rp = plugin.connectedPlayers.get(e.getPlayer().getUniqueId());
             if(rp != null) {
 
@@ -315,7 +369,7 @@ public class PlayerListener implements Listener {
      */
     @EventHandler
     public void onPlayerShootBow(EntityShootBowEvent e){
-        if(e.getEntity() instanceof Player && plugin.config.math.on_player_shoot_bow_enable){
+        if(e.getEntity() instanceof Player && plugin.config.math.onPlayerShootBow.enable){
             //set new force
             Arrow ar = (Arrow) e.getProjectile();
             RPGPlayer rpPlayer = plugin.connectedPlayers.get(e.getEntity().getUniqueId());
@@ -360,8 +414,8 @@ public class PlayerListener implements Listener {
         int rdm = 1 + (int)(Math.random() * 7);
         int duration = 0;
         int amplifier = 0;
-        float max = plugin.config.math.creating_magic_attack_maximum_duration;
-        float min = plugin.config.math.creating_magic_attack_minimum_duration;
+        float max = plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.maximum_duration;
+        float min = plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.minimum_duration;
 
         PotionEffect effect;
         PotionEffectType type = PotionEffectType.POISON;
@@ -376,36 +430,36 @@ public class PlayerListener implements Listener {
                 break;
             case 3:
                 type = PotionEffectType.HARM;
-                max =  plugin.config.math.creating_magic_attack_minimum_duration;
-                min = plugin.config.math.creating_magic_attack_maximum_duration;
-                amplifier = (int)(Gradient(plugin.config.math.creating_magic_attack_maximum_harm_amplifier,plugin.config.math.creating_magic_attack_minimum_harm_amplifier)
-                        * p.getIntelligence() * plugin.config.math.creating_magic_attack_intelligence_on_harm_amplifier);
+                max =  plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.minimum_duration;
+                min = plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.maximum_duration;
+                amplifier = (int)(Gradient(plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.maximum_harm_amplifier,plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.minimum_harm_amplifier)
+                        * p.getIntelligence() * plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.intelligence_on_harm_amplifier);
                 break;
             case 4:
                 type = PotionEffectType.POISON;
-                amplifier = (int)(Gradient(plugin.config.math.creating_magic_attack_maximum_poison_amplifier,plugin.config.math.creating_magic_attack_minimum_poison_amplifier)
-                        * p.getIntelligence() * plugin.config.math.creating_magic_attack_intelligence_on_poison_amplifier);
+                amplifier = (int)(Gradient(plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.maximum_poison_amplifier,plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.minimum_poison_amplifier)
+                        * p.getIntelligence() * plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.intelligence_on_poison_amplifier);
                 break;
             case 5:
                 type = PotionEffectType.SLOW;
-                amplifier = (int)(Gradient(plugin.config.math.creating_magic_attack_maximum_slow_amplifier,plugin.config.math.creating_magic_attack_minimum_slow_amplifier)
-                        * p.getIntelligence() * plugin.config.math.creating_magic_attack_intelligence_on_slow_amplifier);
+                amplifier = (int)(Gradient(plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.maximum_slow_amplifier,plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.minimum_slow_amplifier)
+                        * p.getIntelligence() * plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.intelligence_on_slow_amplifier);
                 break;
             case 6:
                 type = PotionEffectType.WEAKNESS;
-                amplifier = (int)(Gradient(plugin.config.math.creating_magic_attack_maximum_weakness_amplifier,plugin.config.math.creating_magic_attack_minimum_weakness_amplifier)
-                        * p.getIntelligence() * plugin.config.math.creating_magic_attack_intelligence_on_weakness_amplifier);
+                amplifier = (int)(Gradient(plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.maximum_weakness_amplifier,plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.minimum_weakness_amplifier)
+                        * p.getIntelligence() * plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.intelligence_on_weakness_amplifier);
                 break;
             case 7:
                 type = PotionEffectType.WITHER;
-                amplifier = (int)(Gradient(plugin.config.math.creating_magic_attack_maximum_wither_amplifier,plugin.config.math.creating_magic_attack_minimum_wither_amplifier)
-                        * p.getIntelligence() * plugin.config.math.creating_magic_attack_intelligence_on_wither_amplifier);
+                amplifier = (int)(Gradient(plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.maximum_wither_amplifier,plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.minimum_wither_amplifier)
+                        * p.getIntelligence() * plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.intelligence_on_wither_amplifier);
                 break;
         }
 
         duration = (int)(Gradient(max,min)
-                * (p.getIntelligence() * plugin.config.math.creating_magic_attack_intelligence_on_duration
-                + p.getDexterity() * plugin.config.math.creating_magic_attack_dexterity_on_duration)
+                * (p.getIntelligence() * plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.intelligence_on_duration
+                + p.getDexterity() * plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.dexterity_on_duration)
                 + min);
 
         effect = new PotionEffect(type, duration * 20, amplifier, true,true);
@@ -497,17 +551,17 @@ public class PlayerListener implements Listener {
 
     public float getDamagedByFire(RPGPlayer damagee){
 
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.damaged_by_fire_function)){
-            float max = plugin.config.math.damaged_by_fire_maximum;
-            float min = plugin.config.math.damaged_by_fire_minimum;
-            double x = damagee.getMagicResistance() * plugin.config.math.damaged_by_fire_magic_resistance
-                    + damagee.getDefence() * plugin.config.math.damaged_by_fire_defence
-                    + damagee.getIntelligence() * plugin.config.math.damaged_by_fire_intelligence;
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.onPlayerGetDamaged.fire_function)){
+            float max = plugin.config.math.onPlayerGetDamaged.fire_maximum;
+            float min = plugin.config.math.onPlayerGetDamaged.fire_minimum;
+            double x = damagee.getMagicResistance() * plugin.config.math.onPlayerGetDamaged.fire_magic_resistance
+                    + damagee.getDefence() * plugin.config.math.onPlayerGetDamaged.fire_defence
+                    + damagee.getIntelligence() * plugin.config.math.onPlayerGetDamaged.fire_intelligence;
 
             return (float)(Gradient(max,min) * x + min);
         }
         else{
-            String[] st = plugin.config.math.damaged_by_fire_function.split(",");
+            String[] st = plugin.config.math.onPlayerGetDamaged.fire_function.split(",");
             if(st.length > 1){
                 return Helper.eval( Helper.FormatStringWithValues(st,damagee));
             }
@@ -519,15 +573,15 @@ public class PlayerListener implements Listener {
 
     public float getDamagedByContact(RPGPlayer damagee){
 
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.damaged_by_contact_function)){
-            float max = plugin.config.math.damaged_by_contact_maximum;
-            float min = plugin.config.math.damaged_by_contact_minimum;
-            double x = damagee.getDefence() * plugin.config.math.damaged_by_contact_defence;
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.onPlayerGetDamaged.contact_function)){
+            float max = plugin.config.math.onPlayerGetDamaged.contact_maximum;
+            float min = plugin.config.math.onPlayerGetDamaged.contact_minimum;
+            double x = damagee.getDefence() * plugin.config.math.onPlayerGetDamaged.contact_defence;
 
             return (float)(Gradient(max,min) * x + min);
         }
         else{
-            String[] st = plugin.config.math.damaged_by_contact_function.split(",");
+            String[] st = plugin.config.math.onPlayerGetDamaged.contact_function.split(",");
             if(st.length > 1){
                 return Helper.eval( Helper.FormatStringWithValues(st,damagee));
             }
@@ -539,15 +593,15 @@ public class PlayerListener implements Listener {
 
     public float getDamagedByWeapon(RPGPlayer damagee){
 
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.damaged_by_weapon_function)){
-            float max = plugin.config.math.damaged_by_weapon_maximum;
-            float min = plugin.config.math.damaged_by_weapon_minimum;
-            double x = damagee.getDefence() * plugin.config.math.damaged_by_weapon_defence;
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.onPlayerGetDamaged.weapon_function)){
+            float max = plugin.config.math.onPlayerGetDamaged.weapon_maximum;
+            float min = plugin.config.math.onPlayerGetDamaged.weapon_minimum;
+            double x = damagee.getDefence() * plugin.config.math.onPlayerGetDamaged.weapon_defence;
 
             return (float)(Gradient(max,min) * x + min);
         }
         else{
-            String[] st = plugin.config.math.damaged_by_weapon_function.split(",");
+            String[] st = plugin.config.math.onPlayerGetDamaged.weapon_function.split(",");
             if(st.length > 1){
                 return Helper.eval( Helper.FormatStringWithValues(st,damagee));
             }
@@ -559,16 +613,16 @@ public class PlayerListener implements Listener {
 
     public  float getDamagedByMagic(RPGPlayer damagee){
 
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.damaged_by_magic_function)){
-            float max = plugin.config.math.damaged_by_magic_maximum;
-            float min = plugin.config.math.damaged_by_magic_minimum;
-            double x = (damagee.getMagicResistance() * plugin.config.math.damaged_by_magic_magic_resistance
-                    + damagee.getIntelligence() * plugin.config.math.damaged_by_magic_intelligence);
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.onPlayerGetDamaged.magic_function)){
+            float max = plugin.config.math.onPlayerGetDamaged.magic_maximum;
+            float min = plugin.config.math.onPlayerGetDamaged.magic_minimum;
+            double x = (damagee.getMagicResistance() * plugin.config.math.onPlayerGetDamaged.magic_magic_resistance
+                    + damagee.getIntelligence() * plugin.config.math.onPlayerGetDamaged.magic_intelligence);
 
             return (float)(Gradient(max,min) * x + min);
         }
         else{
-            String[] st = plugin.config.math.damaged_by_magic_function.split(",");
+            String[] st = plugin.config.math.onPlayerGetDamaged.magic_function.split(",");
             if(st.length > 1){
                 return Helper.eval(Helper.FormatStringWithValues(st,damagee));
             }
@@ -580,16 +634,16 @@ public class PlayerListener implements Listener {
 
     public  float getDamagedByFall(RPGPlayer damagee){
 
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.damaged_by_fall_function)){
-            float max = plugin.config.math.damaged_by_fall_maximum;
-            float min = plugin.config.math.damaged_by_fall_minimum;
-            double x = damagee.getAgility() * plugin.config.math.damaged_by_fall_agility
-                    + damagee.getDefence() * plugin.config.math.damaged_by_fall_defence;
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.onPlayerGetDamaged.fall_function)){
+            float max = plugin.config.math.onPlayerGetDamaged.fall_maximum;
+            float min = plugin.config.math.onPlayerGetDamaged.fall_minimum;
+            double x = damagee.getAgility() * plugin.config.math.onPlayerGetDamaged.fall_agility
+                    + damagee.getDefence() * plugin.config.math.onPlayerGetDamaged.fall_defence;
 
             return (float)(Gradient(max,min) * x + min);
         }
         else{
-            String[] st = plugin.config.math.damaged_by_fall_function.split(",");
+            String[] st = plugin.config.math.onPlayerGetDamaged.fall_function.split(",");
             if(st.length > 1){
                 return Helper.eval(Helper.FormatStringWithValues(st,damagee));
             }
@@ -601,16 +655,16 @@ public class PlayerListener implements Listener {
 
     public  float getDamagedByExplosion(RPGPlayer damagee){
 
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.damaged_by_explosion_function)){
-            float max = plugin.config.math.damaged_by_explosion_maximum;
-            float min = plugin.config.math.damaged_by_explosion_minimum;
-            double x = damagee.getDefence() * plugin.config.math.damaged_by_explosion_defence
-                    + damagee.getStrength() * plugin.config.math.damaged_by_explosion_strength;
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.onPlayerGetDamaged.explosion_function)){
+            float max = plugin.config.math.onPlayerGetDamaged.explosion_maximum;
+            float min = plugin.config.math.onPlayerGetDamaged.explosion_minimum;
+            double x = damagee.getDefence() * plugin.config.math.onPlayerGetDamaged.explosion_defence
+                    + damagee.getStrength() * plugin.config.math.onPlayerGetDamaged.explosion_strength;
 
             return (float)(Gradient(max,min) * x + min);
         }
         else{
-            String[] st = plugin.config.math.damaged_by_explosion_function.split(",");
+            String[] st = plugin.config.math.onPlayerGetDamaged.explosion_function.split(",");
             if(st.length > 1){
                 return Helper.eval(Helper.FormatStringWithValues(st,damagee));
             }
@@ -622,15 +676,15 @@ public class PlayerListener implements Listener {
 
     public  float getDamagedByProjectile(RPGPlayer damagee){
 
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.damaged_by_projectile_function)){
-            float max = plugin.config.math.damaged_by_projectile_maximum;
-            float min = plugin.config.math.damaged_by_projectile_minimum;
-            double x = damagee.getDefence() * plugin.config.math.damaged_by_projectile_defence;
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.onPlayerGetDamaged.projectile_function)){
+            float max = plugin.config.math.onPlayerGetDamaged.projectile_maximum;
+            float min = plugin.config.math.onPlayerGetDamaged.projectile_minimum;
+            double x = damagee.getDefence() * plugin.config.math.onPlayerGetDamaged.projectile_defence;
 
             return (float)(Gradient(max,min) * x + min);
         }
         else{
-            String[] st = plugin.config.math.damaged_by_projectile_function.split(",");
+            String[] st = plugin.config.math.onPlayerGetDamaged.projectile_function.split(",");
             if(st.length > 1){
                 return Helper.eval(Helper.FormatStringWithValues(st,damagee));
             }
@@ -642,18 +696,18 @@ public class PlayerListener implements Listener {
 
     public  float getChangeOfRemovingPotionEffect(RPGPlayer damagee){
 
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.reducing_bad_potion_effect_function)){
-            float minChance = plugin.config.math.chance_of_removing_magic_effect_minimum;
-            float maxChance = plugin.config.math.chance_of_removing_magic_effect_maximum;
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.onPlayerGetDamaged.chanceOfRemovingMagicEffect.function)){
+            float minChance = plugin.config.math.onPlayerGetDamaged.chanceOfRemovingMagicEffect.minimum;
+            float maxChance = plugin.config.math.onPlayerGetDamaged.chanceOfRemovingMagicEffect.maximum;
 
             return (float)(Gradient(maxChance,minChance)
-                    * (damagee.getMagicResistance()* plugin.config.math.chance_of_removing_magic_effect_magic_resistance
-                    + damagee.getIntelligence() * plugin.config.math.chance_of_removing_magic_effect_intelligence
-                    + damagee.getDexterity() * plugin.config.math.chance_of_removing_magic_effect_dexterity)
+                    * (damagee.getMagicResistance()* plugin.config.math.onPlayerGetDamaged.chanceOfRemovingMagicEffect.magic_resistance
+                    + damagee.getIntelligence() * plugin.config.math.onPlayerGetDamaged.chanceOfRemovingMagicEffect.intelligence
+                    + damagee.getDexterity() * plugin.config.math.onPlayerGetDamaged.chanceOfRemovingMagicEffect.dexterity)
                     +minChance);
         }
         else{
-            String[] st = plugin.config.math.chance_of_removing_magic_effect_function.split(",");
+            String[] st = plugin.config.math.onPlayerGetDamaged.chanceOfRemovingMagicEffect.function.split(",");
             if(st.length > 1){
                 return Helper.eval(Helper.FormatStringWithValues(st,damagee));
             }
@@ -664,14 +718,14 @@ public class PlayerListener implements Listener {
     }
 
     public  float getReducingPotionEffect(RPGPlayer damagee){
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.reducing_bad_potion_effect_function)){
-            float min = plugin.config.math.reducing_bad_potion_effect_minimum;
-            float max = plugin.config.math.reducing_bad_potion_effect_maximum;
-            float range = plugin.config.math.reducing_bad_potion_effect_range;
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.onPlayerGetDamaged.reducingBadPotionEffect.function)){
+            float min = plugin.config.math.onPlayerGetDamaged.reducingBadPotionEffect.minimum;
+            float max = plugin.config.math.onPlayerGetDamaged.reducingBadPotionEffect.maximum;
+            float range = plugin.config.math.onPlayerGetDamaged.reducingBadPotionEffect.range;
 
             float reduction = (float)Gradient(max,min)
-                    * (damagee.getMagicResistance()* plugin.config.math.reducing_bad_potion_effect_magic_resistance
-                    + damagee.getIntelligence()) * plugin.config.math.reducing_bad_potion_effect_intelligence
+                    * (damagee.getMagicResistance()* plugin.config.math.onPlayerGetDamaged.reducingBadPotionEffect.magic_resistance
+                    + damagee.getIntelligence()) * plugin.config.math.onPlayerGetDamaged.reducingBadPotionEffect.intelligence
                     + min;
 
             float minReduction = reduction < (min - range) ? reduction + range : min;
@@ -679,7 +733,7 @@ public class PlayerListener implements Listener {
             return (float)(reduction + (Math.random() * minReduction));
         }
         else{
-            String[] st = plugin.config.math.reducing_bad_potion_effect_function.split(",");
+            String[] st = plugin.config.math.onPlayerGetDamaged.reducingBadPotionEffect.function.split(",");
             if(st.length > 1){
                 return Helper.eval(Helper.FormatStringWithValues(st,damagee));
             }
@@ -693,14 +747,14 @@ public class PlayerListener implements Listener {
 
     public  float getBowArrowSpeed(RPGPlayer p){
         float result = 0F;
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.on_player_shoot_bow_speed_function)) {
-            result = Gradient(plugin.config.math.on_player_shoot_bow_speed_maximum,plugin.config.math.on_player_shoot_bow_speed_minimum)
-                    * (p.getDexterity() * plugin.config.math.on_player_shoot_bow_speed_dexterity
-                    + p.getStrength() * plugin.config.math.on_player_shoot_bow_speed_strength)
-                    + plugin.config.math.on_player_shoot_bow_speed_minimum;
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.onPlayerShootBow.speed_function)) {
+            result = Gradient(plugin.config.math.onPlayerShootBow.speed_maximum,plugin.config.math.onPlayerShootBow.speed_minimum)
+                    * (p.getDexterity() * plugin.config.math.onPlayerShootBow.speed_dexterity
+                    + p.getStrength() * plugin.config.math.onPlayerShootBow.speed_strength)
+                    + plugin.config.math.onPlayerShootBow.speed_minimum;
         }
         else{
-            String[] st = plugin.config.math.on_player_shoot_bow_speed_function.split(",");
+            String[] st = plugin.config.math.onPlayerShootBow.speed_function.split(",");
             if(st.length > 1){
                 result = Helper.eval(Helper.FormatStringWithValues(st,p));
             }
@@ -709,10 +763,10 @@ public class PlayerListener implements Listener {
             }
         }
 
-        if(plugin.config.math.on_player_shoot_bow_speed_range > 0){
-            result = (float)((result - plugin.config.math.on_player_shoot_bow_speed_range) + Math.random() * (result + plugin.config.math.on_player_shoot_bow_speed_range));
-            if(result < plugin.config.math.on_player_shoot_bow_speed_minimum)result = plugin.config.math.on_player_shoot_bow_speed_minimum;
-            else if(result > plugin.config.math.on_player_shoot_bow_speed_maximum) result = plugin.config.math.on_player_shoot_bow_speed_maximum;
+        if(plugin.config.math.onPlayerShootBow.speed_range > 0){
+            result = (float)((result - plugin.config.math.onPlayerShootBow.speed_range) + Math.random() * (result + plugin.config.math.onPlayerShootBow.speed_range));
+            if(result < plugin.config.math.onPlayerShootBow.speed_minimum)result = plugin.config.math.onPlayerShootBow.speed_minimum;
+            else if(result > plugin.config.math.onPlayerShootBow.speed_maximum) result = plugin.config.math.onPlayerShootBow.speed_maximum;
         }
 
         return result;
@@ -720,13 +774,13 @@ public class PlayerListener implements Listener {
 
     public  float getBowPrecision(RPGPlayer p){
         float result = 1F;
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.on_player_shoot_bow_precision_function)) {
-            if(p.getDexterity() < plugin.config.math.on_player_shoot_bow_precision_min_dexterity) {
-                result = p.getDexterity() / plugin.config.math.on_player_shoot_bow_precision_min_dexterity;
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.onPlayerShootBow.precision_function)) {
+            if(p.getDexterity() < plugin.config.math.onPlayerShootBow.precision_min_dexterity) {
+                result = p.getDexterity() / plugin.config.math.onPlayerShootBow.precision_min_dexterity;
             }
         }
         else{
-            String[] st = plugin.config.math.on_player_shoot_bow_precision_function.split(",");
+            String[] st = plugin.config.math.onPlayerShootBow.precision_function.split(",");
             if(st.length > 1){
                 result = Helper.eval(Helper.FormatStringWithValues(st,p));
             }
@@ -735,8 +789,8 @@ public class PlayerListener implements Listener {
             }
         }
 
-        if(plugin.config.math.on_player_shoot_bow_precision_range > 0){
-            result = (float)((result - plugin.config.math.on_player_shoot_bow_precision_range) + Math.random() * (result + plugin.config.math.on_player_shoot_bow_precision_range));
+        if(plugin.config.math.onPlayerShootBow.precision_range > 0){
+            result = (float)((result - plugin.config.math.onPlayerShootBow.precision_range) + Math.random() * (result + plugin.config.math.onPlayerShootBow.precision_range));
             if(result < 0)result = 0;
             else if(result > 1) result = 1;
         }
@@ -746,19 +800,19 @@ public class PlayerListener implements Listener {
 
     public  float getAttackByWeapon(RPGPlayer damager,double damage){
 
-        float max = plugin.config.math.attack_by_weapon_maximum;
-        float min = plugin.config.math.attack_by_weapon_minimum;
-        float range = plugin.config.math.attack_by_weapon_range;
+        float max = plugin.config.math.onPlayerAttackEntity.attackEntityBy.weapon_maximum;
+        float min = plugin.config.math.onPlayerAttackEntity.attackEntityBy.weapon_minimum;
+        float range = plugin.config.math.onPlayerAttackEntity.attackEntityBy.weapon_range;
 
         float result = 0F;
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.attack_by_weapon_function)) {
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.onPlayerAttackEntity.attackEntityBy.weapon_function)) {
             result = (float)damage * Gradient(max,min) *
-                    (damager.getDexterity() * plugin.config.math.attack_by_weapon_dexterity
-                            +  damager.getStrength() * plugin.config.math.attack_by_weapon_strength)
+                    (damager.getDexterity() * plugin.config.math.onPlayerAttackEntity.attackEntityBy.weapon_dexterity
+                            +  damager.getStrength() * plugin.config.math.onPlayerAttackEntity.attackEntityBy.weapon_strength)
                     + min;
         }
         else{
-            String[] st = plugin.config.math.attack_by_weapon_function.split(",");
+            String[] st = plugin.config.math.onPlayerAttackEntity.attackEntityBy.weapon_function.split(",");
             if(st.length > 1){
                 result = Helper.eval(Helper.FormatStringWithValues(st,damager));
             }
@@ -775,18 +829,18 @@ public class PlayerListener implements Listener {
     }
 
     public  float getAttackByProjectile(RPGPlayer damager, double damage){
-        float max = plugin.config.math.attack_by_projectile_maximum;
-        float min = plugin.config.math.attack_by_projectile_minimum;
-        float range = plugin.config.math.attack_by_projectile_range;
+        float max = plugin.config.math.onPlayerAttackEntity.attackEntityBy.projectile_maximum;
+        float min = plugin.config.math.onPlayerAttackEntity.attackEntityBy.projectile_minimum;
+        float range = plugin.config.math.onPlayerAttackEntity.attackEntityBy.projectile_range;
 
         float result = 0F;
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.attack_by_projectile_function)) {
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.onPlayerAttackEntity.attackEntityBy.projectile_function)) {
             result = (float)damage * (float)Gradient(max,min)
-                    * (damager.getDexterity() * plugin.config.math.attack_by_projectile_dexterity
-                    + damager.getStrength() * plugin.config.math.attack_by_projectile_strength) + min;
+                    * (damager.getDexterity() * plugin.config.math.onPlayerAttackEntity.attackEntityBy.projectile_dexterity
+                    + damager.getStrength() * plugin.config.math.onPlayerAttackEntity.attackEntityBy.projectile_strength) + min;
         }
         else{
-            String[] st = plugin.config.math.attack_by_projectile_function.split(",");
+            String[] st = plugin.config.math.onPlayerAttackEntity.attackEntityBy.projectile_function.split(",");
             if(st.length > 1){
                 result = Helper.eval(Helper.FormatStringWithValues(st,damager));
             }
@@ -803,18 +857,18 @@ public class PlayerListener implements Listener {
     }
 
     public  float getAttackByPotion(RPGPlayer damager, double damage){
-        float max = plugin.config.math.attack_by_potion_maximum;
-        float min = plugin.config.math.attack_by_potion_minimum;
-        float range = plugin.config.math.attack_by_potion_range;
+        float max = plugin.config.math.onPlayerAttackEntity.attackEntityBy.potion_maximum;
+        float min = plugin.config.math.onPlayerAttackEntity.attackEntityBy.potion_minimum;
+        float range = plugin.config.math.onPlayerAttackEntity.attackEntityBy.potion_range;
 
         float result = 0F;
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.attack_by_potion_function)) {
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.onPlayerAttackEntity.attackEntityBy.potion_function)) {
             result = (float)damage * Gradient(max,min)
-                    * (damager.getDexterity() * plugin.config.math.attack_by_potion_dexterity
-                    + damager.getIntelligence() * plugin.config.math.attack_by_potion_intelligence) + min;
+                    * (damager.getDexterity() * plugin.config.math.onPlayerAttackEntity.attackEntityBy.potion_dexterity
+                    + damager.getIntelligence() * plugin.config.math.onPlayerAttackEntity.attackEntityBy.potion_intelligence) + min;
         }
         else{
-            String[] st = plugin.config.math.attack_by_potion_function.split(",");
+            String[] st = plugin.config.math.onPlayerAttackEntity.attackEntityBy.potion_function.split(",");
             if(st.length > 1){
                 result = Helper.eval(Helper.FormatStringWithValues(st,damager));
             }
@@ -834,18 +888,18 @@ public class PlayerListener implements Listener {
 
     public  float getConsumedPotionMultiplier(RPGPlayer p){
 
-        float max = plugin.config.math.on_player_consume_potion_maximum;
-        float min = plugin.config.math.on_player_consume_potion_minimum;
-        float range = plugin.config.math.on_player_consume_potion_range;
+        float max = plugin.config.math.onPlayerConsumePotion.maximum;
+        float min = plugin.config.math.onPlayerConsumePotion.minimum;
+        float range = plugin.config.math.onPlayerConsumePotion.range;
 
         float result = 0F;
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.on_player_consume_potion_function)) {
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.onPlayerConsumePotion.function)) {
             result = (float)Gradient(max,min)
-                    * (p.getIntelligence() * plugin.config.math.on_player_consume_potion_intelligence)
+                    * (p.getIntelligence() * plugin.config.math.onPlayerConsumePotion.intelligence)
                     + min;
         }
         else{
-            String[] st = plugin.config.math.on_player_consume_potion_function.split(",");
+            String[] st = plugin.config.math.onPlayerConsumePotion.function.split(",");
             if(st.length > 1){
                 result = Helper.eval(Helper.FormatStringWithValues(st,p));
             }
@@ -866,13 +920,13 @@ public class PlayerListener implements Listener {
     //PLAYER ATTRIBUTES
 
     public static float getPlayerMaxHealth(RPGPlayer p){
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.attribute_total_health_function)) {
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.playerAttributes.total_health_function)) {
             return (float)Gradient(p.getRpgRace().getMax_health(), p.getRpgRace().getBase_health())
-                    * p.getHealth() * plugin.config.math.attribute_total_health_health
+                    * p.getHealth() * plugin.config.math.playerAttributes.total_health_health
                     + p.getRpgRace().getBase_health();
         }
         else{
-            String[] st = plugin.config.math.attribute_total_health_function.split(",");
+            String[] st = plugin.config.math.playerAttributes.total_health_function.split(",");
             if(st.length > 1){
                 return Helper.eval(Helper.FormatStringWithValues(st,p));
             }
@@ -883,13 +937,13 @@ public class PlayerListener implements Listener {
     }
 
     public static float getPlayerMaxMana(RPGPlayer p){
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.attribute_total_mana_function)) {
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.playerAttributes.total_mana_function)) {
             return (float) Gradient(p.getRpgRace().getMax_mana(), p.getRpgRace().getBase_mana())
-                    * p.getIntelligence() * plugin.config.math.attribute_total_mana_intelligence
+                    * p.getIntelligence() * plugin.config.math.playerAttributes.total_mana_intelligence
                     + p.getRpgRace().getBase_mana();
         }
         else{
-            String[] st = plugin.config.math.attribute_total_mana_function.split(",");
+            String[] st = plugin.config.math.playerAttributes.total_mana_function.split(",");
             if(st.length > 1){
                 return Helper.eval(Helper.FormatStringWithValues(st,p));
             }
@@ -900,13 +954,13 @@ public class PlayerListener implements Listener {
     }
 
     public static float getPlayerManaRegen(RPGPlayer p){
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.attribute_mana_regen_function)) {
-            return (float)Gradient(plugin.config.math.attribute_mana_regen_maximum,plugin.config.math.attribute_mana_regen_minimum)
-                    * p.getIntelligence() * plugin.config.math.attribute_mana_regen_intelligence
-                    + plugin.config.math.attribute_mana_regen_minimum;
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.playerAttributes.mana_regen_function)) {
+            return (float)Gradient(plugin.config.math.playerAttributes.mana_regen_maximum,plugin.config.math.playerAttributes.mana_regen_minimum)
+                    * p.getIntelligence() * plugin.config.math.playerAttributes.mana_regen_intelligence
+                    + plugin.config.math.playerAttributes.mana_regen_minimum;
         }
         else{
-            String[] st = plugin.config.math.attribute_mana_regen_function.split(",");
+            String[] st = plugin.config.math.playerAttributes.mana_regen_function.split(",");
             if(st.length > 1){
                 return Helper.eval(Helper.FormatStringWithValues(st,p));
             }
@@ -917,15 +971,15 @@ public class PlayerListener implements Listener {
     }
 
     public static float getPlayerAttackSpeed(RPGPlayer p){
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.attribute_attack_speed_function)) {
-            return (float)(Gradient(plugin.config.math.attribute_attack_speed_maximum,plugin.config.math.attribute_attack_speed_minimum)
-                    * (p.getAgility() * plugin.config.math.attribute_attack_speed_agility
-                    + p.getDexterity() * plugin.config.math.attribute_attack_speed_dexterity
-                    + p.getStrength() * plugin.config.math.attribute_attack_speed_strength)
-                    + plugin.config.math.attribute_attack_speed_minimum);
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.playerAttributes.attack_speed_function)) {
+            return (float)(Gradient(plugin.config.math.playerAttributes.attack_speed_maximum,plugin.config.math.playerAttributes.attack_speed_minimum)
+                    * (p.getAgility() * plugin.config.math.playerAttributes.attack_speed_agility
+                    + p.getDexterity() * plugin.config.math.playerAttributes.attack_speed_dexterity
+                    + p.getStrength() * plugin.config.math.playerAttributes.attack_speed_strength)
+                    + plugin.config.math.playerAttributes.attack_speed_minimum);
         }
         else{
-            String[] st = plugin.config.math.attribute_attack_speed_function.split(",");
+            String[] st = plugin.config.math.playerAttributes.attack_speed_function.split(",");
             if(st.length > 1){
                 return Helper.eval(Helper.FormatStringWithValues(st,p));
             }
@@ -936,14 +990,14 @@ public class PlayerListener implements Listener {
     }
 
     public static float getPlayerMovementSpeed(RPGPlayer p){
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.attribute_movement_speed_function)) {
-            return Gradient(plugin.config.math.attribute_movement_speed_maximum,plugin.config.math.attribute_movement_speed_minimum)
-                    * (p.getAgility() * plugin.config.math.attribute_movement_speed_agility
-                    + p.getDexterity() * plugin.config.math.attribute_movement_speed_dexterity)
-                    + plugin.config.math.attribute_movement_speed_minimum;
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.playerAttributes.movement_speed_function)) {
+            return Gradient(plugin.config.math.playerAttributes.movement_speed_maximum,plugin.config.math.playerAttributes.movement_speed_minimum)
+                    * (p.getAgility() * plugin.config.math.playerAttributes.movement_speed_agility
+                    + p.getDexterity() * plugin.config.math.playerAttributes.movement_speed_dexterity)
+                    + plugin.config.math.playerAttributes.movement_speed_minimum;
         }
         else{
-            String[] st = plugin.config.math.attribute_movement_speed_function.split(",");
+            String[] st = plugin.config.math.playerAttributes.movement_speed_function.split(",");
             if(st.length > 1){
                 return Helper.eval(Helper.FormatStringWithValues(st,p));
             }
@@ -954,15 +1008,15 @@ public class PlayerListener implements Listener {
     }
 
     public static float getPlayerKnockbackResistance(RPGPlayer p){
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.attribute_knockback_resistance_function)) {
-            return (float)Gradient(plugin.config.math.attribute_knockback_resistance_maximum,plugin.config.math.attribute_knockback_resistance_minimum)
-                    * (p.getStrength() * plugin.config.math.attribute_knockback_resistance_strength
-                    + p.getDefence() * plugin.config.math.attribute_knockback_resistance_defence
-                    + p.getDexterity() * plugin.config.math.attribute_knockback_resistance_dexterity
-                    + p.getAgility() * plugin.config.math.attribute_knockback_resistance_agility);
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.playerAttributes.knockback_resistance_function)) {
+            return (float)Gradient(plugin.config.math.playerAttributes.knockback_resistance_maximum,plugin.config.math.playerAttributes.knockback_resistance_minimum)
+                    * (p.getStrength() * plugin.config.math.playerAttributes.knockback_resistance_strength
+                    + p.getDefence() * plugin.config.math.playerAttributes.knockback_resistance_defence
+                    + p.getDexterity() * plugin.config.math.playerAttributes.knockback_resistance_dexterity
+                    + p.getAgility() * plugin.config.math.playerAttributes.knockback_resistance_agility);
         }
         else{
-            String[] st = plugin.config.math.attribute_knockback_resistance_function.split(",");
+            String[] st = plugin.config.math.playerAttributes.knockback_resistance_function.split(",");
             if(st.length > 1){
                 return Helper.eval(Helper.FormatStringWithValues(st,p));
             }
@@ -973,14 +1027,14 @@ public class PlayerListener implements Listener {
     }
 
     public static float getPlayerLuck(RPGPlayer p){
-        if(Helper.StringIsNullOrEmpty(plugin.config.math.attribute_luck_function)) {
-            return (float)Gradient(plugin.config.math.attribute_luck_maximum,plugin.config.math.attribute_luck_minimum)
-                    * (p.getAgility() * plugin.config.math.attribute_luck_agility
-                    + p.getIntelligence() * plugin.config.math.attribute_luck_intelligence
-                    + p.getDexterity() * plugin.config.math.attribute_luck_dexterity);
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.playerAttributes.luck_function)) {
+            return (float)Gradient(plugin.config.math.playerAttributes.luck_maximum,plugin.config.math.playerAttributes.luck_minimum)
+                    * (p.getAgility() * plugin.config.math.playerAttributes.luck_agility
+                    + p.getIntelligence() * plugin.config.math.playerAttributes.luck_intelligence
+                    + p.getDexterity() * plugin.config.math.playerAttributes.luck_dexterity);
         }
         else{
-            String[] st = plugin.config.math.attribute_luck_function.split(",");
+            String[] st = plugin.config.math.playerAttributes.luck_function.split(",");
             if(st.length > 1){
                 return Helper.eval(Helper.FormatStringWithValues(st,p));
             }

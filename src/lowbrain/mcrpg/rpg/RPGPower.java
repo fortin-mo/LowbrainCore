@@ -3,6 +3,7 @@ package lowbrain.mcrpg.rpg;
 import lowbrain.mcrpg.commun.Helper;
 import lowbrain.mcrpg.main.PlayerListener;
 import lowbrain.mcrpg.rpg.RPGPlayer;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -185,7 +186,7 @@ public class RPGPower {
             p.apply(to.getPlayer());
             return true;
         }catch (Exception e){
-
+            from.SendMessage("Failed to cast " + this.name, ChatColor.RED);
         }
         return false;
     }

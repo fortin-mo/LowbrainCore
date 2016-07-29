@@ -1,6 +1,6 @@
 package lowbrain.mcrpg.rpg;
-
 import lowbrain.mcrpg.commun.Config;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -9,6 +9,9 @@ import org.bukkit.entity.Player;
 
 import lowbrain.mcrpg.main.PlayerListener;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +32,7 @@ public class RPGPlayer {
 	private int lvl = 0;
 	private int kills = 0;
 	private int deaths = 0;
-	private float mana = 0;
+	private float maxMana = 0;
 	private float currentMana = 0;
 	private BukkitTask manaRegenTask = null;
 	private RPGClass rpgClass = null;
@@ -37,6 +40,9 @@ public class RPGPlayer {
 	private String raceName = "";
 	private boolean raceIsSet = false;
 	private int agility = 0;
+	private boolean showStats = true;
+
+	private Scoreboard scoreboard;
 
 	//========================================================= CONSTRUCTOR====================================
 	/**
@@ -47,12 +53,46 @@ public class RPGPlayer {
 		player = p;
 		InitialisePlayer();
 	}
-	
+
+	private void initialiseScoreBoard(){
+		if(showStats) {
+			scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+			//Objective objectiveLevel = scoreboard.registerNewObjective("Level","dummy");
+			//objectiveLevel.setDisplayName("LeveL ");
+			//objectiveLevel.setDisplaySlot(DisplaySlot.BELOW_NAME);
+
+			Objective objectiveInfo = scoreboard.registerNewObjective("Info", "dummy");
+			objectiveInfo.setDisplayName("Info");
+			objectiveInfo.setDisplaySlot(DisplaySlot.SIDEBAR);
+
+			this.getPlayer().setScoreboard(scoreboard);
+		}
+	}
+
+	public void showScoreBoard(boolean show){
+
+	}
+
+	private void refreshScoreBoard(){
+		if(scoreboard != null && showStats){
+			Objective info = scoreboard.getObjective("Info");
+			info.getScore(ChatColor.GREEN + "CURRENT MANA: ").setScore((int)this.currentMana);
+			info.getScore(ChatColor.GREEN + "MANA %: ").setScore((int)(this.currentMana / this.maxMana * 100));
+			info.getScore(ChatColor.GREEN + "LEVEL: ").setScore(this.lvl);
+			info.getScore(ChatColor.GREEN + "XP: ").setScore((int)this.experience);
+			info.getScore(ChatColor.GREEN + "NEXT LEVEL IN: ").setScore((int)(this.nextLvl - this.experience));
+			info.getScore(ChatColor.GREEN + "POINTS: ").setScore(this.points);
+			info.getScore(ChatColor.GREEN + "KILLS: ").setScore(this.kills);
+
+			Objective level = scoreboard.getObjective("Level");
+			//level.getScore(this.getPlayer()).setScore(this.lvl);
+		}
+	}
+
 	/**
 	 * read player config yml to initialize current player
 	 */
 	private void InitialisePlayer(){
-		
 		if(PlayerListener.plugin == null){
 			return;
 		}
@@ -78,6 +118,7 @@ public class RPGPlayer {
 			playerData.set("stats.intelligence", 0);
 			playerData.set("stats.dexterity", 0);
 			playerData.set("stats.defence", 0);
+			playerData.set("stats.agility",0);
 			playerData.set("stats.magic_resistance", 0);
 			playerData.set("stats.points", getSettings().starting_points);
 			playerData.set("stats.experience", 0);
@@ -85,7 +126,10 @@ public class RPGPlayer {
 			playerData.set("stats.kills",0);
 			playerData.set("stats.deaths",0);
 			playerData.set("stats.current_mana",0);
-			playerData.set("stats.agility",0);
+
+			playerData.createSection("settings");
+			playerData.set("settings.show_stats",true);
+
 			try {
 				playerData.save(f);
 			} catch (IOException e) {
@@ -111,15 +155,19 @@ public class RPGPlayer {
 		deaths = playerData.getInt("stats.deaths");
 		currentMana = (float)playerData.getDouble("stats.current_mana");
 		agility = playerData.getInt("stats.agility");
+		showStats = playerData.getBoolean("settings.show_stats");
 
 		this.rpgClass = new RPGClass(className);
 		this.rpgRace = new RPGRace(raceName);
+
+		initialiseScoreBoard();
 
 		AttributeHasChanged();
 		setDisplayName();
 		StartManaRegenTask();
 
 	}
+
 	//==========================================================END OF CONSTRUCTOR=============================
 
 	//====================================================== USEFULL ==========================================
@@ -154,7 +202,7 @@ public class RPGPlayer {
 
 			double distance = Math.sqrt(x*x + y*y + z*z);
 
-			if(powa.getMana() < distance){
+			if(powa.getCast_range() < distance){
 				SendMessage("The player is to far away ! Range : " + powa.getCast_range() + "/" + distance);
 				return false;
 			}
@@ -169,12 +217,13 @@ public class RPGPlayer {
 			return false;
 		}
 		if(this.currentMana < powa.getMana()){
-			SendMessage("Insufficient mana ! " + powa.getMana() + "/" + this.currentMana);
+			SendMessage("Insufficient maxMana ! " + powa.getMana() + "/" + this.currentMana);
 			return false;
 		}
 
 		this.currentMana -= powa.getMana();
-		return powa.Cast(this,to);
+		refreshScoreBoard();
+		return powa.Cast(this,to == null ? this : to);
 	}
 	
 	/**
@@ -199,13 +248,16 @@ public class RPGPlayer {
             playerData.set("stats.dexterity", this.dexterity);
 			playerData.set("stats.magic_resistance",this.magicResistance);
             playerData.set("stats.defence", this.defence);
+			playerData.set("stats.agility",agility);
             playerData.set("stats.points", this.points);
             playerData.set("stats.experience", this.experience);
 			playerData.set("stats.next_lvl", this.nextLvl);
 			playerData.set("stats.kills",kills);
 			playerData.set("stats.deaths",deaths);
 			playerData.set("stats.current_mana", currentMana);
-			playerData.set("stats.agility",agility);
+
+			playerData.set("settings.show_stats",showStats);
+
             
             playerData.save(f);
 		} catch (Exception e) {
@@ -237,7 +289,7 @@ public class RPGPlayer {
 			setDisplayName();
 		}
 		player.setHealth(player.getMaxHealth()); //restore health on level up
-		this.currentMana = this.mana;//restore mana on level up
+		this.currentMana = this.maxMana;//restore maxMana on level up
 		SendMessage("LEVEL UP !!!! You are now lvl " + this.lvl);
 	}
 
@@ -296,6 +348,7 @@ public class RPGPlayer {
 	 */
 	public void addExp(double exp){
 		this.experience += exp;
+		refreshScoreBoard();
 		if(this.experience >= nextLvl){
 			this.levelUP();
 		}
@@ -368,7 +421,7 @@ public class RPGPlayer {
 			if(callChange)AttributeHasChanged();
 		}
 		else{
-			this.ErrorMessageNotEnoughPoints();
+			this.errorMessageNotEnoughPoints();
 			return;
 		}
 	}
@@ -430,7 +483,7 @@ public class RPGPlayer {
 			if(callChange)AttributeHasChanged();
 		}
 		else{
-			this.ErrorMessageNotEnoughPoints();
+			this.errorMessageNotEnoughPoints();
 			return;
 		}
 	}
@@ -490,7 +543,7 @@ public class RPGPlayer {
 			if(callChange)AttributeHasChanged();
 		}
 		else{
-			this.ErrorMessageNotEnoughPoints();
+			this.errorMessageNotEnoughPoints();
 			return;
 		}
 	}
@@ -549,7 +602,7 @@ public class RPGPlayer {
 			if(callChange)AttributeHasChanged();
 		}
 		else{
-			this.ErrorMessageNotEnoughPoints();
+			this.errorMessageNotEnoughPoints();
 			return;
 		}
 	}
@@ -609,7 +662,7 @@ public class RPGPlayer {
 			if(callChange)AttributeHasChanged();
 		}
 		else{
-			this.ErrorMessageNotEnoughPoints();
+			this.errorMessageNotEnoughPoints();
 			return;
 		}
 	}
@@ -669,7 +722,7 @@ public class RPGPlayer {
 			if(callChange)AttributeHasChanged();
 		}
 		else{
-			this.ErrorMessageNotEnoughPoints();
+			this.errorMessageNotEnoughPoints();
 			return;
 		}
 	}
@@ -728,7 +781,7 @@ public class RPGPlayer {
 			if(callChange)AttributeHasChanged();
 		}
 		else{
-			this.ErrorMessageNotEnoughPoints();
+			this.errorMessageNotEnoughPoints();
 			return;
 		}
 	}
@@ -948,7 +1001,7 @@ public class RPGPlayer {
 			s += "Attack speed : " + this.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_SPEED).getBaseValue()+ "\n";
 			s += "Movement speed : " + this.getPlayer().getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue()+ "\n";
 			s += "Mana regen : " + PlayerListener.getPlayerManaRegen(this)+ "\n";
-			s += "Max mana : " + this.getMana()+ "\n";
+			s += "Max maxMana : " + this.getMaxMana()+ "\n";
 			s += "Max health : " + this.getPlayer().getMaxHealth()+ "\n";
 			s += "Luck : " + this.getPlayer().getAttribute(Attribute.GENERIC_LUCK).getBaseValue()+ "\n";
 			s += "Knockback resistance : " + this.getPlayer().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getBaseValue()+ "\n";
@@ -1039,8 +1092,8 @@ public class RPGPlayer {
 		return lvl;
 	}
 
-	public float getMana() {
-		return mana;
+	public float getMaxMana() {
+		return maxMana;
 	}
 
 	public float getCurrentMana() {
@@ -1064,19 +1117,19 @@ public class RPGPlayer {
 	//============================================PRIVATE MEHODES FOR PLAYER ATTRIBUTES======================
 
 	private void setAttackSpeed(){
-		if(getSettings().math.attribute_attack_speed_enable) {
+		if(getSettings().math.playerAttributes.attack_speed_enable) {
 			this.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(PlayerListener.getPlayerAttackSpeed(this));
 		}
 	}
 
 	private void setKnockBackResistance(){
-		if(getSettings().math.attribute_knockback_resistance_enable) {
+		if(getSettings().math.playerAttributes.knockback_resistance_enable) {
 			this.getPlayer().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(PlayerListener.getPlayerKnockbackResistance(this));
 		}
 	}
 
 	private void setMovementSpeed(){
-		if(getSettings().math.attribute_movement_speed_enable){
+		if(getSettings().math.playerAttributes.movement_speed_enable){
 			//this.getPlayer().getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)
 			this.getPlayer().setWalkSpeed(PlayerListener.getPlayerMovementSpeed(this));
 		}
@@ -1087,19 +1140,19 @@ public class RPGPlayer {
 	 * set player maximum health based on rpg player health points
 	 */
 	private void setPlayerMaxHealth(){
-		if(getSettings().math.attribute_total_health_enable) {
+		if(getSettings().math.playerAttributes.total_health_enable) {
 			this.getPlayer().setMaxHealth(PlayerListener.getPlayerMaxHealth(this));
 		}
 	}
 
 	/**
-	 * reset player mana
+	 * reset player maxMana
 	 */
 	private void setMana() {
-		if(getSettings().math.attribute_total_mana_enable) {
-			this.mana = PlayerListener.getPlayerMaxMana(this);
+		if(getSettings().math.playerAttributes.total_mana_enable) {
+			this.maxMana = PlayerListener.getPlayerMaxMana(this);
 		}
-		//this.mana = (float)Gradient(this.rpgRace.getMax_mana(),this.rpgRace.getBase_mana())
+		//this.maxMana = (float)Gradient(this.rpgRace.getMax_mana(),this.rpgRace.getBase_mana())
 		//		* this.intelligence * getSettings().math.attribute_total_mana_intelligence
 		//		+ this.rpgRace.getBase_mana();
 	}
@@ -1117,7 +1170,7 @@ public class RPGPlayer {
 	}
 
 	private void setLuck(){
-		if(getSettings().math.attribute_luck_enable){
+		if(getSettings().math.playerAttributes.luck_enable){
 			this.getPlayer().getAttribute(Attribute.GENERIC_LUCK).setBaseValue(PlayerListener.getPlayerLuck(this));
 		}
 	}
@@ -1137,33 +1190,35 @@ public class RPGPlayer {
 			setKnockBackResistance();
 			setAttackSpeed();
 			setMovementSpeed();
+			refreshScoreBoard();
 		}
 	}
 
 	/**
 	 * send error message to current player
 	 */
-	private void ErrorMessageNotEnoughPoints(){
+	private void errorMessageNotEnoughPoints(){
 		SendMessage("Not enough points !");
 		SendMessage("You currently have " + this.points + " points");
 	}
 
 	/**
-	 * regenerate player mana based on player intelligence
+	 * regenerate player maxMana based on player intelligence
      */
 	private void RegenMana(){
-		if(currentMana == mana){
+		if(currentMana == maxMana){
 			return;
 		}
-		if(getSettings().math.attribute_mana_regen_enable){
+		if(getSettings().math.playerAttributes.mana_regen_enable){
 			float regen = PlayerListener.getPlayerManaRegen(this);
 			this.currentMana += regen;
-			if(this.currentMana > mana)this.currentMana = mana;
+			if(this.currentMana > maxMana)this.currentMana = maxMana;
+			refreshScoreBoard();
 		}
 	}
 
 	/**
-	 * start a new mana regeneration task on the server
+	 * start a new maxMana regeneration task on the server
      */
 	private void StartManaRegenTask(){
 		this.manaRegenTask = PlayerListener.plugin.getServer().getScheduler().runTaskTimer(PlayerListener.plugin, new Runnable() {
@@ -1173,11 +1228,11 @@ public class RPGPlayer {
 			}
 		}, 0, getSettings().mana_regen_interval * 20);
 
-		PlayerListener.plugin.debugMessage("Start regen mana task !");
+		PlayerListener.plugin.debugMessage("Start regen maxMana task !");
 	}
 
 	/**
-	 * stop mana regeneration task on server
+	 * stop maxMana regeneration task on server
      */
 	private void StopManaRegenTask(){
 		if (PlayerListener.plugin != null && this.manaRegenTask != null){
@@ -1282,6 +1337,7 @@ public class RPGPlayer {
 		
 		AttributeHasChanged();
 	}
+
 
 	//===============================================END OF PRIVATE METHODES HELPER===============================
 	
