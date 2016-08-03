@@ -1,8 +1,7 @@
 package lowbrain.mcrpg.rpg;
 
 import lowbrain.mcrpg.commun.Helper;
-import lowbrain.mcrpg.main.PlayerListener;
-import lowbrain.mcrpg.rpg.RPGPlayer;
+import lowbrain.mcrpg.events.PlayerListener;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.potion.PotionEffect;
@@ -82,10 +81,9 @@ public class RPGPower {
     private int getCastDuration(RPGPlayer from){
         float result = 0F;
         if(Helper.StringIsNullOrEmpty(duration_function)) {
-            result =  (float)(PlayerListener.Gradient(maximum_duration,minimum_duration)
-                    * (from.getIntelligence() * duration_intelligence
-                    + from.getDexterity() * duration_dexterity)
-                    + minimum_duration);
+            result =  PlayerListener.ValueFromFunction(maximum_duration,minimum_duration,
+                    (from.getIntelligence() * duration_intelligence
+                    + from.getDexterity() * duration_dexterity));
         }
         else{
             String[] st = duration_function.split(",");
@@ -98,7 +96,7 @@ public class RPGPower {
         }
         
         if(duration_range > 0){
-            result = (float)((result - duration_range) + (Math.random() * (result + duration_range)));
+            result = Helper.randomFloat(result + duration_range,result - duration_range);
             if(result < minimum_duration)result = minimum_duration;
             else if(result > maximum_duration) result = maximum_duration;
         }
@@ -109,10 +107,9 @@ public class RPGPower {
     private int getCastAmplifier(RPGPlayer from){
         float result = 0F;
         if(Helper.StringIsNullOrEmpty(amplifier_function)) {
-            result =  (float)(PlayerListener.Gradient(maximum_amplifier,minimum_amplifier)
-                    * (from.getIntelligence() * amplifier_intelligence
-                    + from.getDexterity() * amplifier_dexterity)
-                    + minimum_amplifier);
+            result = PlayerListener.ValueFromFunction(maximum_amplifier,minimum_amplifier,
+                    (from.getIntelligence() * amplifier_intelligence
+                    + from.getDexterity() * amplifier_dexterity));
         }
         else{
             String[] st = amplifier_function.split(",");
@@ -125,7 +122,7 @@ public class RPGPower {
         }
 
         if(amplifier_range > 0){
-            result = (float)((result - amplifier_range) + (Math.random() * (result + amplifier_range)));
+            result = Helper.randomFloat(result+amplifier_range,result-amplifier_range);
             if(result < minimum_amplifier)result = minimum_amplifier;
             else if(result > maximum_amplifier) result = maximum_amplifier;
         }

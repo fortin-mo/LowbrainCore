@@ -1,13 +1,17 @@
 package lowbrain.mcrpg.rpg;
 import lowbrain.mcrpg.commun.Config;
+import lowbrain.mcrpg.main.Main;
+import net.minecraft.server.v1_10_R1.PlayerList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import lowbrain.mcrpg.main.PlayerListener;
+import lowbrain.mcrpg.events.PlayerListener;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -15,6 +19,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 public class RPGPlayer {
 	private Player player;
@@ -173,6 +178,112 @@ public class RPGPlayer {
 	//====================================================== USEFULL ==========================================
 
 	/**
+	 * return 0 if equals, -1 if lower or not equals, +1 if higher
+	 * @param n name of the attribute
+	 * @param v value to compare
+     * @return
+     */
+	public int compareAttributesByName(String n, Object v){
+		try {
+			int v1 = -1;
+			int v2 = -1;
+
+			switch (n.toLowerCase()){
+				case "strength":
+					v1 = this.getStrength();
+					v2 = (int)v;
+					break;
+				case "intelligence":
+					v1 = this.getIntelligence();
+					v2 = (int)v;
+					break;
+				case "dexterity":
+					v1 = this.getDexterity();
+					v2 = (int)v;
+					break;
+				case "defence":
+					v1 = this.getDefence();
+					v2 = (int)v;
+					break;
+				case "agility":
+					v1 = this.getAgility();
+					v2 = (int)v;
+					break;
+				case "magic_resistance":
+					v1 = this.getMagicResistance();
+					v2 = (int)v;
+					break;
+				case "health":
+					v1 = this.getHealth();
+					v2 = (int)v;
+					break;
+				case "level":
+				case "lvl":
+					v1 = this.getLvl();
+					v2 = (int)v;
+					break;
+				case "class":
+					if(this.getRpgClass() != null){
+						return this.getRpgClass().getName().equals(v) ? 0 : -1;
+					}else return -1;
+				case "race":
+					if(this.getRpgRace() != null){
+						return this.getRpgRace().getName().equals(v) ? 0 : -1;
+					}else return -1;
+				case "kills":
+					v1 = this.getKills();
+					v2 = (int)v;
+					break;
+				default:
+					return -1;
+			}
+
+			return v1-v2;
+
+		}catch (Exception e){
+			e.printStackTrace();
+			return -1;
+		}
+
+	}
+
+	/**
+	 * can this player wear a specific set of armor
+	 * @param a
+	 * @return
+     */
+	public boolean canWeakArmor(ItemStack a){
+		if(a == null) return true;
+
+		String name = "";
+
+		if(a.getItemMeta().getDisplayName() != null){//custom items
+			name = a.getItemMeta().getDisplayName().substring(2);
+		}else{//vanilla items
+			name = a.getType().name();
+		}
+
+		Main.ItemRequirements i = PlayerListener.plugin.itemsRequirements.get(name);
+
+		if(i == null)return true;
+
+		PlayerListener.plugin.debugMessage("Testing armor set :" + name);
+		for(Map.Entry<String, Integer> r : i.getRequirements().entrySet()) {
+			String n = r.getKey().toLowerCase();
+			int v = r.getValue();
+
+			PlayerListener.plugin.debugMessage("Testing attributes :" + n + "with value of " + Integer.toString(v));
+
+
+			if(this.compareAttributesByName(n,v) < 0){
+				return false;
+			}
+
+		}
+		return true;
+	}
+
+	/**
 	 * cast a spell
 	 * @param name name of the spell
 	 * @param to rpgPlayer you wish to cast the spell to.. if null will cast to self
@@ -277,8 +388,7 @@ public class RPGPlayer {
 	 * level up add one level... increment player points
 	 */
 	public void levelUP(){
-		double maxLevel = getSettings().max_lvl;
-		if((maxLevel < 0 || this.lvl < maxLevel)){
+		if((getSettings().max_lvl < 0 || this.lvl <  getSettings().max_lvl)){
 			this.lvl += 1;
 
 			AddBonusAttributes(1);
@@ -287,10 +397,12 @@ public class RPGPlayer {
 			double lvlExponential = getSettings().math.next_lvl_multiplier;
 			this.nextLvl += this.nextLvl * lvlExponential;
 			setDisplayName();
+
+			player.setHealth(player.getMaxHealth()); //restore health on level up
+			this.currentMana = this.maxMana;//restore maxMana on level up
+			SendMessage("LEVEL UP !!!! You are now lvl " + this.lvl);
+			this.getPlayer().getWorld().playSound(this.getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,0);
 		}
-		player.setHealth(player.getMaxHealth()); //restore health on level up
-		this.currentMana = this.maxMana;//restore maxMana on level up
-		SendMessage("LEVEL UP !!!! You are now lvl " + this.lvl);
 	}
 
 	public void reset(String c, String r){

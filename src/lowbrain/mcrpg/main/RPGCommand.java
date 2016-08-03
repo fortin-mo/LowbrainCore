@@ -1,5 +1,6 @@
 package lowbrain.mcrpg.main;
 
+import lowbrain.mcrpg.commun.Helper;
 import lowbrain.mcrpg.rpg.RPGClass;
 import lowbrain.mcrpg.rpg.RPGPlayer;
 import lowbrain.mcrpg.rpg.RPGRace;
@@ -156,7 +157,7 @@ public class RPGCommand implements CommandExecutor{
 							}
 							else if(args[1].equalsIgnoreCase("rdm") || args[1].equalsIgnoreCase("random")){
 								int max = plugin.classesConfig.getKeys(false).size() - 1;
-								int rdm = 0 + ((int)Math.random() * max);
+								int rdm = Helper.randomInt(max,0);
 								rp.setClass((String)plugin.classesConfig.getKeys(false).toArray()[rdm],false);
 							}
 							else{
@@ -171,7 +172,7 @@ public class RPGCommand implements CommandExecutor{
 							}
 							else if(args[1].equalsIgnoreCase("rdm") || args[1].equalsIgnoreCase("random")){
 								int max = plugin.racesConfig.getKeys(false).size() - 1;
-								int rdm = 0 + ((int)Math.random() * max);
+								int rdm = Helper.randomInt(max,0);
 								rp.setRace((String)plugin.racesConfig.getKeys(false).toArray()[rdm],false);
 							}
 							else{

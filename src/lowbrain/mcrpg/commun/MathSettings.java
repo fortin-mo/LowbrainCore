@@ -14,6 +14,7 @@ public class MathSettings {
     public float level_difference_multiplier;
     public float killer_base_exp;
     public boolean player_kills_player_exp_enable;
+    public int function_type;
 
     public onPlayerConsumePotion onPlayerConsumePotion;
     public onPlayerGetDamaged onPlayerGetDamaged;
@@ -23,18 +24,19 @@ public class MathSettings {
 
     public MathSettings(FileConfiguration config) {
 
-        this.next_lvl_multiplier = (float)config.getDouble("settings.maths.next_lvl_multiplier");
-        this.natural_xp_gain_multiplier = (float)config.getDouble("settings.maths.natural_xp_gain_multiplier");
-        this.killer_level_gain_multiplier = (float)config.getDouble("settings.maths.on_player_kills_player.killer_level_gain_multiplier");
-        this.level_difference_multiplier = (float)config.getDouble("settings.maths.on_player_kills_player.level_difference_multiplier");
-        this.killer_base_exp = (float)config.getDouble("settings.maths.on_player_kills_player.killer_base_exp");
-        this.player_kills_player_exp_enable = config.getBoolean("settings.maths.on_player_kills_player.enable");
+        this.function_type = config.getInt("maths.function_type");
+        this.next_lvl_multiplier = (float)config.getDouble("maths.next_lvl_multiplier");
+        this.natural_xp_gain_multiplier = (float)config.getDouble("maths.natural_xp_gain_multiplier");
+        this.killer_level_gain_multiplier = (float)config.getDouble("maths.on_player_kills_player.killer_level_gain_multiplier");
+        this.level_difference_multiplier = (float)config.getDouble("maths.on_player_kills_player.level_difference_multiplier");
+        this.killer_base_exp = (float)config.getDouble("maths.on_player_kills_player.killer_base_exp");
+        this.player_kills_player_exp_enable = config.getBoolean("maths.on_player_kills_player.enable");
 
-        onPlayerAttackEntity = new onPlayerAttackEntity(config.getConfigurationSection("settings.maths.on_player_attack_entity"));
-        onPlayerConsumePotion = new onPlayerConsumePotion(config.getConfigurationSection("settings.maths.on_player_consume_potion"));
-        onPlayerShootBow = new onPlayerShootBow(config.getConfigurationSection("settings.maths.on_player_shoot_bow"));
-        playerAttributes = new playerAttributes(config.getConfigurationSection("settings.maths.player_attributes"));
-        onPlayerGetDamaged = new onPlayerGetDamaged(config.getConfigurationSection("settings.maths.on_player_get_damaged"));
+        onPlayerAttackEntity = new onPlayerAttackEntity(config.getConfigurationSection("maths.on_player_attack_entity"));
+        onPlayerConsumePotion = new onPlayerConsumePotion(config.getConfigurationSection("maths.on_player_consume_potion"));
+        onPlayerShootBow = new onPlayerShootBow(config.getConfigurationSection("maths.on_player_shoot_bow"));
+        playerAttributes = new playerAttributes(config.getConfigurationSection("maths.player_attributes"));
+        onPlayerGetDamaged = new onPlayerGetDamaged(config.getConfigurationSection("maths.on_player_get_damaged"));
     }
 
     public class onPlayerAttackEntity{
@@ -436,7 +438,9 @@ public class MathSettings {
     public class onPlayerShootBow{
         public boolean enable;
         public String precision_function;
-        public float precision_min_dexterity;
+        public float precision_minimum;
+        public float precision_maximum;
+        public float precision_dexterity;
         public float precision_range;
         public String speed_function;
         public float speed_strength;
@@ -449,8 +453,11 @@ public class MathSettings {
             if(section == null) throw new NullPointerException("ConfigurationSection for onPlayerShootBow cannot be null");
             this.enable = section.getBoolean("enable");
             this.precision_function = section.getString("precision.function");
-            this.precision_min_dexterity = (float)section.getDouble("precision.min_dexterity");
             this.precision_range = (float)section.getDouble("precision.range");
+            this.precision_minimum = (float)section.getDouble("precision.minimum");
+            this.precision_maximum = (float)section.getDouble("precision.maximum");
+            this.precision_dexterity = (float)section.getDouble("precision.dexterity");
+
             this.speed_function = section.getString("speed.function");
             this.speed_strength = (float)section.getDouble("speed.strength");
             this.speed_dexterity = (float)section.getDouble("speed.dexterity");

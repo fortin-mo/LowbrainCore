@@ -1,0 +1,38 @@
+DIAMOND_CHEST: 
+ level: 50
+ strength: 50
+DIAMOND_LEGGINGS: 
+ level: 45
+ strength: 50
+DIAMOND_BOOTS: 
+ level: 40
+ strength: 40
+DIAMOND_HELMET: 
+ level: 40
+ strength: 40
+ 
+IRON_CHEST: 
+ level: 20
+ strength: 30
+IRON_LEGGINGS: 
+ level: 15
+ strength: 25
+IRON_BOOTS: 
+ level: 10
+ strength: 15
+IRON_HELMET: 
+ level: 10
+ strength: 20
+ 
+EMERALD_CHEST: 
+ level: 65
+ strength: 65
+EMERALD_LEGGINGS: 
+ level: 60
+ strength: 60
+EMERALD_BOOTS: 
+ level: 50
+ strength: 50
+EMERALD_HELMET: 
+ level: 55
+ strength: 55

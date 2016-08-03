@@ -134,4 +134,26 @@ public class Helper {
     public static boolean StringIsNullOrEmpty(String s){
         return s == null || s.trim().length() == 0;
     }
+
+    /**
+     * generate a random float [min,max]
+     * @param max max
+     * @param min min
+     * @return
+     */
+    public static float randomFloat(float max, float min){
+        float range = (max - min);
+        return ((float)Math.random() * range) + min;
+    }
+
+    /**
+     * generate a int float [min,max]
+     * @param max max
+     * @param min min
+     * @return
+     */
+    public static int randomInt(int max, int min){
+        int range = (max - min) + 1;
+        return (int)(Math.random() * range) + min;
+    }
 }

@@ -1,6 +1,7 @@
+#http://minecraft.gamepedia.com/Enchanting
+
 EMERALD_SWORD:
  enable: true
- name: Emerald sword
  material: DIAMOND_SWORD
  display_color: a
  recipe:
@@ -23,7 +24,6 @@ EMERALD_SWORD:
    slots: mainhand
 EMERALD_AXE:
  enable: true
- name: Emerald Axe
  material: DIAMOND_AXE
  display_color: a
  recipe:
@@ -46,7 +46,6 @@ EMERALD_AXE:
    slots: mainhand
 EMERALD_KATANA:
  enable: true
- name: Emerald Katana
  material: DIAMOND_SWORD
  display_color: a
  recipe:
@@ -69,7 +68,6 @@ EMERALD_KATANA:
    slots: mainhand
 DIAMOND_KATANA:
  enable: true
- name: Diamond Katana
  material: DIAMOND_SWORD
  display_color: 1
  recipe:
@@ -93,7 +91,6 @@ DIAMOND_KATANA:
 
 EMERALD_HELMET:
  enable: true
- name: Emerald Helmet
  material: DIAMOND_HELMET
  display_color: a
  recipe:
@@ -115,7 +112,6 @@ EMERALD_HELMET:
    slots: head
 EMERALD_CHESTPLATE:
  enable: true
- name: Emerald Chestplate
  material: DIAMOND_CHESTPLATE
  display_color: a
  recipe:
@@ -137,7 +133,6 @@ EMERALD_CHESTPLATE:
    slots: chest
 EMERALD_BOOTS:
  enable: true
- name: Emerald Boots
  material: DIAMOND_BOOTS
  display_color: a
  recipe:
@@ -159,7 +154,6 @@ EMERALD_BOOTS:
    slots: feet
 EMERALD_LEGGINGS:
  enable: true
- name: Emerald Leggings
  material: DIAMOND_LEGGINGS
  display_color: a
  recipe:
@@ -182,10 +176,8 @@ EMERALD_LEGGINGS:
 
 FEATHER_HELMET:
  enable: true
- name: Helmet of lightweight
  material: LEATHER_HELMET
  display_color: d
- durability: 450
  recipe:
   shape: DDD,LLL,L-L
   ingredients:
@@ -204,12 +196,14 @@ FEATHER_HELMET:
    amount: 0.05
    operation: 0
    slots: head
+ enchantments:
+  unbreak:
+   id: 34
+   level: 2
 FEATHER_CHESTPLATE:
  enable: true
- name: Chestplate of lightweight
  material: LEATHER_CHESTPLATE
  display_color: d
- durability: 450
  recipe:
   shape: D-D,LLL,DDD
   ingredients:
@@ -228,12 +222,14 @@ FEATHER_CHESTPLATE:
    amount: 0.05
    operation: 0
    slots: chest
+ enchantments:
+  unbreak:
+   id: 34
+   level: 2
 FEATHER_BOOTS:
  enable: true
- name: Boots of lightweight
  material: LEATHER_BOOTS
  display_color: d
- durability: 450
  recipe:
   shape: ---,L-L,D-D
   ingredients:
@@ -252,12 +248,17 @@ FEATHER_BOOTS:
    amount: 0.05
    operation: 0
    slots: feet
+ enchantments:
+  unbreak:
+   id: 34
+   level: 2
+  featherfalling:
+   id: 2
+   level: 2
 FEATHER_LEGGINGS:
  enable: true
- name: Leggings of lightweight
  material: LEATHER_LEGGINGS
  display_color: d
- durability: 450
  recipe:
   shape: DDD,L-L,L-L
   ingredients:
@@ -276,3 +277,86 @@ FEATHER_LEGGINGS:
    amount: 0.05
    operation: 0
    slots: legs
+ enchantments:
+   unbreak:
+    id: 34
+    level: 2
+
+COMPOUND_BOW:
+ enable: true
+ material: BOW
+ display_color: a
+ recipe:
+  shape: IIS,I-S,IIS
+  ingredients:
+   - I,IRON_INGOT
+   - S,STRING
+ enchantments:
+  unbreak:
+   id: 34
+   level: 3
+  power:
+   id: 48
+   level: 1
+FIRE_COMPOUND_BOW:
+ enable: true
+ material: BOW
+ display_color: a
+ recipe:
+  shape: IIS,IFS,IIS
+  ingredients:
+   - I,IRON_INGOT
+   - S,STRING
+   - F,FLINT_AND_STEEL
+ enchantments:
+  unbreak:
+   id: 34
+   level: 3
+  power:
+   id: 48
+   level: 1
+  flame:
+   id: 50
+   level: 1
+DIAMOND_COMPOUND_BOW:
+ enable: true
+ material: BOW
+ display_color: a
+ recipe:
+  shape: DDS,D-S,DDS
+  ingredients:
+   - D,DIAMOND
+   - S,STRING
+ enchantments:
+  unbreak:
+   id: 34
+   level: 3
+  power:
+   id: 48
+   level: 1
+  punch:
+   id: 49
+   level: 1
+DIAMOND_FIRE_COMPOUND_BOW:
+ enable: true
+ material: BOW
+ display_color: a
+ recipe:
+  shape: DDS,DFS,DDS
+  ingredients:
+   - D,DIAMOND
+   - S,STRING
+   - F,FLINT_AND_STEEL
+ enchantments:
+  unbreak:
+   id: 34
+   level: 3
+  power:
+   id: 48
+   level: 2
+  flame:
+   id: 50
+   level: 1
+  punch:
+   id: 49
+   level: 1

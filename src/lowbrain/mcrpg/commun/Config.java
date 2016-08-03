@@ -31,23 +31,23 @@ public class Config {
 
 
     public Config(FileConfiguration config){
-        allow_deduction_points = config.getBoolean("settings.allow_deduction_points");
-        can_switch_class = config.getBoolean("settings.can_switch_class");
-        can_switch_race = config.getBoolean("settings.can_switch_race");
-        first_lvl_exp = (float)config.getDouble("settings.first_lvl_exp");
-        max_lvl = config.getInt("settings.max_lvl");
-        max_stats = config.getInt("settings.max_stats");
-        points_per_lvl = config.getInt("settings.points_per_lvl");
-        starting_points = config.getInt("settings.starting_points");
-        auto_save = config.getBoolean("settings.auto_save");
-        save_interval = config.getInt("settings.save_interval");
-        exp_loss_on_death = (float)config.getDouble("settings.exp_loss_on_death");
-        allow_stats_reset = config.getBoolean("settings.allow_stats_reset");
-        allow_complete_reset = config.getBoolean("settings.allow_complete_reset");
-        debug = config.getBoolean("settings.debug");
+        allow_deduction_points = config.getBoolean("allow_deduction_points");
+        can_switch_class = config.getBoolean("can_switch_class");
+        can_switch_race = config.getBoolean("can_switch_race");
+        first_lvl_exp = (float)config.getDouble("first_lvl_exp");
+        max_lvl = config.getInt("max_lvl");
+        max_stats = config.getInt("max_stats");
+        points_per_lvl = config.getInt("points_per_lvl");
+        starting_points = config.getInt("starting_points");
+        auto_save = config.getBoolean("auto_save");
+        save_interval = config.getInt("save_interval");
+        exp_loss_on_death = (float)config.getDouble("exp_loss_on_death");
+        allow_stats_reset = config.getBoolean("allow_stats_reset");
+        allow_complete_reset = config.getBoolean("allow_complete_reset");
+        debug = config.getBoolean("debug");
         lstClassId = config.getIntegerList("Classes.list");
-        mana_regen_interval = config.getInt("settings.mana_regen_interval");
-        automatic_server_difficulty = config.getBoolean("settings.automatic_server_difficulty");
+        mana_regen_interval = config.getInt("mana_regen_interval");
+        automatic_server_difficulty = config.getBoolean("automatic_server_difficulty");
         math = new MathSettings(config);
     }
 }

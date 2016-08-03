@@ -3,6 +3,8 @@ package lowbrain.mcrpg.main;
 import java.io.File;
 import java.util.*;
 
+import lowbrain.mcrpg.events.ArmorListener;
+import lowbrain.mcrpg.events.PlayerListener;
 import lowbrain.mcrpg.rpg.RPGPlayer;
 import net.minecraft.server.v1_10_R1.*;
 import org.bukkit.Bukkit;
@@ -28,15 +30,18 @@ import org.bukkit.scoreboard.*;
  */
 public class Main extends JavaPlugin {
 
-	public static Map<UUID, RPGPlayer> connectedPlayers = new HashMap<UUID, RPGPlayer>();
+	public Map<UUID, RPGPlayer> connectedPlayers = new HashMap<UUID, RPGPlayer>();
 	public Config config;
-	public static FileConfiguration classesConfig;
-	public static FileConfiguration racesConfig;
-	public static FileConfiguration powersConfig;
-	public static FileConfiguration weaponsConfig;
-	public static boolean useHolographicDisplays;
+	public FileConfiguration classesConfig;
+	public FileConfiguration racesConfig;
+	public FileConfiguration powersConfig;
+	public FileConfiguration customItemsConfig;
+	public FileConfiguration itemsRequirementsConfig;
+	public HashMap<String,ItemRequirements> itemsRequirements = new HashMap<String,ItemRequirements>();
 
-	private File classf, racef, powerf, weaponsf;
+	public boolean useHolographicDisplays;
+
+	private File classf, racef, powerf, customItemsf, itemsRequirementsf;
 	/**
 	 * called when the plugin is initially enabled
 	 */
@@ -50,7 +55,7 @@ public class Main extends JavaPlugin {
 		String enabled = useHolographicDisplays ? "enabled" : "disabled";
 		debugMessage("HologramDisplays is "+enabled+" !");
 
-		if(!evatulateFunction()){
+		if(!evaluateFunctions()){
 			this.getLogger().info("[ERROR] functions in config file and not correctly formated !!!");
 			this.getLogger().info("[ERROR] LowbrainMCRPG.jar cannot load !");
 			this.onDisable();
@@ -59,6 +64,7 @@ public class Main extends JavaPlugin {
         PlayerListener playerListener = new PlayerListener(this);
 
 	    getServer().getPluginManager().registerEvents(playerListener, this);
+		getServer().getPluginManager().registerEvents(new ArmorListener(getConfig().getStringList("blocked")), this);
 	    this.getCommand("mcrpg").setExecutor(new RPGCommand(this));
 	    this.getLogger().info("[LowbrainMCRPG] " + getDescription().getVersion() + " enabled!");
 
@@ -84,7 +90,9 @@ public class Main extends JavaPlugin {
 		classf = new File(getDataFolder(),"classes.yml");
 		racef = new File(getDataFolder(),"races.yml");
 		powerf = new File(getDataFolder(),"powers.yml");
-		weaponsf = new File(getDataFolder(),"weaponsarmor.yml");
+		customItemsf = new File(getDataFolder(),"customitems.yml");
+		itemsRequirementsf = new File(getDataFolder(),"itemsrequirements.yml");
+
 
 		if (!classf.exists()) {
 			classf.getParentFile().mkdirs();
@@ -98,22 +106,29 @@ public class Main extends JavaPlugin {
 			powerf.getParentFile().mkdirs();
 			saveResource("powers.yml", false);
 		}
-		if (!weaponsf.exists()) {
+		if (!customItemsf.exists()) {
 			powerf.getParentFile().mkdirs();
-			saveResource("weaponsarmor.yml", false);
+			saveResource("customitems.yml", false);
+		}
+		if (!itemsRequirementsf.exists()) {
+			itemsRequirementsf.getParentFile().mkdirs();
+			saveResource("itemsrequirements.yml", false);
 		}
 
 		classesConfig = new YamlConfiguration();
 		powersConfig = new YamlConfiguration();
 		racesConfig = new YamlConfiguration();
-		weaponsConfig = new YamlConfiguration();
+		customItemsConfig = new YamlConfiguration();
+		itemsRequirementsConfig = new YamlConfiguration();
 
 		try {
 			classesConfig.load(classf);
 			powersConfig.load(powerf);
 			racesConfig.load(racef);
-			weaponsConfig.load(weaponsf);
-			createCustomWeapons();
+			customItemsConfig.load(customItemsf);
+			itemsRequirementsConfig.load(itemsRequirementsf);
+			loadItemsRequirements();
+			createCustomItems();
 		}catch (Exception e){
 			e.printStackTrace();
 		}
@@ -136,9 +151,9 @@ public class Main extends JavaPlugin {
         }
     }
 
-    private boolean evatulateFunction(){
+    private boolean evaluateFunctions(){
     	List<String> functions = new ArrayList<String>();
-		recursiveConfigFunctionSearch(this.getConfig().getConfigurationSection("settings"),functions);
+		recursiveConfigFunctionSearch(this.getConfig(),functions);
 
 		for (String key: this.powersConfig.getKeys(false)
 			 ) {
@@ -161,6 +176,10 @@ public class Main extends JavaPlugin {
 	}
 
 	private void recursiveConfigFunctionSearch(ConfigurationSection start, List<String> functions){
+		if(start == null){
+			this.debugMessage("Could not find settings !");
+			return;
+		}
 		for (String key: start.getKeys(false)) {
 			if(key.equals("function") && !Helper.StringIsNullOrEmpty(start.getString(key))){
 				functions.add(start.getString(key));
@@ -171,13 +190,28 @@ public class Main extends JavaPlugin {
 		}
 	}
 
-	private boolean createCustomWeapons(){
+	private void loadItemsRequirements(){
+		this.itemsRequirements = new HashMap<String,ItemRequirements>();
+		for (String n:this.itemsRequirementsConfig.getKeys(false)) {
+			ItemRequirements i = new ItemRequirements(n);
+
+			ConfigurationSection sec = this.itemsRequirementsConfig.getConfigurationSection(n);
+
+			for (String r: sec.getKeys(false)) {
+				i.getRequirements().put(r,sec.getInt(r));
+			}
+			this.itemsRequirements.put(n,i);
+		}
+	}
+
+	private boolean createCustomItems(){
 		try {
 			for (String weapon :
-					weaponsConfig.getKeys(false)) {
+					customItemsConfig.getKeys(false)) {
 
-				if(weaponsConfig.getBoolean(weapon +".enable")){
-					Material material = Material.valueOf(weaponsConfig.getString(weapon +".material"));
+				if(customItemsConfig.getBoolean(weapon +".enable")){
+					Material material = Material.valueOf(customItemsConfig.getString(weapon +".material"));
+
 					if(material == null){
 						this.getLogger().info("Material for " + weapon + " could not found !");
 						return false;
@@ -185,49 +219,59 @@ public class Main extends JavaPlugin {
 					ItemStack customWeapon = new ItemStack(material, 1);
 					ItemMeta ESmeta = customWeapon.getItemMeta();
 
-					ChatColor color = ChatColor.getByChar(weaponsConfig.getString(weapon +".display_color"));
+					ChatColor color = ChatColor.getByChar(customItemsConfig.getString(weapon +".display_color"));
 					if(color == null){
 						this.getLogger().info("Color for " + weapon + " could not found !");
 						return false;
 					}
-					ESmeta.setDisplayName(color + weaponsConfig.getString(weapon + ".name"));
+					ESmeta.setDisplayName(color + weapon);
 					customWeapon.setItemMeta(ESmeta);
 
-					ConfigurationSection attributes = weaponsConfig.getConfigurationSection(weapon + ".attributes");
-					if(attributes == null){
-						this.getLogger().info("Missing attributes section for " + weapon);
-						return false;
-					}
+					ConfigurationSection attributes = customItemsConfig.getConfigurationSection(weapon + ".attributes");
 					net.minecraft.server.v1_10_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(customWeapon);
 					NBTTagCompound compound = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
 					NBTTagList modifiers = new NBTTagList();
 
-					for (String attribute :
-							attributes.getKeys(false)) {
-						NBTTagCompound modifier = new NBTTagCompound();
-						modifier.set("AttributeName", new NBTTagString("generic." + attributes.getString(attribute +".attribute_name")));
-						modifier.set("Name", new NBTTagString(attributes.getString(attribute +".name")));
-						modifier.set("Amount", new NBTTagDouble(attributes.getDouble(attribute +".amount")));
-						modifier.set("Operation", new NBTTagInt(attributes.getInt(attribute +".operation")));
-						modifier.set("UUIDLeast", new NBTTagInt(894654));
-						modifier.set("UUIDMost", new NBTTagInt(2872));
+					//adding attributes if needed
+					if(attributes != null){
+						for (String attribute :
+								attributes.getKeys(false)) {
+							NBTTagCompound modifier = new NBTTagCompound();
+							modifier.set("AttributeName", new NBTTagString("generic." + attributes.getString(attribute +".attribute_name")));
+							modifier.set("Name", new NBTTagString(attributes.getString(attribute +".name")));
+							modifier.set("Amount", new NBTTagDouble(attributes.getDouble(attribute +".amount")));
+							modifier.set("Operation", new NBTTagInt(attributes.getInt(attribute +".operation")));
+							modifier.set("UUIDLeast", new NBTTagInt(894654));
+							modifier.set("UUIDMost", new NBTTagInt(2872));
 
-						String slots = attributes.getString(attribute +".slots");
-						if(slots.length() > 0){
-							modifier.set("Slot", new NBTTagString(slots));
+							String slots = attributes.getString(attribute +".slots");
+							if(slots.length() > 0){
+								modifier.set("Slot", new NBTTagString(slots));
+							}
+
+							modifiers.add(modifier);
 						}
-
-						modifiers.add(modifier);
 					}
 
-					ConfigurationSection enchts = weaponsConfig.getConfigurationSection(weapon + ".enchantments");
+					ConfigurationSection enchts = customItemsConfig.getConfigurationSection(weapon + ".enchantments");
 					NBTTagList enchModifiers = new NBTTagList();
+
+					//adding enchantments if needed
 					if (enchts != null) {
 						for (String ench :
 								enchts.getKeys(false)) {
 							NBTTagCompound modifier = new NBTTagCompound();
-							modifier.set("id", new NBTTagInt(attributes.getInt(ench +".id")));
-							modifier.set("lvl", new NBTTagInt(attributes.getInt(ench +".lvl")));
+
+							int id = enchts.getInt(ench +".id");
+							int level = enchts.getInt(ench +".level");
+
+							if(level < 0 || id < 0 ){
+								this.getLogger().info("Enchantments for " + weapon + " arent right !");
+								return false;
+							}
+
+							modifier.set("id", new NBTTagInt(id));
+							modifier.set("lvl", new NBTTagInt(level));
 
 							enchModifiers.add(modifier);
 						}
@@ -243,15 +287,10 @@ public class Main extends JavaPlugin {
 						customWeapon = CraftItemStack.asBukkitCopy(nmsStack);
 					}
 
-					int durability = weaponsConfig.getInt(weapon +".durability");
-					if(durability > 0){
-						customWeapon.setDurability((short)(customWeapon.getType().getMaxDurability() - durability));
-					}
-
 
 					ShapedRecipe customRecipe = new ShapedRecipe(customWeapon);
 
-					ConfigurationSection recipeSection = weaponsConfig.getConfigurationSection(weapon + ".recipe");
+					ConfigurationSection recipeSection = customItemsConfig.getConfigurationSection(weapon + ".recipe");
 					if(recipeSection == null){
 						this.getLogger().info("Missing recipe section for " + weapon);
 						return false;
@@ -294,6 +333,23 @@ public class Main extends JavaPlugin {
 			return false;
 		}
 		return true;
+	}
+
+	public class ItemRequirements {
+		private String name;
+		private HashMap<String,Integer> requirements = new HashMap<String,Integer>();
+		public ItemRequirements(String name){
+			this.name = name;
+		}
+
+
+		public String getName() {
+			return name;
+		}
+
+		public HashMap<String, Integer> getRequirements() {
+			return requirements;
+		}
 	}
 }
 

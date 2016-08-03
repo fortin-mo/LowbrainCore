@@ -2,7 +2,7 @@ package lowbrain.mcrpg.rpg;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
-import lowbrain.mcrpg.main.PlayerListener;
+import lowbrain.mcrpg.events.PlayerListener;
 
 import java.util.*;
 
