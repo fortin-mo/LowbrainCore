@@ -6,6 +6,7 @@ import lowbrain.mcrpg.commun.Helper;
 import lowbrain.mcrpg.main.Main;
 import org.bukkit.*;
 import org.bukkit.entity.*;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -16,17 +17,13 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 
 import lowbrain.mcrpg.rpg.RPGPlayer;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import org.bukkit.util.io.BukkitObjectInputStream;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.Map;
 
 
 public class PlayerListener implements Listener {
@@ -45,32 +42,35 @@ public class PlayerListener implements Listener {
         RPGPlayer rp = plugin.connectedPlayers.get(e.getPlayer().getUniqueId());
         if(rp == null)return;
 
-        if(e.getOldArmorPiece() != null && e.getOldArmorPiece().getType() != Material.AIR){
-            plugin.debugMessage("Old armor :" + e.getOldArmorPiece().getItemMeta().getDisplayName());
+        if(e.getNewArmorPiece() != null && e.getNewArmorPiece().getType() != Material.AIR && !rp.canEquipItem(e.getNewArmorPiece())){
+            rp.SendMessage("You can't equip or use this item !",ChatColor.RED);
+            e.setCancelled(true);
+            return;
         }
-
-        if(e.getNewArmorPiece() != null && e.getNewArmorPiece().getType() != Material.AIR){
-            plugin.debugMessage("New armor :" + e.getNewArmorPiece().getItemMeta().getDisplayName());
-            plugin.debugMessage(rp.canWeakArmor(e.getNewArmorPiece()) ? "He can wear" : "He cannot weak");
-        }
-
-
     }
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e){
         RPGPlayer rp = plugin.connectedPlayers.get(e.getPlayer().getUniqueId());
         if(rp == null)return;
+
         if(e.getItem() == null) return;
 
-        if(e.getItem().getType().equals(Material.WOOD_AXE) && e.getAction().equals(Action.LEFT_CLICK_AIR)){
+        if(!rp.canEquipItem(e.getItem())){
+            rp.SendMessage("You can't equip or use this item !",ChatColor.RED);
+            e.setUseItemInHand(Event.Result.DENY);
+            e.setCancelled(true);
+            return;
+        }
+
+        /*if(e.getItem().getType().equals(Material.WOOD_AXE) && e.getAction().equals(Action.LEFT_CLICK_AIR)){
             plugin.debugMessage(e.getItem().getDurability());
             //e.getItem().setDurability((short)(e.getItem().getDurability() + 1));
             Fireball ball = e.getPlayer().launchProjectile(Fireball.class,e.getPlayer().getLocation().getDirection());
             ball.setGravity(true);
             //ball.setFallDistance();
             plugin.debugMessage(e.getItem().getDurability());
-        }
+        }*/
     }
 
     /**
@@ -287,6 +287,14 @@ public class PlayerListener implements Listener {
         else{
             normalAttack  = true;
         }
+
+        if(damager != null && damager.getPlayer().getItemInHand() != null){
+            if(!damager.canEquipItem(damager.getPlayer().getItemInHand())){
+                e.setCancelled(true);
+                return;
+            }
+        }
+
         //APLLYING MAGIC EFFECT BY ATTACKER
         if(damager != null && !magicAttack && plugin.config.math.onPlayerAttackEntity.creatingMagicAttack.enable){
             plugin.debugMessage("From " + damager.getPlayer().getName());

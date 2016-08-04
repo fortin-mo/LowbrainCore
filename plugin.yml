@@ -18,6 +18,9 @@ commands:
                   /mcrpg setrace rdm/random - set a random race
                   /mcrpg cast <spell name> - cast a spell to yourself
                   /mcrpg cast <spell name> <player name> - cast a spell to someone
+                  /mcrpg togglestats <false or true> - hide or show stats scoreboard
+                  /mcrpg togglestats <0 or 1> - hide or show stats scoreboard
+                  /mcrpg togglestats - toggle stats scoreboard
 
                   /mcrpg add defence <number>  - add <number> defence or def
                   /mcrpg add strength <number>  - add <number> strength o str

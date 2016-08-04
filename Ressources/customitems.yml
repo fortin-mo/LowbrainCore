@@ -1,5 +1,594 @@
 #http://minecraft.gamepedia.com/Enchanting
 
+#ARMOR
+
+LEATHER_HELMET_PLUS:
+ enable: true
+ material: LEATHER_HELMET
+ display_color: a
+ recipe:
+  shape: II-,---,---
+  ingredients:
+   - I,LEATHER_HELMET
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 2
+   operation: 0
+   slots: head
+ enchantments:
+  unbreak:
+   id: 34
+   level: 2
+LEATHER_CHESTPLATE_PLUS:
+ enable: true
+ material: LEATHER_CHESTPLATE
+ display_color: a
+ recipe:
+  shape: II-,---,---
+  ingredients:
+   - I,LEATHER_CHESTPLATE
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 4
+   operation: 0
+   slots: chest
+LEATHER_BOOTS_PLUS:
+ enable: true
+ material: LEATHER_BOOTS
+ display_color: a
+ recipe:
+  shape: II-,---,---
+  ingredients:
+   - I,LEATHER_BOOTS
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 2
+   operation: 0
+   slots: feet
+LEATHER_LEGGINGS_PLUS:
+ enable: true
+ material: LEATHER_LEGGINGS
+ display_color: a
+ recipe:
+  shape: II-,---,---
+  ingredients:
+   - I,LEATHER_LEGGINGS
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 3
+   operation: 0
+   slots: legs
+   
+GOLD_HELMET_PLUS:
+ enable: true
+ material: GOLD_HELMET
+ display_color: a
+ recipe:
+  shape: II-,---,---
+  ingredients:
+   - I,GOLD_HELMET
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 2
+   operation: 0
+   slots: head
+ enchantments:
+  unbreak:
+   id: 34
+   level: 2
+GOLD_CHESTPLATE_PLUS:
+ enable: true
+ material: GOLD_CHESTPLATE
+ display_color: a
+ recipe:
+  shape: II-,---,---
+  ingredients:
+   - I,GOLD_CHESTPLATE
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 4
+   operation: 0
+   slots: chest
+GOLD_BOOTS_PLUS:
+ enable: true
+ material: GOLD_BOOTS
+ display_color: a
+ recipe:
+  shape: II-,---,---
+  ingredients:
+   - I,GOLD_BOOTS
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 2
+   operation: 0
+   slots: feet
+GOLD_LEGGINGS_PLUS:
+ enable: true
+ material: GOLD_LEGGINGS
+ display_color: a
+ recipe:
+  shape: II-,---,---
+  ingredients:
+   - I,GOLD_LEGGINGS
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 3
+   operation: 0
+   slots: legs
+
+IRON_HELMET_PLUS:
+ enable: true
+ material: IRON_HELMET
+ display_color: a
+ recipe:
+  shape: II-,---,---
+  ingredients:
+   - I,IRON_HELMET
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 3
+   operation: 0
+   slots: head
+IRON_CHESTPLATE_PLUS:
+ enable: true
+ material: IRON_CHESTPLATE
+ display_color: a
+ recipe:
+  shape: II-,---,---
+  ingredients:
+   - I,IRON_CHESTPLATE
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 7
+   operation: 0
+   slots: chest
+IRON_BOOTS_PLUS:
+ enable: true
+ material: IRON_BOOTS
+ display_color: a
+ recipe:
+  shape: II-,---,---
+  ingredients:
+   - I,IRON_BOOTS
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 3
+   operation: 0
+   slots: feet
+IRON_LEGGINGS_PLUS:
+ enable: true
+ material: IRON_LEGGINGS
+ display_color: a
+ recipe:
+  shape: II-,---,---
+  ingredients:
+   - I,IRON_LEGGINGS
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 6
+   operation: 0
+   slots: legs
+
+EMERALD_HELMET:
+ enable: true
+ material: DIAMOND_HELMET
+ display_color: a
+ recipe:
+  shape: ---,EEE,E-E
+  ingredients:
+   - E,EMERALD
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 4
+   operation: 0
+   slots: head
+  armor_toughness:
+   attribute_name: armorToughness
+   name: toughness
+   amount: 2
+   operation: 0
+   slots: head
+EMERALD_CHESTPLATE:
+ enable: true
+ material: DIAMOND_CHESTPLATE
+ display_color: a
+ recipe:
+  shape: E-E,EEE,EEE
+  ingredients:
+   - E,EMERALD
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 9
+   operation: 0
+   slots: chest
+  armor_toughness:
+   attribute_name: armorToughness
+   name: toughness
+   amount: 2
+   operation: 0
+   slots: chest
+EMERALD_BOOTS:
+ enable: true
+ material: DIAMOND_BOOTS
+ display_color: a
+ recipe:
+  shape: ---,E-E,E-E
+  ingredients:
+   - E,EMERALD
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 4
+   operation: 0
+   slots: feet
+  armor_toughness:
+   attribute_name: armorToughness
+   name: toughness
+   amount: 2
+   operation: 0
+   slots: feet
+EMERALD_LEGGINGS:
+ enable: true
+ material: DIAMOND_LEGGINGS
+ display_color: a
+ recipe:
+  shape: EEE,E-E,E-E
+  ingredients:
+   - E,EMERALD
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 7
+   operation: 0
+   slots: legs
+  armor_toughness:
+   attribute_name: armorToughness
+   name: toughness
+   amount: 2
+   operation: 0
+   slots: legs
+   
+DIAMOND_HELMET_PLUS:
+ enable: true
+ material: DIAMOND_HELMET
+ display_color: a
+ recipe:
+  shape: II-,---,---
+  ingredients:
+   - I,DIAMOND_HELMET
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 4
+   operation: 0
+   slots: head
+  armor_toughness:
+   attribute_name: armorToughness
+   name: toughness
+   amount: 2
+   operation: 0
+   slots: head
+DIAMOND_CHESTPLATE_PLUS:
+ enable: true
+ material: DIAMOND_CHESTPLATE
+ display_color: a
+ recipe:
+  shape: II-,---,---
+  ingredients:
+   - I,DIAMOND_CHESTPLATE
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 9
+   operation: 0
+   slots: chest
+  armor_toughness:
+   attribute_name: armorToughness
+   name: toughness
+   amount: 2
+   operation: 0
+   slots: chest
+DIAMOND_BOOTS_PLUS:
+ enable: true
+ material: DIAMOND_BOOTS
+ display_color: a
+ recipe:
+  shape: II-,---,---
+  ingredients:
+   - I,DIAMOND_BOOTS
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 4
+   operation: 0
+   slots: feet
+  armor_toughness:
+   attribute_name: armorToughness
+   name: toughness
+   amount: 2
+   operation: 0
+   slots: feet
+DIAMOND_LEGGINGS_PLUS:
+ enable: true
+ material: DIAMOND_LEGGINGS
+ display_color: a
+ recipe:
+  shape: II-,---,---
+  ingredients:
+   - I,DIAMOND_LEGGINGS
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 7
+   operation: 0
+   slots: legs
+  armor_toughness:
+   attribute_name: armorToughness
+   name: toughness
+   amount: 2
+   operation: 0
+   slots: legs
+
+EMERALD_HELMET_PLUS:
+ enable: true
+ material: DIAMOND_HELMET
+ display_color: a
+ recipe:
+  shape: EEE,EDE,EEE
+  ingredients:
+   - E,EMERALD
+   - D,DIAMOND_HELMET
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 5
+   operation: 0
+   slots: head
+  armor_toughness:
+   attribute_name: armorToughness
+   name: toughness
+   amount: 3
+   operation: 0
+   slots: head
+ enchantments:
+  unbreak:
+   id: 34
+   level: 2
+  aqua:
+   id: 6
+   level: 1
+EMERALD_CHESTPLATE_PLUS:
+ enable: true
+ material: DIAMOND_CHESTPLATE
+ display_color: a
+ recipe:
+  shape: EEE,EDE,EEE
+  ingredients:
+   - E,EMERALD
+   - D,DIAMOND_CHESTPLATE
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 10
+   operation: 0
+   slots: chest
+  armor_toughness:
+   attribute_name: armorToughness
+   name: toughness
+   amount: 3
+   operation: 0
+   slots: chest
+ enchantments:
+  unbreak:
+   id: 34
+   level: 2
+  blast:
+   id: 3
+   level: 1
+EMERALD_BOOTS_PLUS:
+ enable: true
+ material: DIAMOND_BOOTS
+ display_color: a
+ recipe:
+  shape: EEE,EDE,EEE
+  ingredients:
+   - E,EMERALD
+   - D,DIAMOND_BOOTS
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 5
+   operation: 0
+   slots: feet
+  armor_toughness:
+   attribute_name: armorToughness
+   name: toughness
+   amount: 3
+   operation: 0
+   slots: feet
+ enchantments:
+  unbreak:
+   id: 34
+   level: 2
+  falling:
+   id: 2
+   level: 1
+EMERALD_LEGGINGS_PLUS:
+ enable: true
+ material: DIAMOND_LEGGINGS
+ display_color: a
+ recipe:
+  shape: EEE,EDE,EEE
+  ingredients:
+   - E,EMERALD
+   - D,DIAMOND_LEGGINGS
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 8
+   operation: 0
+   slots: legs
+  armor_toughness:
+   attribute_name: armorToughness
+   name: toughness
+   amount: 3
+   operation: 0
+   slots: legs
+ enchantments:
+  unbreak:
+   id: 34
+   level: 2
+  fire:
+   id: 1
+   level: 1
+
+FEATHER_HELMET:
+ enable: true
+ material: LEATHER_HELMET
+ display_color: d
+ recipe:
+  shape: DDD,LLL,L-L
+  ingredients:
+   - D,DIAMOND
+   - L,LEATHER
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 2
+   operation: 0
+   slots: mainhand
+  movement_speed:
+   attribute_name: movementSpeed
+   name: movement speed
+   amount: 0.05
+   operation: 0
+   slots: head
+ enchantments:
+  unbreak:
+   id: 34
+   level: 3
+FEATHER_CHESTPLATE:
+ enable: true
+ material: LEATHER_CHESTPLATE
+ display_color: d
+ recipe:
+  shape: D-D,LLL,DDD
+  ingredients:
+   - D,DIAMOND
+   - L,LEATHER
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 3
+   operation: 0
+   slots: chest
+  armor_toughness:
+   attribute_name: movementSpeed
+   name: movement speed
+   amount: 0.05
+   operation: 0
+   slots: chest
+ enchantments:
+  unbreak:
+   id: 34
+   level: 3
+FEATHER_BOOTS:
+ enable: true
+ material: LEATHER_BOOTS
+ display_color: d
+ recipe:
+  shape: ---,L-L,D-D
+  ingredients:
+   - D,DIAMOND
+   - L,LEATHER
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 2
+   operation: 0
+   slots: feet
+  movement_speed:
+   attribute_name: movementSpeed
+   name: movement speed
+   amount: 0.05
+   operation: 0
+   slots: feet
+ enchantments:
+  unbreak:
+   id: 34
+   level: 3
+  featherfalling:
+   id: 2
+   level: 2
+FEATHER_LEGGINGS:
+ enable: true
+ material: LEATHER_LEGGINGS
+ display_color: d
+ recipe:
+  shape: DDD,L-L,L-L
+  ingredients:
+   - D,DIAMOND
+   - L,LEATHER
+ attributes:
+  armor:
+   attribute_name: armor
+   name: armor
+   amount: 3
+   operation: 0
+   slots: legs
+  movement_speed:
+   attribute_name: movementSpeed
+   name: movement speed
+   amount: 0.05
+   operation: 0
+   slots: legs
+ enchantments:
+   unbreak:
+    id: 34
+    level: 3
+
+#WEAPONS
 EMERALD_SWORD:
  enable: true
  material: DIAMOND_SWORD
@@ -66,6 +655,30 @@ EMERALD_KATANA:
    amount: 8
    operation: 0
    slots: mainhand
+
+IRON_KATANA:
+ enable: true
+ material: IRON_SWORD
+ display_color: 1
+ recipe:
+  shape: -EE,-E-,-S-
+  ingredients:
+   - E,IRON_INGOT
+   - S,STICK
+ attributes:
+  attack_speed:
+   attribute_name: attackSpeed
+   name: Attack Speed
+   amount: -3
+   operation: 0
+   slots: mainhand
+  attack_damage:
+   attribute_name: attackDamage
+   name: Attack
+   amount: 7
+   operation: 0
+   slots: mainhand
+
 DIAMOND_KATANA:
  enable: true
  material: DIAMOND_SWORD
@@ -89,198 +702,135 @@ DIAMOND_KATANA:
    operation: 0
    slots: mainhand
 
-EMERALD_HELMET:
+THE_BUTCHER:
  enable: true
- material: DIAMOND_HELMET
- display_color: a
+ material: DIAMOND_AXE
+ display_color: 1
  recipe:
-  shape: ---,EEE,E-E
+  shape: NNE,NBE,EBE
   ingredients:
    - E,EMERALD
+   - B,BLAZE_ROD
+   - N, NETHER_STAR
  attributes:
-  armor:
-   attribute_name: armor
-   name: armor
-   amount: 4
-   operation: 0
-   slots: head
-  armor_toughness:
-   attribute_name: armorToughness
-   name: toughness
-   amount: 2
-   operation: 0
-   slots: head
-EMERALD_CHESTPLATE:
- enable: true
- material: DIAMOND_CHESTPLATE
- display_color: a
- recipe:
-  shape: E-E,EEE,EEE
-  ingredients:
-   - E,EMERALD
- attributes:
-  armor:
-   attribute_name: armor
-   name: armor
-   amount: 7
-   operation: 0
-   slots: chest
-  armor_toughness:
-   attribute_name: armorToughness
-   name: toughness
-   amount: 2
-   operation: 0
-   slots: chest
-EMERALD_BOOTS:
- enable: true
- material: DIAMOND_BOOTS
- display_color: a
- recipe:
-  shape: ---,E-E,E-E
-  ingredients:
-   - E,EMERALD
- attributes:
-  armor:
-   attribute_name: armor
-   name: armor
-   amount: 4
-   operation: 0
-   slots: feet
-  armor_toughness:
-   attribute_name: armorToughness
-   name: toughness
-   amount: 2
-   operation: 0
-   slots: feet
-EMERALD_LEGGINGS:
- enable: true
- material: DIAMOND_LEGGINGS
- display_color: a
- recipe:
-  shape: EEE,E-E,E-E
-  ingredients:
-   - E,EMERALD
- attributes:
-  armor:
-   attribute_name: armor
-   name: armor
-   amount: 6
-   operation: 0
-   slots: legs
-  armor_toughness:
-   attribute_name: armorToughness
-   name: toughness
-   amount: 2
-   operation: 0
-   slots: legs
-
-FEATHER_HELMET:
- enable: true
- material: LEATHER_HELMET
- display_color: d
- recipe:
-  shape: DDD,LLL,L-L
-  ingredients:
-   - D,DIAMOND
-   - L,LEATHER
- attributes:
-  armor:
-   attribute_name: armor
-   name: armor
-   amount: 2
+  attack_speed:
+   attribute_name: attackSpeed
+   name: Attack Speed
+   amount: -3.5
    operation: 0
    slots: mainhand
-  movement_speed:
-   attribute_name: movementSpeed
-   name: movement speed
-   amount: 0.05
+  attack_damage:
+   attribute_name: attackDamage
+   name: Attack
+   amount: 25
    operation: 0
-   slots: head
+   slots: mainhand
  enchantments:
+  sharp:
+   id: 16
+   level: 5
+  kock:
+   id: 19
+   level: 2
+  bane:
+   id: 18
+   level: 5
+  loot:
+   id: 21
+   level: 3
   unbreak:
    id: 34
-   level: 2
-FEATHER_CHESTPLATE:
+   level: 3
+
+EXCALIBUR:
  enable: true
- material: LEATHER_CHESTPLATE
- display_color: d
+ material: DIAMOND_SWORD
+ display_color: 1
  recipe:
-  shape: D-D,LLL,DDD
+  shape: EBE,NNN,EBE
   ingredients:
-   - D,DIAMOND
-   - L,LEATHER
+   - E,EMERALD
+   - B,BLAZE_ROD
+   - N, NETHER_STAR
  attributes:
-  armor:
-   attribute_name: armor
-   name: armor
-   amount: 3
+  attack_speed:
+   attribute_name: attackSpeed
+   name: Attack Speed
+   amount: -2
    operation: 0
-   slots: chest
-  armor_toughness:
-   attribute_name: movementSpeed
-   name: movement speed
-   amount: 0.05
+   slots: mainhand
+  attack_damage:
+   attribute_name: attackDamage
+   name: Attack
+   amount: 15
    operation: 0
-   slots: chest
+   slots: mainhand
  enchantments:
+  sharp:
+   id: 16
+   level: 5
+  smite:
+   id: 17
+   level: 5
+  bane:
+   id: 18
+   level: 5
+  loot:
+   id: 21
+   level: 3
   unbreak:
    id: 34
-   level: 2
-FEATHER_BOOTS:
+   level: 3
+
+OP:
  enable: true
- material: LEATHER_BOOTS
- display_color: d
+ material: DIAMOND_SWORD
+ display_color: 1
  recipe:
-  shape: ---,L-L,D-D
+  shape: -R-,NRN,-B-
   ingredients:
-   - D,DIAMOND
-   - L,LEATHER
+   - R,BED_ROCK
+   - B,BLAZE_ROD
+   - N, NETHER_STAR
  attributes:
-  armor:
-   attribute_name: armor
-   name: armor
-   amount: 2
+  attack_speed:
+   attribute_name: attackSpeed
+   name: Attack Speed
+   amount: -1
    operation: 0
-   slots: feet
-  movement_speed:
-   attribute_name: movementSpeed
-   name: movement speed
-   amount: 0.05
+   slots: mainhand
+  attack_damage:
+   attribute_name: attackDamage
+   name: Attack
+   amount: 50
    operation: 0
-   slots: feet
+   slots: mainhand
  enchantments:
+  knock:
+   id: 19
+   level: 2
+  fire:
+   id: 20
+   level: 2
+  sharp:
+   id: 16
+   level: 5
+  smite:
+   id: 17
+   level: 5
+  bane:
+   id: 18
+   level: 5
+  mending:
+   id: 70
+   level: 1
+  loot:
+   id: 21
+   level: 3
   unbreak:
    id: 34
-   level: 2
-  featherfalling:
-   id: 2
-   level: 2
-FEATHER_LEGGINGS:
- enable: true
- material: LEATHER_LEGGINGS
- display_color: d
- recipe:
-  shape: DDD,L-L,L-L
-  ingredients:
-   - D,DIAMOND
-   - L,LEATHER
- attributes:
-  armor:
-   attribute_name: armor
-   name: armor
-   amount: 3
-   operation: 0
-   slots: legs
-  movement_speed:
-   attribute_name: movementSpeed
-   name: movement speed
-   amount: 0.05
-   operation: 0
-   slots: legs
- enchantments:
-   unbreak:
-    id: 34
-    level: 2
+   level: 3
+
 
 COMPOUND_BOW:
  enable: true
@@ -359,4 +909,30 @@ DIAMOND_FIRE_COMPOUND_BOW:
    level: 1
   punch:
    id: 49
+   level: 1
+LEGOLAS_BOW:
+ enable: true
+ material: DIAMOND_SWORD
+ display_color: 1
+ recipe:
+  shape: ENB,NEB,ENB
+  ingredients:
+   - E,EMERALD
+   - B,BLAZE_ROD
+   - N, NETHER_STAR
+ enchantments:
+  unbreak:
+   id: 34
+   level: 3
+  power:
+   id: 48
+   level: 5
+  flame:
+   id: 50
+   level: 1
+  infinity:
+   id: 51
+   level: 1
+  mending:
+   id: 70
    level: 1

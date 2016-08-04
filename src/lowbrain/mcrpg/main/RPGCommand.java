@@ -242,6 +242,24 @@ public class RPGCommand implements CommandExecutor{
 							}
 						}
 						break;
+					case "togglestats":
+						if(args.length == 1){
+							rp.toggleScoreboard();
+						}
+						else if(args.length == 2){
+							switch (args[2].toLowerCase()){
+								case "true":
+								case "1":
+									rp.toggleScoreboard(true);
+									break;
+								case "false":
+								case "0":
+									rp.toggleScoreboard(false);
+									break;
+							}
+						}
+
+						break;
 				}
 				return true;
 			}

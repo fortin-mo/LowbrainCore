@@ -1,38 +1,198 @@
-DIAMOND_CHEST: 
- level: 50
- strength: 50
-DIAMOND_LEGGINGS: 
- level: 45
- strength: 50
-DIAMOND_BOOTS: 
- level: 40
- strength: 40
-DIAMOND_HELMET: 
- level: 40
- strength: 40
- 
-IRON_CHEST: 
- level: 20
- strength: 30
-IRON_LEGGINGS: 
- level: 15
- strength: 25
-IRON_BOOTS: 
- level: 10
+#ARMOR
+GOLD_CHESTPLATE:
+ level: 5
  strength: 15
-IRON_HELMET: 
+GOLD_LEGGINGS:
+ level: 3
+ strength: 10
+GOLD_BOOTS:
+ level: 3
+ strength: 10
+GOLD_HELMET:
+ level: 3
+ strength: 10
+
+GOLD_CHESTPLATE_PLUS:
+ level: 10
+ strength: 30
+GOLD_LEGGINGS_PLUS:
+ level: 5
+ strength: 20
+GOLD_BOOTS_PLUS:
+ level: 5
+ strength: 20
+GOLD_HELMET_PLUS:
+ level: 5
+ strength: 20
+
+IRON_CHESTPLATE:
  level: 10
  strength: 20
- 
-EMERALD_CHEST: 
- level: 65
- strength: 65
-EMERALD_LEGGINGS: 
- level: 60
- strength: 60
-EMERALD_BOOTS: 
- level: 50
+IRON_LEGGINGS:
+ level: 5
+ strength: 15
+IRON_BOOTS:
+ level: 5
+ strength: 15
+IRON_HELMET:
+ level: 5
+ strength: 10
+
+IRON_CHESTPLATE_PLUS:
+ level: 15
+ strength: 30
+IRON_LEGGINGS_PLUS:
+ level: 10
+ strength: 30
+IRON_BOOTS_PLUS:
+ level: 10
+ strength: 30
+IRON_HELMET_PLUS:
+ level: 10
+ strength: 20
+
+DIAMOND_CHESTPLATE:
+ level: 25
  strength: 50
-EMERALD_HELMET: 
- level: 55
- strength: 55
+DIAMOND_LEGGINGS: 
+ level: 20
+ strength: 40
+DIAMOND_BOOTS: 
+ level: 20
+ strength: 40
+DIAMOND_HELMET: 
+ level: 20
+ strength: 40
+
+DIAMOND_CHESTPLATE_PLUS:
+ level: 30
+ strength: 60
+DIAMOND_LEGGINGS_PLUS:
+ level: 25
+ strength: 50
+DIAMOND_BOOTS_PLUS:
+ level: 25
+ strength: 50
+DIAMOND_HELMET_PLUS:
+ level: 25
+ strength: 50
+
+EMERALD_CHESTPLATE:
+ level: 35
+ strength: 60
+EMERALD_LEGGINGS:
+ level: 30
+ strength: 60
+EMERALD_BOOTS:
+ level: 30
+ strength: 60
+EMERALD_HELMET:
+ level: 30
+ strength: 60
+
+EMERALD_CHESTPLATE_PLUS:
+ level: 45
+ strength: 70
+EMERALD_LEGGINGS_PLUS:
+ level: 40
+ strength: 70
+EMERALD_BOOTS_PLUS:
+ level: 40
+ strength: 70
+EMERALD_HELMET_PLUS:
+ level: 40
+ strength: 70
+
+FEATHER_HELMET:
+ level: 15
+ agility: 15
+ intelligence: 30
+FEATHER_CHESTPLATE:
+ level: 20
+ agility: 20
+ intelligence: 40
+FEATHER_BOOTS:
+ level: 15
+ agility: 15
+ intelligence: 30
+FEATHER_LEGGINGS:
+ level: 15
+ agility: 15
+ intelligence: 30
+
+#WEAPONS
+
+IRON_SWORD:
+ level: 5
+ strength: 20
+IRON_KATANA:
+ level: 10
+ strength: 30
+IRON_AXE:
+ level: 5
+ strength: 25
+
+DIAMOND_KATANA:
+ level: 20
+ strength: 40
+DIAMOND_AXE:
+ level: 15
+ strength: 35
+DIAMOND_SWORD:
+ level: 15
+ strength: 30
+
+EMERALD_SWORD:
+ level: 100
+ strength: 100
+EMERALD_AXE:
+ level: 100
+ strength: 100
+EMERALD_KATANA:
+ level: 100
+ strength: 100
+
+EXCALIBUR:
+ level: 75
+ strength: 100
+ dexterity: 100
+
+THE_BUTCHER:
+ level: 85
+ strength: 100
+
+LEGOLAS_BOW:
+ level: 70
+ strength: 60
+ agility: 60
+ dexterity: 100
+
+OP:
+ level: 100
+ strength: 100
+ agility: 100
+ dexterity: 100
+ magic_resistance: 100
+ defence: 100
+ intelligence: 100
+
+BOW:
+ level: 100
+ strength: 100
+ dexterity: 100
+COMPOUND_BOW:
+ level: 100
+ strength: 100
+ dexterity: 100
+FIRE_COMPOUND_BOW:
+ level: 100
+ strength: 100
+ dexterity: 100
+DIAMOND_COMPOUND_BOW:
+ level: 100
+ strength: 100
+ dexterity: 100
+DIAMOND_FIRE_COMPOUND_BOW:
+ level: 100
+ strength: 100
+ dexterity: 100

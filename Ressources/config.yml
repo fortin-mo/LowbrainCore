@@ -176,7 +176,7 @@ maths: # everything needed to calculate damage, resitance, etc
   enable: true
   precision:
    function:
-   minimum: 0.666
+   minimum: 0.3333
    maximum: 1
    dexterity: 1
    range: 0.05

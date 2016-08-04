@@ -59,8 +59,10 @@ public class RPGPlayer {
 		InitialisePlayer();
 	}
 
+	/**
+	 * initialise individual player scoreboard for stats
+     */
 	private void initialiseScoreBoard(){
-		if(showStats) {
 			scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 			//Objective objectiveLevel = scoreboard.registerNewObjective("Level","dummy");
 			//objectiveLevel.setDisplayName("LeveL ");
@@ -68,18 +70,44 @@ public class RPGPlayer {
 
 			Objective objectiveInfo = scoreboard.registerNewObjective("Info", "dummy");
 			objectiveInfo.setDisplayName("Info");
-			objectiveInfo.setDisplaySlot(DisplaySlot.SIDEBAR);
+			if(showStats){
+				objectiveInfo.setDisplaySlot(DisplaySlot.SIDEBAR);
+			}
+			else objectiveInfo.setDisplaySlot(DisplaySlot.PLAYER_LIST);
 
 			this.getPlayer().setScoreboard(scoreboard);
+	}
+
+	/**
+	 * hide or show scoreboard stats
+	 * @param show
+     */
+	public void toggleScoreboard(boolean show){
+		this.showStats = show;
+		Objective info = scoreboard.getObjective("Info");
+		if(showStats){
+			info.setDisplaySlot(DisplaySlot.SIDEBAR);
 		}
+		else info.setDisplaySlot(DisplaySlot.PLAYER_LIST);
 	}
 
-	public void showScoreBoard(boolean show){
-
+	/**
+	 * hide or show (toggle) scoreboard stats
+     */
+	public void toggleScoreboard(){
+		this.showStats = !this.showStats;
+		Objective info = scoreboard.getObjective("Info");
+		if(showStats){
+			info.setDisplaySlot(DisplaySlot.SIDEBAR);
+		}
+		else info.setDisplaySlot(DisplaySlot.PLAYER_LIST);
 	}
 
+	/**
+	 * refresh individual player scoreboard stats
+     */
 	private void refreshScoreBoard(){
-		if(scoreboard != null && showStats){
+		if(scoreboard != null){
 			Objective info = scoreboard.getObjective("Info");
 			info.getScore(ChatColor.GREEN + "CURRENT MANA: ").setScore((int)this.currentMana);
 			info.getScore(ChatColor.GREEN + "MANA %: ").setScore((int)(this.currentMana / this.maxMana * 100));
@@ -249,32 +277,26 @@ public class RPGPlayer {
 
 	/**
 	 * can this player wear a specific set of armor
-	 * @param a
+	 * @param item
 	 * @return
      */
-	public boolean canWeakArmor(ItemStack a){
-		if(a == null) return true;
+	public boolean canEquipItem(ItemStack item){
+		if(item == null) return true;
 
 		String name = "";
 
-		if(a.getItemMeta().getDisplayName() != null){//custom items
-			name = a.getItemMeta().getDisplayName().substring(2);
+		if(item.getItemMeta().getDisplayName() != null){//custom items
+			name = item.getItemMeta().getDisplayName().substring(2);
 		}else{//vanilla items
-			name = a.getType().name();
+			name = item.getType().name();
 		}
 
 		Main.ItemRequirements i = PlayerListener.plugin.itemsRequirements.get(name);
 
 		if(i == null)return true;
-
-		PlayerListener.plugin.debugMessage("Testing armor set :" + name);
 		for(Map.Entry<String, Integer> r : i.getRequirements().entrySet()) {
 			String n = r.getKey().toLowerCase();
 			int v = r.getValue();
-
-			PlayerListener.plugin.debugMessage("Testing attributes :" + n + "with value of " + Integer.toString(v));
-
-
 			if(this.compareAttributesByName(n,v) < 0){
 				return false;
 			}
@@ -405,6 +427,11 @@ public class RPGPlayer {
 		}
 	}
 
+	/**
+	 * reset player class and race
+	 * @param c class name
+	 * @param r race name
+     */
 	public void reset(String c, String r){
 		if(getSettings().allow_stats_reset){
 			setClass(c,true);
@@ -412,6 +439,9 @@ public class RPGPlayer {
 		}
 	}
 
+	/**
+	 * reset player stats completely
+     */
 	public void resetAll(){
 		if(getSettings().allow_complete_reset){
 			strength = 0;
@@ -947,10 +977,18 @@ public class RPGPlayer {
 		}
 	}
 
+	/**
+	 * add killds
+	 * @param kills number of kills to add
+     */
 	public void addKills(int kills) {
 		this.kills += kills;
 	}
 
+	/**
+	 * add deaths
+	 * @param deaths number of deaths to add
+     */
 	public void addDeaths(int deaths) {
 		this.deaths += deaths;
 	}
@@ -959,14 +997,19 @@ public class RPGPlayer {
 		return magicResistance;
 	}
 
+	/**
+	 * set player current mana
+	 * @param currentMana
+     */
 	public void setCurrentMana(float currentMana) {
 		this.currentMana = currentMana;
 	}
 
-	public void setRaceName(String raceName) {
-		this.raceName = raceName;
-	}
-
+	/**
+	 * set current player race
+	 * @param n name of the race
+	 * @param override override current configuration (can reset race, can switch race)
+     */
 	public void setRace(String n, boolean override){
 		if(!raceIsSet || override){
 			this.rpgRace = new RPGRace(n);
@@ -1025,8 +1068,10 @@ public class RPGPlayer {
 	}
 
 	/**
-	 * Set class of the current player (add default class attributes)
-	 */
+	 * set current player class
+	 * @param n class name
+	 * @param override override current configuration (can reset class, can switch class)
+     */
 	public void setClass(String n, boolean override){
 		if(!classIsSet || override){
 			this.rpgClass = new RPGClass(n);
@@ -1084,14 +1129,14 @@ public class RPGPlayer {
 		this.classIsSet = true;
 	}
 
-	public void setRaceIsSet(boolean raceIsSet) {
-		this.raceIsSet = raceIsSet;
-	}
-
 	//=============================================== END OF ADD AND SETTER ===============================
 
 	//================================================ GETTER ==============================================
 
+	/**
+	 * retunr a string containing all player stats
+	 * @return
+     */
 	public String toString(){
 		if(classIsSet && raceIsSet) {
 			String s = "Level: " + lvl + "\n";
