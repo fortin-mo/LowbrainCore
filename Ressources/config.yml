@@ -167,7 +167,7 @@ maths: # everything needed to calculate damage, resitance, etc
   chance_of_removing_magic_effect:
    enable: true
    function:
-   maximum: 0.25
+   maximum: 0.5
    minimum: 0.0
    magic_resistance: 0.70
    intelligence: 0.2
@@ -176,17 +176,17 @@ maths: # everything needed to calculate damage, resitance, etc
   enable: true
   precision:
    function:
-   minimum: 0.3333
+   minimum: 0.25
    maximum: 1
    dexterity: 1
    range: 0.05
   speed:
    function:
    maximum: 2.0
-   minimum: 1.0
+   minimum: 0.5
    strength: 0.666
    dexterity: 0.333
-   range: 0.1
+   range: 0.05
  on_player_consume_potion:
   enable: true
   function:
@@ -221,7 +221,7 @@ maths: # everything needed to calculate damage, resitance, etc
   mana_regen:
    enable: true
    function:
-   maximum: 5.0
+   maximum: 2.5
    minimum: 0.0
    intelligence: 1.0
   luck:

@@ -1,11 +1,13 @@
 package lowbrain.mcrpg.rpg;
 import lowbrain.mcrpg.commun.Config;
+import lowbrain.mcrpg.commun.Helper;
 import lowbrain.mcrpg.main.Main;
 import net.minecraft.server.v1_10_R1.PlayerList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -19,6 +21,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class RPGPlayer {
@@ -46,6 +49,7 @@ public class RPGPlayer {
 	private boolean raceIsSet = false;
 	private int agility = 0;
 	private boolean showStats = true;
+	private HashMap<String,Integer> mobKills;
 
 	private Scoreboard scoreboard;
 
@@ -160,6 +164,8 @@ public class RPGPlayer {
 			playerData.set("stats.deaths",0);
 			playerData.set("stats.current_mana",0);
 
+			playerData.createSection("mob_kills");
+
 			playerData.createSection("settings");
 			playerData.set("settings.show_stats",true);
 
@@ -170,16 +176,18 @@ public class RPGPlayer {
 			}
 		}
 
+		classIsSet = playerData.getBoolean("class.is_set");
+		className = playerData.getString("class.name");
+
+		raceIsSet = playerData.getBoolean("race.is_set");
+		raceName = playerData.getString("race.name");
+
         strength = playerData.getInt("stats.strength");
         intelligence = playerData.getInt("stats.intelligence");
         health = playerData.getInt("stats.health");
         defence = playerData.getInt("stats.defence");
         dexterity = playerData.getInt("stats.dexterity");
 		magicResistance = playerData.getInt("stats.magic_resistance");
-        classIsSet = playerData.getBoolean("class.is_set");
-        className = playerData.getString("class.name");
-		raceIsSet = playerData.getBoolean("race.is_set");
-		raceName = playerData.getString("race.name");
         experience = (float)playerData.getDouble("stats.experience");
         points = playerData.getInt("stats.points");
         lvl = playerData.getInt("stats.lvl");
@@ -188,6 +196,16 @@ public class RPGPlayer {
 		deaths = playerData.getInt("stats.deaths");
 		currentMana = (float)playerData.getDouble("stats.current_mana");
 		agility = playerData.getInt("stats.agility");
+
+		this.mobKills = new HashMap<String,Integer>();
+		ConfigurationSection mob = playerData.getConfigurationSection("mob_kills");
+		if(mob != null){
+			for (String key :mob.getKeys(false)) {
+				this.mobKills.put(key,mob.getInt(key));
+			}
+		}
+
+
 		showStats = playerData.getBoolean("settings.show_stats");
 
 		this.rpgClass = new RPGClass(className);
@@ -388,6 +406,12 @@ public class RPGPlayer {
 			playerData.set("stats.kills",kills);
 			playerData.set("stats.deaths",deaths);
 			playerData.set("stats.current_mana", currentMana);
+
+			for(Map.Entry<String, Integer> r : this.mobKills.entrySet()) {
+				String n = r.getKey();
+				int v = r.getValue();
+				playerData.set("mob_kills." + n,v);
+			}
 
 			playerData.set("settings.show_stats",showStats);
 
@@ -1495,6 +1519,9 @@ public class RPGPlayer {
 		AttributeHasChanged();
 	}
 
+	public HashMap<String, Integer> getMobKills() {
+		return mobKills;
+	}
 
 	//===============================================END OF PRIVATE METHODES HELPER===============================
 	

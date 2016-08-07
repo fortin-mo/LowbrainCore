@@ -120,6 +120,20 @@ FEATHER_LEGGINGS:
  agility: 15
  intelligence: 30
 
+SHIELD:
+ level: 5
+ strength: 20
+IRON_SHIELD:
+ level: 20
+ strength: 40
+DIAMOND_SHIELD:
+  level: 40
+  strength: 60
+EMERALD_SHIELD:
+ level: 60
+ strength: 75
+
+
 #WEAPONS
 
 IRON_SWORD:

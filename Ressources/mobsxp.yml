@@ -1,0 +1,129 @@
+bat:
+ base_xp: 15
+ xp_bonus_interval: 50
+ xp_bonus_multiplier: 10
+blaze:
+ base_xp: 40
+ xp_bonus_interval: 50
+ xp_bonus_multiplier: 10
+cavespider:
+ base_xp: 35
+ xp_bonus_interval: 50
+ xp_bonus_multiplier: 10
+chicken:
+ base_xp: 5
+ xp_bonus_interval: 75
+ xp_bonus_multiplier: 10
+cow:
+ base_xp: 5
+ xp_bonus_interval: 75
+ xp_bonus_multiplier: 10
+creeper:
+ base_xp: 30
+ xp_bonus_interval: 50
+ xp_bonus_multiplier: 10
+enderdragon:
+ base_xp: 50000
+ xp_bonus_interval: 2
+ xp_bonus_multiplier: 10
+enderman:
+ base_xp: 40
+ xp_bonus_interval: 50
+ xp_bonus_multiplier: 10
+endermite:
+ base_xp: 35
+ xp_bonus_interval: 50
+ xp_bonus_multiplier: 10
+ghast:
+ base_xp: 50
+ xp_bonus_interval: 50
+ xp_bonus_multiplier: 10
+giant:
+ base_xp: 250
+ xp_bonus_interval: 25
+ xp_bonus_multiplier: 10
+guardian:
+ base_xp: 10
+ xp_bonus_interval: 50
+ xp_bonus_multiplier: 10
+horse:
+ base_xp: 5
+ xp_bonus_interval: 75
+ xp_bonus_multiplier: 10
+irongolem:
+ base_xp: 175
+ xp_bonus_interval: 25
+ xp_bonus_multiplier: 10
+mushroomcow:
+ base_xp: 10
+ xp_bonus_interval: 50
+ xp_bonus_multiplier: 10
+pig:
+ base_xp: 5
+ xp_bonus_interval: 75
+ xp_bonus_multiplier: 10
+pigzombie:
+ base_xp: 20
+ xp_bonus_interval: 50
+ xp_bonus_multiplier: 10
+polarbear:
+ base_xp: 25
+ xp_bonus_interval: 50
+ xp_bonus_multiplier: 10
+rabbit:
+ base_xp: 5
+ xp_bonus_interval: 75
+ xp_bonus_multiplier: 10
+sheep:
+ base_xp: 5
+ xp_bonus_interval: 75
+ xp_bonus_multiplier: 10
+shulker:
+ base_xp: 10
+ xp_bonus_interval: 50
+ xp_bonus_multiplier: 10
+skeleton:
+ base_xp: 20
+ xp_bonus_interval: 50
+ xp_bonus_multiplier: 10
+slime:
+ base_xp: 10
+ xp_bonus_interval: 50
+ xp_bonus_multiplier: 10
+snowman:
+ base_xp: 10
+ xp_bonus_interval: 50
+ xp_bonus_multiplier: 10
+spider:
+ base_xp: 10
+ xp_bonus_interval: 50
+ xp_bonus_multiplier: 10
+squid:
+ base_xp: 5
+ xp_bonus_interval: 75
+ xp_bonus_multiplier: 10
+villager:
+ base_xp: 5
+ xp_bonus_interval: 75
+ xp_bonus_multiplier: 10
+watermob:
+ base_xp: 10
+ xp_bonus_interval: 50
+ xp_bonus_multiplier: 10
+witch:
+ base_xp: 10
+ xp_bonus_interval: 50
+ xp_bonus_multiplier: 10
+wither:
+ base_xp: 35
+ xp_bonus_interval: 50
+ xp_bonus_multiplier: 10
+wolf:
+ base_xp: 20
+ xp_bonus_interval: 50
+ xp_bonus_multiplier: 10
+zombie:
+ base_xp: 15
+ xp_bonus_interval: 50
+ xp_bonus_multiplier: 10
+

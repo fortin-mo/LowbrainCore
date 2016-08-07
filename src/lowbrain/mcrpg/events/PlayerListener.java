@@ -5,15 +5,13 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import lowbrain.mcrpg.commun.Helper;
 import lowbrain.mcrpg.main.Main;
 import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.*;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 
 import lowbrain.mcrpg.rpg.RPGPlayer;
@@ -167,22 +165,21 @@ public class PlayerListener implements Listener {
         rp.addExp(e.getAmount() * plugin.config.math.natural_xp_gain_multiplier);
     }
 
-    /**
-     * called when a player dies
-     * @param e
-     */
     @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent e){
+    public void onEntityDeath(EntityDeathEvent e){
+        //PLAYER DIES
         if(e.getEntity() instanceof Player){
 
-            plugin.debugMessage("Player dies !");
+            plugin.debugMessage(e.getEntity().getName() + " died !");
 
             RPGPlayer rpKiller = null;
-            Player killed = e.getEntity();
+            Player killed = (Player) e.getEntity();
             RPGPlayer rpKilled = plugin.connectedPlayers.get(killed.getUniqueId());
             if(killed.getKiller() != null) {
-                Player killer = killed.getKiller();
-                rpKiller = plugin.connectedPlayers.get(killer.getUniqueId());
+                if(killed.getKiller() instanceof Player) {
+                    Player killer = killed.getKiller();
+                    rpKiller = plugin.connectedPlayers.get(killer.getUniqueId());
+                }
             }
             else if(killed.getLastDamageCause() != null){
                 if(killed.getLastDamageCause().getEntity() instanceof Arrow){
@@ -190,19 +187,7 @@ public class PlayerListener implements Listener {
                         rpKiller = plugin.connectedPlayers.get((((Player) ((Arrow) killed.getLastDamageCause().getEntity()).getShooter()).getPlayer().getUniqueId()));
                         plugin.debugMessage("Killed by arrow!");
                     }
-                }/*
-                else if(killed.getLastDamageCause().getEntity() instanceof TippedArrow){
-                    if(((TippedArrow) killed.getLastDamageCause().getEntity()).getShooter() != null && ((TippedArrow) killed.getLastDamageCause().getEntity()).getShooter() instanceof Player){
-                        rpKiller = plugin.connectedPlayers.get((((Player) ((TippedArrow) killed.getLastDamageCause().getEntity()).getShooter()).getPlayer().getUniqueId()));
-                        plugin.debugMessage("Killed by tipped arrow!");
-                    }
                 }
-                else if(killed.getLastDamageCause().getEntity() instanceof SpectralArrow){
-                    if(((SpectralArrow) killed.getLastDamageCause().getEntity()).getShooter() != null && ((SpectralArrow) killed.getLastDamageCause().getEntity()).getShooter() instanceof Player){
-                        rpKiller = plugin.connectedPlayers.get((((Player) ((SpectralArrow) killed.getLastDamageCause().getEntity()).getShooter()).getPlayer().getUniqueId()));
-                        plugin.debugMessage("Killed by spectral arrow!");
-                    }
-                }*/
                 else if(killed.getLastDamageCause().getEntity() instanceof ThrownPotion){
                     if(((ThrownPotion) killed.getLastDamageCause().getEntity()).getShooter() != null && ((ThrownPotion) killed.getLastDamageCause().getEntity()).getShooter() instanceof Player){
                         rpKiller = plugin.connectedPlayers.get((((Player) ((ThrownPotion) killed.getLastDamageCause().getEntity()).getShooter()).getPlayer().getUniqueId()));
@@ -228,6 +213,145 @@ public class PlayerListener implements Listener {
 
             rpKilled.addExp(-(plugin.config.exp_loss_on_death / 100 * rpKilled.getExperience()));
             rpKilled.addDeaths(1);
+        }
+        //MOB DIES
+        else {
+            RPGPlayer rpKiller = null;
+            if(e.getEntity().getKiller() != null && e.getEntity().getKiller() instanceof Player){
+                rpKiller = plugin.connectedPlayers.get(e.getEntity().getKiller().getUniqueId());
+            }
+            else if(e.getEntity().getLastDamageCause() != null){
+                if(e.getEntity().getLastDamageCause().getEntity() instanceof Arrow){
+                    if(((Arrow) e.getEntity().getLastDamageCause().getEntity()).getShooter() instanceof Player){
+                        rpKiller = plugin.connectedPlayers.get(((Player) ((Arrow) e.getEntity().getLastDamageCause().getEntity()).getShooter()).getUniqueId());
+                    }
+                }
+                else if(e.getEntity().getLastDamageCause().getEntity() instanceof ThrownPotion){
+                    if(((ThrownPotion) e.getEntity().getLastDamageCause().getEntity()).getShooter() instanceof Player){
+                        rpKiller = plugin.connectedPlayers.get(((Player) ((ThrownPotion) e.getEntity().getLastDamageCause().getEntity()).getShooter()).getUniqueId());
+                    }
+                }
+            }
+
+            if(rpKiller != null){
+
+                String mobName = e.getEntity().getName().toLowerCase();
+
+                rpKiller.getMobKills().put(mobName,rpKiller.getMobKills().getOrDefault(mobName,0) + 1);
+
+                int killsCount = rpKiller.getMobKills().get(mobName);
+                ConfigurationSection section = plugin.mobsxpConfig.getConfigurationSection(mobName);
+                if(section != null){
+                    int interval = section.getInt("xp_bonus_interval");
+                    double xp = section.getDouble("base_xp");
+                    if(killsCount % interval == 0){
+                        rpKiller.SendMessage("You've just killed your " + killsCount + " " + mobName);
+                        xp = killsCount / interval * section.getDouble("xp_bonus_multiplier");
+                    }
+                    rpKiller.addExp(xp);
+                    plugin.debugMessage("Killer gains "+ xp+" xp!");
+                }
+
+
+                /*
+                if(e.getEntity() instanceof Bat){
+
+                }
+                else if(e.getEntity() instanceof Blaze){
+
+                }
+                else if(e.getEntity() instanceof CaveSpider){
+
+                }
+                else if(e.getEntity() instanceof Chicken){
+
+                }
+                else if(e.getEntity() instanceof Cow){
+
+                }
+                else if(e.getEntity() instanceof Creeper){
+
+                }
+                else if(e.getEntity() instanceof EnderDragon){
+
+                }
+                else if(e.getEntity() instanceof Enderman){
+
+                }
+                else if(e.getEntity() instanceof Endermite){
+
+                }
+                else if(e.getEntity() instanceof Ghast){
+
+                }
+                else if(e.getEntity() instanceof Giant){
+
+                }
+                else if(e.getEntity() instanceof Guardian){
+
+                }
+                else if(e.getEntity() instanceof Horse){
+
+                }
+                else if(e.getEntity() instanceof IronGolem){
+
+                }
+                else if(e.getEntity() instanceof MushroomCow){
+
+                }
+                else if(e.getEntity() instanceof Pig){
+
+                }
+                else if(e.getEntity() instanceof PigZombie){
+
+                }
+                else if(e.getEntity() instanceof PolarBear){
+
+                }
+                else if(e.getEntity() instanceof Rabbit){
+
+                }
+                else if(e.getEntity() instanceof Sheep){
+
+                }
+                else if(e.getEntity() instanceof Shulker){
+
+                }
+                else if(e.getEntity() instanceof Skeleton){
+
+                }
+                else if(e.getEntity() instanceof Slime){
+
+                }
+                else if(e.getEntity() instanceof Snowman){
+
+                }
+                else if(e.getEntity() instanceof Spider){
+
+                }
+                else if(e.getEntity() instanceof Squid){
+
+                }
+                else if(e.getEntity() instanceof Villager){
+
+                }
+                else if(e.getEntity() instanceof WaterMob){
+
+                }
+                else if(e.getEntity() instanceof Witch){
+
+                }
+                else if(e.getEntity() instanceof Wither){
+
+                }
+                else if(e.getEntity() instanceof Wolf){
+
+                }
+                else if(e.getEntity() instanceof Zombie){
+
+                }
+                */
+            }
         }
     }
 
@@ -267,7 +391,7 @@ public class PlayerListener implements Listener {
         //DEFINING CAUSE OF DAMAGE
         if (e.getDamager() instanceof Player) {
             damager = plugin.connectedPlayers.get(e.getDamager().getUniqueId());
-            plugin.debugMessage("Attacked by another player");
+            plugin.debugMessage("Attacked by another player : " + damager.getPlayer().getName());
             normalAttack  = true;
         } else if (e.getDamager() instanceof Arrow) {
             Arrow ar = (Arrow) e.getDamager();
@@ -288,6 +412,7 @@ public class PlayerListener implements Listener {
             normalAttack  = true;
         }
 
+        //CHECK IF PLAYER CAN USE THE ITEM IN HAND
         if(damager != null && damager.getPlayer().getItemInHand() != null){
             if(!damager.canEquipItem(damager.getPlayer().getItemInHand())){
                 e.setCancelled(true);
@@ -325,22 +450,23 @@ public class PlayerListener implements Listener {
 
         if(damager != null) {
 
+            //CREATING DAMAGE HOLOGRAM
             if(plugin.useHolographicDisplays){
-                plugin.debugMessage("hologram added !");
                 NumberFormat formatter = new DecimalFormat("#0.00");
-                Location loc = e.getEntity().getLocation().add(0,3,0);
+                Location loc = e.getEntity().getLocation().add(0,1,0);
                 Hologram holoDamage = HologramsAPI.createHologram(plugin,loc);
                 holoDamage.appendTextLine(ChatColor.WHITE + formatter.format(e.getDamage()));
 
+                int directionX = Helper.randomInt(0,1) == 0 ? -1 : 1;
+                int directionZ = Helper.randomInt(0,1) == 0 ? -1 : 1;
+
                 new BukkitRunnable() {
-
-                    // We don't want the task to run indefinitely
                     int ticksRun;
-
                     @Override
                     public void run() {
                         ticksRun++;
-                        holoDamage.teleport(loc.add(-0.25,-0.25,0.0));
+                        int directionY = ticksRun < 10 ? 1 : -1;
+                        holoDamage.teleport(holoDamage.getLocation().add(0.025 * directionX, 0.125*directionY, 0.025 * directionZ));
                         if (ticksRun > 100) { // 100 ticks = 5 seconds
                             holoDamage.delete();
                             cancel();
@@ -376,14 +502,6 @@ public class PlayerListener implements Listener {
                 rp.getPlayer().removePotionEffect(po.getType());
                 rp.getPlayer().addPotionEffect(tmp);
 
-                /*
-                for (PotionEffect pe : rp.getPlayer().getActivePotionEffects()) {
-                    int newDuration = (int) (pe.getDuration() * rdm);
-                    PotionEffect tmp = new PotionEffect(pe.getType(), newDuration, pe.getAmplifier());
-                    rp.getPlayer().removePotionEffect(pe.getType());
-                    rp.getPlayer().addPotionEffect(tmp);
-                }
-                */
                 plugin.debugMessage("effect duration multiply by " + result);
             }
         }

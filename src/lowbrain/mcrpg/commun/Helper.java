@@ -156,4 +156,18 @@ public class Helper {
         int range = (max - min) + 1;
         return (int)(Math.random() * range) + min;
     }
+
+    /**
+     * parse string to int
+     * @param s string
+     * @param d default value
+     * @return
+     */
+    public static int intTryParse(String s, Integer d){
+        try {
+            return Integer.parseInt(s);
+        }catch (Exception e){
+            return d;
+        }
+    }
 }

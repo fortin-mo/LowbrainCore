@@ -83,9 +83,7 @@ GOLD_HELMET_PLUS:
    operation: 0
    slots: head
  enchantments:
-  unbreak:
-   id: 34
-   level: 2
+  - 34,2
 GOLD_CHESTPLATE_PLUS:
  enable: true
  material: GOLD_CHESTPLATE
@@ -101,6 +99,8 @@ GOLD_CHESTPLATE_PLUS:
    amount: 4
    operation: 0
    slots: chest
+ enchantments:
+  - 34,2
 GOLD_BOOTS_PLUS:
  enable: true
  material: GOLD_BOOTS
@@ -116,6 +116,8 @@ GOLD_BOOTS_PLUS:
    amount: 2
    operation: 0
    slots: feet
+ enchantments:
+  - 34,2
 GOLD_LEGGINGS_PLUS:
  enable: true
  material: GOLD_LEGGINGS
@@ -131,6 +133,8 @@ GOLD_LEGGINGS_PLUS:
    amount: 3
    operation: 0
    slots: legs
+ enchantments:
+  - 34,2
 
 IRON_HELMET_PLUS:
  enable: true
@@ -386,12 +390,8 @@ EMERALD_HELMET_PLUS:
    operation: 0
    slots: head
  enchantments:
-  unbreak:
-   id: 34
-   level: 2
-  aqua:
-   id: 6
-   level: 1
+  - 32,2
+  - 6,1
 EMERALD_CHESTPLATE_PLUS:
  enable: true
  material: DIAMOND_CHESTPLATE
@@ -415,12 +415,8 @@ EMERALD_CHESTPLATE_PLUS:
    operation: 0
    slots: chest
  enchantments:
-  unbreak:
-   id: 34
-   level: 2
-  blast:
-   id: 3
-   level: 1
+  - 32,2
+  - 3,1
 EMERALD_BOOTS_PLUS:
  enable: true
  material: DIAMOND_BOOTS
@@ -444,12 +440,8 @@ EMERALD_BOOTS_PLUS:
    operation: 0
    slots: feet
  enchantments:
-  unbreak:
-   id: 34
-   level: 2
-  falling:
-   id: 2
-   level: 1
+  - 32,2
+  - 2,1
 EMERALD_LEGGINGS_PLUS:
  enable: true
  material: DIAMOND_LEGGINGS
@@ -473,12 +465,8 @@ EMERALD_LEGGINGS_PLUS:
    operation: 0
    slots: legs
  enchantments:
-  unbreak:
-   id: 34
-   level: 2
-  fire:
-   id: 1
-   level: 1
+  - 32,2
+  - 1,1
 
 FEATHER_HELMET:
  enable: true
@@ -495,7 +483,7 @@ FEATHER_HELMET:
    name: armor
    amount: 2
    operation: 0
-   slots: mainhand
+   slots: head
   movement_speed:
    attribute_name: movementSpeed
    name: movement speed
@@ -503,9 +491,7 @@ FEATHER_HELMET:
    operation: 0
    slots: head
  enchantments:
-  unbreak:
-   id: 34
-   level: 3
+  - 34,3
 FEATHER_CHESTPLATE:
  enable: true
  material: LEATHER_CHESTPLATE
@@ -529,9 +515,7 @@ FEATHER_CHESTPLATE:
    operation: 0
    slots: chest
  enchantments:
-  unbreak:
-   id: 34
-   level: 3
+  - 34,3
 FEATHER_BOOTS:
  enable: true
  material: LEATHER_BOOTS
@@ -555,12 +539,8 @@ FEATHER_BOOTS:
    operation: 0
    slots: feet
  enchantments:
-  unbreak:
-   id: 34
-   level: 3
-  featherfalling:
-   id: 2
-   level: 2
+  - 34,3
+  - 2,2
 FEATHER_LEGGINGS:
  enable: true
  material: LEATHER_LEGGINGS
@@ -584,9 +564,38 @@ FEATHER_LEGGINGS:
    operation: 0
    slots: legs
  enchantments:
-   unbreak:
-    id: 34
-    level: 3
+  - 34,3
+
+IRON_SHIELD:
+ enable: true
+ material: SHIELD
+ display_color: a
+ recipe:
+  shape: III,III,-I-
+  ingredients:
+   - I,IRON_INGOT
+ enchantments:
+   - 34,1
+DIAMOND_SHIELD:
+ enable: true
+ material: SHIELD
+ display_color: a
+ recipe:
+  shape: III,III,-I-
+  ingredients:
+   - I,DIAMOND
+ enchantments:
+   - 34,2
+EMERALD_SHIELD:
+ enable: true
+ material: SHIELD
+ display_color: a
+ recipe:
+  shape: III,III,-I-
+  ingredients:
+   - I,EMERALD
+ enchantments:
+   - 34,3
 
 #WEAPONS
 EMERALD_SWORD:
@@ -724,24 +733,13 @@ THE_BUTCHER:
    name: Attack
    amount: 25
    operation: 0
-   slots: mainhand
+   slots: mainhand\
  enchantments:
-  sharp:
-   id: 16
-   level: 5
-  kock:
-   id: 19
-   level: 2
-  bane:
-   id: 18
-   level: 5
-  loot:
-   id: 21
-   level: 3
-  unbreak:
-   id: 34
-   level: 3
-
+  - 16,5
+  - 19,2
+  - 18,5
+  - 21,3
+  - 34,3
 EXCALIBUR:
  enable: true
  material: DIAMOND_SWORD
@@ -766,22 +764,11 @@ EXCALIBUR:
    operation: 0
    slots: mainhand
  enchantments:
-  sharp:
-   id: 16
-   level: 5
-  smite:
-   id: 17
-   level: 5
-  bane:
-   id: 18
-   level: 5
-  loot:
-   id: 21
-   level: 3
-  unbreak:
-   id: 34
-   level: 3
-
+  - 16,5
+  - 17,5
+  - 18,5
+  - 21,3
+  - 34,3
 OP:
  enable: true
  material: DIAMOND_SWORD
@@ -789,7 +776,7 @@ OP:
  recipe:
   shape: -R-,NRN,-B-
   ingredients:
-   - R,BED_ROCK
+   - R,BEDROCK
    - B,BLAZE_ROD
    - N, NETHER_STAR
  attributes:
@@ -806,31 +793,14 @@ OP:
    operation: 0
    slots: mainhand
  enchantments:
-  knock:
-   id: 19
-   level: 2
-  fire:
-   id: 20
-   level: 2
-  sharp:
-   id: 16
-   level: 5
-  smite:
-   id: 17
-   level: 5
-  bane:
-   id: 18
-   level: 5
-  mending:
-   id: 70
-   level: 1
-  loot:
-   id: 21
-   level: 3
-  unbreak:
-   id: 34
-   level: 3
-
+  - 19,2
+  - 20,2
+  - 16,5
+  - 17,5
+  - 18,5
+  - 70,1
+  - 21,3
+  - 34,3
 
 COMPOUND_BOW:
  enable: true
@@ -842,12 +812,8 @@ COMPOUND_BOW:
    - I,IRON_INGOT
    - S,STRING
  enchantments:
-  unbreak:
-   id: 34
-   level: 3
-  power:
-   id: 48
-   level: 1
+  - 34,3
+  - 48,1
 FIRE_COMPOUND_BOW:
  enable: true
  material: BOW
@@ -859,15 +825,9 @@ FIRE_COMPOUND_BOW:
    - S,STRING
    - F,FLINT_AND_STEEL
  enchantments:
-  unbreak:
-   id: 34
-   level: 3
-  power:
-   id: 48
-   level: 1
-  flame:
-   id: 50
-   level: 1
+  - 34,3
+  - 48,1
+  - 50,1
 DIAMOND_COMPOUND_BOW:
  enable: true
  material: BOW
@@ -878,15 +838,9 @@ DIAMOND_COMPOUND_BOW:
    - D,DIAMOND
    - S,STRING
  enchantments:
-  unbreak:
-   id: 34
-   level: 3
-  power:
-   id: 48
-   level: 1
-  punch:
-   id: 49
-   level: 1
+  - 34,3
+  - 48,1
+  - 49,1
 DIAMOND_FIRE_COMPOUND_BOW:
  enable: true
  material: BOW
@@ -898,18 +852,10 @@ DIAMOND_FIRE_COMPOUND_BOW:
    - S,STRING
    - F,FLINT_AND_STEEL
  enchantments:
-  unbreak:
-   id: 34
-   level: 3
-  power:
-   id: 48
-   level: 2
-  flame:
-   id: 50
-   level: 1
-  punch:
-   id: 49
-   level: 1
+  - 34,3
+  - 48,2
+  - 50,1
+  - 49,1
 LEGOLAS_BOW:
  enable: true
  material: DIAMOND_SWORD
@@ -921,18 +867,8 @@ LEGOLAS_BOW:
    - B,BLAZE_ROD
    - N, NETHER_STAR
  enchantments:
-  unbreak:
-   id: 34
-   level: 3
-  power:
-   id: 48
-   level: 5
-  flame:
-   id: 50
-   level: 1
-  infinity:
-   id: 51
-   level: 1
-  mending:
-   id: 70
-   level: 1
+  - 34,3
+  - 48,5
+  - 50,1
+  - 51,1
+  - 70,1

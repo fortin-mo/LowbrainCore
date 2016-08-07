@@ -37,11 +37,12 @@ public class Main extends JavaPlugin {
 	public FileConfiguration powersConfig;
 	public FileConfiguration customItemsConfig;
 	public FileConfiguration itemsRequirementsConfig;
+	public FileConfiguration mobsxpConfig;
 	public HashMap<String,ItemRequirements> itemsRequirements = new HashMap<String,ItemRequirements>();
 
 	public boolean useHolographicDisplays;
 
-	private File classf, racef, powerf, customItemsf, itemsRequirementsf;
+	private File classf, racef, powerf, customItemsf, itemsRequirementsf, mobsxpf;
 	/**
 	 * called when the plugin is initially enabled
 	 */
@@ -92,6 +93,7 @@ public class Main extends JavaPlugin {
 		powerf = new File(getDataFolder(),"powers.yml");
 		customItemsf = new File(getDataFolder(),"customitems.yml");
 		itemsRequirementsf = new File(getDataFolder(),"itemsrequirements.yml");
+		mobsxpf = new File(getDataFolder(),"mobsxp.yml");
 
 
 		if (!classf.exists()) {
@@ -114,12 +116,17 @@ public class Main extends JavaPlugin {
 			itemsRequirementsf.getParentFile().mkdirs();
 			saveResource("itemsrequirements.yml", false);
 		}
+		if (!mobsxpf.exists()) {
+			mobsxpf.getParentFile().mkdirs();
+			saveResource("mobsxp.yml", false);
+		}
 
 		classesConfig = new YamlConfiguration();
 		powersConfig = new YamlConfiguration();
 		racesConfig = new YamlConfiguration();
 		customItemsConfig = new YamlConfiguration();
 		itemsRequirementsConfig = new YamlConfiguration();
+		mobsxpConfig = new YamlConfiguration();
 
 		try {
 			classesConfig.load(classf);
@@ -127,6 +134,7 @@ public class Main extends JavaPlugin {
 			racesConfig.load(racef);
 			customItemsConfig.load(customItemsf);
 			itemsRequirementsConfig.load(itemsRequirementsf);
+			mobsxpConfig.load(mobsxpf);
 			loadItemsRequirements();
 			createCustomItems();
 		}catch (Exception e){
@@ -253,17 +261,19 @@ public class Main extends JavaPlugin {
 						}
 					}
 
-					ConfigurationSection enchts = customItemsConfig.getConfigurationSection(weapon + ".enchantments");
+					List<String> enchts = customItemsConfig.getStringList(weapon + ".enchantments");
 					NBTTagList enchModifiers = new NBTTagList();
 
 					//adding enchantments if needed
 					if (enchts != null) {
 						for (String ench :
-								enchts.getKeys(false)) {
+								enchts) {
 							NBTTagCompound modifier = new NBTTagCompound();
 
-							int id = enchts.getInt(ench +".id");
-							int level = enchts.getInt(ench +".level");
+							String[] temp = ench.split(",");
+
+							int id = Integer.parseInt(temp[0].trim());
+							int level = Integer.parseInt(temp[1].trim());
 
 							if(level < 0 || id < 0 ){
 								this.getLogger().info("Enchantments for " + weapon + " arent right !");
@@ -286,7 +296,6 @@ public class Main extends JavaPlugin {
 						nmsStack.setTag(compound);
 						customWeapon = CraftItemStack.asBukkitCopy(nmsStack);
 					}
-
 
 					ShapedRecipe customRecipe = new ShapedRecipe(customWeapon);
 
