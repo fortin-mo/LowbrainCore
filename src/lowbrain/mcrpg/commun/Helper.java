@@ -141,7 +141,7 @@ public class Helper {
      * @param min min
      * @return
      */
-    public static float randomFloat(float max, float min){
+    public static float randomFloat(float min, float max){
         float range = (max - min);
         return ((float)Math.random() * range) + min;
     }
@@ -152,7 +152,7 @@ public class Helper {
      * @param min min
      * @return
      */
-    public static int randomInt(int max, int min){
+    public static int randomInt(int min, int max){
         int range = (max - min) + 1;
         return (int)(Math.random() * range) + min;
     }

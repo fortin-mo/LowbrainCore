@@ -157,7 +157,7 @@ public class RPGCommand implements CommandExecutor{
 							}
 							else if(args[1].equalsIgnoreCase("rdm") || args[1].equalsIgnoreCase("random")){
 								int max = plugin.classesConfig.getKeys(false).size() - 1;
-								int rdm = Helper.randomInt(max,0);
+								int rdm = Helper.randomInt(0,max);
 								rp.setClass((String)plugin.classesConfig.getKeys(false).toArray()[rdm],false);
 							}
 							else{
@@ -172,7 +172,7 @@ public class RPGCommand implements CommandExecutor{
 							}
 							else if(args[1].equalsIgnoreCase("rdm") || args[1].equalsIgnoreCase("random")){
 								int max = plugin.racesConfig.getKeys(false).size() - 1;
-								int rdm = Helper.randomInt(max,0);
+								int rdm = Helper.randomInt(0,max);
 								rp.setRace((String)plugin.racesConfig.getKeys(false).toArray()[rdm],false);
 							}
 							else{

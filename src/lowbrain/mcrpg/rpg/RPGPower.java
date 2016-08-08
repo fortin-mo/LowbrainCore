@@ -96,7 +96,7 @@ public class RPGPower {
         }
         
         if(duration_range > 0){
-            result = Helper.randomFloat(result + duration_range,result - duration_range);
+            result = Helper.randomFloat(result - duration_range,result + duration_range);
             if(result < minimum_duration)result = minimum_duration;
             else if(result > maximum_duration) result = maximum_duration;
         }
@@ -122,7 +122,7 @@ public class RPGPower {
         }
 
         if(amplifier_range > 0){
-            result = Helper.randomFloat(result+amplifier_range,result-amplifier_range);
+            result = Helper.randomFloat(result-amplifier_range,result+amplifier_range);
             if(result < minimum_amplifier)result = minimum_amplifier;
             else if(result > maximum_amplifier) result = maximum_amplifier;
         }

@@ -28,6 +28,7 @@ commands:
                   /mcrpg add dexterity <number>  - add <number> dexterity or dext
                   /mcrpg add magicResistance <number>  - add <number> magicResistance or mr
                   /mcrpg add intelligence <number>  - add <number> intelligence or int
+                  /mcrpg add agility <number> - add <number> agility or ag
                   /mcrpg +defence - add 1 defence
                   /mcrpg +def - add 1 defence
                   /mcrpg +strength - add 1 strength

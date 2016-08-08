@@ -9,6 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.*;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.*;
@@ -173,7 +174,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerDies(PlayerDeathEvent e){
         e.setKeepInventory(true);
     }
@@ -234,7 +235,7 @@ public class PlayerListener implements Listener {
                 int count = (int)(rpKilled.getPlayer().getInventory().getSize() * dropPercentage);
 
                 for (int i = 0; i < count; i++) {
-                    int rdm = Helper.randomInt(rpKilled.getPlayer().getInventory().getSize() - 1, 0);
+                    int rdm = Helper.randomInt(0,rpKilled.getPlayer().getInventory().getSize() - 1);
 
                     ItemStack item = rpKilled.getPlayer().getInventory().getItem(rdm);
 
@@ -984,7 +985,7 @@ public class PlayerListener implements Listener {
 
             float minReduction = reduction < (min - range) ? reduction + range : min;
 
-            return Helper.randomFloat(minReduction,reduction);
+            return Helper.randomFloat(reduction,minReduction);
         }
         else{
             String[] st = plugin.config.math.onPlayerGetDamaged.reducingBadPotionEffect.function.split(",");
@@ -1017,7 +1018,7 @@ public class PlayerListener implements Listener {
         }
 
         if(plugin.config.math.onPlayerShootBow.speed_range > 0){
-            result = Helper.randomFloat((result + plugin.config.math.onPlayerShootBow.speed_range),(result - plugin.config.math.onPlayerShootBow.speed_range));
+            result = Helper.randomFloat((result - plugin.config.math.onPlayerShootBow.speed_range),(result + plugin.config.math.onPlayerShootBow.speed_range));
             if(result < plugin.config.math.onPlayerShootBow.speed_minimum)result = plugin.config.math.onPlayerShootBow.speed_minimum;
             else if(result > plugin.config.math.onPlayerShootBow.speed_maximum) result = plugin.config.math.onPlayerShootBow.speed_maximum;
         }
@@ -1042,7 +1043,7 @@ public class PlayerListener implements Listener {
         }
 
         if(plugin.config.math.onPlayerShootBow.precision_range > 0){
-            result = Helper.randomFloat(result + plugin.config.math.onPlayerShootBow.precision_range,result - plugin.config.math.onPlayerShootBow.precision_range);
+            result = Helper.randomFloat(result - plugin.config.math.onPlayerShootBow.precision_range,result + plugin.config.math.onPlayerShootBow.precision_range);
             if(result < 0)result = 0;
             else if(result > 1) result = 1;
         }
@@ -1072,7 +1073,7 @@ public class PlayerListener implements Listener {
             }
         }
         if(range > 0){
-            result = Helper.randomFloat(result+range,result-range);
+            result = Helper.randomFloat(result-range,result+range);
             if(result < 0)result = 0;
         }
         return result;
@@ -1100,7 +1101,7 @@ public class PlayerListener implements Listener {
         }
 
         if(range > 0){
-            result = Helper.randomFloat(result + range,result - range);
+            result = Helper.randomFloat(result - range,result + range);
             if(result < 0)result = 0;
         }
 
@@ -1129,7 +1130,7 @@ public class PlayerListener implements Listener {
         }
 
         if(range > 0){
-            result = Helper.randomFloat(result + range,result - range);
+            result = Helper.randomFloat(result - range,result + range);
             if(result < 0)result = 0;
         }
         return result;
@@ -1158,7 +1159,7 @@ public class PlayerListener implements Listener {
         }
 
         if(range > 0){
-            result = Helper.randomFloat(result + range,result - range);
+            result = Helper.randomFloat(result - range,result + range);
             if(result < min)result = min;
             else if(result > max) result = max;
         }
