@@ -21,6 +21,7 @@ public class MathSettings {
     public playerAttributes playerAttributes;
     public onPlayerShootBow onPlayerShootBow;
     public onPlayerAttackEntity onPlayerAttackEntity;
+    public onPlayerDies onPlayerDies;
 
     public MathSettings(FileConfiguration config) {
 
@@ -37,6 +38,7 @@ public class MathSettings {
         onPlayerShootBow = new onPlayerShootBow(config.getConfigurationSection("maths.on_player_shoot_bow"));
         playerAttributes = new playerAttributes(config.getConfigurationSection("maths.player_attributes"));
         onPlayerGetDamaged = new onPlayerGetDamaged(config.getConfigurationSection("maths.on_player_get_damaged"));
+        onPlayerDies = new onPlayerDies(config.getConfigurationSection("maths.on_player_dies"));
     }
 
     public class onPlayerAttackEntity{
@@ -464,6 +466,27 @@ public class MathSettings {
             this.speed_maximum = (float)section.getDouble("speed.maximum");
             this.speed_minimum = (float)section.getDouble("speed.minimum");
             this.speed_range = (float)section.getDouble("speed.range");
+        }
+    }
+
+    public class onPlayerDies{
+
+        public float xp_loss;
+        public float items_drops_maximum;
+        public float items_drops_minimum;
+        public float intelligence ;
+        public float agility;
+        public boolean enable;
+        public String function;
+
+        public onPlayerDies(ConfigurationSection section){
+            function = section.getString("function");
+            enable = section.getBoolean("enable");
+            xp_loss = (float)section.getDouble("xp_loss");
+            items_drops_maximum =(float)section.getDouble("items_drops_maximum");
+            items_drops_minimum =(float)section.getDouble("items_drops_minimum");
+            intelligence =(float)section.getDouble("intelligence");
+            agility =(float)section.getDouble("agility");
         }
     }
 }

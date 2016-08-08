@@ -191,22 +191,22 @@ OP:
  intelligence: 100
 
 BOW:
- level: 100
- strength: 100
- dexterity: 100
+ level: 1
+ strength: 5
+ dexterity: 20
 COMPOUND_BOW:
- level: 100
- strength: 100
- dexterity: 100
+ level: 10
+ strength: 25
+ dexterity: 40
 FIRE_COMPOUND_BOW:
- level: 100
- strength: 100
- dexterity: 100
+ level: 20
+ strength: 35
+ dexterity: 55
 DIAMOND_COMPOUND_BOW:
- level: 100
- strength: 100
- dexterity: 100
+ level: 30
+ strength: 40
+ dexterity: 60
 DIAMOND_FIRE_COMPOUND_BOW:
- level: 100
- strength: 100
- dexterity: 100
+ level: 40
+ strength: 50
+ dexterity: 80

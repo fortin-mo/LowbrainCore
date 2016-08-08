@@ -15,6 +15,7 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 
 import lowbrain.mcrpg.rpg.RPGPlayer;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -22,6 +23,7 @@ import org.bukkit.util.Vector;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.List;
 
 
 public class PlayerListener implements Listener {
@@ -40,10 +42,13 @@ public class PlayerListener implements Listener {
         RPGPlayer rp = plugin.connectedPlayers.get(e.getPlayer().getUniqueId());
         if(rp == null)return;
 
-        if(e.getNewArmorPiece() != null && e.getNewArmorPiece().getType() != Material.AIR && !rp.canEquipItem(e.getNewArmorPiece())){
-            rp.SendMessage("You can't equip or use this item !",ChatColor.RED);
-            e.setCancelled(true);
-            return;
+        if(e.getNewArmorPiece() != null && e.getNewArmorPiece().getType() != Material.AIR){
+
+            String requirements =  rp.canEquipItemString(e.getNewArmorPiece());
+            if(!Helper.StringIsNullOrEmpty(requirements)) {
+                rp.SendMessage("You can't equip or use this item !" + requirements, ChatColor.RED);
+                e.setCancelled(true);
+            }
         }
     }
 
@@ -54,9 +59,10 @@ public class PlayerListener implements Listener {
 
         if(e.getItem() == null) return;
 
-        if(!rp.canEquipItem(e.getItem())){
-            rp.SendMessage("You can't equip or use this item !",ChatColor.RED);
+        String requirements =  rp.canEquipItemString(e.getItem());
+        if(!Helper.StringIsNullOrEmpty(requirements)) {
             e.setUseItemInHand(Event.Result.DENY);
+            rp.SendMessage("You can't equip or use this item !" + requirements, ChatColor.RED);
             e.setCancelled(true);
             return;
         }
@@ -159,10 +165,17 @@ public class PlayerListener implements Listener {
      */
     @EventHandler
     public void onPlayerExpChange(PlayerExpChangeEvent e){
-        Player p = e.getPlayer();
-        RPGPlayer rp = plugin.connectedPlayers.get(p.getUniqueId());
-        plugin.debugMessage("Player gains " + e.getAmount() * plugin.config.math.natural_xp_gain_multiplier + " xp");
-        rp.addExp(e.getAmount() * plugin.config.math.natural_xp_gain_multiplier);
+        if(e.getAmount() > 0) {
+            Player p = e.getPlayer();
+            RPGPlayer rp = plugin.connectedPlayers.get(p.getUniqueId());
+            plugin.debugMessage("Player gains " + e.getAmount() * plugin.config.math.natural_xp_gain_multiplier + " xp");
+            rp.addExp(e.getAmount() * plugin.config.math.natural_xp_gain_multiplier);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDies(PlayerDeathEvent e){
+        e.setKeepInventory(true);
     }
 
     @EventHandler
@@ -211,8 +224,30 @@ public class PlayerListener implements Listener {
                 plugin.debugMessage("Killer gains "+ xpGained+" xp!");
             }
 
-            rpKilled.addExp(-(plugin.config.exp_loss_on_death / 100 * rpKilled.getExperience()));
+            if(plugin.config.math.onPlayerDies.enable){
+                rpKilled.addExp(-(plugin.config.math.onPlayerDies.xp_loss / 100 * rpKilled.getExperience()));
+
+                double dropPercentage = getPlayerDropPercentage(rpKilled);
+
+                plugin.debugMessage("Percentage of dropped items : " + dropPercentage);
+
+                int count = (int)(rpKilled.getPlayer().getInventory().getSize() * dropPercentage);
+
+                for (int i = 0; i < count; i++) {
+                    int rdm = Helper.randomInt(rpKilled.getPlayer().getInventory().getSize() - 1, 0);
+
+                    ItemStack item = rpKilled.getPlayer().getInventory().getItem(rdm);
+
+                    if(item != null){
+                        rpKilled.getPlayer().getWorld().dropItemNaturally(rpKilled.getPlayer().getLocation(),item);
+                        rpKilled.getPlayer().getInventory().remove(item);
+                    }
+                }
+
+                plugin.debugMessage("Items dropped : " + count);
+            }
             rpKilled.addDeaths(1);
+
         }
         //MOB DIES
         else {
@@ -248,8 +283,25 @@ public class PlayerListener implements Listener {
                         rpKiller.SendMessage("You've just killed your " + killsCount + " " + mobName);
                         xp = killsCount / interval * section.getDouble("xp_bonus_multiplier");
                     }
-                    rpKiller.addExp(xp);
-                    plugin.debugMessage("Killer gains "+ xp+" xp!");
+
+                    if(plugin.config.nearby_players_gain_xp){
+                        List<RPGPlayer> others = plugin.getNearbyPlayers(rpKiller,plugin.config.nearby_players_max_distance);
+                        rpKiller.addExp(xp * 0.66666);
+                        plugin.debugMessage(rpKiller.getPlayer().getName() + " gains "+ xp * 0.66666 +" xp!");
+
+                        if(others.size() > 0) {
+                            double othersXP = xp * 0.33333 / others.size();
+                            for (RPGPlayer other : others) {
+                                other.addExp(othersXP);
+                                plugin.debugMessage(other.getPlayer().getName() + " gains " + othersXP + " xp!");
+                            }
+                        }
+                    }
+                    else{
+                        rpKiller.addExp(xp);
+                        plugin.debugMessage(rpKiller.getPlayer().getName() + " gains "+ xp+" xp!");
+                    }
+
                 }
 
 
@@ -383,7 +435,7 @@ public class PlayerListener implements Listener {
         RPGPlayer damager = null;
 
         boolean magicAttack = false;
-        boolean arrowAttact = false;
+        boolean arrowAttack = false;
         boolean normalAttack = false;
 
         double oldDamage = e.getDamage();
@@ -399,7 +451,7 @@ public class PlayerListener implements Listener {
                 damager = plugin.connectedPlayers.get(((Player)((Arrow) e.getDamager()).getShooter()).getUniqueId());
             }
             plugin.debugMessage("Attacked by arrow");
-            arrowAttact = true;
+            arrowAttack = true;
         } else if (e.getDamager() instanceof ThrownPotion) {
             ThrownPotion pot = (ThrownPotion) e.getDamager();
             if (pot.getShooter() instanceof Player) {
@@ -413,8 +465,8 @@ public class PlayerListener implements Listener {
         }
 
         //CHECK IF PLAYER CAN USE THE ITEM IN HAND
-        if(damager != null && damager.getPlayer().getItemInHand() != null){
-            if(!damager.canEquipItem(damager.getPlayer().getItemInHand())){
+        if(damager != null && damager.getPlayer().getInventory().getItemInMainHand() != null){
+            if(!damager.canEquipItem(damager.getPlayer().getInventory().getItemInMainHand())){
                 e.setCancelled(true);
                 return;
             }
@@ -438,7 +490,7 @@ public class PlayerListener implements Listener {
         }
 
         //APPLYING DAMAGE CHANGE DEPENDING ON OFFENCIVE ATTRIBUTES
-        if(arrowAttact && damager != null && plugin.config.math.onPlayerAttackEntity.attackEntityBy.projectile_enable){
+        if(arrowAttack && damager != null && plugin.config.math.onPlayerAttackEntity.attackEntityBy.projectile_enable){
             e.setDamage(getAttackByProjectile(damager,oldDamage));
         }
         else if(normalAttack && damager != null && plugin.config.math.onPlayerAttackEntity.attackEntityBy.weapon_enable){
@@ -1236,5 +1288,20 @@ public class PlayerListener implements Listener {
         }
     }
 
-
+    public static float getPlayerDropPercentage(RPGPlayer p){
+        if(Helper.StringIsNullOrEmpty(plugin.config.math.onPlayerDies.function)) {
+            return ValueFromFunction(plugin.config.math.onPlayerDies.items_drops_maximum,plugin.config.math.onPlayerDies.items_drops_minimum,
+                    (p.getAgility() * plugin.config.math.onPlayerDies.agility
+                        + p.getIntelligence() * plugin.config.math.onPlayerDies.intelligence));
+        }
+        else{
+            String[] st = plugin.config.math.onPlayerDies.function.split(",");
+            if(st.length > 1){
+                return Helper.eval(Helper.FormatStringWithValues(st,p));
+            }
+            else{
+                return Helper.eval(st[0]);
+            }
+        }
+    }
 }

@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
  * @Since Jul 30, 2015 6:46:16 PM
  */
 public enum ArmorType{
-	HELMET(5), CHESTPLATE(6), LEGGINGS(7), BOOTS(8);
+	HELMET(5), CHESTPLATE(6), LEGGINGS(7), BOOTS(8), SHIELD(45);
 
 	private final int slot;
 
@@ -50,6 +50,8 @@ public enum ArmorType{
 			case CHAINMAIL_BOOTS:
 			case LEATHER_BOOTS:
 				return BOOTS;
+			case SHIELD:
+				return SHIELD;
 			default:
 				return null;
 		}

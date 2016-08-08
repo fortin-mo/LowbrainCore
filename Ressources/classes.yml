@@ -14,7 +14,7 @@
 # bonus Attributes will add a point to the attributes on level up. Can also be a list : dexterity,strength or all
 
 knight:
-  tag: kg
+  tag: k
   health: 18
   strength: 14
   intelligence: 5
@@ -23,11 +23,11 @@ knight:
   magic_resistance: 4
   agility: 5
   bonus_attributes:
-   -health
+   - health
   powers:
 
 paladin:
-  tag: pa
+  tag: p
   health: 14
   strength: 19
   intelligence: 1
@@ -40,7 +40,7 @@ paladin:
   powers:
 
 mage:
-  tag: ma
+  tag: m
   health: 11
   strength: 1
   intelligence: 18
@@ -59,7 +59,7 @@ mage:
   - speed
 
 hunter:
-  tag: hun
+  tag: h
   health: 12
   strength: 6
   intelligence: 4
@@ -75,7 +75,7 @@ hunter:
    - jump_boost
 
 shaman:
-  tag: sha
+  tag: s
   health: 5
   strength: 5
   intelligence: 15

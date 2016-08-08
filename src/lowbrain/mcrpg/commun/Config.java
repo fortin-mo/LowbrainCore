@@ -20,14 +20,17 @@ public class Config {
     public int starting_points= 3;
     public boolean auto_save= true;
     public int save_interval= 360;
-    public float exp_loss_on_death = 25;
     public boolean allow_stats_reset = false;
     public boolean allow_complete_reset = false;
     public boolean debug = false;
     public List<Integer> lstClassId = new ArrayList<Integer>();
     public int mana_regen_interval = 5;
     public boolean automatic_server_difficulty = true;
+    public boolean nearby_players_gain_xp = true;
+    public float nearby_players_max_distance = 15;
+
     public MathSettings math;
+
 
 
     public Config(FileConfiguration config){
@@ -41,13 +44,14 @@ public class Config {
         starting_points = config.getInt("starting_points");
         auto_save = config.getBoolean("auto_save");
         save_interval = config.getInt("save_interval");
-        exp_loss_on_death = (float)config.getDouble("exp_loss_on_death");
         allow_stats_reset = config.getBoolean("allow_stats_reset");
         allow_complete_reset = config.getBoolean("allow_complete_reset");
         debug = config.getBoolean("debug");
         lstClassId = config.getIntegerList("Classes.list");
         mana_regen_interval = config.getInt("mana_regen_interval");
         automatic_server_difficulty = config.getBoolean("automatic_server_difficulty");
+        nearby_players_gain_xp = config.getBoolean("nearby_players_gain_xp");
+        nearby_players_max_distance = (float)config.getDouble("nearby_players_max_distance");
         math = new MathSettings(config);
     }
 }

@@ -303,7 +303,7 @@ public class RPGPlayer {
 
 		String name = "";
 
-		if(item.getItemMeta().getDisplayName() != null){//custom items
+		if(item.getItemMeta() != null && item.getItemMeta().getDisplayName() != null){//custom items
 			name = item.getItemMeta().getDisplayName().substring(2);
 		}else{//vanilla items
 			name = item.getType().name();
@@ -318,10 +318,39 @@ public class RPGPlayer {
 			if(this.compareAttributesByName(n,v) < 0){
 				return false;
 			}
-
 		}
 		return true;
 	}
+
+	/**
+	 * can this player wear a specific set of armor
+	 * @param item
+	 * @return a string with the requirements that failed... empty if they all passed
+	 */
+	public String canEquipItemString(ItemStack item){
+		String msg = "";
+		if(item == null) return msg;
+		String name = "";
+
+		if(item.getItemMeta().getDisplayName() != null){//custom items
+			name = item.getItemMeta().getDisplayName().substring(2);
+		}else{//vanilla items
+			name = item.getType().name();
+		}
+
+		Main.ItemRequirements i = PlayerListener.plugin.itemsRequirements.get(name);
+
+		if(i == null)return msg;
+		for(Map.Entry<String, Integer> r : i.getRequirements().entrySet()) {
+			String n = r.getKey().toLowerCase();
+			int v = r.getValue();
+			if(this.compareAttributesByName(n,v) < 0){
+				msg += " " + n + ":" + v;
+			}
+		}
+		return msg;
+	}
+
 
 	/**
 	 * cast a spell
@@ -1179,13 +1208,13 @@ public class RPGPlayer {
 			s += "Experience: " + experience + "\n";
 			s += "Next lvl in: " + (nextLvl - experience) + " xp" + "\n";
 
-			s += "Attack speed : " + this.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_SPEED).getBaseValue()+ "\n";
-			s += "Movement speed : " + this.getPlayer().getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue()+ "\n";
+			s += "Attack speed : " + this.getAttackSpeed()+ "\n";
+			s += "Movement speed : " + this.getMovementSpeed()+ "\n";
 			s += "Mana regen : " + PlayerListener.getPlayerManaRegen(this)+ "\n";
 			s += "Max maxMana : " + this.getMaxMana()+ "\n";
 			s += "Max health : " + this.getPlayer().getMaxHealth()+ "\n";
-			s += "Luck : " + this.getPlayer().getAttribute(Attribute.GENERIC_LUCK).getBaseValue()+ "\n";
-			s += "Knockback resistance : " + this.getPlayer().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getBaseValue()+ "\n";
+			s += "Luck : " + this.getLuck()+ "\n";
+			s += "Knockback resistance : " + this.getKnockBackResistance()+ "\n";
 
 			s += "Powers: ";
 			for (RPGPower powa :
@@ -1291,6 +1320,22 @@ public class RPGPlayer {
 
 	public int getKills() {
 		return kills;
+	}
+
+	public double getLuck(){
+		return this.getPlayer().getAttribute(Attribute.GENERIC_LUCK).getBaseValue();
+	}
+
+	public double getAttackSpeed(){
+		return this.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_SPEED).getBaseValue();
+	}
+
+	public double getKnockBackResistance(){
+		return this.getPlayer().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getBaseValue();
+	}
+
+	public double getMovementSpeed(){
+		return this.getPlayer().getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue();
 	}
 
 	//================================================= END OF GETTER =======================================

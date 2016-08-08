@@ -62,7 +62,11 @@ public class ArmorListener implements Listener{
 				if(e.getRawSlot() == newArmorType.getSlot()){
 					equipping = false;
 				}
-				if(newArmorType.equals(ArmorType.HELMET) && (equipping ? e.getWhoClicked().getInventory().getHelmet() == null : e.getWhoClicked().getInventory().getHelmet() != null) || newArmorType.equals(ArmorType.CHESTPLATE) && (equipping ? e.getWhoClicked().getInventory().getChestplate() == null : e.getWhoClicked().getInventory().getChestplate() != null) || newArmorType.equals(ArmorType.LEGGINGS) && (equipping ? e.getWhoClicked().getInventory().getLeggings() == null : e.getWhoClicked().getInventory().getLeggings() != null) || newArmorType.equals(ArmorType.BOOTS) && (equipping ? e.getWhoClicked().getInventory().getBoots() == null : e.getWhoClicked().getInventory().getBoots() != null)){
+				if(newArmorType.equals(ArmorType.HELMET) && (equipping ? e.getWhoClicked().getInventory().getHelmet() == null : e.getWhoClicked().getInventory().getHelmet() != null)
+						|| newArmorType.equals(ArmorType.CHESTPLATE) && (equipping ? e.getWhoClicked().getInventory().getChestplate() == null : e.getWhoClicked().getInventory().getChestplate() != null)
+						|| newArmorType.equals(ArmorType.LEGGINGS) && (equipping ? e.getWhoClicked().getInventory().getLeggings() == null : e.getWhoClicked().getInventory().getLeggings() != null)
+						|| newArmorType.equals(ArmorType.BOOTS) && (equipping ? e.getWhoClicked().getInventory().getBoots() == null : e.getWhoClicked().getInventory().getBoots() != null)
+						|| newArmorType.equals(ArmorType.SHIELD) && (equipping ? e.getWhoClicked().getInventory().getItemInOffHand() == null : e.getWhoClicked().getInventory().getItemInOffHand() != null) ){
 					ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent((Player) e.getWhoClicked(), EquipMethod.SHIFT_CLICK, newArmorType, equipping ? null : e.getCurrentItem(), equipping ? e.getCurrentItem() : null);
 					Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
 					if(armorEquipEvent.isCancelled()){
@@ -119,7 +123,11 @@ public class ArmorListener implements Listener{
 			}
 			ArmorType newArmorType = ArmorType.matchType(e.getItem());
 			if(newArmorType != null){
-				if(newArmorType.equals(ArmorType.HELMET) && e.getPlayer().getInventory().getHelmet() == null || newArmorType.equals(ArmorType.CHESTPLATE) && e.getPlayer().getInventory().getChestplate() == null || newArmorType.equals(ArmorType.LEGGINGS) && e.getPlayer().getInventory().getLeggings() == null || newArmorType.equals(ArmorType.BOOTS) && e.getPlayer().getInventory().getBoots() == null){
+				if(newArmorType.equals(ArmorType.HELMET) && e.getPlayer().getInventory().getHelmet() == null
+						|| newArmorType.equals(ArmorType.CHESTPLATE) && e.getPlayer().getInventory().getChestplate() == null
+							|| newArmorType.equals(ArmorType.LEGGINGS) && e.getPlayer().getInventory().getLeggings() == null
+								|| newArmorType.equals(ArmorType.BOOTS) && e.getPlayer().getInventory().getBoots() == null
+									|| newArmorType.equals(ArmorType.SHIELD) && e.getPlayer().getInventory().getItemInOffHand() == null){
 					ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent(e.getPlayer(), EquipMethod.HOTBAR, ArmorType.matchType(e.getItem()), null, e.getItem());
 					Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
 					if(armorEquipEvent.isCancelled()){
@@ -138,7 +146,11 @@ public class ArmorListener implements Listener{
 			Location loc = e.getBlock().getLocation();
 			for(Player p : loc.getWorld().getPlayers()){
 				if(loc.getBlockY() - p.getLocation().getBlockY() >= -1 && loc.getBlockY() - p.getLocation().getBlockY() <= 1){
-					if(p.getInventory().getHelmet() == null && type.equals(ArmorType.HELMET) || p.getInventory().getChestplate() == null && type.equals(ArmorType.CHESTPLATE) || p.getInventory().getLeggings() == null && type.equals(ArmorType.LEGGINGS) || p.getInventory().getBoots() == null && type.equals(ArmorType.BOOTS)){
+					if(p.getInventory().getHelmet() == null && type.equals(ArmorType.HELMET)
+							|| p.getInventory().getChestplate() == null && type.equals(ArmorType.CHESTPLATE)
+								|| p.getInventory().getLeggings() == null && type.equals(ArmorType.LEGGINGS)
+									|| p.getInventory().getBoots() == null && type.equals(ArmorType.BOOTS)
+										|| p.getInventory().getItemInOffHand() == null && type.equals(ArmorType.SHIELD)){
 						org.bukkit.block.Dispenser dispenser = (org.bukkit.block.Dispenser) e.getBlock().getState();
 						org.bukkit.material.Dispenser dis = (org.bukkit.material.Dispenser) dispenser.getData();
 						BlockFace directionFacing = dis.getFacing();
@@ -176,6 +188,8 @@ public class ArmorListener implements Listener{
 					p.getInventory().setLeggings(i);
 				}else if(type.equals(ArmorType.BOOTS)){
 					p.getInventory().setBoots(i);
+				}else if(type.equals(ArmorType.SHIELD)){
+					p.getInventory().setItemInOffHand(i);
 				}
 			}
 		}

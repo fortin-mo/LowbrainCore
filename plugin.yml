@@ -1,6 +1,6 @@
 main: lowbrain.mcrpg.main.Main
 name: LowbrainMCRPG
-version: 1.0.4
+version: 1.0.5
 author: Lowbrain
 softdepend: [HolographicDisplays]
 description:

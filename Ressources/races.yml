@@ -53,8 +53,8 @@ orc:
     - haste
     - saturation
 
-deamon:
-  tag: deam
+demon:
+  tag: demon
   health: 2
   strength: 2
   intelligence: 5

@@ -360,5 +360,34 @@ public class Main extends JavaPlugin {
 			return requirements;
 		}
 	}
+
+	/**
+	 * get all nearby players of a player
+	 * @param p1 player one
+	 * @param max maximum distance
+	 * @return
+	 */
+	public List<RPGPlayer> getNearbyPlayers(RPGPlayer p1, double max){
+		List<RPGPlayer> lst = new ArrayList<RPGPlayer>();
+
+		for (RPGPlayer p2:this.connectedPlayers.values()) {
+			if(p1.equals(p2))continue;//if its the same player
+			if(p1.getPlayer().getWorld().equals(p2.getPlayer().getWorld())){//check if they are in the same world
+				double x = p1.getPlayer().getLocation().getX() - p2.getPlayer().getLocation().getX();
+				double y = p1.getPlayer().getLocation().getY() - p2.getPlayer().getLocation().getY();
+				double z = p1.getPlayer().getLocation().getZ() - p2.getPlayer().getLocation().getZ();
+
+				double distance = Math.pow(x*x + y*y + z*z,0.5);
+
+				if(distance <= max){
+					lst.add(p2);
+				}
+			}
+		}
+
+		return lst;
+	}
+
+
 }
 
