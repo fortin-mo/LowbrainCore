@@ -1,0 +1,96 @@
+spread_of_arrow:
+ enable: true
+ max_level: 5
+ skill_points_cost: 2
+ cooldown: 30
+ mana_cost: 5
+ requirements_per_level:
+  level: 20
+  dexterity: 20
+
+barrage_of_arrow:
+ enable: true
+ max_level: 5
+ skill_points_cost: 3
+ cooldown: 45
+ mana_cost: 10
+ requirements_per_level:
+  level: 20
+  dexterity: 20
+  agility: 10
+
+flaming_arrow:
+ enable: true
+ max_level: 5
+ skill_points_cost: 3
+ cooldown: 45
+ mana_cost: 10
+ requirements_per_level:
+  level: 20
+  dexterity: 20
+  intelligence: 10
+
+frozen_arrow:
+ enable: true
+ max_level: 5
+ skill_points_cost: 3
+ cooldown: 30
+ mana_cost: 5
+ requirements_per_level:
+  level: 20
+  dexterity: 20
+  intelligence: 10
+
+straight_arrow:
+ enable: true
+ max_level: 3
+ skill_points_cost: 2
+ cooldown: 15
+ mana_cost: 5
+ requirements_per_level:
+  level: 20
+  dexterity: 20
+  strength: 15
+
+fire_slash:
+ enable: true
+ max_level: 5
+ skill_points_cost: 3
+ cooldown: 45
+ mana_cost: 10
+ requirements_per_level:
+  level: 20
+  dexterity: 20
+  intelligence: 10
+  
+frozen_slash:
+ enable: true
+ max_level: 5
+ skill_points_cost: 3
+ cooldown: 30
+ mana_cost: 5
+ requirements_per_level:
+  level: 20
+  dexterity: 20
+  intelligence: 10
+  
+power_hit:
+ enable: true
+ max_level: 5
+ skill_points_cost: 3
+ cooldown: 60
+ mana_cost: 10
+ requirements_per_level:
+  level: 20
+  strength: 20
+  intelligence: 10
+
+absorb:
+ enable: true
+ max_level: 5
+ skill_points_cost: 4
+ cooldown: 60
+ mana_cost: 10
+ requirements_per_level:
+  level: 20
+  intelligence: 20

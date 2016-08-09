@@ -4,11 +4,14 @@ import lowbrain.mcrpg.commun.Helper;
 import lowbrain.mcrpg.rpg.RPGClass;
 import lowbrain.mcrpg.rpg.RPGPlayer;
 import lowbrain.mcrpg.rpg.RPGRace;
+import lowbrain.mcrpg.rpg.RPGSkill;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Map;
 
 public class RPGCommand implements CommandExecutor{
 	private final Main plugin;
@@ -30,6 +33,8 @@ public class RPGCommand implements CommandExecutor{
 			if(args.length > 0){
 
 				switch (args[0].toLowerCase()){
+					default:
+						return false;
                     case "xp":
                         double xp = rp.getNextLvl() - rp.getExperience();
 						rp.SendMessage("You will reach lvl " + (rp.getLvl()+1) + " in " + xp + " xp");
@@ -258,7 +263,43 @@ public class RPGCommand implements CommandExecutor{
 									break;
 							}
 						}
-
+						break;
+					case "mobkills":
+						String msg = "";
+						if(args.length == 1){
+							for(Map.Entry<String, Integer> s : rp.getMobKills().entrySet()) {
+								String n = s.getKey();
+								int v = s.getValue();
+								msg += n + " : " + v + "\n";
+							}
+							rp.SendMessage(msg);
+						}
+						else if(args.length == 2){
+							if(rp.getMobKills().containsKey(args[1].toLowerCase()));
+							msg = args[1] + " : " + rp.getMobKills().get(args[1].toLowerCase());
+							rp.SendMessage(msg);
+						}
+						break;
+					case "setskill":
+						if(args.length == 2){
+							rp.setCurrentSkill(args[1].toLowerCase());
+						}
+						else return false;
+						break;
+					case "upskill":
+						if(args.length == 2){
+							rp.upgradeSkill(args[1].toLowerCase());
+						}
+						else return false;
+						break;
+					case "skills":
+						String sk = "";
+						for(Map.Entry<String, RPGSkill> s : rp.getSkills().entrySet()) {
+							String n = s.getValue().getName();
+							int v = s.getValue().getCurrentLevel();
+							sk += n + " : " + v + "\n";
+						}
+						rp.SendMessage(sk);
 						break;
 				}
 				return true;

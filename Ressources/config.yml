@@ -41,6 +41,9 @@ allow_stats_reset: false; # allow player to reset stats. it will reset to defaul
 allow_complete_reset: false; # allow player to reset stats complitetely. will remove class and race. will also reset points and gained level
 points_per_lvl: 2 # number of points a player gains on each level up
 starting_points: 3 # number of points a player get a start
+starting_skill_points: 0
+skill_points_level_interval: 5
+skill_points_per_level: 1
 auto_save: true # enable auto saving
 save_interval: 360 # auto saving interval in second(6min by default). auto_save must be true
 debug: true # debug mode. show stuff in console
@@ -177,7 +180,7 @@ maths: # everything needed to calculate damage, resitance, etc
   enable: true
   precision:
    function:
-   minimum: 0.15
+   minimum: 0.25
    maximum: 1
    dexterity: 1
    range: 0.05

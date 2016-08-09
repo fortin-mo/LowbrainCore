@@ -1,6 +1,7 @@
 package lowbrain.mcrpg.commun;
 
 import lowbrain.mcrpg.rpg.RPGPlayer;
+import org.bukkit.util.Vector;
 
 import java.text.MessageFormat;
 import java.util.Arrays;
@@ -169,5 +170,14 @@ public class Helper {
         }catch (Exception e){
             return d;
         }
+    }
+
+    public static Vector rotateYAxis(Vector dir, double angleD) {
+        double angleR = Math.toRadians(angleD);
+        double x = dir.getX();
+        double z = dir.getZ();
+        double cos = Math.cos(angleR);
+        double sin = Math.sin(angleR);
+        return (new Vector(x*cos+z*(-sin), dir.getY(), x*sin+z*cos)).normalize();
     }
 }

@@ -25,13 +25,14 @@ public class Config {
     public boolean debug = false;
     public List<Integer> lstClassId = new ArrayList<Integer>();
     public int mana_regen_interval = 5;
+    public int starting_skill_points = 0;
+    public int skill_points_level_interval = 5;
+    public int skill_points_per_level = 1;
     public boolean automatic_server_difficulty = true;
     public boolean nearby_players_gain_xp = true;
     public float nearby_players_max_distance = 15;
 
     public MathSettings math;
-
-
 
     public Config(FileConfiguration config){
         allow_deduction_points = config.getBoolean("allow_deduction_points");
@@ -52,6 +53,9 @@ public class Config {
         automatic_server_difficulty = config.getBoolean("automatic_server_difficulty");
         nearby_players_gain_xp = config.getBoolean("nearby_players_gain_xp");
         nearby_players_max_distance = (float)config.getDouble("nearby_players_max_distance");
+        starting_skill_points = config.getInt("starting_skill_points");
+        skill_points_level_interval = config.getInt("skill_points_level_interval");
+        skill_points_per_level = config.getInt("skill_points_per_level");
         math = new MathSettings(config);
     }
 }

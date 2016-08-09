@@ -1,4 +1,5 @@
 package lowbrain.mcrpg.rpg;
+import com.sun.webkit.plugin.PluginListener;
 import lowbrain.mcrpg.commun.Config;
 import lowbrain.mcrpg.commun.Helper;
 import lowbrain.mcrpg.main.Main;
@@ -21,6 +22,8 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +39,7 @@ public class RPGPlayer {
 	private int magicResistance = 0;
 	private boolean classIsSet = false;
 	private int points = 0;
+	private int skillPoints = 0;
 	private float experience = 0;
 	private int lvl = 0;
 	private int kills = 0;
@@ -50,6 +54,8 @@ public class RPGPlayer {
 	private int agility = 0;
 	private boolean showStats = true;
 	private HashMap<String,Integer> mobKills;
+	private HashMap<String,RPGSkill> skills;
+	private String currentSkill;
 
 	private Scoreboard scoreboard;
 
@@ -119,6 +125,7 @@ public class RPGPlayer {
 			info.getScore(ChatColor.GREEN + "XP: ").setScore((int)this.experience);
 			info.getScore(ChatColor.GREEN + "NEXT LEVEL IN: ").setScore((int)(this.nextLvl - this.experience));
 			info.getScore(ChatColor.GREEN + "POINTS: ").setScore(this.points);
+			info.getScore(ChatColor.GREEN + "SKILL POINTS: ").setScore(this.skillPoints);
 			info.getScore(ChatColor.GREEN + "KILLS: ").setScore(this.kills);
 
 			Objective level = scoreboard.getObjective("Level");
@@ -137,6 +144,9 @@ public class RPGPlayer {
 		File userdata = new File(PlayerListener.plugin.getDataFolder(), File.separator + "PlayerDB");
         File f = new File(userdata, File.separator + player.getUniqueId() + ".yml");
         FileConfiguration playerData = YamlConfiguration.loadConfiguration(f);
+
+		this.skills = new HashMap<String,RPGSkill>();
+		this.mobKills = new HashMap<String,Integer>();
 
 		//When the player file is created for the first time...
 		if (!f.exists()) {
@@ -163,8 +173,18 @@ public class RPGPlayer {
 			playerData.set("stats.kills",0);
 			playerData.set("stats.deaths",0);
 			playerData.set("stats.current_mana",0);
+			playerData.set("stats.skill_points",getSettings().starting_skill_points);
+			playerData.set("stats.current_skill","");
 
 			playerData.createSection("mob_kills");
+
+			playerData.createSection("skills");
+
+			for (RPGSkill skill :
+					PlayerListener.plugin.skills.values()) {
+				playerData.set("skills." + skill.getName(),0);
+			}
+
 
 			playerData.createSection("settings");
 			playerData.set("settings.show_stats",true);
@@ -190,6 +210,7 @@ public class RPGPlayer {
 		magicResistance = playerData.getInt("stats.magic_resistance");
         experience = (float)playerData.getDouble("stats.experience");
         points = playerData.getInt("stats.points");
+		skillPoints = playerData.getInt("stats.skill_points");
         lvl = playerData.getInt("stats.lvl");
         nextLvl = (float)playerData.getDouble("stats.next_lvl");
 		kills = playerData.getInt("stats.kills");
@@ -197,7 +218,20 @@ public class RPGPlayer {
 		currentMana = (float)playerData.getDouble("stats.current_mana");
 		agility = playerData.getInt("stats.agility");
 
-		this.mobKills = new HashMap<String,Integer>();
+		ConfigurationSection skillsSection = playerData.getConfigurationSection("skills");
+
+		//in case of new skills added
+		this.skills = (HashMap<String, RPGSkill>) PlayerListener.plugin.skills.clone();
+
+		if(skillsSection != null){
+			for (String skill :
+					skillsSection.getKeys(false)) {
+				this.skills.put(skill,new RPGSkill(skill,skillsSection.getInt(skill) ,PlayerListener.plugin.skillsConfig));
+			}
+		}
+
+		currentSkill = this.skills.containsKey(playerData.getString("stats.current_skill")) ? playerData.getString("stats.current_skill") : "";
+
 		ConfigurationSection mob = playerData.getConfigurationSection("mob_kills");
 		if(mob != null){
 			for (String key :mob.getKeys(false)) {
@@ -435,11 +469,20 @@ public class RPGPlayer {
 			playerData.set("stats.kills",kills);
 			playerData.set("stats.deaths",deaths);
 			playerData.set("stats.current_mana", currentMana);
+			playerData.set("stats.skill_points", skillPoints);
 
 			for(Map.Entry<String, Integer> r : this.mobKills.entrySet()) {
 				String n = r.getKey();
 				int v = r.getValue();
 				playerData.set("mob_kills." + n,v);
+			}
+
+			playerData.set("stats.current_skill",this.currentSkill);
+
+			for(Map.Entry<String, RPGSkill> s : this.skills.entrySet()) {
+				String n = s.getKey();
+				int v = s.getValue().getCurrentLevel();
+				playerData.set("skills." + n,v);
 			}
 
 			playerData.set("settings.show_stats",showStats);
@@ -468,7 +511,12 @@ public class RPGPlayer {
 
 			AddBonusAttributes(1);
 
-			points += getSettings().points_per_lvl;
+			this.addPoints(getSettings().points_per_lvl);
+
+			if(this.lvl % getSettings().skill_points_level_interval == 0){
+				this.addSkillPoints(getSettings().skill_points_per_level);
+			}
+
 			double lvlExponential = getSettings().math.next_lvl_multiplier;
 			this.nextLvl += this.nextLvl * lvlExponential;
 			setDisplayName();
@@ -1182,6 +1230,77 @@ public class RPGPlayer {
 		this.classIsSet = true;
 	}
 
+	/**
+	 * set current skill
+	 * @param n name of the skill
+	 */
+	public void setCurrentSkill(String n) {
+		if(this.skills.containsKey(n)) {
+			if(this.skills.get(n).getCurrentLevel() == 0){
+				this.SendMessage("You cannot use this skill yet ! You must upgrade it to level one first !",ChatColor.RED);
+				return;
+			}
+			this.currentSkill = n;
+		}
+		else{
+			this.SendMessage("There is no such skill !",ChatColor.RED);
+		}
+	}
+
+	/**
+	 * add skill points
+	 * @param skillPoints the number to add
+	 */
+	public void addSkillPoints(int skillPoints) {
+		this.skillPoints += skillPoints;
+		if(this.skillPoints < 0) this.skillPoints = 0;
+	}
+
+	/**
+	 * upgrade skill
+	 * @param n name of the skill
+	 */
+	public void upgradeSkill(String n){
+		if(!PlayerListener.plugin.skills.containsKey(n)){
+			this.SendMessage("There is no such skill !",ChatColor.RED);
+			return;
+		}
+
+		RPGSkill s = this.skills.get(n);
+		if(!s.isEnable()){
+			this.SendMessage("This skill is disabled !",ChatColor.RED);
+			return;
+		}
+
+		if(s.getMaxLevel() <= s.getCurrentLevel()){
+			this.SendMessage("This skill is alreary fully upgraded !",ChatColor.RED);
+			return;
+		}
+
+		String msg = "";
+		for(Map.Entry<String, Integer> r : s.getRequirements().entrySet()) {
+			String requirement = r.getKey().toLowerCase();
+			int value = r.getValue() * (s.getCurrentLevel() + 1);
+			if(this.compareAttributesByName(requirement,value) < 0){
+				msg += " " + n + ":" + value;
+			}
+		}
+
+		if(!Helper.StringIsNullOrEmpty(msg)){
+			this.SendMessage("You do not meet the requirements to upgrade this skill ! ==>" + msg,ChatColor.RED);
+			return;
+		}
+
+		if(s.getSkillPointsCost() > this.skillPoints){
+			this.SendMessage("This skill requires " + s.getSkillPointsCost() + " points to upgrade !",ChatColor.RED);
+			return;
+		}
+
+		this.skills.get(n).addLevel(1);
+		this.addSkillPoints(- s.getSkillPointsCost());
+
+	}
+
 	//=============================================== END OF ADD AND SETTER ===============================
 
 	//================================================ GETTER ==============================================
@@ -1204,7 +1323,8 @@ public class RPGPlayer {
 			s += "Agility: " + agility + "\n";
 			s += "Kills: " + kills + "\n";
 			s += "Deaths: " + deaths + "\n";
-			s += "Points left: " + points + "\n";
+			s += "Points: " + points + "\n";
+			s += "Skill points" + skillPoints + "\n";
 			s += "Experience: " + experience + "\n";
 			s += "Next lvl in: " + (nextLvl - experience) + " xp" + "\n";
 
@@ -1336,6 +1456,22 @@ public class RPGPlayer {
 
 	public double getMovementSpeed(){
 		return this.getPlayer().getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue();
+	}
+
+	public HashMap<String, Integer> getMobKills() {
+		return mobKills;
+	}
+
+	public HashMap<String, RPGSkill> getSkills() {
+		return skills;
+	}
+
+	public RPGSkill getCurrentSkill() {
+		return this.skills.get(this.currentSkill);
+	}
+
+	public int getSkillPoints() {
+		return this.skillPoints;
 	}
 
 	//================================================= END OF GETTER =======================================
@@ -1562,10 +1698,6 @@ public class RPGPlayer {
 		}
 		
 		AttributeHasChanged();
-	}
-
-	public HashMap<String, Integer> getMobKills() {
-		return mobKills;
 	}
 
 	//===============================================END OF PRIVATE METHODES HELPER===============================

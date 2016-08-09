@@ -4,6 +4,7 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import lowbrain.mcrpg.commun.Helper;
 import lowbrain.mcrpg.main.Main;
+import lowbrain.mcrpg.rpg.RPGSkill;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.*;
@@ -22,8 +23,11 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -86,7 +90,6 @@ public class PlayerListener implements Listener {
     public void onPlayerDamaged(EntityDamageEvent e){
         if(e.getEntity() instanceof Player){
             RPGPlayer damagee = plugin.connectedPlayers.get(e.getEntity().getUniqueId());
-
             // multiplier = a * x + b : where a = max-min/max_stats, and b = min
             float multiplier = 1;
 
@@ -432,7 +435,6 @@ public class PlayerListener implements Listener {
      */
     @EventHandler
     public void onPlayerAttack(EntityDamageByEntityEvent e) {
-
         RPGPlayer damager = null;
 
         boolean magicAttack = false;
@@ -448,6 +450,17 @@ public class PlayerListener implements Listener {
             normalAttack  = true;
         } else if (e.getDamager() instanceof Arrow) {
             Arrow ar = (Arrow) e.getDamager();
+
+            //custom arrow created by skilled attack
+            if(!Helper.StringIsNullOrEmpty(ar.getCustomName())){
+                plugin.debugMessage(ar.getCustomName());
+                if(ar.getCustomName().split(",")[0].equals("frozen_arrow")){
+                    int lvl = Helper.intTryParse(ar.getCustomName().split(",")[1],1);
+                    PotionEffect po = new PotionEffect(PotionEffectType.SLOW,lvl * 2 *20,lvl,true,true);
+                    po.apply((LivingEntity)e.getEntity());
+                }
+            }
+
             if (ar.getShooter() instanceof Player) {
                 damager = plugin.connectedPlayers.get(((Player)((Arrow) e.getDamager()).getShooter()).getUniqueId());
             }
@@ -501,12 +514,17 @@ public class PlayerListener implements Listener {
             e.setDamage(getAttackByPotion(damager,oldDamage));
         }
 
+        //applying skilled attack if necessary
+        if(normalAttack && damager != null && damager.getCurrentSkill() != null && damager.getCurrentSkill().executeWeaponAttackSkill(damager,(LivingEntity) e.getEntity(),e.getDamage())){
+            damager.SendMessage("Skilled attack succeeded !");
+        }
+
         if(damager != null) {
 
             //CREATING DAMAGE HOLOGRAM
             if(plugin.useHolographicDisplays){
                 NumberFormat formatter = new DecimalFormat("#0.00");
-                Location loc = e.getEntity().getLocation().add(0,1,0);
+                Location loc = e.getEntity().getLocation().add(0,2,0);
                 Hologram holoDamage = HologramsAPI.createHologram(plugin,loc);
                 holoDamage.appendTextLine(ChatColor.WHITE + formatter.format(e.getDamage()));
 
@@ -587,9 +605,12 @@ public class PlayerListener implements Listener {
             direction = Helper.randomInt(0,1) == 0 ? -1 : 1;
             precZ = 1 + (1-precZ)*direction;
 
-
             plugin.debugMessage("Arrow precision multiplier : " + precX);
             ar.setVelocity(new Vector(ar.getVelocity().getX() * precX, ar.getVelocity().getY() * precY, ar.getVelocity().getZ() * precZ));
+
+            if(rpPlayer.getCurrentSkill() != null && rpPlayer.getCurrentSkill().executeBowSkill(rpPlayer,ar.getVelocity().clone(),ar,speed) ){
+                rpPlayer.SendMessage("Skilled attack succeeded !");
+            }
         }
     }
 

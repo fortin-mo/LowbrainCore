@@ -1,6 +1,6 @@
 main: lowbrain.mcrpg.main.Main
 name: LowbrainMCRPG
-version: 1.0.5
+version: 1.0.7
 author: Lowbrain
 softdepend: [HolographicDisplays]
 description:
@@ -21,6 +21,13 @@ commands:
                   /mcrpg togglestats <false or true> - hide or show stats scoreboard
                   /mcrpg togglestats <0 or 1> - hide or show stats scoreboard
                   /mcrpg togglestats - toggle stats scoreboard
+
+                  /mcrpg mobkills <name> - show how many time you killed this mob
+                  /mcrpg mobkills - show the number of kills you got for each mob
+
+                  /mcprg skills - show the list of skills and their current level
+                  /mcrpg setskill <name> - set the current skill to be used
+                  /mcrpg upskill <name> - upgrade skill
 
                   /mcrpg add defence <number>  - add <number> defence or def
                   /mcrpg add strength <number>  - add <number> strength o str

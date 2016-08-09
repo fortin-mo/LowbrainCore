@@ -1,11 +1,13 @@
 package lowbrain.mcrpg.main;
 
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.*;
 
 import lowbrain.mcrpg.events.ArmorListener;
 import lowbrain.mcrpg.events.PlayerListener;
 import lowbrain.mcrpg.rpg.RPGPlayer;
+import lowbrain.mcrpg.rpg.RPGSkill;
 import net.minecraft.server.v1_10_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -38,11 +40,13 @@ public class Main extends JavaPlugin {
 	public FileConfiguration customItemsConfig;
 	public FileConfiguration itemsRequirementsConfig;
 	public FileConfiguration mobsxpConfig;
+	public FileConfiguration skillsConfig;
 	public HashMap<String,ItemRequirements> itemsRequirements = new HashMap<String,ItemRequirements>();
+	public HashMap<String,RPGSkill> skills = new HashMap<String,RPGSkill>();
 
 	public boolean useHolographicDisplays;
 
-	private File classf, racef, powerf, customItemsf, itemsRequirementsf, mobsxpf;
+	private File classf, racef, powerf, customItemsf, itemsRequirementsf, mobsxpf, skillsf;
 	/**
 	 * called when the plugin is initially enabled
 	 */
@@ -94,6 +98,7 @@ public class Main extends JavaPlugin {
 		customItemsf = new File(getDataFolder(),"customitems.yml");
 		itemsRequirementsf = new File(getDataFolder(),"itemsrequirements.yml");
 		mobsxpf = new File(getDataFolder(),"mobsxp.yml");
+		skillsf = new File(getDataFolder(),"skills.yml");
 
 
 		if (!classf.exists()) {
@@ -120,6 +125,10 @@ public class Main extends JavaPlugin {
 			mobsxpf.getParentFile().mkdirs();
 			saveResource("mobsxp.yml", false);
 		}
+		if (!skillsf.exists()) {
+			skillsf.getParentFile().mkdirs();
+			saveResource("skills.yml", false);
+		}
 
 		classesConfig = new YamlConfiguration();
 		powersConfig = new YamlConfiguration();
@@ -127,6 +136,7 @@ public class Main extends JavaPlugin {
 		customItemsConfig = new YamlConfiguration();
 		itemsRequirementsConfig = new YamlConfiguration();
 		mobsxpConfig = new YamlConfiguration();
+		skillsConfig = new YamlConfiguration();
 
 		try {
 			classesConfig.load(classf);
@@ -135,6 +145,8 @@ public class Main extends JavaPlugin {
 			customItemsConfig.load(customItemsf);
 			itemsRequirementsConfig.load(itemsRequirementsf);
 			mobsxpConfig.load(mobsxpf);
+			skillsConfig.load(skillsf);
+			loadSkills();
 			loadItemsRequirements();
 			createCustomItems();
 		}catch (Exception e){
@@ -194,6 +206,15 @@ public class Main extends JavaPlugin {
 			}
 			else if(start.getConfigurationSection(key) != null){
 				recursiveConfigFunctionSearch(start.getConfigurationSection(key),functions);
+			}
+		}
+	}
+
+	private void loadSkills(){
+		for (String skillName :
+				skillsConfig.getKeys(false)) {
+			if(skillsConfig.getBoolean(skillName + ".enable")){
+				this.skills.put(skillName,new RPGSkill(skillName,skillsConfig));
 			}
 		}
 	}
