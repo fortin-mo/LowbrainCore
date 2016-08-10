@@ -4,13 +4,10 @@ import lowbrain.mcrpg.commun.Helper;
 import lowbrain.mcrpg.events.PlayerListener;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -26,10 +23,18 @@ public class RPGSkill {
 
     private String name;
     private int maxLevel;
-    private int coolDown;
-    private float manaCost;
-    private int skillPointsCost;
-    private HashMap<String,Integer> requirements;
+    private int baseCooldown;
+    private float baseManaCost;
+    private int baseSkillpointsCost;
+    private int skillpointsOperation;
+    private int manaCostOperation;
+    private int cooldownOperation;
+    private int requirementsOperation;
+    private float skillpointsOperationValue;
+    private float manaCostOperationValue;
+    private float cooldownOperationValue;
+    private float requirementsOperationValue;
+    private HashMap<String,Integer> baseRequirements;
     private boolean enable;
     private Calendar lastExecuted;
     private int currentLevel;
@@ -55,18 +60,28 @@ public class RPGSkill {
             return;
         }
         enable = true;
-
+        this.enable = sec.getBoolean("enable");
         this.maxLevel = sec.getInt("max_level");
-        this.coolDown = sec.getInt("cooldown");
-        this.manaCost = (float)sec.getDouble("mana_cost");
-        this.skillPointsCost = sec.getInt("skill_points_cost");
-        this.requirements = new HashMap<String,Integer>();
+        this.baseCooldown = sec.getInt("base_cooldown");
+        this.baseManaCost = (float)sec.getDouble("base_mana_cost");
+        this.baseSkillpointsCost = sec.getInt("base_skillpoints_cost");
 
-        ConfigurationSection requirementsSection = sec.getConfigurationSection("requirements_per_level");
+        this.skillpointsOperation = sec.getInt("base_skillpoints_operation");
+        this.manaCostOperation = sec.getInt("mana_cost_operation");
+        this.cooldownOperation = sec.getInt("cooldown_operation");
+        this.requirementsOperation = sec.getInt("requirements_operation");
+        this.skillpointsOperationValue = sec.getInt("base_skillpoints_operation_value");
+        this.manaCostOperationValue = sec.getInt("mana_cost_operation_value");
+        this.cooldownOperationValue = sec.getInt("cooldown_operation_value");
+        this.requirementsOperationValue = sec.getInt("requirements_operation_value");
+
+        this.baseRequirements = new HashMap<String,Integer>();
+
+        ConfigurationSection requirementsSection = sec.getConfigurationSection("base_requirements");
         if(requirementsSection != null){
             for (String key :
                     requirementsSection.getKeys(false)) {
-                this.requirements.put(key,requirementsSection.getInt(key));
+                this.baseRequirements.put(key,requirementsSection.getInt(key));
             }
         }
     }
@@ -79,35 +94,49 @@ public class RPGSkill {
         return maxLevel;
     }
 
-    public int getCoolDown() {
-        return coolDown;
+    public int getBaseCooldown() {
+        return baseCooldown;
     }
 
-    public float getManaCost() {
-        return manaCost;
+    public int getCoolDown(){
+        return operation(this.baseCooldown,this.cooldownOperationValue,this.cooldownOperation);
     }
 
-    public int getSkillPointsCost() {
-        return skillPointsCost;
+    public float getManaCost(){
+        return operation(this.baseManaCost,this.manaCostOperationValue,this.manaCostOperation);
     }
 
-    public HashMap<String, Integer> getRequirements() {
-        return requirements;
+    public int getSkillpointsCost(){
+        return operation(this.baseSkillpointsCost,this.skillpointsOperationValue,this.skillpointsOperation);
+    }
+
+    public float getBaseManaCost() {
+        return baseManaCost;
+    }
+
+    public int getBaseSkillpointsCost() {
+        return baseSkillpointsCost;
+    }
+
+    public HashMap<String, Integer> getBaseRequirements() {
+        return baseRequirements;
+    }
+
+    public int getRequirement(String n){
+        return operation(this.baseRequirements.get(n),this.requirementsOperationValue,this.requirementsOperation);
     }
 
     public boolean isEnable() {
         return enable;
     }
 
-    public boolean executeBowSkill(RPGPlayer p,Vector vector, Arrow ar,float speed) {
+    public boolean executeBowSkill(RPGPlayer p, Arrow ar,float speed) {
         try {
             boolean succeed = false;
 
-            if(p == null || vector == null || ar == null ) return succeed;
+            if(p == null || ar == null ) return succeed;
 
             if(!canExecute(p))return succeed;
-
-            PlayerListener.plugin.debugMessage(this.name);
 
             switch (this.name) {
                 case "spread_of_arrow":
@@ -149,9 +178,7 @@ public class RPGSkill {
                     succeed = true;
                     break;
                 case "straight_arrow":
-                    vector.normalize();
-                    Vector vec = vector.clone();
-                    ar.setVelocity(vec.clone().multiply(speed));
+                    ar.setVelocity(ar.getVelocity().normalize().multiply(speed * currentLevel));
                     ar.setGravity(false);
                     succeed = true;
                     break;
@@ -159,7 +186,9 @@ public class RPGSkill {
 
             if(succeed){
                 this.setLastExecuted(Calendar.getInstance());
-                p.setCurrentMana(p.getCurrentMana() - getManaCost());
+                p.setCurrentMana(p.getCurrentMana() - getBaseManaCost());
+                PlayerListener.plugin.debugMessage(this.name);
+                p.SendMessage("Skilled attack succeeded !");
             }
 
             return succeed;
@@ -177,8 +206,6 @@ public class RPGSkill {
 
             if(!canExecute(p))return succeed;
 
-            PlayerListener.plugin.debugMessage(this.name);
-
             switch (this.name){
                 case "fire_slash":
                     to.setFireTicks(currentLevel * 2);
@@ -195,18 +222,21 @@ public class RPGSkill {
                     succeed = true;
                     break;
                 case "absorb":
-                    double pc = 1 / this.maxLevel * currentLevel;
+                    double pc = 1 * currentLevel / this.maxLevel ;
                     double absorb = damage * pc;
                     double newHealth = p.getPlayer().getHealth() + absorb;
                     newHealth = newHealth > p.getPlayer().getMaxHealth() ? p.getPlayer().getMaxHealth() : newHealth;
                     p.getPlayer().setHealth(newHealth);
+                    p.SendMessage(absorb + "HP absorbed !");
                     succeed = true;
                     break;
             }
 
             if(succeed){
                 this.setLastExecuted(Calendar.getInstance());
-                p.setCurrentMana(p.getCurrentMana() - getManaCost());
+                p.setCurrentMana(p.getCurrentMana() - getBaseManaCost());
+                PlayerListener.plugin.debugMessage(this.name);
+                p.SendMessage("Skilled attack succeeded !");
             }
 
             return succeed;
@@ -216,15 +246,15 @@ public class RPGSkill {
     }
 
     public boolean canExecute(RPGPlayer p){
-        if(p.getPlayer().isSneaking() && p.getCurrentSkill() != null){
+        if(p.getPlayer().isSneaking()){
 
             if(currentLevel == 0)return false;
 
             Calendar cooldownTime = Calendar.getInstance();
             cooldownTime.add(Calendar.SECOND,-getCoolDown());
 
-            if(lastExecuted.before(cooldownTime)){
-                if(p.getCurrentMana() < p.getCurrentSkill().getManaCost()){
+            if(this.getLastExecuted().before(cooldownTime)){
+                if(p.getCurrentMana() < this.getManaCost()){
                     p.SendMessage("Not enough mana !", ChatColor.RED);
                     return false;
                 }
@@ -233,7 +263,8 @@ public class RPGSkill {
                 }
             }
             else{
-                p.SendMessage("Cooldown !",ChatColor.RED);
+                int rest = (int)((cooldownTime.getTimeInMillis() - getLastExecuted().getTimeInMillis()) / 1000);
+                p.SendMessage("Cooldown ! " + rest + " seconde left !",ChatColor.RED);
                 return false;
             }
         }
@@ -246,8 +277,8 @@ public class RPGSkill {
         return lastExecuted;
     }
 
-    public void setLastExecuted(Calendar lastExecuted) {
-        this.lastExecuted = lastExecuted;
+    public void setLastExecuted(Calendar cal) {
+        this.lastExecuted = cal;
     }
 
     public int getCurrentLevel() {
@@ -260,5 +291,69 @@ public class RPGSkill {
 
     public void addLevel(int lvl) {
         this.currentLevel += lvl;
+    }
+
+    public int operation(int baseValue, float opValue,int operation){
+        int returnValue = baseValue;
+        switch (operation){
+            case 1:
+                returnValue = (int)(baseValue * Math.pow(baseValue,getCurrentLevel() - 1));
+                break;
+            case 2:
+                returnValue = (int)(baseValue + ( (baseValue * opValue) * ( getCurrentLevel()-1 )));
+                break;
+            default:
+                returnValue = (int)(baseValue + opValue * (getCurrentLevel() - 1));
+                break;
+        }
+        return returnValue;
+    }
+
+    public float operation(float baseValue, float opValue,int operation){
+        double returnValue = baseValue;
+        switch (operation){
+            case 1:
+                returnValue = baseValue * Math.pow(baseValue,getCurrentLevel() - 1);
+                break;
+            case 2:
+                returnValue = baseValue + ( (baseValue * baseValue) * ( getCurrentLevel()-1 ));
+                break;
+            default:
+                returnValue = baseValue + opValue * ( getCurrentLevel() - 1 );
+                break;
+        }
+        return (float)returnValue;
+    }
+
+    public int getSkillpointsOperation() {
+        return skillpointsOperation;
+    }
+
+    public int getManaCostOperation() {
+        return manaCostOperation;
+    }
+
+    public int getCooldownOperation() {
+        return cooldownOperation;
+    }
+
+    public int getRequirementsOperation() {
+        return requirementsOperation;
+    }
+
+    public float getSkillpointsOperationValue() {
+        return skillpointsOperationValue;
+    }
+
+    public float getManaCostOperationValue() {
+        return manaCostOperationValue;
+    }
+
+    public float getCooldownOperationValue() {
+        return cooldownOperationValue;
+    }
+
+    public float getRequirementsOperationValue() {
+        return requirementsOperationValue;
     }
 }

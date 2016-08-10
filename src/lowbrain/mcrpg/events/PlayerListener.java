@@ -140,11 +140,6 @@ public class PlayerListener implements Listener {
                 }
             }
 
-            else if(e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK) && plugin.config.math.onPlayerGetDamaged.weapon_enable){
-                plugin.debugMessage("Damage caused by : " + e.getCause().name());
-                multiplier = getDamagedByWeapon(damagee);
-            }
-
             //ARROW
             else if(e.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE) && plugin.config.math.onPlayerGetDamaged.projectile_enable){
                 plugin.debugMessage("Damage caused by : " + e.getCause().name());
@@ -155,6 +150,13 @@ public class PlayerListener implements Listener {
             else if(e.getCause().equals(EntityDamageEvent.DamageCause.CONTACT) && plugin.config.math.onPlayerGetDamaged.contact_enable){
                 plugin.debugMessage("Damage caused by : " + e.getCause().name());
                 multiplier = getDamagedByContact(damagee);
+            }
+
+            else if(plugin.config.math.onPlayerGetDamaged.weapon_enable){
+                if(e.getCause() != null) {
+                    plugin.debugMessage("Damage caused by : " + e.getCause().name());
+                }
+                multiplier = getDamagedByWeapon(damagee);
             }
 
             plugin.debugMessage("Deffencive damage multiplier : " + multiplier);
@@ -515,8 +517,8 @@ public class PlayerListener implements Listener {
         }
 
         //applying skilled attack if necessary
-        if(normalAttack && damager != null && damager.getCurrentSkill() != null && damager.getCurrentSkill().executeWeaponAttackSkill(damager,(LivingEntity) e.getEntity(),e.getDamage())){
-            damager.SendMessage("Skilled attack succeeded !");
+        if(normalAttack && damager != null && damager.getCurrentSkill() != null && damager.getCurrentSkill().executeWeaponAttackSkill(damager,(LivingEntity) e.getEntity(),e.getFinalDamage())){
+
         }
 
         if(damager != null) {
@@ -608,7 +610,7 @@ public class PlayerListener implements Listener {
             plugin.debugMessage("Arrow precision multiplier : " + precX);
             ar.setVelocity(new Vector(ar.getVelocity().getX() * precX, ar.getVelocity().getY() * precY, ar.getVelocity().getZ() * precZ));
 
-            if(rpPlayer.getCurrentSkill() != null && rpPlayer.getCurrentSkill().executeBowSkill(rpPlayer,ar.getVelocity().clone(),ar,speed) ){
+            if(rpPlayer.getCurrentSkill() != null && rpPlayer.getCurrentSkill().executeBowSkill(rpPlayer,ar,speed) ){
                 rpPlayer.SendMessage("Skilled attack succeeded !");
             }
         }

@@ -1,9 +1,7 @@
 package lowbrain.mcrpg.rpg;
-import com.sun.webkit.plugin.PluginListener;
 import lowbrain.mcrpg.commun.Config;
 import lowbrain.mcrpg.commun.Helper;
 import lowbrain.mcrpg.main.Main;
-import net.minecraft.server.v1_10_R1.PlayerList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -22,8 +20,6 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -1278,9 +1274,9 @@ public class RPGPlayer {
 		}
 
 		String msg = "";
-		for(Map.Entry<String, Integer> r : s.getRequirements().entrySet()) {
+		for(Map.Entry<String, Integer> r : s.getBaseRequirements().entrySet()) {
 			String requirement = r.getKey().toLowerCase();
-			int value = r.getValue() * (s.getCurrentLevel() + 1);
+			int value = s.operation(r.getValue(),s.getRequirementsOperationValue(),s.getRequirementsOperation());
 			if(this.compareAttributesByName(requirement,value) < 0){
 				msg += " " + n + ":" + value;
 			}
@@ -1291,13 +1287,13 @@ public class RPGPlayer {
 			return;
 		}
 
-		if(s.getSkillPointsCost() > this.skillPoints){
-			this.SendMessage("This skill requires " + s.getSkillPointsCost() + " points to upgrade !",ChatColor.RED);
+		if(s.getSkillpointsCost() > this.skillPoints){
+			this.SendMessage("This skill requires " + s.getBaseSkillpointsCost() + " points to upgrade !",ChatColor.RED);
 			return;
 		}
 
-		this.skills.get(n).addLevel(1);
-		this.addSkillPoints(- s.getSkillPointsCost());
+		s.addLevel(1);
+		this.addSkillPoints(- s.getSkillpointsCost());
 
 	}
 
