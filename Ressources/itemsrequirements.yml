@@ -1,187 +1,187 @@
-#ARMOR
-GOLD_CHESTPLATE:
+#armor
+gold_chestplate:
  level: 5
  strength: 15
-GOLD_LEGGINGS:
+gold_leggings:
  level: 3
  strength: 10
-GOLD_BOOTS:
+gold_boots:
  level: 3
  strength: 10
-GOLD_HELMET:
+gold_helmet:
  level: 3
  strength: 10
 
-GOLD_CHESTPLATE_PLUS:
+gold_chestplate_plus:
  level: 10
  strength: 30
-GOLD_LEGGINGS_PLUS:
+gold_leggings_plus:
  level: 5
  strength: 20
-GOLD_BOOTS_PLUS:
+gold_boots_plus:
  level: 5
  strength: 20
-GOLD_HELMET_PLUS:
+gold_helmet_plus:
  level: 5
  strength: 20
 
-IRON_CHESTPLATE:
+iron_chestplate:
  level: 10
  strength: 20
-IRON_LEGGINGS:
+iron_leggings:
  level: 5
  strength: 15
-IRON_BOOTS:
+iron_boots:
  level: 5
  strength: 15
-IRON_HELMET:
+iron_helmet:
  level: 5
  strength: 10
 
-IRON_CHESTPLATE_PLUS:
+iron_chestplate_plus:
  level: 15
  strength: 30
-IRON_LEGGINGS_PLUS:
+iron_leggings_plus:
  level: 10
  strength: 30
-IRON_BOOTS_PLUS:
+iron_boots_plus:
  level: 10
  strength: 30
-IRON_HELMET_PLUS:
+iron_helmet_plus:
  level: 10
  strength: 20
 
-DIAMOND_CHESTPLATE:
+diamond_chestplate:
  level: 25
  strength: 50
-DIAMOND_LEGGINGS: 
+diamond_leggings:
  level: 20
  strength: 40
-DIAMOND_BOOTS: 
+diamond_boots:
  level: 20
  strength: 40
-DIAMOND_HELMET: 
+diamond_helmet:
  level: 20
  strength: 40
 
-DIAMOND_CHESTPLATE_PLUS:
+diamond_chestplate_plus:
  level: 30
  strength: 60
-DIAMOND_LEGGINGS_PLUS:
+diamond_leggings_plus:
  level: 25
  strength: 50
-DIAMOND_BOOTS_PLUS:
+diamond_boots_plus:
  level: 25
  strength: 50
-DIAMOND_HELMET_PLUS:
+diamond_helmet_plus:
  level: 25
  strength: 50
 
-EMERALD_CHESTPLATE:
+emerald_chestplate:
  level: 35
  strength: 60
-EMERALD_LEGGINGS:
+emerald_leggings:
  level: 30
  strength: 60
-EMERALD_BOOTS:
+emerald_boots:
  level: 30
  strength: 60
-EMERALD_HELMET:
+emerald_helmet:
  level: 30
  strength: 60
 
-EMERALD_CHESTPLATE_PLUS:
+emerald_chestplate_plus:
  level: 45
  strength: 70
-EMERALD_LEGGINGS_PLUS:
+emerald_leggings_plus:
  level: 40
  strength: 70
-EMERALD_BOOTS_PLUS:
+emerald_boots_plus:
  level: 40
  strength: 70
-EMERALD_HELMET_PLUS:
+emerald_helmet_plus:
  level: 40
  strength: 70
 
-FEATHER_HELMET:
+feather_helmet:
  level: 15
  agility: 15
  intelligence: 30
-FEATHER_CHESTPLATE:
+feather_chestplate:
  level: 20
  agility: 20
  intelligence: 40
-FEATHER_BOOTS:
+feather_boots:
  level: 15
  agility: 15
  intelligence: 30
-FEATHER_LEGGINGS:
+feather_leggings:
  level: 15
  agility: 15
  intelligence: 30
 
-SHIELD:
+shield:
  level: 5
  strength: 20
-IRON_SHIELD:
+iron_shield:
  level: 20
  strength: 40
-DIAMOND_SHIELD:
+diamond_shield:
   level: 40
   strength: 60
-EMERALD_SHIELD:
+emerald_shield:
  level: 60
  strength: 75
 
 
-#WEAPONS
+#weapons
 
-IRON_SWORD:
+iron_sword:
  level: 5
  strength: 20
-IRON_KATANA:
+iron_katana:
  level: 10
  strength: 30
-IRON_AXE:
+iron_axe:
  level: 5
  strength: 25
 
-DIAMOND_KATANA:
+diamond_katana:
  level: 20
  strength: 40
-DIAMOND_AXE:
+diamond_axe:
  level: 15
  strength: 35
-DIAMOND_SWORD:
+diamond_sword:
  level: 15
  strength: 30
 
-EMERALD_SWORD:
+emerald_sword:
  level: 100
  strength: 100
-EMERALD_AXE:
+emerald_axe:
  level: 100
  strength: 100
-EMERALD_KATANA:
+emerald_katana:
  level: 100
  strength: 100
 
-EXCALIBUR:
+excalibur:
  level: 75
  strength: 100
  dexterity: 100
 
-THE_BUTCHER:
+the_butcher:
  level: 85
  strength: 100
 
-LEGOLAS_BOW:
+legolas_bow:
  level: 70
  strength: 60
  agility: 60
  dexterity: 100
 
-OP:
+op:
  level: 100
  strength: 100
  agility: 100
@@ -190,23 +190,23 @@ OP:
  defence: 100
  intelligence: 100
 
-BOW:
+bow:
  level: 1
  strength: 5
  dexterity: 20
-COMPOUND_BOW:
+compound_bow:
  level: 10
  strength: 25
  dexterity: 40
-FIRE_COMPOUND_BOW:
+fire_compound_bow:
  level: 20
  strength: 35
  dexterity: 55
-DIAMOND_COMPOUND_BOW:
+diamond_compound_bow:
  level: 30
  strength: 40
  dexterity: 60
-DIAMOND_FIRE_COMPOUND_BOW:
+diamond_fire_compound_bow:
  level: 40
  strength: 50
  dexterity: 80

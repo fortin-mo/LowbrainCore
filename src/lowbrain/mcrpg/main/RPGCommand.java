@@ -1,6 +1,8 @@
 package lowbrain.mcrpg.main;
 
 import lowbrain.mcrpg.commun.Helper;
+import lowbrain.mcrpg.config.Classes;
+import lowbrain.mcrpg.config.Races;
 import lowbrain.mcrpg.rpg.RPGClass;
 import lowbrain.mcrpg.rpg.RPGPlayer;
 import lowbrain.mcrpg.rpg.RPGRace;
@@ -138,7 +140,7 @@ public class RPGCommand implements CommandExecutor{
 					case "classes":
 						String cls = "";
 						for (String s :
-								plugin.classesConfig.getKeys(false)) {
+								Classes.getInstance().getKeys(false)) {
 							RPGClass rc = new RPGClass(s);
 							cls += "-----------------------------" + "\n";
 							cls += rc.toString() + "\n";
@@ -148,7 +150,7 @@ public class RPGCommand implements CommandExecutor{
 					case "races":
 						String rcs = "";
 						for (String s :
-								plugin.racesConfig.getKeys(false)) {
+								Races.getInstance().getKeys(false)) {
 							RPGRace rr = new RPGRace(s);
 							rcs += "-----------------------------" + "\n";
 							rcs += rr.toString() + "\n";
@@ -157,13 +159,13 @@ public class RPGCommand implements CommandExecutor{
 						break;
 					case "setclass":
 						if(args.length == 2){
-							if(plugin.classesConfig.getKeys(false).contains(args[1])){
+							if(Classes.getInstance().getKeys(false).contains(args[1])){
 								rp.setClass(args[1], false);
 							}
 							else if(args[1].equalsIgnoreCase("rdm") || args[1].equalsIgnoreCase("random")){
-								int max = plugin.classesConfig.getKeys(false).size() - 1;
+								int max = Classes.getInstance().getKeys(false).size() - 1;
 								int rdm = Helper.randomInt(0,max);
-								rp.setClass((String)plugin.classesConfig.getKeys(false).toArray()[rdm],false);
+								rp.setClass((String)Classes.getInstance().getKeys(false).toArray()[rdm],false);
 							}
 							else{
 								rp.SendMessage("Wrong class !: Use \"/mcrpg class\" to show all classes");
@@ -172,13 +174,13 @@ public class RPGCommand implements CommandExecutor{
 						break;
 					case "setrace":
 						if(args.length == 2){
-							if(plugin.racesConfig.getKeys(false).contains(args[1])){
+							if(Races.getInstance().getKeys(false).contains(args[1])){
 								rp.setRace(args[1], false);
 							}
 							else if(args[1].equalsIgnoreCase("rdm") || args[1].equalsIgnoreCase("random")){
-								int max = plugin.racesConfig.getKeys(false).size() - 1;
+								int max = Races.getInstance().getKeys(false).size() - 1;
 								int rdm = Helper.randomInt(0,max);
-								rp.setRace((String)plugin.racesConfig.getKeys(false).toArray()[rdm],false);
+								rp.setRace((String)Races.getInstance().getKeys(false).toArray()[rdm],false);
 							}
 							else{
 								rp.SendMessage("Wrong race !: Use \"/mcrpg races\" to show all races");
@@ -187,7 +189,7 @@ public class RPGCommand implements CommandExecutor{
 						break;
 					case "reset":
 						if(args.length == 2){
-								if(plugin.classesConfig.getKeys(false).contains(args[1])){
+								if(Classes.getInstance().getKeys(false).contains(args[1])){
 									rp.reset(args[1],null);
 								}
 								else{
@@ -195,7 +197,7 @@ public class RPGCommand implements CommandExecutor{
 								}
 						}
 						else if(args.length == 3){
-							if(plugin.classesConfig.getKeys(false).contains(args[1]) && plugin.racesConfig.getKeys(false).contains(args[2])){
+							if(Classes.getInstance().getKeys(false).contains(args[1]) && Classes.getInstance().getKeys(false).contains(args[2])){
 								rp.reset(args[1],args[2]);
 							}
 							else{

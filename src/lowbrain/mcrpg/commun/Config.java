@@ -58,4 +58,5 @@ public class Config {
         skill_points_per_level = config.getInt("skill_points_per_level");
         math = new MathSettings(config);
     }
+
 }

@@ -1,6 +1,7 @@
 package lowbrain.mcrpg.rpg;
 
 import lowbrain.mcrpg.commun.Helper;
+import lowbrain.mcrpg.config.Skills;
 import lowbrain.mcrpg.events.PlayerListener;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
@@ -39,22 +40,22 @@ public class RPGSkill {
     private Calendar lastExecuted;
     private int currentLevel;
 
-    public RPGSkill(String n, int lvl,FileConfiguration config){
+    public RPGSkill(String n, int lvl){
         this.name = n;
         this.lastExecuted = Calendar.getInstance();
-        initialize(config);
+        initialize();
         this.currentLevel = lvl > this.maxLevel ? this.maxLevel : lvl;
     }
 
-    public RPGSkill(String n , FileConfiguration config){
+    public RPGSkill(String n){
         this.name = n;
         this.lastExecuted = Calendar.getInstance();
-        initialize(config);
+        initialize();
         this.currentLevel = 0;
     }
 
-    private void initialize(FileConfiguration config){
-        ConfigurationSection sec = config.getConfigurationSection(this.name);
+    private void initialize(){
+        ConfigurationSection sec = Skills.getInstance().getConfigurationSection(this.name);
         if(sec == null) {
             enable = false;
             return;
@@ -142,14 +143,16 @@ public class RPGSkill {
                 case "spread_of_arrow":
                     int[] angles = new int[currentLevel * 2];
                     for (int i = 0; i < angles.length / 2; i++) {
-                        angles[i] = (i + 1) * 2;
-                        angles[i + 2] = (i + 1) * -2;
+                        angles[i] = (i + 1) * 3;
+                        angles[i + 2] = (i + 1) * -3;
                     }
 
                     for (int angle : angles) {
                         Vector vec;
                         vec = Helper.rotateYAxis(p.getPlayer().getLocation().getDirection().normalize(), angle);
-                        p.getPlayer().getLocation().getWorld().spawnArrow(p.getPlayer().getLocation().clone().add(0, 1.5, 0), vec.clone(), 6F, 0).setShooter(p.getPlayer());
+                        Arrow marrow = p.getPlayer().getLocation().getWorld().spawnArrow(p.getPlayer().getLocation().clone().add(0, 1.5, 0), vec.clone(), 6F, 0);
+                        marrow.setShooter(p.getPlayer());
+                        marrow.setBounce(false);
                     }
                     succeed = true;
                     break;
@@ -159,7 +162,9 @@ public class RPGSkill {
                         @Override
                         public void run() {
                             counts++;
-                            p.getPlayer().getLocation().getWorld().spawnArrow(p.getPlayer().getLocation().clone().add(0, 1.5, 0), p.getPlayer().getLocation().getDirection().clone().normalize(), 6F, 0).setShooter(p.getPlayer());
+                            Arrow arrow = p.getPlayer().getLocation().getWorld().spawnArrow(p.getPlayer().getLocation().clone().add(0, 1.5, 0), p.getPlayer().getLocation().getDirection().clone().normalize(), 6F, 0);
+                            arrow.setShooter(p.getPlayer());
+                            arrow.setBounce(false);
 
                             p.getPlayer().getWorld().playEffect(p.getPlayer().getLocation(), Effect.BOW_FIRE, 1, 0);
                             if (counts > currentLevel) {
@@ -171,15 +176,19 @@ public class RPGSkill {
                     break;
                 case "flaming_arrow":
                     ar.setFireTicks(currentLevel * 2);
+                    ar.setGlowing(true);
                     succeed = true;
                     break;
                 case "frozen_arrow":
                     ar.setCustomName(this.name+","+ currentLevel);
+                    ar.setGlowing(true);
                     succeed = true;
                     break;
                 case "straight_arrow":
                     ar.setVelocity(ar.getVelocity().normalize().multiply(speed * currentLevel));
                     ar.setGravity(false);
+                    ar.setGlowing(true);
+                    ar.setKnockbackStrength(currentLevel);
                     succeed = true;
                     break;
             }
@@ -263,8 +272,8 @@ public class RPGSkill {
                 }
             }
             else{
-                int rest = (int)((cooldownTime.getTimeInMillis() - getLastExecuted().getTimeInMillis()) / 1000);
-                p.SendMessage("Cooldown ! " + rest + " seconde left !",ChatColor.RED);
+                int rest = (int)((getLastExecuted().getTimeInMillis() - cooldownTime.getTimeInMillis()) / 1000);
+                p.SendMessage("Cooldown ! " + rest + " seconds left !",ChatColor.RED);
                 return false;
             }
         }

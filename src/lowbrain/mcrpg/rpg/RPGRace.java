@@ -1,5 +1,6 @@
 package lowbrain.mcrpg.rpg;
 
+import lowbrain.mcrpg.config.Races;
 import lowbrain.mcrpg.events.PlayerListener;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -28,7 +29,7 @@ public class RPGRace {
     private float base_mana = 0F;
 
     private List<String> bonusAttributes = new ArrayList<String>();
-    private Map<String, RPGPower> powers = new HashMap<String, RPGPower>();
+    private List<String> powers = new ArrayList<>();
 
     public RPGRace(String name){
         this.name = name;
@@ -36,7 +37,7 @@ public class RPGRace {
     }
 
     public void Initialize(){
-        FileConfiguration config = PlayerListener.plugin.racesConfig;
+        FileConfiguration config = Races.getInstance();
         tag = config.getString(name+".tag");
         health = config.getInt(name+".health");
         strength = config.getInt(name+".strength");
@@ -59,11 +60,7 @@ public class RPGRace {
      * set the list of powers available for a particular class
      */
     private void SetPowers(){
-        List<String> tmp = PlayerListener.plugin.racesConfig.getStringList(name+".powers");
-        for (String n :
-                tmp) {
-            powers.put(n, new RPGPower(n));
-        }
+        this.powers = Races.getInstance().getStringList(name+".powers");
     }
 
     public String toString() {
@@ -87,9 +84,9 @@ public class RPGRace {
         s += "\n";
 
         s += "Powers: ";
-        for (RPGPower powa :
-                powers.values()) {
-            s += powa.getName() + ", ";
+        for (String powa :
+                powers) {
+            s += powa + ", ";
         }
         s += "\n";
 
@@ -132,7 +129,7 @@ public class RPGRace {
         return agility;
     }
 
-    public Map<String, RPGPower> getPowers() {
+    public List<String> getPowers() {
         return powers;
     }
 

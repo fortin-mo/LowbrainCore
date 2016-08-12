@@ -1,6 +1,7 @@
 package lowbrain.mcrpg.rpg;
 import lowbrain.mcrpg.commun.Config;
 import lowbrain.mcrpg.commun.Helper;
+import lowbrain.mcrpg.config.Skills;
 import lowbrain.mcrpg.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -51,6 +52,7 @@ public class RPGPlayer {
 	private boolean showStats = true;
 	private HashMap<String,Integer> mobKills;
 	private HashMap<String,RPGSkill> skills;
+	private HashMap<String,RPGPower> powers;
 	private String currentSkill;
 
 	private Scoreboard scoreboard;
@@ -143,6 +145,7 @@ public class RPGPlayer {
 
 		this.skills = new HashMap<String,RPGSkill>();
 		this.mobKills = new HashMap<String,Integer>();
+		this.powers = new HashMap<String,RPGPower>();
 
 		//When the player file is created for the first time...
 		if (!f.exists()) {
@@ -222,7 +225,7 @@ public class RPGPlayer {
 		if(skillsSection != null){
 			for (String skill :
 					skillsSection.getKeys(false)) {
-				this.skills.put(skill,new RPGSkill(skill,skillsSection.getInt(skill) ,PlayerListener.plugin.skillsConfig));
+				this.skills.put(skill,new RPGSkill(skill,skillsSection.getInt(skill)));
 			}
 		}
 
@@ -240,6 +243,15 @@ public class RPGPlayer {
 
 		this.rpgClass = new RPGClass(className);
 		this.rpgRace = new RPGRace(raceName);
+
+		if(classIsSet && raceIsSet && this.rpgClass != null && this.rpgRace != null){
+			for (String powa : this.rpgClass.getPowers()) {
+				this.powers.put(powa,new RPGPower(powa));
+			}
+			for (String powa : this.rpgRace.getPowers()){
+				this.powers.put(powa,new RPGPower(powa));
+			}
+		}
 
 		initialiseScoreBoard();
 
@@ -341,15 +353,7 @@ public class RPGPlayer {
 
 		Main.ItemRequirements i = PlayerListener.plugin.itemsRequirements.get(name);
 
-		if(i == null)return true;
-		for(Map.Entry<String, Integer> r : i.getRequirements().entrySet()) {
-			String n = r.getKey().toLowerCase();
-			int v = r.getValue();
-			if(this.compareAttributesByName(n,v) < 0){
-				return false;
-			}
-		}
-		return true;
+		return meetRequirements(i.getRequirements());
 	}
 
 	/**
@@ -370,8 +374,25 @@ public class RPGPlayer {
 
 		Main.ItemRequirements i = PlayerListener.plugin.itemsRequirements.get(name);
 
-		if(i == null)return msg;
-		for(Map.Entry<String, Integer> r : i.getRequirements().entrySet()) {
+		return meetRequirementsString(i.getRequirements());
+	}
+
+	public boolean meetRequirements(Map<String,Integer> requirements){
+		if(requirements == null)return true;
+		for(Map.Entry<String, Integer> r : requirements.entrySet()) {
+			String n = r.getKey().toLowerCase();
+			int v = r.getValue();
+			if(this.compareAttributesByName(n,v) < 0){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public String meetRequirementsString(Map<String,Integer> requirements){
+		String msg = "";
+		if(requirements == null)return msg;
+		for(Map.Entry<String, Integer> r : requirements.entrySet()) {
 			String n = r.getKey().toLowerCase();
 			int v = r.getValue();
 			if(this.compareAttributesByName(n,v) < 0){
@@ -390,50 +411,18 @@ public class RPGPlayer {
      */
 	public boolean castSpell(String name, RPGPlayer to){
 
-		RPGPower powa = this.rpgClass.getPowers().containsKey(name)
-				? this.rpgClass.getPowers().get(name)
-				: this.rpgRace.getPowers().containsKey(name)
-				? this.rpgRace.getPowers().get(name)
-				: null;
+		RPGPower powa = this.powers.get(name);
 
 		if(powa == null){
 			SendMessage("You can't cast this spell !");
 			return false;
 		}
 
-		if(to != null && powa.getCast_range() == 0){
-			SendMessage("You cannot cast this spell on others !");
-			return false;
+		if(powa.Cast(this,to == null ? this : to)){
+			refreshScoreBoard();
+			return true;
 		}
-		if(to != null && powa.getCast_range() > 0){
-			double x = this.getPlayer().getLocation().getX() - to.getPlayer().getLocation().getX();
-			double y = this.getPlayer().getLocation().getY() - to.getPlayer().getLocation().getY();
-			double z = this.getPlayer().getLocation().getZ() - to.getPlayer().getLocation().getZ();
-
-			double distance = Math.sqrt(x*x + y*y + z*z);
-
-			if(powa.getCast_range() < distance){
-				SendMessage("The player is to far away ! Range : " + powa.getCast_range() + "/" + distance);
-				return false;
-			}
-		}
-
-		if(this.lvl < powa.getMinLevel()){
-			SendMessage("You are to low level to cast this spell ! LVL required : " + powa.getMinLevel());
-			return false;
-		}
-		if(this.intelligence < powa.getMinIntelligence()){
-			SendMessage("Insufficient intelligence ! " + powa.getMinIntelligence() + "/" + this.intelligence);
-			return false;
-		}
-		if(this.currentMana < powa.getMana()){
-			SendMessage("Insufficient maxMana ! " + powa.getMana() + "/" + this.currentMana);
-			return false;
-		}
-
-		this.currentMana -= powa.getMana();
-		refreshScoreBoard();
-		return powa.Cast(this,to == null ? this : to);
+		return false;
 	}
 	
 	/**
@@ -1334,11 +1323,7 @@ public class RPGPlayer {
 
 			s += "Powers: ";
 			for (RPGPower powa :
-					rpgClass.getPowers().values()) {
-				s += powa.getName() + ", ";
-			}
-			for (RPGPower powa :
-					rpgRace.getPowers().values()) {
+					this.powers.values()) {
 				s += powa.getName() + ", ";
 			}
 			s += "\n";

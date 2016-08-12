@@ -1,22 +1,25 @@
 package lowbrain.mcrpg.rpg;
 
 import lowbrain.mcrpg.commun.Helper;
+import lowbrain.mcrpg.config.Powers;
 import lowbrain.mcrpg.events.PlayerListener;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by moo on 2016-07-21.
  */
 public class RPGPower {
-    private double mana;
-    private int minLevel;
-    private int minIntelligence;
+    private float mana;
     private String name;
     private float cast_range;
-
     private float maximum_duration;
     private float minimum_duration;
     private float maximum_amplifier;
@@ -30,16 +33,21 @@ public class RPGPower {
     private String amplifier_function;
     private String duration_function;
     private PotionEffectType potionEffectType;
-
+    private Calendar lastCast;
+    private int min_cooldown;
+    private int max_cooldown;
+    private HashMap<String,Integer> requirements;
 
 
     public RPGPower(String name){
         this.name = name;
-        FileConfiguration config = PlayerListener.plugin.powersConfig;
-        this.mana = config.getDouble(this.name + ".mana");
-        this.minLevel = config.getInt(this.name + ".min_level");
-        this.minIntelligence = config.getInt(this.name + ".min_intelligence");
+        this.requirements = new HashMap<>();
+        FileConfiguration config = Powers.getInstance();
+        this.mana = (float)config.getDouble(this.name + ".mana");
         this.cast_range = (float)config.getDouble(this.name + ".cast_range");
+
+        this.min_cooldown = config.getInt(this.name + ".minimum_cooldown");
+        this.max_cooldown = config.getInt(this.name + ".maximum_cooldown");
 
         this.maximum_amplifier = (float)config.getDouble(this.name + ".cast.amplifier.maximum");
         this.minimum_amplifier = (float)config.getDouble(this.name + ".cast.amplifier.minimum");
@@ -55,19 +63,19 @@ public class RPGPower {
         this.duration_dexterity = (float)config.getDouble(this.name + ".cast.duration.dexterity");
         this.duration_function = config.getString(this.name + ".cast.duration.function");
 
+        ConfigurationSection requirementsSection = config.getConfigurationSection("requirements");
+        if(requirementsSection != null){
+            for (String key :
+                    requirementsSection.getKeys(false)) {
+                this.requirements.put(key,requirementsSection.getInt(key));
+            }
+        }
+
         this.setPotionEffectType();
     }
 
-    public double getMana() {
+    public float getMana() {
         return mana;
-    }
-
-    public int getMinLevel() {
-        return minLevel;
-    }
-
-    public int getMinIntelligence() {
-        return minIntelligence;
     }
 
     public String getName() {
@@ -177,10 +185,58 @@ public class RPGPower {
         }
     }
 
+    private int getCooldown(){
+        return min_cooldown;
+    }
+
     public boolean Cast(RPGPlayer from, RPGPlayer to){
         try{
+            if(from == null || to == null)return false;
+
+            Calendar cooldowntime = Calendar.getInstance();
+            cooldowntime.add(Calendar.SECOND,-getCooldown());
+
+            if(this.lastCast.before((cooldowntime))){
+                int rest = (int)(lastCast.getTimeInMillis() - cooldowntime.getTimeInMillis() / 1000);
+                from.SendMessage("Spell in cooldown ! " + rest + " seconds left !",ChatColor.RED);
+                return false;
+            }
+
+            if(to != null && this.getCast_range() == 0){
+                from.SendMessage("You cannot cast this spell on others !",ChatColor.RED);
+                return false;
+            }
+            if(to != null && this.getCast_range() > 0){
+                double x = from.getPlayer().getLocation().getX() - to.getPlayer().getLocation().getX();
+                double y = from.getPlayer().getLocation().getY() - to.getPlayer().getLocation().getY();
+                double z = from.getPlayer().getLocation().getZ() - to.getPlayer().getLocation().getZ();
+
+                double distance = Math.sqrt(x*x + y*y + z*z);
+
+                if(this.getCast_range() < distance){
+                    from.SendMessage("The player is to far away ! Range : " + this.getCast_range() + "/" + distance,ChatColor.RED);
+                    return false;
+                }
+            }
+
+            String msg = from.meetRequirementsString(this.requirements);
+
+            if(!Helper.StringIsNullOrEmpty(msg)){
+                from.SendMessage("You cannot cast this spell yet ! Requirements ===>" + msg,ChatColor.RED);
+                return false;
+            }
+
+            if(from.getCurrentMana() < this.getMana()){
+                from.SendMessage("Insufficient mana ! " + this.getMana() + "/" + from.getCurrentMana(),ChatColor.RED);
+                return false;
+            }
+
             PotionEffect p =  new PotionEffect(this.potionEffectType,this.getCastDuration(from),this.getCastAmplifier(from),true,true);
             p.apply(to.getPlayer());
+
+            from.setCurrentMana(from.getCurrentMana() - this.getMana());
+            this.lastCast = Calendar.getInstance();
+
             return true;
         }catch (Exception e){
             from.SendMessage("Failed to cast " + this.name, ChatColor.RED);

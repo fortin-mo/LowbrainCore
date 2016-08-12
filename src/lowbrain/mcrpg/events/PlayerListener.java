@@ -3,6 +3,8 @@ package lowbrain.mcrpg.events;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import lowbrain.mcrpg.commun.Helper;
+import lowbrain.mcrpg.config.MobsXP;
+import lowbrain.mcrpg.config.Staffs;
 import lowbrain.mcrpg.main.Main;
 import lowbrain.mcrpg.rpg.RPGSkill;
 import org.bukkit.*;
@@ -18,6 +20,7 @@ import org.bukkit.event.player.*;
 
 import lowbrain.mcrpg.rpg.RPGPlayer;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -26,9 +29,11 @@ import org.bukkit.util.Vector;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class PlayerListener implements Listener {
@@ -42,6 +47,23 @@ public class PlayerListener implements Listener {
         max_stats = plugin.config.max_stats <= 0 ? 100 : plugin.config.max_stats;
     }
 
+    /***
+     * Called when player teleport
+     * remove damage when teleporting with enderpearl
+     * @param e
+     */
+    @EventHandler
+    public void onPlayerTeleport(PlayerTeleportEvent e){
+        if(e.getCause().equals(PlayerTeleportEvent.TeleportCause.ENDER_PEARL)){
+            e.setCancelled(true);
+            e.getPlayer().teleport(e.getTo());
+        }
+    }
+
+    /***
+     * called when player equip or unequip a armor (foot, chest, shield, helmet, legs)
+     * @param e
+     */
     @EventHandler
     public void onPlayerEquipArmor(ArmorEquipEvent e){
         RPGPlayer rp = plugin.connectedPlayers.get(e.getPlayer().getUniqueId());
@@ -72,14 +94,103 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        /*if(e.getItem().getType().equals(Material.WOOD_AXE) && e.getAction().equals(Action.LEFT_CLICK_AIR)){
-            plugin.debugMessage(e.getItem().getDurability());
-            //e.getItem().setDurability((short)(e.getItem().getDurability() + 1));
-            Fireball ball = e.getPlayer().launchProjectile(Fireball.class,e.getPlayer().getLocation().getDirection());
-            ball.setGravity(true);
-            //ball.setFallDistance();
-            plugin.debugMessage(e.getItem().getDurability());
-        }*/
+        if(e.getAction().equals(Action.RIGHT_CLICK_AIR) /*|| e.getAction().equals(Action.RIGHT_CLICK_AIR.RIGHT_CLICK_BLOCK)*/){
+
+            if(e.getItem().getItemMeta() != null && !Helper.StringIsNullOrEmpty(e.getItem().getItemMeta().getDisplayName())){
+                ItemMeta iMeta = e.getItem().getItemMeta();
+                String n = iMeta.getDisplayName().substring(2);
+                if(n.startsWith("staff")){
+
+                    ConfigurationSection staffSection = Staffs.getInstance().getConfigurationSection(n);
+                    if(staffSection != null){
+                        Boolean gravity = staffSection.getBoolean("gravity");
+                        double speed = staffSection.getDouble("speed");
+                        double spread = staffSection.getDouble("spread");
+                        int maxDurability = staffSection.getInt("durability");
+                        int durability = maxDurability;
+                        int cooldown = staffSection.getInt("cooldown",0);
+                        String sDurability = "";
+                        String sLastUsed = "";
+                        Calendar lastUsed = Calendar.getInstance();
+                        lastUsed.add(Calendar.SECOND,-cooldown - 1);
+
+                        if(e.getItem().getItemMeta().hasLore()){
+                            sLastUsed = iMeta.getLore().get(e.getItem().getItemMeta().getLore().size() - 2); //before last lore
+                            sDurability = iMeta.getLore().get(e.getItem().getItemMeta().getLore().size() - 1); //last lore
+                        }
+
+                        //if has durability lore, get the durability
+                        if(!Helper.StringIsNullOrEmpty(sDurability)){
+                            String[] tmp = sDurability.split(" : ");
+                            durability = tmp.length > 1 ? Helper.intTryParse(tmp[1],durability) : durability;
+                        }
+                        //if has lastUsed lore, get the last used date
+                        if(!Helper.StringIsNullOrEmpty(sLastUsed)){
+                            String[] tmp = sLastUsed.split(" : ");
+                            plugin.debugMessage(lastUsed.getTime());
+                            lastUsed = tmp.length > 1 ? Helper.dateTryParse(tmp[1],lastUsed) : lastUsed;
+                            plugin.debugMessage(lastUsed.getTime());
+                        }
+
+                        plugin.debugMessage("" + lastUsed.getTime());
+
+                        lastUsed.add(Calendar.SECOND,cooldown);
+                        if(lastUsed.after(Calendar.getInstance())) return;
+
+                        durability -= 1;
+
+                        String effect = staffSection.getString("effect");
+                        switch (effect){
+                            case "fire_tick":
+                                Snowball fireTick = rp.getPlayer().launchProjectile(Snowball.class,rp.getPlayer().getLocation().getDirection().clone().multiply(speed));
+                                fireTick.setGravity(gravity);
+                                fireTick.setCustomName(n);
+                                fireTick.setShooter(rp.getPlayer());
+                                fireTick.setFireTicks(staffSection.getInt("effect_duration") * 20);
+                                rp.getPlayer().getWorld().playEffect(rp.getPlayer().getLocation(),Effect.BOW_FIRE,1,0);
+                                break;
+                            case "fire_ball":
+                                Fireball fireBall = rp.getPlayer().launchProjectile(Fireball.class,rp.getPlayer().getLocation().getDirection().clone().multiply(speed));
+                                fireBall.setCustomName(n);
+                                fireBall.setGravity(gravity);
+                                rp.getPlayer().getWorld().playEffect(rp.getPlayer().getLocation(),Effect.BOW_FIRE,1,0);
+                                break;
+                            case "freezing_ball":
+                                Snowball freezingBall = rp.getPlayer().launchProjectile(Snowball.class,rp.getPlayer().getLocation().getDirection().clone().multiply(speed));
+                                freezingBall.setGravity(gravity);
+                                freezingBall.setCustomName(n);
+                                freezingBall.setShooter(rp.getPlayer());
+                                rp.getPlayer().getWorld().playEffect(rp.getPlayer().getLocation(),Effect.BOW_FIRE,1,0);
+                                break;
+                            case "teleport":
+                                EnderPearl enderPearl = rp.getPlayer().launchProjectile(EnderPearl.class,rp.getPlayer().getLocation().getDirection().clone().multiply(speed));
+                                enderPearl.setGravity(gravity);
+                                enderPearl.setCustomName(n);
+                                enderPearl.setShooter(rp.getPlayer());
+                                rp.getPlayer().getWorld().playEffect(rp.getPlayer().getLocation(),Effect.BOW_FIRE,1,0);
+                                break;
+                        }
+                        if(durability <= 0){
+                            rp.getPlayer().getInventory().remove(e.getItem());
+                            rp.getPlayer().updateInventory();
+                            rp.SendMessage("Item destroyed !",ChatColor.GRAY);
+                        }
+                        else{
+                            if(durability <= 10)rp.SendMessage("Only 10 cast left !");
+
+                            List<String> lores = iMeta.getLore();
+                            lores.remove(lores.size() - 1);
+                            lores.remove(lores.size() - 1);
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+                            lores.add("last used : "  + sdf.format(Calendar.getInstance().getTime()));
+                            lores.add("durability : " + durability);
+                            iMeta.setLore(lores);
+                            e.getItem().setItemMeta(iMeta);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -184,6 +295,10 @@ public class PlayerListener implements Listener {
         e.setKeepInventory(true);
     }
 
+    /***
+     * called when either a player or a mob dies
+     * @param e
+     */
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e){
         //PLAYER DIES
@@ -281,7 +396,7 @@ public class PlayerListener implements Listener {
                 rpKiller.getMobKills().put(mobName,rpKiller.getMobKills().getOrDefault(mobName,0) + 1);
 
                 int killsCount = rpKiller.getMobKills().get(mobName);
-                ConfigurationSection section = plugin.mobsxpConfig.getConfigurationSection(mobName);
+                ConfigurationSection section = MobsXP.getInstance().getConfigurationSection(mobName);
                 if(section != null){
                     int interval = section.getInt("xp_bonus_interval");
                     double xp = section.getDouble("base_xp");
@@ -453,16 +568,6 @@ public class PlayerListener implements Listener {
         } else if (e.getDamager() instanceof Arrow) {
             Arrow ar = (Arrow) e.getDamager();
 
-            //custom arrow created by skilled attack
-            if(!Helper.StringIsNullOrEmpty(ar.getCustomName())){
-                plugin.debugMessage(ar.getCustomName());
-                if(ar.getCustomName().split(",")[0].equals("frozen_arrow")){
-                    int lvl = Helper.intTryParse(ar.getCustomName().split(",")[1],1);
-                    PotionEffect po = new PotionEffect(PotionEffectType.SLOW,lvl * 2 *20,lvl,true,true);
-                    po.apply((LivingEntity)e.getEntity());
-                }
-            }
-
             if (ar.getShooter() instanceof Player) {
                 damager = plugin.connectedPlayers.get(((Player)((Arrow) e.getDamager()).getShooter()).getUniqueId());
             }
@@ -478,6 +583,50 @@ public class PlayerListener implements Listener {
         }
         else{
             normalAttack  = true;
+        }
+
+        //CUSTOM PROJECTILE (SKILLS AND STAFFS)
+        if(e.getDamager() instanceof  Projectile){
+
+            Projectile projectile = (Projectile) e.getDamager();
+
+            if(projectile.getShooter() instanceof Player && damager == null){
+                damager = plugin.connectedPlayers.get(((Player) projectile.getShooter()).getUniqueId());
+            }
+
+            if(damager != null && !Helper.StringIsNullOrEmpty(projectile.getCustomName())){
+
+                if(damager.getSkills().containsKey(projectile.getCustomName())){
+                    RPGSkill skill = damager.getSkills().get(projectile.getCustomName());
+                    switch (skill.getName()){
+                        case "frozen_arrow":
+                            PotionEffect po = new PotionEffect(PotionEffectType.SLOW,skill.getCurrentLevel() * 2 *20,skill.getCurrentLevel(),true,true);
+                            if(e.getEntity() instanceof  LivingEntity)po.apply((LivingEntity)e.getEntity());
+                            break;
+                    }
+                }
+                else{
+                    ConfigurationSection staffSection = Staffs.getInstance().getConfigurationSection(projectile.getCustomName());
+                    if(staffSection != null){
+                        double baseDamage = staffSection.getDouble("base_damage",-1);
+                        String effect = staffSection.getString("effect","");
+                        int effectDuration = staffSection.getInt("effect_duration",3);
+
+                        if(baseDamage >= 0) e.setDamage(baseDamage);
+
+                        switch (effect){
+                            case "freezing_ball":
+                                PotionEffect po = new PotionEffect(PotionEffectType.SLOW,effectDuration*20,3,true,true);
+                                if(e.getEntity() instanceof LivingEntity) po.apply((LivingEntity)e.getEntity());
+                                break;
+                            case "fire_tick":
+                                e.getEntity().setFireTicks(effectDuration * 20);
+                                break;
+                        }
+                    }
+                }
+
+            }
         }
 
         //CHECK IF PLAYER CAN USE THE ITEM IN HAND
@@ -517,7 +666,7 @@ public class PlayerListener implements Listener {
         }
 
         //applying skilled attack if necessary
-        if(normalAttack && damager != null && damager.getCurrentSkill() != null && damager.getCurrentSkill().executeWeaponAttackSkill(damager,(LivingEntity) e.getEntity(),e.getFinalDamage())){
+        if(normalAttack && damager != null && damager.getCurrentSkill() != null && e.getEntity() instanceof LivingEntity && damager.getCurrentSkill().executeWeaponAttackSkill(damager,(LivingEntity) e.getEntity(),e.getFinalDamage())){
 
         }
 
@@ -611,7 +760,7 @@ public class PlayerListener implements Listener {
             ar.setVelocity(new Vector(ar.getVelocity().getX() * precX, ar.getVelocity().getY() * precY, ar.getVelocity().getZ() * precZ));
 
             if(rpPlayer.getCurrentSkill() != null && rpPlayer.getCurrentSkill().executeBowSkill(rpPlayer,ar,speed) ){
-                rpPlayer.SendMessage("Skilled attack succeeded !");
+
             }
         }
     }

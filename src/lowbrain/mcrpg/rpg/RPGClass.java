@@ -1,5 +1,6 @@
 package lowbrain.mcrpg.rpg;
 
+import lowbrain.mcrpg.config.Classes;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import lowbrain.mcrpg.events.PlayerListener;
@@ -18,7 +19,7 @@ public class RPGClass {
 	private int magicResistance = 0;
 	private int agility = 0;
 	private List<String> bonusAttributes = new ArrayList<String>();
-	private Map<String, RPGPower> powers = new HashMap<String, RPGPower>();
+	private List<String> powers = new ArrayList<>();
 	
 	public RPGClass(String name){
 		this.name = name;
@@ -26,7 +27,7 @@ public class RPGClass {
 	}
 	
 	public void Initialize(){
-		FileConfiguration config = PlayerListener.plugin.classesConfig;
+		FileConfiguration config = Classes.getInstance();
 		tag = config.getString(name+".tag");
 		health = config.getInt(name+".health");
 		strength = config.getInt(name+".strength");
@@ -56,9 +57,9 @@ public class RPGClass {
 		s += "\n";
 
 		s += "Powers: ";
-		for (RPGPower powa :
-				powers.values()) {
-			s += powa.getName() + ", ";
+		for (String powa :
+				powers) {
+			s += powa + ", ";
 		}
 		s += "\n";
 
@@ -101,7 +102,7 @@ public class RPGClass {
 		return agility;
 	}
 
-	public Map<String, RPGPower> getPowers() {
+	public List<String> getPowers() {
 		return powers;
 	}
 
@@ -109,11 +110,7 @@ public class RPGClass {
 	 * set the list of powers available for a particular class
      */
 	private void SetPowers(){
-		List<String> tmp = PlayerListener.plugin.classesConfig.getStringList(name+".powers");
-		for (String n :
-				tmp) {
-			powers.put(n, new RPGPower(n));
-		}
+		this.powers = Classes.getInstance().getStringList(name+".powers");
 	}
 
 

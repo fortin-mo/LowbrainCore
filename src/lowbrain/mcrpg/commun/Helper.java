@@ -4,7 +4,11 @@ import lowbrain.mcrpg.rpg.RPGPlayer;
 import org.bukkit.util.Vector;
 
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Moofy on 19/07/2016.
@@ -169,6 +173,18 @@ public class Helper {
             return Integer.parseInt(s);
         }catch (Exception e){
             return d;
+        }
+    }
+
+    public static Calendar dateTryParse(String s, Calendar c){
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+            Date date = sdf.parse(s);// all done
+            Calendar cal = sdf.getCalendar();
+            cal.setTime(date);
+            return cal;
+        }catch (Exception e){
+            return c;
         }
     }
 

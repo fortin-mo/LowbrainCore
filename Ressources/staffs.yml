@@ -1,0 +1,140 @@
+#effect :
+#
+# fire_tick
+# teleport
+# fire_ball
+# freezing_ball
+#
+
+staff_teleport:
+ enable: true
+ material: STICK
+ cooldown: 15
+ gravity: true
+ speed: 2
+ effect: teleport
+ durability: 60
+ display_color: 1
+ lores:
+ recipe:
+  shape: --E,-S-,S--
+  ingredients:
+   - E,ENDER_PEARL
+   - S,STICK
+staff_teleport_plus:
+ enable: true
+ material: STICK
+ cooldown: 10
+ gravity: true
+ speed: 3
+ effect: teleport
+ durability: 120
+ display_color: 1
+ lores:
+ recipe:
+  shape: --E,-B-,B--
+  ingredients:
+   - E,ENDER_PEARL
+   - B,BLAZE_ROD
+
+staff_fire:
+ enable: true
+ material: STICK
+ cooldown: 10
+ gravity: true
+ speed: 2.5
+ base_damage: 6
+ efect_duration: 3
+ effect: fire_tick
+ durability: 60
+ display_color: 1
+ lores:
+ recipe:
+  shape: --P,-S-,S--
+  ingredients:
+   - P,BLAZE_POWDER
+   - S,STICK
+staff_fire_plus:
+ enable: true
+ material: STICK
+ cooldown: 6
+ gravity: true
+ speed: 3
+ efect_duration: 6
+ effect: fire_tick
+ durability: 120
+ display_color: 1
+ lores:
+ recipe:
+  shape: --P,-B-,B--
+  ingredients:
+   - P,BLAZE_POWDER
+   - B,BLAZE_ROD
+
+staff_fireball:
+ enable: true
+ material: STICK
+ cooldown: 20
+ gravity: true
+ speed: 1
+ base_damage: 6
+ effect: fire_ball
+ durability: 60
+ display_color: 1
+ lores:
+ recipe:
+  shape: --P,-S-,S--
+  ingredients:
+   - P,MAGMA_CREAM
+   - S,STICK
+staff_fireball_plus:
+ enable: true
+ material: STICK
+ cooldown: 15
+ gravity: true
+ speed: 1
+ effect: fire_ball
+ durability: 120
+ display_color: 1
+ lores:
+ recipe:
+  shape: --P,-B-,B--
+  ingredients:
+   - P,MAGMA_CREAM
+   - B,BLAZE_ROD
+
+staff_freezing:
+ enable: true
+ material: STICK
+ cooldown: 15
+ gravity: true
+ speed: 1
+ base_damage: 0
+ effect_duration: 3
+ effect: freezing_ball
+ durability: 60
+ display_color: 1
+ lores:
+ recipe:
+  shape: --P,-S-,S--
+  ingredients:
+   - P,NETHER_STAR
+   - S,STICK
+staff_freezing_plus:
+ enable: true
+ material: STICK
+ cooldown: 15
+ gravity: true
+ speed: 1
+ base_damage: 0
+ effect_duratoin: 6
+ effect: freezing_ball
+ durability: 120
+ display_color: 1
+ lores:
+ recipe:
+  shape: --P,-B-,B--
+  ingredients:
+   - P,NETHER_STAR
+   - B,BLAZE_ROD
+

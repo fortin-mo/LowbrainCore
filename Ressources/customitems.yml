@@ -2,7 +2,7 @@
 
 #ARMOR
 
-LEATHER_HELMET_PLUS:
+leather_helmet_plus:
  enable: true
  material: LEATHER_HELMET
  display_color: a
@@ -21,7 +21,7 @@ LEATHER_HELMET_PLUS:
   unbreak:
    id: 34
    level: 2
-LEATHER_CHESTPLATE_PLUS:
+leather_chestplate_plus:
  enable: true
  material: LEATHER_CHESTPLATE
  display_color: a
@@ -36,7 +36,7 @@ LEATHER_CHESTPLATE_PLUS:
    amount: 4
    operation: 0
    slots: chest
-LEATHER_BOOTS_PLUS:
+leather_boots_plus:
  enable: true
  material: LEATHER_BOOTS
  display_color: a
@@ -51,7 +51,7 @@ LEATHER_BOOTS_PLUS:
    amount: 2
    operation: 0
    slots: feet
-LEATHER_LEGGINGS_PLUS:
+leather_leggings_plus:
  enable: true
  material: LEATHER_LEGGINGS
  display_color: a
@@ -66,8 +66,8 @@ LEATHER_LEGGINGS_PLUS:
    amount: 3
    operation: 0
    slots: legs
-   
-GOLD_HELMET_PLUS:
+
+gold_helmet_plus:
  enable: true
  material: GOLD_HELMET
  display_color: a
@@ -84,7 +84,7 @@ GOLD_HELMET_PLUS:
    slots: head
  enchantments:
   - 34,2
-GOLD_CHESTPLATE_PLUS:
+gold_chestplate_plus:
  enable: true
  material: GOLD_CHESTPLATE
  display_color: a
@@ -101,7 +101,7 @@ GOLD_CHESTPLATE_PLUS:
    slots: chest
  enchantments:
   - 34,2
-GOLD_BOOTS_PLUS:
+gold_boots_plus:
  enable: true
  material: GOLD_BOOTS
  display_color: a
@@ -118,7 +118,7 @@ GOLD_BOOTS_PLUS:
    slots: feet
  enchantments:
   - 34,2
-GOLD_LEGGINGS_PLUS:
+gold_leggings_plus:
  enable: true
  material: GOLD_LEGGINGS
  display_color: a
@@ -136,7 +136,7 @@ GOLD_LEGGINGS_PLUS:
  enchantments:
   - 34,2
 
-IRON_HELMET_PLUS:
+iron_helmet_plus:
  enable: true
  material: IRON_HELMET
  display_color: a
@@ -151,7 +151,7 @@ IRON_HELMET_PLUS:
    amount: 3
    operation: 0
    slots: head
-IRON_CHESTPLATE_PLUS:
+iron_chestplate_plus:
  enable: true
  material: IRON_CHESTPLATE
  display_color: a
@@ -166,7 +166,7 @@ IRON_CHESTPLATE_PLUS:
    amount: 7
    operation: 0
    slots: chest
-IRON_BOOTS_PLUS:
+iron_boots_plus:
  enable: true
  material: IRON_BOOTS
  display_color: a
@@ -181,7 +181,7 @@ IRON_BOOTS_PLUS:
    amount: 3
    operation: 0
    slots: feet
-IRON_LEGGINGS_PLUS:
+iron_leggings_plus:
  enable: true
  material: IRON_LEGGINGS
  display_color: a
@@ -197,7 +197,7 @@ IRON_LEGGINGS_PLUS:
    operation: 0
    slots: legs
 
-EMERALD_HELMET:
+emerald_helmet:
  enable: true
  material: DIAMOND_HELMET
  display_color: a
@@ -218,7 +218,7 @@ EMERALD_HELMET:
    amount: 2
    operation: 0
    slots: head
-EMERALD_CHESTPLATE:
+emerald_chestplate:
  enable: true
  material: DIAMOND_CHESTPLATE
  display_color: a
@@ -239,7 +239,7 @@ EMERALD_CHESTPLATE:
    amount: 2
    operation: 0
    slots: chest
-EMERALD_BOOTS:
+emerald_boots:
  enable: true
  material: DIAMOND_BOOTS
  display_color: a
@@ -260,7 +260,7 @@ EMERALD_BOOTS:
    amount: 2
    operation: 0
    slots: feet
-EMERALD_LEGGINGS:
+emerald_leggings:
  enable: true
  material: DIAMOND_LEGGINGS
  display_color: a
@@ -281,8 +281,8 @@ EMERALD_LEGGINGS:
    amount: 2
    operation: 0
    slots: legs
-   
-DIAMOND_HELMET_PLUS:
+
+diamond_helmet_plus:
  enable: true
  material: DIAMOND_HELMET
  display_color: a
@@ -303,7 +303,7 @@ DIAMOND_HELMET_PLUS:
    amount: 2
    operation: 0
    slots: head
-DIAMOND_CHESTPLATE_PLUS:
+diamond_chestplate_plus:
  enable: true
  material: DIAMOND_CHESTPLATE
  display_color: a
@@ -324,7 +324,7 @@ DIAMOND_CHESTPLATE_PLUS:
    amount: 2
    operation: 0
    slots: chest
-DIAMOND_BOOTS_PLUS:
+diamond_boots_plus:
  enable: true
  material: DIAMOND_BOOTS
  display_color: a
@@ -345,7 +345,7 @@ DIAMOND_BOOTS_PLUS:
    amount: 2
    operation: 0
    slots: feet
-DIAMOND_LEGGINGS_PLUS:
+diamond_leggings_plus:
  enable: true
  material: DIAMOND_LEGGINGS
  display_color: a
@@ -367,7 +367,7 @@ DIAMOND_LEGGINGS_PLUS:
    operation: 0
    slots: legs
 
-EMERALD_HELMET_PLUS:
+emerald_helmet_plus:
  enable: true
  material: DIAMOND_HELMET
  display_color: a
@@ -392,7 +392,7 @@ EMERALD_HELMET_PLUS:
  enchantments:
   - 32,2
   - 6,1
-EMERALD_CHESTPLATE_PLUS:
+emerald_chestplate_plus:
  enable: true
  material: DIAMOND_CHESTPLATE
  display_color: a
@@ -417,7 +417,7 @@ EMERALD_CHESTPLATE_PLUS:
  enchantments:
   - 32,2
   - 3,1
-EMERALD_BOOTS_PLUS:
+emerald_boots_plus:
  enable: true
  material: DIAMOND_BOOTS
  display_color: a
@@ -442,7 +442,7 @@ EMERALD_BOOTS_PLUS:
  enchantments:
   - 32,2
   - 2,1
-EMERALD_LEGGINGS_PLUS:
+emerald_leggings_plus:
  enable: true
  material: DIAMOND_LEGGINGS
  display_color: a
@@ -468,7 +468,7 @@ EMERALD_LEGGINGS_PLUS:
   - 32,2
   - 1,1
 
-FEATHER_HELMET:
+feather_helmet:
  enable: true
  material: LEATHER_HELMET
  display_color: d
@@ -492,7 +492,7 @@ FEATHER_HELMET:
    slots: head
  enchantments:
   - 34,3
-FEATHER_CHESTPLATE:
+feather_chestplate:
  enable: true
  material: LEATHER_CHESTPLATE
  display_color: d
@@ -516,7 +516,7 @@ FEATHER_CHESTPLATE:
    slots: chest
  enchantments:
   - 34,3
-FEATHER_BOOTS:
+feather_boots:
  enable: true
  material: LEATHER_BOOTS
  display_color: d
@@ -541,7 +541,7 @@ FEATHER_BOOTS:
  enchantments:
   - 34,3
   - 2,2
-FEATHER_LEGGINGS:
+feather_leggings:
  enable: true
  material: LEATHER_LEGGINGS
  display_color: d
@@ -566,7 +566,7 @@ FEATHER_LEGGINGS:
  enchantments:
   - 34,3
 
-IRON_SHIELD:
+iron_shield:
  enable: true
  material: SHIELD
  display_color: a
@@ -576,7 +576,7 @@ IRON_SHIELD:
    - I,IRON_INGOT
  enchantments:
    - 34,1
-DIAMOND_SHIELD:
+diamond_shield:
  enable: true
  material: SHIELD
  display_color: a
@@ -586,7 +586,7 @@ DIAMOND_SHIELD:
    - I,DIAMOND
  enchantments:
    - 34,2
-EMERALD_SHIELD:
+emerald_shield:
  enable: true
  material: SHIELD
  display_color: a
@@ -598,7 +598,7 @@ EMERALD_SHIELD:
    - 34,3
 
 #WEAPONS
-EMERALD_SWORD:
+emerald_sword:
  enable: true
  material: DIAMOND_SWORD
  display_color: a
@@ -620,7 +620,7 @@ EMERALD_SWORD:
    amount: 7
    operation: 0
    slots: mainhand
-EMERALD_AXE:
+emerald_axe:
  enable: true
  material: DIAMOND_AXE
  display_color: a
@@ -642,7 +642,7 @@ EMERALD_AXE:
    amount: 8.5
    operation: 0
    slots: mainhand
-EMERALD_KATANA:
+emerald_katana:
  enable: true
  material: DIAMOND_SWORD
  display_color: a
@@ -665,7 +665,7 @@ EMERALD_KATANA:
    operation: 0
    slots: mainhand
 
-IRON_KATANA:
+iron_katana:
  enable: true
  material: IRON_SWORD
  display_color: 1
@@ -688,7 +688,7 @@ IRON_KATANA:
    operation: 0
    slots: mainhand
 
-DIAMOND_KATANA:
+diamond_katana:
  enable: true
  material: DIAMOND_SWORD
  display_color: 1
@@ -711,7 +711,7 @@ DIAMOND_KATANA:
    operation: 0
    slots: mainhand
 
-THE_BUTCHER:
+the_butcher:
  enable: true
  material: DIAMOND_AXE
  display_color: 1
@@ -740,7 +740,7 @@ THE_BUTCHER:
   - 18,5
   - 21,3
   - 34,3
-EXCALIBUR:
+excalibur:
  enable: true
  material: DIAMOND_SWORD
  display_color: 1
@@ -769,7 +769,7 @@ EXCALIBUR:
   - 18,5
   - 21,3
   - 34,3
-OP:
+op:
  enable: true
  material: DIAMOND_SWORD
  display_color: 1
@@ -802,7 +802,7 @@ OP:
   - 21,3
   - 34,3
 
-COMPOUND_BOW:
+compound_bow:
  enable: true
  material: BOW
  display_color: a
@@ -814,7 +814,7 @@ COMPOUND_BOW:
  enchantments:
   - 34,3
   - 48,1
-FIRE_COMPOUND_BOW:
+fire_compound_bow:
  enable: true
  material: BOW
  display_color: a
@@ -828,7 +828,7 @@ FIRE_COMPOUND_BOW:
   - 34,3
   - 48,1
   - 50,1
-DIAMOND_COMPOUND_BOW:
+diamond_compound_bow:
  enable: true
  material: BOW
  display_color: a
@@ -841,7 +841,7 @@ DIAMOND_COMPOUND_BOW:
   - 34,3
   - 48,1
   - 49,1
-DIAMOND_FIRE_COMPOUND_BOW:
+diamond_fire_compound_bow:
  enable: true
  material: BOW
  display_color: a
@@ -856,7 +856,7 @@ DIAMOND_FIRE_COMPOUND_BOW:
   - 48,2
   - 50,1
   - 49,1
-LEGOLAS_BOW:
+legolas_bow:
  enable: true
  material: DIAMOND_SWORD
  display_color: 1

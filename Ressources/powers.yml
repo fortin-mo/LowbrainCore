@@ -1,7 +1,6 @@
 # mana: mana required to cast the spell
-# min_level : level required to be able to cast the spell. set to 0 for none
-# min_intelligence: intelligence required to be able to cast the spell. set to 0 for none
 # range : maximum distance in block between you and the other player... if set to 0 will only be able to cast to self
+# requirements : minimum requirements : possible value = intelligence, magic_resistance, dexterity, strength, agility, health, level, defence
 
 # cast
 # duration:
@@ -21,8 +20,9 @@
 
 healing:
  mana: 7
- min_level: 0
- min_intelligence: 10
+ requirements:
+  level: 5
+  intelligence: 15
  cast_range: 25
  cast:
   duration:
@@ -41,9 +41,10 @@ healing:
    dexterity: 0
 fire_resistance:
  mana: 10
- min_level: 30
- min_intelligence: 50
  cast_range: 25
+ requirements:
+  level: 20
+  intelligence: 50
  cast:
   duration:
    function:
@@ -61,8 +62,9 @@ fire_resistance:
    dexterity: 0
 resistance:
  mana: 10
- min_level: 30
- min_intelligence: 10
+ requirements:
+  level: 25
+  intelligence: 50
  cast_range: 25
  cast:
   duration:
@@ -81,8 +83,9 @@ resistance:
    dexterity: 0
 water_breathing:
  mana: 7
- min_level: 10
- min_intelligence: 20
+ requirements:
+  level: 10
+  intelligence: 20
  cast_range: 25
  cast:
   duration:
@@ -101,8 +104,9 @@ water_breathing:
    dexterity: 0
 invisibility:
  mana: 20
- min_level: 30
- min_intelligence: 60
+ requirements:
+  level: 30
+  intelligence: 60
  cast_range: 25
  cast:
   duration:
@@ -121,8 +125,9 @@ invisibility:
    dexterity: 0
 regeneration:
  mana: 5
- min_level: 5
- min_intelligence: 10
+ requirements:
+  level: 5
+  intelligence: 10
  cast_range: 25
  cast:
   duration:
@@ -141,8 +146,8 @@ regeneration:
    dexterity: 0
 jump_boost:
  mana: 5
- min_level: 0
- min_intelligence: 10
+ requirements:
+  intelligence: 10
  cast_range: 25
  cast:
   duration:
@@ -161,8 +166,9 @@ jump_boost:
    dexterity: 0
 strength:
  mana: 20
- min_level: 30
- min_intelligence: 50
+ requirements:
+  level: 25
+  intelligence: 50
  cast_range: 25
  cast:
   duration:
@@ -181,8 +187,9 @@ strength:
    dexterity: 0
 haste:
  mana: 7
- min_level: 10
- min_intelligence: 20
+ requirements:
+  level: 10
+  intelligence: 20
  cast_range: 25
  cast:
   duration:
@@ -201,8 +208,9 @@ haste:
    dexterity: 0
 speed:
  mana: 15
- min_level: 25
- min_intelligence: 35
+ requirements:
+  level: 20
+  intelligence: 35
  cast_range: 25
  cast:
   duration:
@@ -221,8 +229,9 @@ speed:
    dexterity:
 night_vision:
  mana: 10
- min_level: 10
- min_intelligence: 15
+ requirements:
+  level: 5
+  intelligence: 15
  cast_range: 25
  cast:
   duration:
@@ -241,8 +250,9 @@ night_vision:
    dexterity: 0
 health_boost:
  mana: 10
- min_level: 0
- min_intelligence: 10
+ requirements:
+  level: 5
+  intelligence: 15
  cast_range: 25
  cast:
   duration:
@@ -261,8 +271,9 @@ health_boost:
    dexterity: 0
 absorption:
  mana: 10
- min_level: 15
- min_intelligence: 20
+ requirements:
+  level: 15
+  intelligence: 30
  cast_range: 25
  cast:
   duration:
@@ -281,8 +292,9 @@ absorption:
    dexterity: 0
 saturation:
  mana: 7
- min_level: 10
- min_intelligence: 15
+ requirements:
+  level: 5
+  intelligence: 15
  cast_range: 25
  cast:
   duration:
