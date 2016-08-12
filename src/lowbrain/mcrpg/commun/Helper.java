@@ -5,10 +5,7 @@ import org.bukkit.util.Vector;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * Created by Moofy on 19/07/2016.
@@ -97,35 +94,9 @@ public class Helper {
     }
 
     public static String FormatStringWithValues(String[] st, RPGPlayer p){
-
-        if(st.length > 1){
+        if(st.length > 1 && p != null){
             for (int i = 1; i < st.length; i++) {
-                switch (st[i].trim().toLowerCase()){
-                    case "health":
-                        st[i] = p != null ? Integer.toString(p.getHealth()) : "1";
-                        break;
-                    case "strength":
-                        st[i] = p != null ? Integer.toString(p.getStrength()) : "1";
-                        break;
-                    case "intelligence":
-                        st[i] = p != null ? Integer.toString(p.getIntelligence()) : "1";
-                        break;
-                    case "dexterity":
-                        st[i] = p != null ? Integer.toString(p.getDexterity()) : "1";
-                        break;
-                    case "magic_resistance":
-                        st[i] = p != null ? Integer.toString(p.getMagicResistance()) : "1";
-                        break;
-                    case "defence":
-                        st[i] = p != null ? Integer.toString(p.getDeaths()) : "1";
-                        break;
-                    case "agility":
-                        st[i] = p != null ? Integer.toString(p.getAgility()) : "1";
-                        break;
-                    default:
-                        st[i] = "1";
-                        break;
-                }
+                st[i] = Integer.toString(p.getAttribute(st[i].trim().toLowerCase(),1));
             }
         }
         else {
@@ -136,6 +107,11 @@ public class Helper {
         return fmt.format(Arrays.copyOfRange(st,1, st.length));
     }
 
+    /***
+     * check if string is null or empty
+     * @param s
+     * @return
+     */
     public static boolean StringIsNullOrEmpty(String s){
         return s == null || s.trim().length() == 0;
     }
@@ -176,6 +152,12 @@ public class Helper {
         }
     }
 
+    /***
+     * parse string to date
+     * @param s
+     * @param c
+     * @return
+     */
     public static Calendar dateTryParse(String s, Calendar c){
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
@@ -188,6 +170,12 @@ public class Helper {
         }
     }
 
+    /***
+     * rotate vector on the xy plan
+     * @param dir
+     * @param angleD
+     * @return
+     */
     public static Vector rotateYAxis(Vector dir, double angleD) {
         double angleR = Math.toRadians(angleD);
         double x = dir.getX();
@@ -195,5 +183,79 @@ public class Helper {
         double cos = Math.cos(angleR);
         double sin = Math.sin(angleR);
         return (new Vector(x*cos+z*(-sin), dir.getY(), x*sin+z*cos)).normalize();
+    }
+
+    /***
+     * gets the X value ( y = ax + b ) depending on attributes influence and player attributes
+     * @param influence
+     * @param p
+     * @return
+     */
+    public static float getXValue(HashMap<String,Float> influence, RPGPlayer p){
+        float x = 0;
+        for(Map.Entry<String, Float> inf : influence.entrySet()) {
+            String n = inf.getKey().toLowerCase();
+            float v = inf.getValue();
+            x += (v * p.getAttribute(n,0));
+        }
+        return x;
+    }
+
+    /***
+     * return max stats. if max stats <= 0 return 100
+     * @return
+     */
+    private static int getMaxStats(){
+        return Settings.getInstance().max_stats <= 0 ? 100 : Settings.getInstance().max_stats;
+    }
+
+    /**
+     * evaluate slope
+     * @param max max
+     * @param min min
+     * @return
+     */
+    public static float Slope(float max, float min){
+        float slope = 0;
+        switch (Settings.getInstance().math.function_type){
+            case 1:
+                slope = (max - min)/(float)Math.pow(getMaxStats(),2);
+                break;
+            case 2:
+                slope = (max - min)/(float)Math.pow(getMaxStats(),0.5);
+                break;
+            default:
+                slope = (max - min)/getMaxStats();
+                break;
+        }
+        //plugin.debugMessage("slope: " + slope);
+        return slope;
+    }
+
+    /**
+     * evaluate value
+     * @param max max
+     * @param min min
+     * @param x value
+     * @return
+     */
+    public static float ValueFromFunction(float max, float min, float x){
+        float result = 0;
+        switch (Settings.getInstance().math.function_type){
+            case 1:
+                result = Slope(max,min) * (float)Math.pow(x,2) + min;
+                break;
+            case 2:
+                result = Slope(max,min) * (float)Math.pow(x,0.5) + min;
+                break;
+            default:
+                result = Slope(max,min) * x + min;
+                break;
+        }
+        return result;
+    }
+
+    public static float ValueFromFunction(float max, float min,HashMap<String,Float> influence, RPGPlayer p){
+        return ValueFromFunction(max,min,getXValue(influence,p));
     }
 }

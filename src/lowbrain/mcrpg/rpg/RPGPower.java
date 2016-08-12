@@ -4,6 +4,7 @@ import lowbrain.mcrpg.commun.Helper;
 import lowbrain.mcrpg.config.Powers;
 import lowbrain.mcrpg.events.PlayerListener;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.potion.PotionEffect;
@@ -11,7 +12,6 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by moo on 2016-07-21.
@@ -34,20 +34,22 @@ public class RPGPower {
     private String duration_function;
     private PotionEffectType potionEffectType;
     private Calendar lastCast;
-    private int min_cooldown;
-    private int max_cooldown;
+    private int minimum_cooldown;
+    private int maximum_cooldown;
+    private HashMap<String,Float> cooldown_influence;
     private HashMap<String,Integer> requirements;
 
 
     public RPGPower(String name){
         this.name = name;
         this.requirements = new HashMap<>();
+        this.cooldown_influence = new HashMap<>();
         FileConfiguration config = Powers.getInstance();
         this.mana = (float)config.getDouble(this.name + ".mana");
         this.cast_range = (float)config.getDouble(this.name + ".cast_range");
 
-        this.min_cooldown = config.getInt(this.name + ".minimum_cooldown");
-        this.max_cooldown = config.getInt(this.name + ".maximum_cooldown");
+        this.minimum_cooldown = config.getInt(this.name + ".minimum_cooldown");
+        this.maximum_cooldown = config.getInt(this.name + ".maximum_cooldown");
 
         this.maximum_amplifier = (float)config.getDouble(this.name + ".cast.amplifier.maximum");
         this.minimum_amplifier = (float)config.getDouble(this.name + ".cast.amplifier.minimum");
@@ -63,11 +65,24 @@ public class RPGPower {
         this.duration_dexterity = (float)config.getDouble(this.name + ".cast.duration.dexterity");
         this.duration_function = config.getString(this.name + ".cast.duration.function");
 
-        ConfigurationSection requirementsSection = config.getConfigurationSection("requirements");
+        ConfigurationSection requirementsSection = config.getConfigurationSection(this.name + ".requirements");
         if(requirementsSection != null){
             for (String key :
                     requirementsSection.getKeys(false)) {
                 this.requirements.put(key,requirementsSection.getInt(key));
+            }
+        }
+
+        ConfigurationSection cooldownSection = config.getConfigurationSection(this.name + ".cooldown");
+        if(cooldownSection != null){
+            maximum_cooldown = cooldownSection.getInt("maximum");
+            minimum_cooldown = cooldownSection.getInt("minimum");
+            ConfigurationSection influ = cooldownSection.getConfigurationSection("influence");
+            if(influ != null){
+                for (String key :
+                        influ.getKeys(false)) {
+                    this.cooldown_influence.put(key,(float)influ.getDouble(key));
+                }
             }
         }
 
@@ -89,7 +104,7 @@ public class RPGPower {
     private int getCastDuration(RPGPlayer from){
         float result = 0F;
         if(Helper.StringIsNullOrEmpty(duration_function)) {
-            result =  PlayerListener.ValueFromFunction(maximum_duration,minimum_duration,
+            result =  Helper.ValueFromFunction(maximum_duration,minimum_duration,
                     (from.getIntelligence() * duration_intelligence
                     + from.getDexterity() * duration_dexterity));
         }
@@ -115,7 +130,7 @@ public class RPGPower {
     private int getCastAmplifier(RPGPlayer from){
         float result = 0F;
         if(Helper.StringIsNullOrEmpty(amplifier_function)) {
-            result = PlayerListener.ValueFromFunction(maximum_amplifier,minimum_amplifier,
+            result = Helper.ValueFromFunction(maximum_amplifier,minimum_amplifier,
                     (from.getIntelligence() * amplifier_intelligence
                     + from.getDexterity() * amplifier_dexterity));
         }
@@ -185,8 +200,8 @@ public class RPGPower {
         }
     }
 
-    private int getCooldown(){
-        return min_cooldown;
+    private int getCooldown(RPGPlayer p){
+        return (int)Helper.ValueFromFunction(maximum_cooldown,minimum_cooldown,cooldown_influence,p);
     }
 
     public boolean Cast(RPGPlayer from, RPGPlayer to){
@@ -194,7 +209,7 @@ public class RPGPower {
             if(from == null || to == null)return false;
 
             Calendar cooldowntime = Calendar.getInstance();
-            cooldowntime.add(Calendar.SECOND,-getCooldown());
+            cooldowntime.add(Calendar.SECOND,-getCooldown(from));
 
             if(this.lastCast.before((cooldowntime))){
                 int rest = (int)(lastCast.getTimeInMillis() - cooldowntime.getTimeInMillis() / 1000);

@@ -1,7 +1,6 @@
 package lowbrain.mcrpg.rpg;
-import lowbrain.mcrpg.commun.Config;
+import lowbrain.mcrpg.commun.Settings;
 import lowbrain.mcrpg.commun.Helper;
-import lowbrain.mcrpg.config.Skills;
 import lowbrain.mcrpg.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -278,30 +277,38 @@ public class RPGPlayer {
 
 			switch (n.toLowerCase()){
 				case "strength":
+				case "str":
 					v1 = this.getStrength();
 					v2 = (int)v;
 					break;
 				case "intelligence":
+				case "intel":
 					v1 = this.getIntelligence();
 					v2 = (int)v;
 					break;
 				case "dexterity":
+				case "dext":
 					v1 = this.getDexterity();
 					v2 = (int)v;
 					break;
 				case "defence":
+				case "def":
 					v1 = this.getDefence();
 					v2 = (int)v;
 					break;
 				case "agility":
+				case "agi":
 					v1 = this.getAgility();
 					v2 = (int)v;
 					break;
 				case "magic_resistance":
+				case "magicresistance":
+				case "mr":
 					v1 = this.getMagicResistance();
 					v2 = (int)v;
 					break;
 				case "health":
+				case "hp":
 					v1 = this.getHealth();
 					v2 = (int)v;
 					break;
@@ -320,6 +327,10 @@ public class RPGPlayer {
 					}else return -1;
 				case "kills":
 					v1 = this.getKills();
+					v2 = (int)v;
+					break;
+				case "deaths":
+					v1 = this.getDeaths();
 					v2 = (int)v;
 					break;
 				default:
@@ -402,6 +413,49 @@ public class RPGPlayer {
 		return msg;
 	}
 
+	public int getAttribute(String n){
+		return getAttribute(n, -1);
+	}
+
+	public int getAttribute(String n, int d){
+		if(Helper.StringIsNullOrEmpty(n))return d;
+
+		switch (n.toLowerCase()){
+			case "level":
+			case "lvl":
+				return this.getLvl();
+
+			case "intelligence":
+			case "intel":
+				return this.getIntelligence();
+
+			case "agility":
+			case "agi":
+				return this.getAgility();
+
+			case "health":
+			case "hp":
+				return this.getHealth();
+
+			case "strength":
+			case "str":
+				return this.getStrength();
+
+			case "dexterity":
+			case "dext":
+				return this.getDexterity();
+
+			case "defence":
+			case "def":
+				return this.getDefence();
+
+			case "magic_resistance":
+			case "magicresistance":
+			case "mr":
+				return this.getMagicResistance();
+		}
+		return d;
+	}
 
 	/**
 	 * cast a spell
@@ -1583,8 +1637,8 @@ public class RPGPlayer {
 		}
 	}
 
-	private Config getSettings(){
-		return PlayerListener.plugin.config;
+	private Settings getSettings(){
+		return Settings.getInstance();
 	}
 
 	public void SendMessage(String msg){

@@ -1,10 +1,8 @@
 package lowbrain.mcrpg.main;
 
-import java.awt.event.KeyEvent;
-import java.io.File;
 import java.util.*;
 
-import lowbrain.mcrpg.commun.Config;
+import lowbrain.mcrpg.commun.Settings;
 import lowbrain.mcrpg.config.*;
 import lowbrain.mcrpg.events.ArmorListener;
 import lowbrain.mcrpg.events.PlayerListener;
@@ -15,8 +13,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.v1_10_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -35,7 +31,6 @@ import org.bukkit.scoreboard.*;
 public class Main extends JavaPlugin {
 
 	public Map<UUID, RPGPlayer> connectedPlayers = new HashMap<UUID, RPGPlayer>();
-	public Config config;
 	public HashMap<String,ItemRequirements> itemsRequirements = new HashMap<String,ItemRequirements>();
 	public HashMap<String,RPGSkill> skills = new HashMap<String,RPGSkill>();
 
@@ -67,13 +62,13 @@ public class Main extends JavaPlugin {
 	    this.getCommand("mcrpg").setExecutor(new RPGCommand(this));
 	    this.getLogger().info("[LowbrainMCRPG] " + getDescription().getVersion() + " enabled!");
 
-		if(this.config.auto_save) {
+		if(Settings.getInstance().auto_save) {
 			Bukkit.getServer().getScheduler().runTaskTimer((Plugin) this, new Runnable() {
 				@Override
 				public void run() {
 					SaveData();
 				}
-			}, 0, config.save_interval * 20);
+			}, 0, Settings.getInstance().save_interval * 20);
 		}
 
 
@@ -82,7 +77,6 @@ public class Main extends JavaPlugin {
     }
 
     private void InitialisingConfigFile(){
-		config = new Config(lowbrain.mcrpg.config.Config.getInstance());
 		try {
 			loadSkills();
 			loadItemsRequirements();
@@ -92,7 +86,7 @@ public class Main extends JavaPlugin {
 			e.printStackTrace();
 		}
 	}
-   
+
     @Override
     public void onDisable() {
     	SaveData();
@@ -105,10 +99,23 @@ public class Main extends JavaPlugin {
 	}
 
 	public void debugMessage(Object msg){
-	    if(this.config.debug){
+	    if(Settings.getInstance().debug){
 	        this.getLogger().info("[DEBUG] : " + msg);
         }
     }
+
+    public void reloadConfig(){
+    	Classes.reload();
+		Config.reload();
+		CustomItems.reload();
+		ItemsRequirements.reload();
+		MobsXP.reload();
+		Powers.reload();
+		Skills.reload();
+		Staffs.reload();
+		Races.reload();
+		Settings.reload();
+	}
 
     private boolean evaluateFunctions(){
     	List<String> functions = new ArrayList<String>();

@@ -7,7 +7,7 @@ import lowbrain.mcrpg.rpg.RPGClass;
 import lowbrain.mcrpg.rpg.RPGPlayer;
 import lowbrain.mcrpg.rpg.RPGRace;
 import lowbrain.mcrpg.rpg.RPGSkill;
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -37,6 +37,12 @@ public class RPGCommand implements CommandExecutor{
 				switch (args[0].toLowerCase()){
 					default:
 						return false;
+					case "reload":
+						if(rp.getPlayer().isOp() || rp.getPlayer().hasPermission("mcrpg.reload")){
+							plugin.reloadConfig();
+							rp.SendMessage("Configuration files reloaded !", ChatColor.GRAY);
+						}
+						break;
                     case "xp":
                         double xp = rp.getNextLvl() - rp.getExperience();
 						rp.SendMessage("You will reach lvl " + (rp.getLvl()+1) + " in " + xp + " xp");
@@ -119,7 +125,7 @@ public class RPGCommand implements CommandExecutor{
 						rp.addAgility(1,true,true);
 						break;
 					case "stats":
-						if(args.length == 2){
+						if(args.length == 2 && sender.isOp() || sender.hasPermission("mcrpg.stats-others")){
 							Player p = plugin.getServer().getPlayer(args[1]);
 							if(p != null){
 								RPGPlayer rp2 = plugin.connectedPlayers.get(p.getUniqueId());
@@ -220,11 +226,13 @@ public class RPGCommand implements CommandExecutor{
 						rp.SendMessage("Next level achieved at " + rp.getNextLvl() + " xp");
 						break;
 					case "save":
-						rp.SaveData();
-						rp.SendMessage("Stats saved !");
+						if(sender.isOp() || sender.hasPermission("mcrpg.save")){
+							rp.SaveData();
+							rp.SendMessage("Stats saved !");
+						}
 						break;
 					case "save-all":
-					    if(sender.isOp()) {
+					    if(sender.isOp() || sender.hasPermission("mcrpg.save-all")) {
                             plugin.SaveData();
 							rp.SendMessage("All stats saved !");
                         }
@@ -287,6 +295,14 @@ public class RPGCommand implements CommandExecutor{
 							rp.setCurrentSkill(args[1].toLowerCase());
 						}
 						else return false;
+						break;
+					case "getskill":
+						if(rp.getCurrentSkill() != null){
+							rp.SendMessage("Current skill : " + rp.getCurrentSkill().getName());
+						}
+						else{
+							rp.SendMessage("Current skill : none");
+						}
 						break;
 					case "upskill":
 						if(args.length == 2){

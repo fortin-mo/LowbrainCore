@@ -39,6 +39,11 @@ healing:
    range: 0.0
    intelligence: 1
    dexterity: 0
+  cooldown:
+   minimum: 15
+   maximum: 10
+   influence:
+    intelligence: 1
 fire_resistance:
  mana: 10
  cast_range: 25
@@ -60,6 +65,11 @@ fire_resistance:
    range: 0
    intelligence: 1
    dexterity: 0
+  cooldown:
+   minimum: 60
+   maximum: 50
+   influence:
+    intelligence: 1
 resistance:
  mana: 10
  requirements:
@@ -81,6 +91,11 @@ resistance:
    range: 0
    intelligence: 1
    dexterity: 0
+  cooldown:
+   minimum: 60
+   maximum: 50
+   influence:
+    intelligence: 1
 water_breathing:
  mana: 7
  requirements:
@@ -102,6 +117,11 @@ water_breathing:
    range: 0
    intelligence: 1
    dexterity: 0
+  cooldown:
+   minimum: 30
+   maximum: 20
+   influence:
+    intelligence: 1
 invisibility:
  mana: 20
  requirements:
@@ -123,6 +143,11 @@ invisibility:
    range: 0
    intelligence: 1
    dexterity: 0
+  cooldown:
+   minimum: 90
+   maximum: 70
+   influence:
+    intelligence: 1
 regeneration:
  mana: 5
  requirements:
@@ -144,6 +169,11 @@ regeneration:
    range: 0
    intelligence: 1
    dexterity: 0
+  cooldown:
+   minimum: 25
+   maximum: 15
+   influence:
+    intelligence: 1
 jump_boost:
  mana: 5
  requirements:
@@ -164,6 +194,11 @@ jump_boost:
    range: 0
    intelligence: 1
    dexterity: 0
+  cooldown:
+   minimum: 15
+   maximum: 10
+   influence:
+    intelligence: 1
 strength:
  mana: 20
  requirements:
@@ -185,6 +220,11 @@ strength:
    range: 0
    intelligence: 1
    dexterity: 0
+  cooldown:
+   minimum: 60
+   maximum: 50
+   influence:
+    intelligence: 1
 haste:
  mana: 7
  requirements:
@@ -206,6 +246,11 @@ haste:
    range: 0
    intelligence: 1
    dexterity: 0
+  cooldown:
+   minimum: 60
+   maximum: 50
+   influence:
+    intelligence: 1
 speed:
  mana: 15
  requirements:
@@ -227,6 +272,11 @@ speed:
    range:
    intelligence:
    dexterity:
+  cooldown:
+   minimum: 30
+   maximum: 20
+   influence:
+    intelligence: 1
 night_vision:
  mana: 10
  requirements:
@@ -248,6 +298,11 @@ night_vision:
    range: 0
    intelligence: 1
    dexterity: 0
+  cooldown:
+   minimum: 15
+   maximum: 10
+   influence:
+    intelligence: 1
 health_boost:
  mana: 10
  requirements:
@@ -269,6 +324,11 @@ health_boost:
    range: 0
    intelligence: 1
    dexterity: 0
+  cooldown:
+   minimum: 30
+   maximum: 20
+   influence:
+    intelligence: 1
 absorption:
  mana: 10
  requirements:
@@ -290,6 +350,11 @@ absorption:
    range: 0
    intelligence: 1
    dexterity: 0
+  cooldown:
+   minimum: 30
+   maximum: 20
+   influence:
+    intelligence: 1
 saturation:
  mana: 7
  requirements:
@@ -311,3 +376,8 @@ saturation:
    range: 0
    intelligence: 1
    dexterity: 0
+  cooldown:
+   minimum: 15
+   maximum: 10
+   influence:
+    intelligence: 1
