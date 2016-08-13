@@ -51,6 +51,8 @@ mana_regen_interval: 5 # interval between each mana regen for all connected play
 automatic_server_difficulty: true # will change minecraft server difficulty based on average player lvl. 0 to 25 = easy, 25 to 55 = medium, 55 and more = hard
 nearby_players_gain_xp: true
 nearby_players_max_distance: 15
+main_player_gain : 0.666
+other_player_gain : 0.333
 maths: # everything needed to calculate damage, resitance, etc
  function_type: 1
  next_lvl_multiplier: 1.1 # level multiplier. next level = (current level * multiplier) + current level

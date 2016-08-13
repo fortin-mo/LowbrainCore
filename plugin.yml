@@ -36,6 +36,8 @@ commands:
                   /mcrpg setskill <name> - set the current skill to be used
                   /mcrpg upskill <name> - upgrade skill
                   /mcrpg getskill - get current skill
+                  /mcrpg skill <name> - get the skill description
+                  /mcrpg myskill <name> - get the skill info (level)
 
                   /mcrpg add defence <number>  - add <number> defence or def
                   /mcrpg add strength <number>  - add <number> strength o str

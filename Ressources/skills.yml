@@ -3,6 +3,12 @@
 # 1: multiplicative : base * value ^ level-1, ex : level 1 = 20, level 2 = 20 * 1.5 ^ 2-1 = 30, level 3 = 45 (to reduce you can use value < 0, for exemple 0.75)
 # 2: multiplicative : base + ( (base*value) * level-1), ex: level 1 = 20, level 2 = 40, level 3 = 60
 
+# max_level : max upgrade level
+# base_skillpoints_cost : number of skillpoints required to upgrade skill (at level 1 to level 2)
+# base_mana_cost : mana required to execute skill ((at level 1)
+# base_cooldown : time between each attack (in second) (at level 1)
+# base_requirements : look at itemrequirements.yml (without race and class)
+
 spread_of_arrow:
  enable: true
  max_level: 5
@@ -11,15 +17,15 @@ spread_of_arrow:
  base_mana_cost: 5
  skillpoints_operation: 0
  mana_cost_operation: 0
- requirements_opration: 2
+ requirements_operation: 2
  cooldown_opration: 0
  skillpoints_operation_value: 0
  mana_cost_operation_value: 0
  cooldown_operation_value: -2
  requirements_operation_value: 1
  base_requirements:
-  level: 20
-  dexterity: 20
+  level: 15
+  dexterity: 15
 
 barrage_of_arrow:
  enable: true
@@ -29,16 +35,16 @@ barrage_of_arrow:
  base_mana_cost: 10
  skillpoints_operation: 0
  mana_cost_operation: 0
- requirements_opration: 2
+ requirements_operation: 2
  cooldown_opration: 0
  skillpoints_operation_value: 0
  mana_cost_operation_value: 0
  cooldown_operation_value: -2
  requirements_operation_value: 1
  base_requirements:
-  level: 20
-  dexterity: 20
-  agility: 10
+  level: 15
+  dexterity: 15
+  agility: 15
 
 flaming_arrow:
  enable: true
@@ -48,16 +54,16 @@ flaming_arrow:
  base_mana_cost: 10
  skillpoints_operation: 0
  mana_cost_operation: 0
- requirements_opration: 2
+ requirements_operation: 2
  cooldown_opration: 0
  skillpoints_operation_value: 0
  mana_cost_operation_value: 0
  cooldown_operation_value: -2
  requirements_operation_value: 1
  base_requirements:
-  level: 20
-  dexterity: 20
-  intelligence: 10
+  level: 15
+  dexterity: 15
+  intelligence: 15
 
 frozen_arrow:
  enable: true
@@ -67,16 +73,16 @@ frozen_arrow:
  base_mana_cost: 5
  skillpoints_operation: 0
  mana_cost_operation: 0
- requirements_opration: 2
+ requirements_operation: 2
  cooldown_opration: 0
  skillpoints_operation_value: 0
  mana_cost_operation_value: 0
  cooldown_operation_value: -2
  requirements_operation_value: 1
  base_requirements:
-  level: 20
-  dexterity: 20
-  intelligence: 10
+  level: 10
+  dexterity: 15
+  intelligence: 15
 
 straight_arrow:
  enable: true
@@ -86,15 +92,15 @@ straight_arrow:
  base_mana_cost: 5
  skillpoints_operation: 0
  mana_cost_operation: 0
- requirements_opration: 2
+ requirements_operation: 2
  cooldown_opration: 0
  skillpoints_operation_value: 0
  mana_cost_operation_value: 0
  cooldown_operation_value: -2
  requirements_operation_value: 1
  base_requirements:
-  level: 20
-  dexterity: 20
+  level: 10
+  dexterity: 15
   strength: 15
 
 fire_slash:
@@ -105,16 +111,16 @@ fire_slash:
  base_mana_cost: 10
  skillpoints_operation: 0
  mana_cost_operation: 0
- requirements_opration: 2
+ requirements_operation: 2
  cooldown_opration: 0
  skillpoints_operation_value: 0
  mana_cost_operation_value: 0
  cooldown_operation_value: -2
  requirements_operation_value: 1
  base_requirements:
-  level: 20
-  dexterity: 20
-  intelligence: 10
+  level: 10
+  dexterity: 15
+  intelligence: 15
   
 frozen_slash:
  enable: true
@@ -124,15 +130,15 @@ frozen_slash:
  base_mana_cost: 5
  skillpoints_operation: 0
  mana_cost_operation: 0
- requirements_opration: 2
+ requirements_operation: 2
  cooldown_opration: 0
  skillpoints_operation_value: 0
  mana_cost_operation_value: 0
  cooldown_operation_value: -2
  requirements_operation_value: 1
  base_requirements:
-  level: 20
-  dexterity: 20
+  level: 10
+  dexterity: 10
   intelligence: 10
 
 power_hit:
@@ -143,15 +149,15 @@ power_hit:
  base_mana_cost: 10
  skillpoints_operation: 0
  mana_cost_operation: 0
- requirements_opration: 2
+ requirements_operation: 2
  cooldown_opration: 0
  skillpoints_operation_value: 0
  mana_cost_operation_value: 0
  cooldown_operation_value: -2
  requirements_operation_value: 1
  base_requirements:
-  level: 20
-  strength: 20
+  level: 15
+  strength: 15
   intelligence: 10
 
 absorb:
@@ -162,7 +168,25 @@ absorb:
  base_mana_cost: 10
  skillpoints_operation: 0
  mana_cost_operation: 0
- requirements_opration: 2
+ requirements_operation: 2
+ cooldown_opration: 0
+ skillpoints_operation_value: 0
+ mana_cost_operation_value: 0
+ cooldown_operation_value: -2
+ requirements_operation_value: 1
+ base_requirements:
+  level: 15
+  intelligence: 15
+
+lightning_strike:
+ enable: true
+ max_level: 5
+ base_skillpoints_cost: 3
+ base_cooldown: 60
+ base_mana_cost: 15
+ skillpoints_operation: 0
+ mana_cost_operation: 0
+ requirements_operation: 2
  cooldown_opration: 0
  skillpoints_operation_value: 0
  mana_cost_operation_value: 0
@@ -170,4 +194,6 @@ absorb:
  requirements_operation_value: 1
  base_requirements:
   level: 20
+  strength: 20
   intelligence: 20
+

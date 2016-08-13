@@ -3,9 +3,11 @@ package lowbrain.mcrpg.rpg;
 import lowbrain.mcrpg.commun.Helper;
 import lowbrain.mcrpg.config.Skills;
 import lowbrain.mcrpg.events.PlayerListener;
+import net.minecraft.server.v1_10_R1.EntityArrow;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.craftbukkit.v1_10_R1.entity.CraftArrow;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
@@ -15,6 +17,7 @@ import org.bukkit.util.Vector;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Moofy on 08/08/2016.
@@ -38,6 +41,48 @@ public class RPGSkill {
     private boolean enable;
     private Calendar lastExecuted;
     private int currentLevel;
+
+    public String info(){
+        String s = "";
+        s += "-------------------------" + "\n";
+        s += "Name : " + name + "\n";
+        s += "Skillpoints cost : " + getSkillpointsCost() + "\n";
+        s += "Mana cost : " + getManaCost() + "\n";
+        s += "Cooldown : " + getCoolDown() + "\n";
+        s += "Max level : " + maxLevel + "\n";
+        s += "Current level : " + currentLevel + "\n";
+        s += "Next upgrade requirements : ";
+
+        for (Map.Entry<String, Integer> r :
+                baseRequirements.entrySet()) {
+            s += r.getKey() + " ";
+            s += getRequirement(r.getKey());
+            s += " ";
+        }
+        s += "-------------------------" + "\n";
+        return s;
+    }
+
+    public String toString(){
+        String s = "";
+        s += "-------------------------" + "\n";
+        s += "Name : " + name + "\n";
+        s += "Skillpoints cost : " + baseSkillpointsCost + "\n";
+        s += "Mana cost : " + baseManaCost + "\n";
+        s += "Cooldown : " + baseCooldown + "\n";
+        s += "Max level : " + maxLevel + "\n";
+
+        s += "Requirements : ";
+
+        for (Map.Entry<String, Integer> r :
+                baseRequirements.entrySet()) {
+            s += r.getKey() + " ";
+            s += r.getValue();
+            s += " ";
+        }
+        s += "-------------------------" + "\n";
+        return s;
+    }
 
     public RPGSkill(String n, int lvl){
         this.name = n;
@@ -143,38 +188,39 @@ public class RPGSkill {
                     int[] angles = new int[currentLevel * 2];
                     for (int i = 0; i < angles.length / 2; i++) {
                         angles[i] = (i + 1) * 3;
-                        angles[i + 2] = (i + 1) * -3;
+                        angles[i + (angles.length / 2)] = (i + 1) * -3;
                     }
 
                     for (int angle : angles) {
                         Vector vec;
-                        vec = Helper.rotateYAxis(p.getPlayer().getLocation().getDirection().normalize(), angle);
-                        Arrow marrow = p.getPlayer().getLocation().getWorld().spawnArrow(p.getPlayer().getLocation().clone().add(0, 1.5, 0), vec.clone(), 6F, 0);
+                        vec = Helper.rotateYAxis(p.getPlayer().getLocation().getDirection().clone().normalize(), angle);
+                        Arrow marrow = p.getPlayer().launchProjectile(Arrow.class,vec.clone().multiply(ar.getVelocity().length()));
                         marrow.setShooter(p.getPlayer());
                         marrow.setBounce(false);
+                        ((CraftArrow)marrow).getHandle().fromPlayer = EntityArrow.PickupStatus.DISALLOWED;
                     }
                     succeed = true;
                     break;
                 case "barrage_of_arrow":
                     new BukkitRunnable() {
-                        int counts;
+                        int counts = 1;
                         @Override
                         public void run() {
-                            counts++;
-                            Arrow arrow = p.getPlayer().getLocation().getWorld().spawnArrow(p.getPlayer().getLocation().clone().add(0, 1.5, 0), p.getPlayer().getLocation().getDirection().clone().normalize(), 6F, 0);
-                            arrow.setShooter(p.getPlayer());
-                            arrow.setBounce(false);
-
-                            p.getPlayer().getWorld().playEffect(p.getPlayer().getLocation(), Effect.BOW_FIRE, 1, 0);
                             if (counts > currentLevel) {
                                 cancel();
                             }
+                            Arrow arrow = p.getPlayer().launchProjectile(Arrow.class,p.getPlayer().getLocation().getDirection().clone().normalize().multiply(ar.getVelocity().length()));
+                            arrow.setShooter(p.getPlayer());
+                            arrow.setBounce(false);
+                            ((CraftArrow)arrow).getHandle().fromPlayer = EntityArrow.PickupStatus.DISALLOWED;
+                            p.getPlayer().getWorld().playEffect(p.getPlayer().getLocation(), Effect.BOW_FIRE, 1, 0);
+                            counts++;
                         }
-                    }.runTaskTimer(PlayerListener.plugin, 5L, 5L);
+                    }.runTaskTimer(PlayerListener.plugin, 4L, 4L);
                     succeed = true;
                     break;
                 case "flaming_arrow":
-                    ar.setFireTicks(currentLevel * 2);
+                    ar.setFireTicks(currentLevel * 2 * 10);
                     ar.setGlowing(true);
                     succeed = true;
                     break;
@@ -216,7 +262,7 @@ public class RPGSkill {
 
             switch (this.name){
                 case "fire_slash":
-                    to.setFireTicks(currentLevel * 2);
+                    to.setFireTicks(currentLevel * 20);
                     succeed = true;
                     break;
                 case "frozen_slash":
@@ -225,7 +271,7 @@ public class RPGSkill {
                     succeed = true;
                     break;
                 case "power_hit":
-                    to.setVelocity(to.getLocation().getDirection().multiply(-1 * currentLevel));
+                    to.setVelocity(to.getLocation().getDirection().multiply(-1 * currentLevel / 2));
                     to.damage(currentLevel);
                     succeed = true;
                     break;
@@ -237,6 +283,11 @@ public class RPGSkill {
                     p.getPlayer().setHealth(newHealth);
                     p.SendMessage(absorb + "HP absorbed !");
                     succeed = true;
+                    break;
+                case "lightning_strike":
+                    to.setFireTicks(currentLevel * 10);
+                    to.damage(currentLevel * 1.5);
+                    to.getWorld().strikeLightningEffect(to.getLocation());
                     break;
             }
 

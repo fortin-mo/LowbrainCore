@@ -9,6 +9,7 @@ import lowbrain.mcrpg.config.Staffs;
 import lowbrain.mcrpg.main.Main;
 import lowbrain.mcrpg.rpg.RPGSkill;
 import org.bukkit.*;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.*;
 import org.bukkit.event.Event;
@@ -193,6 +194,7 @@ public class PlayerListener implements Listener {
     public void onPlayerDamaged(EntityDamageEvent e){
         if(e.getEntity() instanceof Player){
             RPGPlayer damagee = plugin.connectedPlayers.get(e.getEntity().getUniqueId());
+            if(damagee == null) return;
             // multiplier = a * x + b : where a = max-min/max_stats, and b = min
             float multiplier = 1;
 
@@ -389,6 +391,8 @@ public class PlayerListener implements Listener {
 
                 int killsCount = rpKiller.getMobKills().get(mobName);
                 ConfigurationSection section = MobsXP.getInstance().getConfigurationSection(mobName);
+                if(section == null)section = MobsXP.getInstance().getConfigurationSection("default");
+
                 if(section != null){
                     int interval = section.getInt("xp_bonus_interval");
                     double xp = section.getDouble("base_xp");
@@ -400,10 +404,10 @@ public class PlayerListener implements Listener {
                     if(Settings.getInstance().nearby_players_gain_xp){
                         List<RPGPlayer> others = plugin.getNearbyPlayers(rpKiller,Settings.getInstance().nearby_players_max_distance);
                         rpKiller.addExp(xp * 0.66666);
-                        plugin.debugMessage(rpKiller.getPlayer().getName() + " gains "+ xp * 0.66666 +" xp!");
+                        plugin.debugMessage(rpKiller.getPlayer().getName() + " gains "+ xp * Settings.getInstance().main_player_gain +" xp!");
 
                         if(others.size() > 0) {
-                            double othersXP = xp * 0.33333 / others.size();
+                            double othersXP = xp * Settings.getInstance().other_player_gain / others.size();
                             for (RPGPlayer other : others) {
                                 other.addExp(othersXP);
                                 plugin.debugMessage(other.getPlayer().getName() + " gains " + othersXP + " xp!");
@@ -416,106 +420,6 @@ public class PlayerListener implements Listener {
                     }
 
                 }
-
-
-                /*
-                if(e.getEntity() instanceof Bat){
-
-                }
-                else if(e.getEntity() instanceof Blaze){
-
-                }
-                else if(e.getEntity() instanceof CaveSpider){
-
-                }
-                else if(e.getEntity() instanceof Chicken){
-
-                }
-                else if(e.getEntity() instanceof Cow){
-
-                }
-                else if(e.getEntity() instanceof Creeper){
-
-                }
-                else if(e.getEntity() instanceof EnderDragon){
-
-                }
-                else if(e.getEntity() instanceof Enderman){
-
-                }
-                else if(e.getEntity() instanceof Endermite){
-
-                }
-                else if(e.getEntity() instanceof Ghast){
-
-                }
-                else if(e.getEntity() instanceof Giant){
-
-                }
-                else if(e.getEntity() instanceof Guardian){
-
-                }
-                else if(e.getEntity() instanceof Horse){
-
-                }
-                else if(e.getEntity() instanceof IronGolem){
-
-                }
-                else if(e.getEntity() instanceof MushroomCow){
-
-                }
-                else if(e.getEntity() instanceof Pig){
-
-                }
-                else if(e.getEntity() instanceof PigZombie){
-
-                }
-                else if(e.getEntity() instanceof PolarBear){
-
-                }
-                else if(e.getEntity() instanceof Rabbit){
-
-                }
-                else if(e.getEntity() instanceof Sheep){
-
-                }
-                else if(e.getEntity() instanceof Shulker){
-
-                }
-                else if(e.getEntity() instanceof Skeleton){
-
-                }
-                else if(e.getEntity() instanceof Slime){
-
-                }
-                else if(e.getEntity() instanceof Snowman){
-
-                }
-                else if(e.getEntity() instanceof Spider){
-
-                }
-                else if(e.getEntity() instanceof Squid){
-
-                }
-                else if(e.getEntity() instanceof Villager){
-
-                }
-                else if(e.getEntity() instanceof WaterMob){
-
-                }
-                else if(e.getEntity() instanceof Witch){
-
-                }
-                else if(e.getEntity() instanceof Wither){
-
-                }
-                else if(e.getEntity() instanceof Wolf){
-
-                }
-                else if(e.getEntity() instanceof Zombie){
-
-                }
-                */
             }
         }
     }

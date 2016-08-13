@@ -35,6 +35,8 @@ public class Settings {
     public boolean automatic_server_difficulty;
     public boolean nearby_players_gain_xp;
     public float nearby_players_max_distance;
+    public float main_player_gain;
+    public float other_player_gain;
 
     public MathSettings math;
 
@@ -57,6 +59,8 @@ public class Settings {
         automatic_server_difficulty = config.getBoolean("automatic_server_difficulty");
         nearby_players_gain_xp = config.getBoolean("nearby_players_gain_xp");
         nearby_players_max_distance = (float)config.getDouble("nearby_players_max_distance");
+        main_player_gain = (float)config.getDouble("main_player_gain");
+        other_player_gain = (float)config.getDouble("other_player_gain");
         starting_skill_points = config.getInt("starting_skill_points");
         skill_points_level_interval = config.getInt("skill_points_level_interval");
         skill_points_per_level = config.getInt("skill_points_per_level");

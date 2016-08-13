@@ -6,6 +6,17 @@
 # freezing_ball
 #
 
+# material : custom staff material (use upercase)
+# cooldown: time between each attack (in second)
+# gravity: is projectile affected by gravity
+# effect : effect above
+# display_color : color of the name when displaydd
+# durability : maximum number of use before it breaks
+# lores : a list of custom lores
+# speed : speed at wich projectile is lunched : player.getDirection().multiply(speed)
+# base_damage : initial damage when projectile hit living entity (player, mobs). Don't forget that the damage will then be multiplier by players damage_by_magic multiplier
+# effec_duration : the duration of the effect in second ( ex: fire_tick sets player on fire for a certain number of time)
+
 staff_teleport:
  enable: true
  material: STICK
@@ -43,7 +54,7 @@ staff_fire:
  cooldown: 10
  gravity: true
  speed: 2.5
- base_damage: 6
+ base_damage: 4
  efect_duration: 3
  effect: fire_tick
  durability: 60
@@ -60,7 +71,7 @@ staff_fire_plus:
  cooldown: 6
  gravity: true
  speed: 3
- base_damage: 8
+ base_damage: 6
  efect_duration: 6
  effect: fire_tick
  durability: 120
@@ -78,7 +89,7 @@ staff_fireball:
  cooldown: 20
  gravity: true
  speed: 1
- base_damage: 6
+ base_damage: 3
  effect: fire_ball
  durability: 60
  display_color: 1
@@ -93,7 +104,7 @@ staff_fireball_plus:
  material: BLAZE_ROD
  cooldown: 15
  gravity: true
- base_damage: 10
+ base_damage: 5
  speed: 1
  effect: fire_ball
  durability: 120
@@ -111,7 +122,7 @@ staff_freezing:
  cooldown: 15
  gravity: true
  speed: 1
- base_damage: 4
+ base_damage: 3
  effect_duration: 3
  effect: freezing_ball
  durability: 60
@@ -128,7 +139,7 @@ staff_freezing_plus:
  cooldown: 15
  gravity: true
  speed: 1
- base_damage: 6
+ base_damage: 5
  effect_duratoin: 6
  effect: freezing_ball
  durability: 120

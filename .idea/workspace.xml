@@ -1,33 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPlayer.java" description="for(Map.Entry&lt;String, Integer&gt; r : s.getRequiremen..." line="1319" />
+    <bookmark url="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPlayer.java" description="for(Map.Entry&lt;String, Integer&gt; r : s.getRequiremen..." line="1321" />
+    <bookmark url="file://$PROJECT_DIR$/Ressources/staffs.yml" line="6" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a78d8515-e588-4e56-ac33-4f32766633d5" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/LowbrainMCRPG.jar" afterPath="$PROJECT_DIR$/target/LowbrainMCRPG.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/ant.xml" afterPath="$PROJECT_DIR$/.idea/ant.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ressources/config.yml" afterPath="$PROJECT_DIR$/Ressources/config.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ressources/itemsrequirements.yml" afterPath="$PROJECT_DIR$/Ressources/itemsrequirements.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ressources/mobsxp.yml" afterPath="$PROJECT_DIR$/Ressources/mobsxp.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ressources/skills.yml" afterPath="$PROJECT_DIR$/Ressources/skills.yml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ressources/staffs.yml" afterPath="$PROJECT_DIR$/Ressources/staffs.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plugin.yml" afterPath="$PROJECT_DIR$/plugin.yml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/commun/Settings.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/commun/Settings.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/Classes.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/Classes.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/Config.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/Config.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/CustomItems.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/CustomItems.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/ItemsRequirements.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/ItemsRequirements.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/MobsXP.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/MobsXP.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/Powers.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/Powers.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/Races.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/Races.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/Skills.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/Skills.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/Staffs.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/Staffs.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/absConfig.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/absConfig.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/events/PlayerListener.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/events/PlayerListener.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/main/Main.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/main/Main.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/main/RPGCommand.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/main/RPGCommand.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGClass.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGClass.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPlayer.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPlayer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPower.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPower.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGRace.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGRace.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGSkill.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGSkill.java" />
     </list>
     <ignored path="LowbrainMCRPG.iws" />
@@ -49,459 +39,83 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="PlayerListener.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/events/PlayerListener.java">
+      <file leaf-file-name="ItemsRequirements.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/config/ItemsRequirements.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="487">
-              <caret line="1415" column="24" selection-start-line="1415" selection-start-column="24" selection-end-line="1415" selection-end-column="24" />
+            <state relative-caret-position="408">
+              <caret line="27" column="18" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
               <folding>
-                <element signature="docComment;method#onPlayerTeleport#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#onPlayerTeleport#0;class#PlayerListener#0" expanded="false" />
-                <element signature="docComment;method#onPlayerEquipArmor#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#onPlayerEquipArmor#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#onPlayerInteract#0;class#PlayerListener#0" expanded="false" />
-                <element signature="docComment;method#onPlayerDamaged#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#onPlayerDamaged#0;class#PlayerListener#0" expanded="false" />
-                <element signature="docComment;method#onPlayerExpChange#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#onPlayerExpChange#0;class#PlayerListener#0" expanded="false" />
-                <element signature="docComment;method#onEntityDeath#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#onPlayerItemHeld#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#onPlayerSwapHandItems#0;class#PlayerListener#0" expanded="false" />
-                <element signature="docComment;method#onPlayerAttack#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#onPlayerAttack#0;class#PlayerListener#0" expanded="false" />
-                <element signature="class#31220:31799" expanded="false" />
-                <element signature="method#run#0;class#31220:31799" expanded="false" />
-                <element signature="docComment;method#onPlayerConsumePotion#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#onPlayerConsumePotion#0;class#PlayerListener#0" expanded="false" />
-                <element signature="docComment;method#onPlayerShootBow#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#onPlayerShootBow#0;class#PlayerListener#0" expanded="false" />
-                <element signature="docComment;method#onPlayerJoin#0;class#PlayerListener#0" expanded="false" />
-                <element signature="docComment;method#CreateMagicAttack#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#CreateMagicAttack#0;class#PlayerListener#0" expanded="false" />
-                <element signature="docComment;method#RemoveBadPotionEffect#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#RemoveBadPotionEffect#0;class#PlayerListener#0" expanded="false" />
-                <element signature="docComment;method#ReducingBadPotionEffect#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#ReducingBadPotionEffect#0;class#PlayerListener#0" expanded="false" />
-                <element signature="docComment;method#SetServerDifficulty#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#SetServerDifficulty#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getDamagedByFire#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getDamagedByContact#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getDamagedByWeapon#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getDamagedByMagic#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getDamagedByFall#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getDamagedByExplosion#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getDamagedByProjectile#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getChangeOfRemovingPotionEffect#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getReducingPotionEffect#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getBowArrowSpeed#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getBowPrecision#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getAttackByWeapon#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getAttackByProjectile#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getAttackByPotion#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getConsumedPotionMultiplier#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getPlayerMaxHealth#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getPlayerMaxMana#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getPlayerManaRegen#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getPlayerAttackSpeed#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getPlayerMovementSpeed#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getPlayerKnockbackResistance#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#getPlayerLuck#0;class#PlayerListener#0" expanded="false" />
-                <marker date="1471048509716" expanded="false" signature="34791:34931" ph="{...}" />
-                <marker date="1471048509716" expanded="false" signature="34937:35008" ph="/**...*/" />
-                <marker date="1471048509716" expanded="false" signature="35074:35260" ph="{...}" />
+                <element signature="e#909#910#0" expanded="true" />
+                <element signature="e#940#941#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="config.yml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Ressources/config.yml">
+      <file leaf-file-name="RPGSkill.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGSkill.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="212">
-              <caret line="46" column="36" selection-start-line="46" selection-start-column="36" selection-end-line="46" selection-end-column="36" />
+            <state relative-caret-position="668">
+              <caret line="214" column="27" selection-start-line="214" selection-start-column="27" selection-end-line="214" selection-end-column="27" />
               <folding>
-                <element signature="e#1424#1426#0" expanded="false" />
-                <element signature="e#1476#1479#0" expanded="false" />
-                <element signature="e#1561#1564#0" expanded="false" />
-                <element signature="e#1662#1667#0" expanded="false" />
-                <element signature="e#1759#1764#0" expanded="false" />
-                <element signature="e#1859#1864#0" expanded="false" />
-                <element signature="e#1960#1966#0" expanded="false" />
-                <element signature="e#2105#2111#0" expanded="false" />
-                <element signature="e#2445#2449#0" expanded="false" />
-                <element signature="e#2486#2489#0" expanded="false" />
-                <element signature="e#2571#2575#0" expanded="false" />
-                <element signature="e#2802#2806#0" expanded="false" />
-                <element signature="e#2956#2960#0" expanded="false" />
-                <element signature="e#2990#2992#0" expanded="false" />
-                <element signature="e#3096#3099#0" expanded="false" />
-                <element signature="e#3207#3210#0" expanded="false" />
-                <element signature="e#3305#3480#0" expanded="false" />
-                <element signature="e#3339#3343#0" expanded="false" />
-                <element signature="e#3356#3358#0" expanded="false" />
-                <element signature="e#3391#3394#0" expanded="false" />
-                <element signature="e#3477#3480#0" expanded="false" />
-                <element signature="e#3631#5166#0" expanded="false" />
-                <element signature="e#3761#4018#0" expanded="false" />
-                <element signature="e#3960#3963#0" expanded="false" />
-                <element signature="e#3976#3979#0" expanded="false" />
-                <element signature="e#3997#4000#0" expanded="false" />
-                <element signature="e#4015#4018#0" expanded="false" />
-                <element signature="e#4021#4780#0" expanded="false" />
-                <element signature="e#4140#4144#0" expanded="false" />
-                <element signature="e#4166#4170#0" expanded="false" />
-                <element signature="e#4192#4196#0" expanded="false" />
-                <element signature="e#4226#4230#0" expanded="false" />
-                <element signature="e#4257#4261#0" expanded="false" />
-                <element signature="e#4289#4292#0" expanded="false" />
-                <element signature="e#4322#4325#0" expanded="false" />
-                <element signature="e#4353#4356#0" expanded="false" />
-                <element signature="e#4388#4391#0" expanded="false" />
-                <element signature="e#4421#4424#0" expanded="false" />
-                <element signature="e#4613#4616#0" expanded="false" />
-                <element signature="e#4654#4657#0" expanded="false" />
-                <element signature="e#4693#4696#0" expanded="false" />
-                <element signature="e#4736#4739#0" expanded="false" />
-                <element signature="e#4777#4780#0" expanded="false" />
-                <element signature="e#4783#4904#0" expanded="false" />
-                <element signature="e#4805#4809#0" expanded="false" />
-                <element signature="e#4836#4839#0" expanded="false" />
-                <element signature="e#4854#4857#0" expanded="false" />
-                <element signature="e#4870#4873#0" expanded="false" />
-                <element signature="e#4886#4890#0" expanded="false" />
-                <element signature="e#4901#4904#0" expanded="false" />
-                <element signature="e#4929#4933#0" expanded="false" />
-                <element signature="e#4983#4987#0" expanded="false" />
-                <element signature="e#5000#5003#0" expanded="false" />
-                <element signature="e#5016#5020#0" expanded="false" />
-                <element signature="e#5031#5034#0" expanded="false" />
-                <element signature="e#5037#5166#0" expanded="false" />
-                <element signature="e#5063#5067#0" expanded="false" />
-                <element signature="e#5094#5099#0" expanded="false" />
-                <element signature="e#5114#5119#0" expanded="false" />
-                <element signature="e#5132#5135#0" expanded="false" />
-                <element signature="e#5148#5152#0" expanded="false" />
-                <element signature="e#5163#5166#0" expanded="false" />
-                <element signature="e#5168#6272#0" expanded="false" />
-                <element signature="e#5193#5313#0" expanded="false" />
-                <element signature="e#5214#5218#0" expanded="false" />
-                <element signature="e#5244#5249#0" expanded="false" />
-                <element signature="e#5262#5265#0" expanded="false" />
-                <element signature="e#5283#5287#0" expanded="false" />
-                <element signature="e#5309#5313#0" expanded="false" />
-                <element signature="e#5316#5451#0" expanded="false" />
-                <element signature="e#5336#5340#0" expanded="false" />
-                <element signature="e#5366#5371#0" expanded="false" />
-                <element signature="e#5384#5387#0" expanded="false" />
-                <element signature="e#5400#5404#0" expanded="false" />
-                <element signature="e#5426#5429#0" expanded="false" />
-                <element signature="e#5447#5451#0" expanded="false" />
-                <element signature="e#5454#5566#0" expanded="false" />
-                <element signature="e#5479#5483#0" expanded="false" />
-                <element signature="e#5509#5515#0" expanded="false" />
-                <element signature="e#5528#5531#0" expanded="false" />
-                <element signature="e#5544#5548#0" expanded="false" />
-                <element signature="e#5562#5566#0" expanded="false" />
-                <element signature="e#5569#5672#0" expanded="false" />
-                <element signature="e#5589#5593#0" expanded="false" />
-                <element signature="e#5619#5622#0" expanded="false" />
-                <element signature="e#5635#5638#0" expanded="false" />
-                <element signature="e#5651#5655#0" expanded="false" />
-                <element signature="e#5668#5672#0" expanded="false" />
-                <element signature="e#5675#5766#0" expanded="false" />
-                <element signature="e#5698#5702#0" expanded="false" />
-                <element signature="e#5728#5734#0" expanded="false" />
-                <element signature="e#5747#5750#0" expanded="false" />
-                <element signature="e#5763#5766#0" expanded="false" />
-                <element signature="e#5769#5863#0" expanded="false" />
-                <element signature="e#5795#5799#0" expanded="false" />
-                <element signature="e#5825#5831#0" expanded="false" />
-                <element signature="e#5844#5847#0" expanded="false" />
-                <element signature="e#5860#5863#0" expanded="false" />
-                <element signature="e#5866#5956#0" expanded="false" />
-                <element signature="e#5888#5892#0" expanded="false" />
-                <element signature="e#5918#5924#0" expanded="false" />
-                <element signature="e#5937#5940#0" expanded="false" />
-                <element signature="e#5953#5956#0" expanded="false" />
-                <element signature="e#5959#6111#0" expanded="false" />
-                <element signature="e#5998#6002#0" expanded="false" />
-                <element signature="e#6028#6032#0" expanded="false" />
-                <element signature="e#6045#6048#0" expanded="false" />
-                <element signature="e#6059#6063#0" expanded="false" />
-                <element signature="e#6085#6089#0" expanded="false" />
-                <element signature="e#6107#6111#0" expanded="false" />
-                <element signature="e#6114#6272#0" expanded="false" />
-                <element signature="e#6158#6162#0" expanded="false" />
-                <element signature="e#6188#6191#0" expanded="false" />
-                <element signature="e#6204#6207#0" expanded="false" />
-                <element signature="e#6229#6233#0" expanded="false" />
-                <element signature="e#6251#6254#0" expanded="false" />
-                <element signature="e#6269#6272#0" expanded="false" />
-                <element signature="e#6274#6505#0" expanded="false" />
-                <element signature="e#6305#6309#0" expanded="false" />
-                <element signature="e#6393#6397#0" expanded="false" />
-                <element signature="e#6432#6435#0" expanded="false" />
-                <element signature="e#6448#6451#0" expanded="false" />
-                <element signature="e#6465#6470#0" expanded="false" />
-                <element signature="e#6485#6490#0" expanded="false" />
-                <element signature="e#6501#6505#0" expanded="false" />
-                <element signature="e#6507#6623#0" expanded="false" />
-                <element signature="e#6543#6547#0" expanded="false" />
-                <element signature="e#6569#6572#0" expanded="false" />
-                <element signature="e#6584#6587#0" expanded="false" />
-                <element signature="e#6599#6602#0" expanded="false" />
-                <element signature="e#6619#6623#0" expanded="false" />
-                <element signature="e#6651#6655#0" expanded="false" />
-                <element signature="e#6679#6681#0" expanded="false" />
-                <element signature="e#6833#6836#0" expanded="false" />
-                <element signature="e#6921#6925#0" expanded="false" />
-                <element signature="e#6937#6941#0" expanded="false" />
-                <element signature="e#6943#7697#0" expanded="false" />
-                <element signature="e#6964#7074#0" expanded="false" />
-                <element signature="e#6991#6995#0" expanded="false" />
-                <element signature="e#7021#7024#0" expanded="false" />
-                <element signature="e#7037#7040#0" expanded="false" />
-                <element signature="e#7053#7056#0" expanded="false" />
-                <element signature="e#7071#7074#0" expanded="false" />
-                <element signature="e#7077#7200#0" expanded="false" />
-                <element signature="e#7102#7106#0" expanded="false" />
-                <element signature="e#7160#7164#0" expanded="false" />
-                <element signature="e#7179#7183#0" expanded="false" />
-                <element signature="e#7197#7200#0" expanded="false" />
-                <element signature="e#7203#7264#0" expanded="false" />
-                <element signature="e#7226#7230#0" expanded="false" />
-                <element signature="e#7261#7264#0" expanded="false" />
-                <element signature="e#7267#7324#0" expanded="false" />
-                <element signature="e#7292#7296#0" expanded="false" />
-                <element signature="e#7321#7324#0" expanded="false" />
-                <element signature="e#7327#7420#0" expanded="false" />
-                <element signature="e#7350#7354#0" expanded="false" />
-                <element signature="e#7380#7383#0" expanded="false" />
-                <element signature="e#7396#7399#0" expanded="false" />
-                <element signature="e#7417#7420#0" expanded="false" />
-                <element signature="e#7423#7544#0" expanded="false" />
-                <element signature="e#7440#7444#0" expanded="false" />
-                <element signature="e#7470#7473#0" expanded="false" />
-                <element signature="e#7505#7509#0" expanded="false" />
-                <element signature="e#7524#7527#0" expanded="false" />
-                <element signature="e#7540#7544#0" expanded="false" />
-                <element signature="e#7547#7697#0" expanded="false" />
-                <element signature="e#7580#7584#0" expanded="false" />
-                <element signature="e#7610#7614#0" expanded="false" />
-                <element signature="e#7627#7630#0" expanded="false" />
-                <element signature="e#7644#7647#0" expanded="false" />
-                <element signature="e#7662#7665#0" expanded="false" />
-                <element signature="e#7678#7681#0" expanded="false" />
-                <element signature="e#7694#7697#0" expanded="false" />
-                <element signature="e#7791#8484#0" expanded="false" />
-                <element signature="e#7803#7810#0" expanded="false" />
-                <element signature="e#7814#7819#0" expanded="false" />
-                <element signature="e#7823#7829#0" expanded="false" />
-                <element signature="e#7833#7842#0" expanded="false" />
-                <element signature="e#7846#7853#0" expanded="false" />
-                <element signature="e#7857#7863#0" expanded="false" />
-                <element signature="e#7867#7876#0" expanded="false" />
-                <element signature="e#7880#7897#0" expanded="false" />
-                <element signature="e#7901#7912#0" expanded="false" />
-                <element signature="e#7916#7921#0" expanded="false" />
-                <element signature="e#7925#7934#0" expanded="false" />
-                <element signature="e#7938#7948#0" expanded="false" />
-                <element signature="e#7952#7969#0" expanded="false" />
-                <element signature="e#7973#7989#0" expanded="false" />
-                <element signature="e#7993#8010#0" expanded="false" />
-                <element signature="e#8014#8031#0" expanded="false" />
-                <element signature="e#8035#8054#0" expanded="false" />
-                <element signature="e#8058#8073#0" expanded="false" />
-                <element signature="e#8077#8088#0" expanded="false" />
-                <element signature="e#8092#8103#0" expanded="false" />
-                <element signature="e#8107#8117#0" expanded="false" />
-                <element signature="e#8121#8132#0" expanded="false" />
-                <element signature="e#8136#8147#0" expanded="false" />
-                <element signature="e#8151#8164#0" expanded="false" />
-                <element signature="e#8168#8179#0" expanded="false" />
-                <element signature="e#8183#8195#0" expanded="false" />
-                <element signature="e#8199#8208#0" expanded="false" />
-                <element signature="e#8212#8225#0" expanded="false" />
-                <element signature="e#8229#8244#0" expanded="false" />
-                <element signature="e#8248#8262#0" expanded="false" />
-                <element signature="e#8266#8289#0" expanded="false" />
-                <element signature="e#8293#8315#0" expanded="false" />
-                <element signature="e#8319#8324#0" expanded="false" />
-                <element signature="e#8328#8340#0" expanded="false" />
-                <element signature="e#8344#8355#0" expanded="false" />
-                <element signature="e#8359#8371#0" expanded="false" />
-                <element signature="e#8375#8389#0" expanded="false" />
-                <element signature="e#8393#8405#0" expanded="false" />
-                <element signature="e#8409#8421#0" expanded="false" />
-                <element signature="e#8425#8438#0" expanded="false" />
-                <element signature="e#8442#8450#0" expanded="false" />
-                <element signature="e#8454#8463#0" expanded="false" />
-                <element signature="e#8467#8476#0" expanded="false" />
-                <element signature="e#8480#8484#0" expanded="false" />
+                <element signature="docComment;class#RPGSkill#0" expanded="false" />
+                <element signature="method#getManaCost#0;class#RPGSkill#0" expanded="false" />
+                <element signature="method#canExecute#0;class#RPGSkill#0" expanded="false" />
+                <element signature="method#operation#1;class#RPGSkill#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RPGRace.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGRace.java">
+      <file leaf-file-name="skills.yml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Ressources/skills.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="875">
-              <caret line="59" column="29" selection-start-line="59" selection-start-column="29" selection-end-line="59" selection-end-column="29" />
+            <state relative-caret-position="573">
+              <caret line="180" column="16" selection-start-line="180" selection-start-column="16" selection-end-line="180" selection-end-column="16" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="docComment;class#RPGRace#0" expanded="false" />
-                <element signature="docComment;method#SetPowers#0;class#RPGRace#0" expanded="false" />
-                <element signature="method#toString#0;class#RPGRace#0" expanded="false" />
+                <element signature="e#822#826#0" expanded="false" />
+                <element signature="e#883#885#0" expanded="false" />
+                <element signature="e#4638#4640#0" expanded="false" />
+                <element signature="e#4675#4739#0" expanded="false" />
+                <element signature="e#4737#4739#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RPGPlayer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPlayer.java">
+      <file leaf-file-name="Helper.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/commun/Helper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="478">
-              <caret line="135" column="35" selection-start-line="135" selection-start-column="35" selection-end-line="135" selection-end-column="35" />
+            <state relative-caret-position="306">
+              <caret line="178" column="25" selection-start-line="178" selection-start-column="25" selection-end-line="178" selection-end-column="25" />
               <folding>
-                <element signature="docComment;method#RPGPlayer#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#RPGPlayer#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#initialiseScoreBoard#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#initialiseScoreBoard#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="e#2179#2257#0" expanded="false" />
-                <element signature="docComment;method#toggleScoreboard#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#toggleScoreboard#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#toggleScoreboard#1;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#toggleScoreboard#1;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#refreshScoreBoard#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#refreshScoreBoard#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#InitialisePlayer#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#InitialisePlayer#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="e#8619#8726#0" expanded="false" />
-                <element signature="docComment;method#compareAttributesByName#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#compareAttributesByName#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#canEquipItem#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#canEquipItem#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#canEquipItemString#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#canEquipItemString#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#meetRequirements#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#meetRequirementsString#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#getAttribute#1;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#castSpell#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#castSpell#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#SaveData#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#SaveData#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#Disconnect#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#Disconnect#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#levelUP#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#levelUP#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#reset#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#reset#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#resetAll#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#resetAll#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="e#17873#17979#0" expanded="false" />
-                <element signature="docComment;method#addExp#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#addExp#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#setExperience#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#setStrength#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#setStrength#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#addStrength#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#addStrength#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#setIntelligence#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#setIntelligence#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#addIntelligence#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#addIntelligence#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#setDexterity#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#setDexterity#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#addDexterity#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#addDexterity#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#setHealth#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#setHealth#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#addHealth#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#addHealth#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#setDefence#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#setDefence#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#addDefence#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#addDefence#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#setMagicResistance#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#setMagicResistance#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#addMagicResistance#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#addMagicResistance#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#setAgility#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#setAgility#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#addAgility#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#addAgility#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#setPoints#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#setPoints#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#addPoints#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#addPoints#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#setLvl#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#addLevel#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#addLevel#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#addKills#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#addDeaths#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#setCurrentMana#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#setRace#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#setRace#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#setClass#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#setClass#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#setCurrentSkill#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#setCurrentSkill#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#addSkillPoints#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#addSkillPoints#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#upgradeSkill#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#upgradeSkill#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="e#37050#37153#0" expanded="false" />
-                <element signature="docComment;method#toString#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#toString#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#getRpgClass#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#getPlayer#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#getNextLvl#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#getKnockBackResistance#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#getMovementSpeed#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="e#40712#40817#0" expanded="false" />
-                <element signature="method#setAttackSpeed#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#setKnockBackResistance#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#setMovementSpeed#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#setPlayerMaxHealth#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#setPlayerMaxHealth#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#setMana#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#setMana#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="e#42110#42198#0" expanded="false" />
-                <element signature="docComment;method#setDisplayName#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#setDisplayName#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#setLuck#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="e#42829#42934#0" expanded="false" />
-                <element signature="docComment;method#AttributeHasChanged#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#AttributeHasChanged#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#errorMessageNotEnoughPoints#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#errorMessageNotEnoughPoints#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#RegenMana#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#RegenMana#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#StartManaRegenTask#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#StartManaRegenTask#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="docComment;method#StopManaRegenTask#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#StopManaRegenTask#0;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#SendMessage#3;class#RPGPlayer#0" expanded="false" />
-                <element signature="method#AddBonusAttributes#0;class#RPGPlayer#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RPGPower.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPower.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="765">
-              <caret line="206" column="53" selection-start-line="206" selection-start-column="53" selection-end-line="206" selection-end-column="53" />
-              <folding>
-                <element signature="docComment;class#RPGPower#0" expanded="false" />
-                <element signature="method#RPGPower#0;class#RPGPower#0" expanded="false" />
-                <element signature="method#getCastDuration#0;class#RPGPower#0" expanded="false" />
-                <element signature="method#getCastAmplifier#0;class#RPGPower#0" expanded="false" />
-                <element signature="method#setPotionEffectType#0;class#RPGPower#0" expanded="false" />
-                <element signature="method#getCooldown#0;class#RPGPower#0" expanded="false" />
-                <element signature="method#Cast#0;class#RPGPower#0" expanded="false" />
+                <element signature="docComment;class#Helper#0" expanded="false" />
+                <element signature="method#eval#0;class#Helper#0" expanded="false" />
+                <element signature="class#324:3409" expanded="false" />
+                <element signature="method#eat#0;class#324:3409" expanded="false" />
+                <element signature="method#parse#0;class#324:3409" expanded="false" />
+                <element signature="e#982#993#0" expanded="false" />
+                <element signature="method#parseExpression#0;class#324:3409" expanded="false" />
+                <element signature="method#parseTerm#0;class#324:3409" expanded="false" />
+                <element signature="method#parseFactor#0;class#324:3409" expanded="false" />
+                <element signature="method#FormatStringWithValues#0;class#Helper#0" expanded="false" />
+                <element signature="docComment;method#StringIsNullOrEmpty#0;class#Helper#0" expanded="false" />
+                <element signature="docComment;method#randomFloat#0;class#Helper#0" expanded="false" />
+                <element signature="method#randomFloat#0;class#Helper#0" expanded="false" />
+                <element signature="docComment;method#randomInt#0;class#Helper#0" expanded="false" />
+                <element signature="method#randomInt#0;class#Helper#0" expanded="false" />
+                <element signature="docComment;method#intTryParse#0;class#Helper#0" expanded="false" />
+                <element signature="method#intTryParse#0;class#Helper#0" expanded="false" />
+                <element signature="docComment;method#dateTryParse#0;class#Helper#0" expanded="false" />
+                <element signature="method#dateTryParse#0;class#Helper#0" expanded="false" />
+                <element signature="docComment;method#rotateYAxis#0;class#Helper#0" expanded="false" />
+                <element signature="docComment;method#getXValue#0;class#Helper#0" expanded="false" />
+                <element signature="method#getXValue#0;class#Helper#0" expanded="false" />
+                <element signature="docComment;method#getMaxStats#0;class#Helper#0" expanded="false" />
+                <element signature="method#getMaxStats#0;class#Helper#0" expanded="false" />
+                <element signature="docComment;method#Slope#0;class#Helper#0" expanded="false" />
+                <element signature="method#Slope#0;class#Helper#0" expanded="false" />
+                <element signature="docComment;method#ValueFromFunction#0;class#Helper#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -537,12 +151,10 @@
         <option value="$PROJECT_DIR$/config.yml" />
         <option value="$PROJECT_DIR$/weaponsarmor.yml" />
         <option value="$PROJECT_DIR$/build.xml" />
-        <option value="$PROJECT_DIR$/Ressources/mobsxp.yml" />
         <option value="$PROJECT_DIR$/Ressources/classes.yml" />
         <option value="$PROJECT_DIR$/Ressources/races.yml" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/events/ArmorListener.java" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/events/ArmorType.java" />
-        <option value="$PROJECT_DIR$/Ressources/skills.yml" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/config/Singleton.java" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/config/ClasseConfig.java" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/config/CustomItemsConfig.java" />
@@ -550,14 +162,11 @@
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/config/PowersConfig.java" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/config/RacesConfig.java" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/config/mobsXp.java" />
-        <option value="$PROJECT_DIR$/Ressources/itemsrequirements.yml" />
         <option value="$PROJECT_DIR$/Ressources/customitems.yml" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/commun/Config.java" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/commun/MathSettings.java" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/commun/Helper.java" />
         <option value="$PROJECT_DIR$/Ressources/powers.yml" />
-        <option value="$PROJECT_DIR$/plugin.yml" />
-        <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGSkill.java" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/config/absConfig.java" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/config/Staffs.java" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/config/Skills.java" />
@@ -571,13 +180,18 @@
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/main/Main.java" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGRace.java" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGClass.java" />
-        <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/commun/Settings.java" />
+        <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPower.java" />
+        <option value="$PROJECT_DIR$/plugin.yml" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/main/RPGCommand.java" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPlayer.java" />
-        <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPower.java" />
-        <option value="$PROJECT_DIR$/Ressources/config.yml" />
         <option value="$PROJECT_DIR$/Ressources/staffs.yml" />
+        <option value="$PROJECT_DIR$/Ressources/mobsxp.yml" />
+        <option value="$PROJECT_DIR$/Ressources/config.yml" />
+        <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/commun/Settings.java" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/events/PlayerListener.java" />
+        <option value="$PROJECT_DIR$/Ressources/itemsrequirements.yml" />
+        <option value="$PROJECT_DIR$/Ressources/skills.yml" />
+        <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGSkill.java" />
       </list>
     </option>
   </component>
@@ -748,6 +362,10 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="mcrpg" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="config" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1085,7 +703,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1103,7 +721,7 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.171875" sideWeight="0.89534885" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.64270616" sideWeight="0.49791667" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1234375" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1234375" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17275575" sideWeight="0.10465116" order="4" side_tool="true" content_ui="tabs" />
@@ -1122,7 +740,7 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3319239" sideWeight="0.50416666" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.64270616" sideWeight="0.50208336" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1132,9 +750,9 @@
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.171875" sideWeight="0.89534885" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.64270616" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.64270616" sideWeight="0.49791667" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.122395836" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1234375" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17275575" sideWeight="0.10465116" order="4" side_tool="true" content_ui="tabs" />
@@ -1156,12 +774,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/lowbrain/mcrpg/events/PlayerListener.java</url>
-          <line>525</line>
+          <line>429</line>
           <properties />
           <option name="timeStamp" value="161" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="171" />
+      <option name="time" value="173" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1176,13 +794,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/net/minecraft/server/v1_10_R1/NBTTagCompound.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3502">
-          <caret line="281" column="22" selection-start-line="281" selection-start-column="22" selection-end-line="281" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/FireBallStaff.java" />
     <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/entity/Fireball.class">
       <provider selected="true" editor-type-id="text-editor">
@@ -1247,13 +858,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Ressources/mobsxp.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="35" column="24" selection-start-line="35" selection-start-column="24" selection-end-line="35" selection-end-column="24" />
         </state>
       </provider>
     </entry>
@@ -1960,14 +1564,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Ressources/skills.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1530">
-          <caret line="90" column="31" selection-start-line="90" selection-start-column="31" selection-end-line="90" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/events/ArmorType.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
@@ -2023,141 +1619,6 @@
         <state relative-caret-position="306">
           <caret line="148" column="16" selection-start-line="148" selection-start-column="16" selection-end-line="148" selection-end-column="16" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/plugin.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="36" column="39" selection-start-line="36" selection-start-column="39" selection-end-line="36" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Ressources/itemsrequirements.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="66" column="24" selection-start-line="66" selection-start-column="24" selection-end-line="66" selection-end-column="24" />
-          <folding>
-            <element signature="e#45#47#0" expanded="false" />
-            <element signature="e#84#86#0" expanded="false" />
-            <element signature="e#120#122#0" expanded="false" />
-            <element signature="e#157#159#0" expanded="false" />
-            <element signature="e#191#193#0" expanded="false" />
-            <element signature="e#205#207#0" expanded="false" />
-            <element signature="e#249#251#0" expanded="false" />
-            <element signature="e#290#292#0" expanded="false" />
-            <element signature="e#332#334#0" expanded="false" />
-            <element signature="e#361#363#0" expanded="false" />
-            <element signature="e#375#377#0" expanded="false" />
-            <element signature="e#414#416#0" expanded="false" />
-            <element signature="e#450#452#0" expanded="false" />
-            <element signature="e#487#489#0" expanded="false" />
-            <element signature="e#521#523#0" expanded="false" />
-            <element signature="e#535#537#0" expanded="false" />
-            <element signature="e#566#568#0" expanded="false" />
-            <element signature="e#580#582#0" expanded="false" />
-            <element signature="e#608#610#0" expanded="false" />
-            <element signature="e#622#624#0" expanded="false" />
-            <element signature="e#651#653#0" expanded="false" />
-            <element signature="e#665#667#0" expanded="false" />
-            <element signature="e#697#699#0" expanded="false" />
-            <element signature="e#711#713#0" expanded="false" />
-            <element signature="e#740#742#0" expanded="false" />
-            <element signature="e#754#756#0" expanded="false" />
-            <element signature="e#780#782#0" expanded="false" />
-            <element signature="e#794#796#0" expanded="false" />
-            <element signature="e#821#823#0" expanded="false" />
-            <element signature="e#835#837#0" expanded="false" />
-            <element signature="e#872#874#0" expanded="false" />
-            <element signature="e#886#888#0" expanded="false" />
-            <element signature="e#920#922#0" expanded="false" />
-            <element signature="e#934#936#0" expanded="false" />
-            <element signature="e#965#967#0" expanded="false" />
-            <element signature="e#979#981#0" expanded="false" />
-            <element signature="e#1011#1013#0" expanded="false" />
-            <element signature="e#1025#1027#0" expanded="false" />
-            <element signature="e#1057#1059#0" expanded="false" />
-            <element signature="e#1071#1073#0" expanded="false" />
-            <element signature="e#1100#1102#0" expanded="false" />
-            <element signature="e#1114#1116#0" expanded="false" />
-            <element signature="e#1140#1142#0" expanded="false" />
-            <element signature="e#1154#1156#0" expanded="false" />
-            <element signature="e#1181#1183#0" expanded="false" />
-            <element signature="e#1195#1197#0" expanded="false" />
-            <element signature="e#1232#1234#0" expanded="false" />
-            <element signature="e#1246#1248#0" expanded="false" />
-            <element signature="e#1280#1282#0" expanded="false" />
-            <element signature="e#1294#1296#0" expanded="false" />
-            <element signature="e#1325#1327#0" expanded="false" />
-            <element signature="e#1339#1341#0" expanded="false" />
-            <element signature="e#1371#1373#0" expanded="false" />
-            <element signature="e#1385#1387#0" expanded="false" />
-            <element signature="e#1413#1415#0" expanded="false" />
-            <element signature="e#1426#1428#0" expanded="false" />
-            <element signature="e#1444#1446#0" expanded="false" />
-            <element signature="e#1475#1477#0" expanded="false" />
-            <element signature="e#1488#1490#0" expanded="false" />
-            <element signature="e#1506#1508#0" expanded="false" />
-            <element signature="e#1532#1534#0" expanded="false" />
-            <element signature="e#1545#1547#0" expanded="false" />
-            <element signature="e#1563#1565#0" expanded="false" />
-            <element signature="e#1592#1594#0" expanded="false" />
-            <element signature="e#1605#1607#0" expanded="false" />
-            <element signature="e#1623#1625#0" expanded="false" />
-            <element signature="e#1656#1658#0" expanded="false" />
-            <element signature="e#1680#1682#0" expanded="false" />
-            <element signature="e#1694#1696#0" expanded="false" />
-            <element signature="e#1722#1724#0" expanded="false" />
-            <element signature="e#1737#1739#0" expanded="false" />
-            <element signature="e#1764#1766#0" expanded="false" />
-            <element signature="e#1778#1780#0" expanded="false" />
-            <element signature="e#1826#1828#0" expanded="false" />
-            <element signature="e#1850#1852#0" expanded="false" />
-            <element signature="e#1864#1866#0" expanded="false" />
-            <element signature="e#1898#1900#0" expanded="false" />
-            <element signature="e#1926#1928#0" expanded="false" />
-            <element signature="e#1940#1942#0" expanded="false" />
-            <element signature="e#1964#1966#0" expanded="false" />
-            <element signature="e#1978#1980#0" expanded="false" />
-            <element signature="e#2004#2006#0" expanded="false" />
-            <element signature="e#2018#2020#0" expanded="false" />
-            <element signature="e#2045#2048#0" expanded="false" />
-            <element signature="e#2060#2063#0" expanded="false" />
-            <element signature="e#2085#2088#0" expanded="false" />
-            <element signature="e#2100#2103#0" expanded="false" />
-            <element signature="e#2128#2131#0" expanded="false" />
-            <element signature="e#2143#2146#0" expanded="false" />
-            <element signature="e#2167#2169#0" expanded="false" />
-            <element signature="e#2181#2184#0" expanded="false" />
-            <element signature="e#2197#2200#0" expanded="false" />
-            <element signature="e#2223#2225#0" expanded="false" />
-            <element signature="e#2237#2240#0" expanded="false" />
-            <element signature="e#2263#2265#0" expanded="false" />
-            <element signature="e#2277#2279#0" expanded="false" />
-            <element signature="e#2290#2292#0" expanded="false" />
-            <element signature="e#2305#2308#0" expanded="false" />
-            <element signature="e#2322#2325#0" expanded="false" />
-            <element signature="e#2337#2340#0" expanded="false" />
-            <element signature="e#2351#2354#0" expanded="false" />
-            <element signature="e#2367#2370#0" expanded="false" />
-            <element signature="e#2390#2393#0" expanded="false" />
-            <element signature="e#2404#2407#0" expanded="false" />
-            <element signature="e#2423#2426#0" expanded="false" />
-            <element signature="e#2468#2470#0" expanded="false" />
-            <element signature="e#2493#2495#0" expanded="false" />
-            <element signature="e#2507#2509#0" expanded="false" />
-            <element signature="e#2522#2524#0" expanded="false" />
-            <element signature="e#2552#2554#0" expanded="false" />
-            <element signature="e#2566#2568#0" expanded="false" />
-            <element signature="e#2581#2583#0" expanded="false" />
-            <element signature="e#2614#2616#0" expanded="false" />
-            <element signature="e#2628#2630#0" expanded="false" />
-            <element signature="e#2643#2645#0" expanded="false" />
-            <element signature="e#2681#2683#0" expanded="false" />
-            <element signature="e#2695#2697#0" expanded="false" />
-            <element signature="e#2710#2712#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2479,232 +1940,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/main/RPGCommand.java">
+    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPower.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="241" column="36" selection-start-line="241" selection-start-column="36" selection-end-line="241" selection-end-column="36" />
+        <state relative-caret-position="765">
+          <caret line="206" column="53" selection-start-line="206" selection-start-column="53" selection-end-line="206" selection-end-column="53" />
           <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/commun/Helper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="217" column="24" selection-start-line="217" selection-start-column="24" selection-end-line="217" selection-end-column="24" />
-          <folding>
-            <element signature="docComment;class#Helper#0" expanded="false" />
-            <element signature="method#eval#0;class#Helper#0" expanded="false" />
-            <element signature="class#324:3409" expanded="false" />
-            <element signature="method#eat#0;class#324:3409" expanded="false" />
-            <element signature="method#parse#0;class#324:3409" expanded="false" />
-            <element signature="e#982#993#0" expanded="false" />
-            <element signature="method#parseExpression#0;class#324:3409" expanded="false" />
-            <element signature="method#parseTerm#0;class#324:3409" expanded="false" />
-            <element signature="method#parseFactor#0;class#324:3409" expanded="false" />
-            <element signature="method#FormatStringWithValues#0;class#Helper#0" expanded="false" />
-            <element signature="docComment;method#StringIsNullOrEmpty#0;class#Helper#0" expanded="false" />
-            <element signature="docComment;method#randomFloat#0;class#Helper#0" expanded="false" />
-            <element signature="method#randomFloat#0;class#Helper#0" expanded="false" />
-            <element signature="docComment;method#randomInt#0;class#Helper#0" expanded="false" />
-            <element signature="method#randomInt#0;class#Helper#0" expanded="false" />
-            <element signature="docComment;method#intTryParse#0;class#Helper#0" expanded="false" />
-            <element signature="method#intTryParse#0;class#Helper#0" expanded="false" />
-            <element signature="docComment;method#dateTryParse#0;class#Helper#0" expanded="false" />
-            <element signature="method#dateTryParse#0;class#Helper#0" expanded="false" />
-            <element signature="docComment;method#rotateYAxis#0;class#Helper#0" expanded="false" />
-            <element signature="method#rotateYAxis#0;class#Helper#0" expanded="false" />
-            <element signature="docComment;method#getXValue#0;class#Helper#0" expanded="false" />
-            <element signature="method#getXValue#0;class#Helper#0" expanded="false" />
-            <element signature="docComment;method#getMaxStats#0;class#Helper#0" expanded="false" />
-            <element signature="method#getMaxStats#0;class#Helper#0" expanded="false" />
-            <element signature="docComment;method#Slope#0;class#Helper#0" expanded="false" />
-            <element signature="method#Slope#0;class#Helper#0" expanded="false" />
-            <element signature="docComment;method#ValueFromFunction#0;class#Helper#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/config/ItemsRequirements.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
-          <folding>
-            <element signature="e#909#910#0" expanded="true" />
-            <element signature="e#940#941#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/commun/Settings.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="40" column="46" selection-start-line="40" selection-start-column="46" selection-end-line="40" selection-end-column="46" />
-          <folding>
-            <element signature="docComment;class#Settings#0" expanded="false" />
-            <element signature="method#Settings#0;class#Settings#0" expanded="false" />
-            <element signature="method#getInstance#0;class#Settings#0" expanded="false" />
-            <element signature="class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#MathSettings#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#onPlayerAttackEntity#0;class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#chanceOfCreatingMagicAttack#0;class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#chanceOfCreatingMagicAttack#0;class#chanceOfCreatingMagicAttack#0;class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#creatingMagicAttack#0;class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#creatingMagicAttack#0;class#creatingMagicAttack#0;class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#attackEntityBy#0;class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#attackEntityBy#0;class#attackEntityBy#0;class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#onPlayerConsumePotion#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#onPlayerConsumePotion#0;class#onPlayerConsumePotion#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#onPlayerGetDamaged#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#onPlayerGetDamaged#0;class#onPlayerGetDamaged#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#chanceOfRemovingMagicEffect#0;class#onPlayerGetDamaged#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#chanceOfRemovingMagicEffect#0;class#chanceOfRemovingMagicEffect#0;class#onPlayerGetDamaged#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#reducingBadPotionEffect#0;class#onPlayerGetDamaged#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#reducingBadPotionEffect#0;class#reducingBadPotionEffect#0;class#onPlayerGetDamaged#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#playerAttributes#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#playerAttributes#0;class#playerAttributes#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#onPlayerShootBow#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#onPlayerShootBow#0;class#onPlayerShootBow#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#onPlayerDies#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#onPlayerDies#0;class#onPlayerDies#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Ressources/staffs.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="126" column="20" selection-start-line="126" selection-start-column="20" selection-end-line="126" selection-end-column="20" />
-          <folding>
-            <element signature="e#66#288#0" expanded="false" />
-            <element signature="e#91#95#0" expanded="false" />
-            <element signature="e#107#112#0" expanded="false" />
-            <element signature="e#124#126#0" expanded="false" />
-            <element signature="e#137#141#0" expanded="false" />
-            <element signature="e#161#169#0" expanded="false" />
-            <element signature="e#183#185#0" expanded="false" />
-            <element signature="e#213#288#0" expanded="false" />
-            <element signature="e#230#241#0" expanded="false" />
-            <element signature="e#244#288#0" expanded="false" />
-            <element signature="e#262#275#0" expanded="false" />
-            <element signature="e#281#288#0" expanded="false" />
-            <element signature="e#289#525#0" expanded="false" />
-            <element signature="e#319#323#0" expanded="false" />
-            <element signature="e#335#344#0" expanded="false" />
-            <element signature="e#356#358#0" expanded="false" />
-            <element signature="e#369#373#0" expanded="false" />
-            <element signature="e#393#401#0" expanded="false" />
-            <element signature="e#415#418#0" expanded="false" />
-            <element signature="e#446#525#0" expanded="false" />
-            <element signature="e#463#474#0" expanded="false" />
-            <element signature="e#477#525#0" expanded="false" />
-            <element signature="e#495#508#0" expanded="false" />
-            <element signature="e#514#525#0" expanded="false" />
-            <element signature="e#527#784#0" expanded="false" />
-            <element signature="e#548#552#0" expanded="false" />
-            <element signature="e#564#569#0" expanded="false" />
-            <element signature="e#581#583#0" expanded="false" />
-            <element signature="e#594#598#0" expanded="false" />
-            <element signature="e#607#610#0" expanded="false" />
-            <element signature="e#655#664#0" expanded="false" />
-            <element signature="e#678#680#0" expanded="false" />
-            <element signature="e#708#784#0" expanded="false" />
-            <element signature="e#725#736#0" expanded="false" />
-            <element signature="e#739#784#0" expanded="false" />
-            <element signature="e#757#771#0" expanded="false" />
-            <element signature="e#777#784#0" expanded="false" />
-            <element signature="e#785#1053#0" expanded="false" />
-            <element signature="e#811#815#0" expanded="false" />
-            <element signature="e#827#836#0" expanded="false" />
-            <element signature="e#860#864#0" expanded="false" />
-            <element signature="e#919#928#0" expanded="false" />
-            <element signature="e#942#945#0" expanded="false" />
-            <element signature="e#973#1053#0" expanded="false" />
-            <element signature="e#990#1001#0" expanded="false" />
-            <element signature="e#1004#1053#0" expanded="false" />
-            <element signature="e#1022#1036#0" expanded="false" />
-            <element signature="e#1042#1053#0" expanded="false" />
-            <element signature="e#1055#1294#0" expanded="false" />
-            <element signature="e#1080#1084#0" expanded="false" />
-            <element signature="e#1096#1101#0" expanded="false" />
-            <element signature="e#1113#1115#0" expanded="false" />
-            <element signature="e#1126#1130#0" expanded="false" />
-            <element signature="e#1166#1175#0" expanded="false" />
-            <element signature="e#1189#1191#0" expanded="false" />
-            <element signature="e#1219#1294#0" expanded="false" />
-            <element signature="e#1236#1247#0" expanded="false" />
-            <element signature="e#1250#1294#0" expanded="false" />
-            <element signature="e#1268#1281#0" expanded="false" />
-            <element signature="e#1287#1294#0" expanded="false" />
-            <element signature="e#1325#1329#0" expanded="false" />
-            <element signature="e#1362#1364#0" expanded="false" />
-            <element signature="e#1375#1379#0" expanded="false" />
-            <element signature="e#1394#1396#0" expanded="false" />
-            <element signature="e#1416#1425#0" expanded="false" />
-            <element signature="e#1439#1442#0" expanded="false" />
-            <element signature="e#1470#1549#0" expanded="false" />
-            <element signature="e#1487#1498#0" expanded="false" />
-            <element signature="e#1501#1549#0" expanded="false" />
-            <element signature="e#1519#1532#0" expanded="false" />
-            <element signature="e#1538#1549#0" expanded="false" />
-            <element signature="e#1551#1814#0" expanded="false" />
-            <element signature="e#1576#1580#0" expanded="false" />
-            <element signature="e#1592#1597#0" expanded="false" />
-            <element signature="e#1609#1611#0" expanded="false" />
-            <element signature="e#1622#1626#0" expanded="false" />
-            <element signature="e#1682#1695#0" expanded="false" />
-            <element signature="e#1709#1711#0" expanded="false" />
-            <element signature="e#1739#1814#0" expanded="false" />
-            <element signature="e#1756#1767#0" expanded="false" />
-            <element signature="e#1770#1814#0" expanded="false" />
-            <element signature="e#1788#1801#0" expanded="false" />
-            <element signature="e#1807#1814#0" expanded="false" />
-            <element signature="e#1845#1849#0" expanded="false" />
-            <element signature="e#1882#1884#0" expanded="false" />
-            <element signature="e#1895#1899#0" expanded="false" />
-            <element signature="e#1955#1968#0" expanded="false" />
-            <element signature="e#1982#1985#0" expanded="false" />
-            <element signature="e#2013#2092#0" expanded="false" />
-            <element signature="e#2030#2041#0" expanded="false" />
-            <element signature="e#2044#2092#0" expanded="false" />
-            <element signature="e#2062#2075#0" expanded="false" />
-            <element signature="e#2081#2092#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/config/Skills.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
-          <folding>
-            <element signature="e#876#877#0" expanded="true" />
-            <element signature="e#907#908#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGSkill.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-434">
-          <caret line="33" column="41" selection-start-line="33" selection-start-column="41" selection-end-line="33" selection-end-column="41" />
-          <folding>
-            <element signature="docComment;class#RPGSkill#0" expanded="false" />
-            <element signature="method#RPGSkill#0;class#RPGSkill#0" expanded="false" />
-            <element signature="method#RPGSkill#1;class#RPGSkill#0" expanded="false" />
-            <element signature="method#initialize#0;class#RPGSkill#0" expanded="false" />
-            <element signature="method#getManaCost#0;class#RPGSkill#0" expanded="false" />
-            <element signature="method#getSkillpointsCost#0;class#RPGSkill#0" expanded="false" />
-            <element signature="method#getRequirement#0;class#RPGSkill#0" expanded="false" />
-            <element signature="method#executeBowSkill#0;class#RPGSkill#0" expanded="false" />
-            <element signature="class#5427:6221" expanded="false" />
-            <element signature="method#run#0;class#5427:6221" expanded="false" />
-            <element signature="method#executeWeaponAttackSkill#0;class#RPGSkill#0" expanded="false" />
-            <element signature="method#canExecute#0;class#RPGSkill#0" expanded="false" />
-            <element signature="method#operation#0;class#RPGSkill#0" expanded="false" />
-            <element signature="method#operation#1;class#RPGSkill#0" expanded="false" />
+            <element signature="docComment;class#RPGPower#0" expanded="false" />
+            <element signature="method#RPGPower#0;class#RPGPower#0" expanded="false" />
+            <element signature="method#getCastDuration#0;class#RPGPower#0" expanded="false" />
+            <element signature="method#getCastAmplifier#0;class#RPGPower#0" expanded="false" />
+            <element signature="method#setPotionEffectType#0;class#RPGPower#0" expanded="false" />
+            <element signature="method#getCooldown#0;class#RPGPower#0" expanded="false" />
+            <element signature="method#Cast#0;class#RPGPower#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2722,10 +1969,188 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/entity/Entity.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="49" column="9" selection-start-line="49" selection-start-column="9" selection-end-line="49" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ressources/staffs.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="50" selection-start-line="12" selection-start-column="50" selection-end-line="12" selection-end-column="50" />
+          <folding>
+            <element signature="e#753#975#0" expanded="false" />
+            <element signature="e#778#782#0" expanded="false" />
+            <element signature="e#811#813#0" expanded="false" />
+            <element signature="e#824#828#0" expanded="false" />
+            <element signature="e#848#856#0" expanded="false" />
+            <element signature="e#870#872#0" expanded="false" />
+            <element signature="e#917#928#0" expanded="false" />
+            <element signature="e#949#962#0" expanded="false" />
+            <element signature="e#968#975#0" expanded="false" />
+            <element signature="e#976#1212#0" expanded="false" />
+            <element signature="e#1006#1010#0" expanded="false" />
+            <element signature="e#1022#1031#0" expanded="false" />
+            <element signature="e#1043#1045#0" expanded="false" />
+            <element signature="e#1056#1060#0" expanded="false" />
+            <element signature="e#1080#1088#0" expanded="false" />
+            <element signature="e#1102#1105#0" expanded="false" />
+            <element signature="e#1133#1212#0" expanded="false" />
+            <element signature="e#1150#1161#0" expanded="false" />
+            <element signature="e#1164#1212#0" expanded="false" />
+            <element signature="e#1182#1195#0" expanded="false" />
+            <element signature="e#1201#1212#0" expanded="false" />
+            <element signature="e#1235#1239#0" expanded="false" />
+            <element signature="e#1268#1270#0" expanded="false" />
+            <element signature="e#1281#1285#0" expanded="false" />
+            <element signature="e#1294#1297#0" expanded="false" />
+            <element signature="e#1342#1351#0" expanded="false" />
+            <element signature="e#1365#1367#0" expanded="false" />
+            <element signature="e#1395#1471#0" expanded="false" />
+            <element signature="e#1412#1423#0" expanded="false" />
+            <element signature="e#1426#1471#0" expanded="false" />
+            <element signature="e#1444#1458#0" expanded="false" />
+            <element signature="e#1464#1471#0" expanded="false" />
+            <element signature="e#1472#1740#0" expanded="false" />
+            <element signature="e#1498#1502#0" expanded="false" />
+            <element signature="e#1514#1523#0" expanded="false" />
+            <element signature="e#1547#1551#0" expanded="false" />
+            <element signature="e#1606#1615#0" expanded="false" />
+            <element signature="e#1629#1632#0" expanded="false" />
+            <element signature="e#1660#1740#0" expanded="false" />
+            <element signature="e#1677#1688#0" expanded="false" />
+            <element signature="e#1691#1740#0" expanded="false" />
+            <element signature="e#1709#1723#0" expanded="false" />
+            <element signature="e#1729#1740#0" expanded="false" />
+            <element signature="e#1742#1981#0" expanded="false" />
+            <element signature="e#1767#1771#0" expanded="false" />
+            <element signature="e#1783#1788#0" expanded="false" />
+            <element signature="e#1800#1802#0" expanded="false" />
+            <element signature="e#1813#1817#0" expanded="false" />
+            <element signature="e#1853#1862#0" expanded="false" />
+            <element signature="e#1876#1878#0" expanded="false" />
+            <element signature="e#1906#1981#0" expanded="false" />
+            <element signature="e#1923#1934#0" expanded="false" />
+            <element signature="e#1937#1981#0" expanded="false" />
+            <element signature="e#1955#1968#0" expanded="false" />
+            <element signature="e#1974#1981#0" expanded="false" />
+            <element signature="e#1982#2235#0" expanded="false" />
+            <element signature="e#2012#2016#0" expanded="false" />
+            <element signature="e#2049#2051#0" expanded="false" />
+            <element signature="e#2062#2066#0" expanded="false" />
+            <element signature="e#2102#2111#0" expanded="false" />
+            <element signature="e#2125#2128#0" expanded="false" />
+            <element signature="e#2156#2235#0" expanded="false" />
+            <element signature="e#2173#2184#0" expanded="false" />
+            <element signature="e#2187#2235#0" expanded="false" />
+            <element signature="e#2205#2218#0" expanded="false" />
+            <element signature="e#2224#2235#0" expanded="false" />
+            <element signature="e#2237#2500#0" expanded="false" />
+            <element signature="e#2262#2266#0" expanded="false" />
+            <element signature="e#2278#2283#0" expanded="false" />
+            <element signature="e#2295#2297#0" expanded="false" />
+            <element signature="e#2308#2312#0" expanded="false" />
+            <element signature="e#2368#2381#0" expanded="false" />
+            <element signature="e#2395#2397#0" expanded="false" />
+            <element signature="e#2425#2500#0" expanded="false" />
+            <element signature="e#2442#2453#0" expanded="false" />
+            <element signature="e#2456#2500#0" expanded="false" />
+            <element signature="e#2474#2487#0" expanded="false" />
+            <element signature="e#2493#2500#0" expanded="false" />
+            <element signature="e#2501#2778#0" expanded="false" />
+            <element signature="e#2531#2535#0" expanded="false" />
+            <element signature="e#2568#2570#0" expanded="false" />
+            <element signature="e#2581#2585#0" expanded="false" />
+            <element signature="e#2641#2654#0" expanded="false" />
+            <element signature="e#2668#2671#0" expanded="false" />
+            <element signature="e#2699#2778#0" expanded="false" />
+            <element signature="e#2716#2727#0" expanded="false" />
+            <element signature="e#2730#2778#0" expanded="false" />
+            <element signature="e#2748#2761#0" expanded="false" />
+            <element signature="e#2767#2778#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plugin.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="535">
+          <caret line="38" column="65" selection-start-line="38" selection-start-column="65" selection-end-line="38" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/events/PlayerListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1143">
+          <caret line="406" column="107" selection-start-line="406" selection-start-column="107" selection-end-line="406" selection-end-column="107" />
+          <folding>
+            <element signature="docComment;method#onPlayerTeleport#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#onPlayerTeleport#0;class#PlayerListener#0" expanded="false" />
+            <element signature="docComment;method#onPlayerEquipArmor#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#onPlayerEquipArmor#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#onPlayerInteract#0;class#PlayerListener#0" expanded="false" />
+            <element signature="docComment;method#onPlayerDamaged#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#onPlayerDamaged#0;class#PlayerListener#0" expanded="false" />
+            <element signature="docComment;method#onPlayerExpChange#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#onPlayerExpChange#0;class#PlayerListener#0" expanded="false" />
+            <element signature="docComment;method#onEntityDeath#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#onPlayerItemHeld#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#onPlayerSwapHandItems#0;class#PlayerListener#0" expanded="false" />
+            <element signature="docComment;method#onPlayerAttack#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#onPlayerAttack#0;class#PlayerListener#0" expanded="false" />
+            <element signature="class#28955:29534" expanded="false" />
+            <element signature="method#run#0;class#28955:29534" expanded="false" />
+            <element signature="docComment;method#onPlayerConsumePotion#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#onPlayerConsumePotion#0;class#PlayerListener#0" expanded="false" />
+            <element signature="docComment;method#onPlayerShootBow#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#onPlayerShootBow#0;class#PlayerListener#0" expanded="false" />
+            <element signature="docComment;method#onPlayerJoin#0;class#PlayerListener#0" expanded="false" />
+            <element signature="docComment;method#CreateMagicAttack#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#CreateMagicAttack#0;class#PlayerListener#0" expanded="false" />
+            <element signature="docComment;method#RemoveBadPotionEffect#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#RemoveBadPotionEffect#0;class#PlayerListener#0" expanded="false" />
+            <element signature="docComment;method#ReducingBadPotionEffect#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#ReducingBadPotionEffect#0;class#PlayerListener#0" expanded="false" />
+            <element signature="docComment;method#SetServerDifficulty#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#SetServerDifficulty#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getDamagedByFire#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getDamagedByContact#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getDamagedByWeapon#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getDamagedByMagic#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getDamagedByFall#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getDamagedByExplosion#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getDamagedByProjectile#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getChangeOfRemovingPotionEffect#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getReducingPotionEffect#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getBowArrowSpeed#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getBowPrecision#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getAttackByWeapon#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getAttackByProjectile#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getAttackByPotion#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getConsumedPotionMultiplier#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getPlayerMaxHealth#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getPlayerMaxMana#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getPlayerManaRegen#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getPlayerAttackSpeed#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getPlayerMovementSpeed#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getPlayerKnockbackResistance#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getPlayerLuck#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getPlayerDropPercentage#0;class#PlayerListener#0" expanded="false" />
+            <marker date="1471099403153" expanded="false" signature="32526:32666" ph="{...}" />
+            <marker date="1471099403153" expanded="false" signature="32672:32743" ph="/**...*/" />
+            <marker date="1471099403153" expanded="false" signature="32809:32995" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPlayer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="478">
-          <caret line="135" column="35" selection-start-line="135" selection-start-column="35" selection-end-line="135" selection-end-column="35" />
+        <state relative-caret-position="1166">
+          <caret line="328" column="26" selection-start-line="328" selection-start-column="26" selection-end-line="328" selection-end-column="26" />
           <folding>
             <element signature="docComment;method#RPGPlayer#0;class#RPGPlayer#0" expanded="false" />
             <element signature="method#RPGPlayer#0;class#RPGPlayer#0" expanded="false" />
@@ -2742,11 +2167,8 @@
             <element signature="method#InitialisePlayer#0;class#RPGPlayer#0" expanded="false" />
             <element signature="e#8619#8726#0" expanded="false" />
             <element signature="docComment;method#compareAttributesByName#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#compareAttributesByName#0;class#RPGPlayer#0" expanded="false" />
             <element signature="docComment;method#canEquipItem#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#canEquipItem#0;class#RPGPlayer#0" expanded="false" />
             <element signature="docComment;method#canEquipItemString#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#canEquipItemString#0;class#RPGPlayer#0" expanded="false" />
             <element signature="method#meetRequirements#0;class#RPGPlayer#0" expanded="false" />
             <element signature="method#meetRequirementsString#0;class#RPGPlayer#0" expanded="false" />
             <element signature="method#getAttribute#1;class#RPGPlayer#0" expanded="false" />
@@ -2762,7 +2184,7 @@
             <element signature="method#reset#0;class#RPGPlayer#0" expanded="false" />
             <element signature="docComment;method#resetAll#0;class#RPGPlayer#0" expanded="false" />
             <element signature="method#resetAll#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="e#17873#17979#0" expanded="false" />
+            <element signature="e#17936#18042#0" expanded="false" />
             <element signature="docComment;method#addExp#0;class#RPGPlayer#0" expanded="false" />
             <element signature="method#addExp#0;class#RPGPlayer#0" expanded="false" />
             <element signature="docComment;method#setExperience#0;class#RPGPlayer#0" expanded="false" />
@@ -2814,7 +2236,7 @@
             <element signature="method#addSkillPoints#0;class#RPGPlayer#0" expanded="false" />
             <element signature="docComment;method#upgradeSkill#0;class#RPGPlayer#0" expanded="false" />
             <element signature="method#upgradeSkill#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="e#37050#37153#0" expanded="false" />
+            <element signature="e#37113#37216#0" expanded="false" />
             <element signature="docComment;method#toString#0;class#RPGPlayer#0" expanded="false" />
             <element signature="method#toString#0;class#RPGPlayer#0" expanded="false" />
             <element signature="method#getRpgClass#0;class#RPGPlayer#0" expanded="false" />
@@ -2822,7 +2244,7 @@
             <element signature="docComment;method#getNextLvl#0;class#RPGPlayer#0" expanded="false" />
             <element signature="method#getKnockBackResistance#0;class#RPGPlayer#0" expanded="false" />
             <element signature="method#getMovementSpeed#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="e#40712#40817#0" expanded="false" />
+            <element signature="e#40775#40880#0" expanded="false" />
             <element signature="method#setAttackSpeed#0;class#RPGPlayer#0" expanded="false" />
             <element signature="method#setKnockBackResistance#0;class#RPGPlayer#0" expanded="false" />
             <element signature="method#setMovementSpeed#0;class#RPGPlayer#0" expanded="false" />
@@ -2830,11 +2252,11 @@
             <element signature="method#setPlayerMaxHealth#0;class#RPGPlayer#0" expanded="false" />
             <element signature="docComment;method#setMana#0;class#RPGPlayer#0" expanded="false" />
             <element signature="method#setMana#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="e#42110#42198#0" expanded="false" />
+            <element signature="e#42173#42261#0" expanded="false" />
             <element signature="docComment;method#setDisplayName#0;class#RPGPlayer#0" expanded="false" />
             <element signature="method#setDisplayName#0;class#RPGPlayer#0" expanded="false" />
             <element signature="method#setLuck#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="e#42829#42934#0" expanded="false" />
+            <element signature="e#42892#42997#0" expanded="false" />
             <element signature="docComment;method#AttributeHasChanged#0;class#RPGPlayer#0" expanded="false" />
             <element signature="method#AttributeHasChanged#0;class#RPGPlayer#0" expanded="false" />
             <element signature="docComment;method#errorMessageNotEnoughPoints#0;class#RPGPlayer#0" expanded="false" />
@@ -2851,89 +2273,63 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPower.java">
+    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/main/RPGCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="206" column="53" selection-start-line="206" selection-start-column="53" selection-end-line="206" selection-end-column="53" />
+        <state relative-caret-position="340">
+          <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
           <folding>
-            <element signature="docComment;class#RPGPower#0" expanded="false" />
-            <element signature="method#RPGPower#0;class#RPGPower#0" expanded="false" />
-            <element signature="method#getCastDuration#0;class#RPGPower#0" expanded="false" />
-            <element signature="method#getCastAmplifier#0;class#RPGPower#0" expanded="false" />
-            <element signature="method#setPotionEffectType#0;class#RPGPower#0" expanded="false" />
-            <element signature="method#getCooldown#0;class#RPGPower#0" expanded="false" />
-            <element signature="method#Cast#0;class#RPGPower#0" expanded="false" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/events/PlayerListener.java">
+    <entry file="file://$PROJECT_DIR$/Ressources/mobsxp.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="487">
-          <caret line="1415" column="24" selection-start-line="1415" selection-start-column="24" selection-end-line="1415" selection-end-column="24" />
+        <state relative-caret-position="136">
+          <caret line="8" column="26" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/commun/Settings.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="62" column="70" selection-start-line="62" selection-start-column="70" selection-end-line="62" selection-end-column="70" />
           <folding>
-            <element signature="docComment;method#onPlayerTeleport#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#onPlayerTeleport#0;class#PlayerListener#0" expanded="false" />
-            <element signature="docComment;method#onPlayerEquipArmor#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#onPlayerEquipArmor#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#onPlayerInteract#0;class#PlayerListener#0" expanded="false" />
-            <element signature="docComment;method#onPlayerDamaged#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#onPlayerDamaged#0;class#PlayerListener#0" expanded="false" />
-            <element signature="docComment;method#onPlayerExpChange#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#onPlayerExpChange#0;class#PlayerListener#0" expanded="false" />
-            <element signature="docComment;method#onEntityDeath#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#onPlayerItemHeld#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#onPlayerSwapHandItems#0;class#PlayerListener#0" expanded="false" />
-            <element signature="docComment;method#onPlayerAttack#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#onPlayerAttack#0;class#PlayerListener#0" expanded="false" />
-            <element signature="class#31220:31799" expanded="false" />
-            <element signature="method#run#0;class#31220:31799" expanded="false" />
-            <element signature="docComment;method#onPlayerConsumePotion#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#onPlayerConsumePotion#0;class#PlayerListener#0" expanded="false" />
-            <element signature="docComment;method#onPlayerShootBow#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#onPlayerShootBow#0;class#PlayerListener#0" expanded="false" />
-            <element signature="docComment;method#onPlayerJoin#0;class#PlayerListener#0" expanded="false" />
-            <element signature="docComment;method#CreateMagicAttack#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#CreateMagicAttack#0;class#PlayerListener#0" expanded="false" />
-            <element signature="docComment;method#RemoveBadPotionEffect#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#RemoveBadPotionEffect#0;class#PlayerListener#0" expanded="false" />
-            <element signature="docComment;method#ReducingBadPotionEffect#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#ReducingBadPotionEffect#0;class#PlayerListener#0" expanded="false" />
-            <element signature="docComment;method#SetServerDifficulty#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#SetServerDifficulty#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getDamagedByFire#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getDamagedByContact#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getDamagedByWeapon#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getDamagedByMagic#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getDamagedByFall#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getDamagedByExplosion#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getDamagedByProjectile#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getChangeOfRemovingPotionEffect#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getReducingPotionEffect#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getBowArrowSpeed#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getBowPrecision#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getAttackByWeapon#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getAttackByProjectile#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getAttackByPotion#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getConsumedPotionMultiplier#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getPlayerMaxHealth#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getPlayerMaxMana#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getPlayerManaRegen#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getPlayerAttackSpeed#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getPlayerMovementSpeed#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getPlayerKnockbackResistance#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#getPlayerLuck#0;class#PlayerListener#0" expanded="false" />
-            <marker date="1471048509716" expanded="false" signature="34791:34931" ph="{...}" />
-            <marker date="1471048509716" expanded="false" signature="34937:35008" ph="/**...*/" />
-            <marker date="1471048509716" expanded="false" signature="35074:35260" ph="{...}" />
+            <element signature="docComment;class#Settings#0" expanded="false" />
+            <element signature="method#getInstance#0;class#Settings#0" expanded="false" />
+            <element signature="class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="method#MathSettings#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="method#onPlayerAttackEntity#0;class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="class#chanceOfCreatingMagicAttack#0;class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="method#chanceOfCreatingMagicAttack#0;class#chanceOfCreatingMagicAttack#0;class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="class#creatingMagicAttack#0;class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="method#creatingMagicAttack#0;class#creatingMagicAttack#0;class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="class#attackEntityBy#0;class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="method#attackEntityBy#0;class#attackEntityBy#0;class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="class#onPlayerConsumePotion#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="method#onPlayerConsumePotion#0;class#onPlayerConsumePotion#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="class#onPlayerGetDamaged#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="method#onPlayerGetDamaged#0;class#onPlayerGetDamaged#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="class#chanceOfRemovingMagicEffect#0;class#onPlayerGetDamaged#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="method#chanceOfRemovingMagicEffect#0;class#chanceOfRemovingMagicEffect#0;class#onPlayerGetDamaged#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="class#reducingBadPotionEffect#0;class#onPlayerGetDamaged#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="method#reducingBadPotionEffect#0;class#reducingBadPotionEffect#0;class#onPlayerGetDamaged#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="class#playerAttributes#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="method#playerAttributes#0;class#playerAttributes#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="class#onPlayerShootBow#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="method#onPlayerShootBow#0;class#onPlayerShootBow#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="class#onPlayerDies#0;class#MathSettings#0;class#Settings#0" expanded="false" />
+            <element signature="method#onPlayerDies#0;class#onPlayerDies#0;class#MathSettings#0;class#Settings#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Ressources/config.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="46" column="36" selection-start-line="46" selection-start-column="36" selection-end-line="46" selection-end-column="36" />
+        <state relative-caret-position="450">
+          <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="54" selection-end-column="25" />
           <folding>
             <element signature="e#1424#1426#0" expanded="false" />
             <element signature="e#1476#1479#0" expanded="false" />
@@ -2949,210 +2345,494 @@
             <element signature="e#2802#2806#0" expanded="false" />
             <element signature="e#2956#2960#0" expanded="false" />
             <element signature="e#2990#2992#0" expanded="false" />
-            <element signature="e#3096#3099#0" expanded="false" />
-            <element signature="e#3207#3210#0" expanded="false" />
-            <element signature="e#3305#3480#0" expanded="false" />
-            <element signature="e#3339#3343#0" expanded="false" />
-            <element signature="e#3356#3358#0" expanded="false" />
-            <element signature="e#3391#3394#0" expanded="false" />
-            <element signature="e#3477#3480#0" expanded="false" />
-            <element signature="e#3631#5166#0" expanded="false" />
-            <element signature="e#3761#4018#0" expanded="false" />
-            <element signature="e#3960#3963#0" expanded="false" />
-            <element signature="e#3976#3979#0" expanded="false" />
-            <element signature="e#3997#4000#0" expanded="false" />
-            <element signature="e#4015#4018#0" expanded="false" />
-            <element signature="e#4021#4780#0" expanded="false" />
-            <element signature="e#4140#4144#0" expanded="false" />
-            <element signature="e#4166#4170#0" expanded="false" />
-            <element signature="e#4192#4196#0" expanded="false" />
-            <element signature="e#4226#4230#0" expanded="false" />
-            <element signature="e#4257#4261#0" expanded="false" />
-            <element signature="e#4289#4292#0" expanded="false" />
-            <element signature="e#4322#4325#0" expanded="false" />
-            <element signature="e#4353#4356#0" expanded="false" />
-            <element signature="e#4388#4391#0" expanded="false" />
-            <element signature="e#4421#4424#0" expanded="false" />
-            <element signature="e#4613#4616#0" expanded="false" />
-            <element signature="e#4654#4657#0" expanded="false" />
-            <element signature="e#4693#4696#0" expanded="false" />
-            <element signature="e#4736#4739#0" expanded="false" />
-            <element signature="e#4777#4780#0" expanded="false" />
-            <element signature="e#4783#4904#0" expanded="false" />
-            <element signature="e#4805#4809#0" expanded="false" />
-            <element signature="e#4836#4839#0" expanded="false" />
-            <element signature="e#4854#4857#0" expanded="false" />
-            <element signature="e#4870#4873#0" expanded="false" />
-            <element signature="e#4886#4890#0" expanded="false" />
-            <element signature="e#4901#4904#0" expanded="false" />
-            <element signature="e#4929#4933#0" expanded="false" />
-            <element signature="e#4983#4987#0" expanded="false" />
-            <element signature="e#5000#5003#0" expanded="false" />
-            <element signature="e#5016#5020#0" expanded="false" />
-            <element signature="e#5031#5034#0" expanded="false" />
-            <element signature="e#5037#5166#0" expanded="false" />
-            <element signature="e#5063#5067#0" expanded="false" />
-            <element signature="e#5094#5099#0" expanded="false" />
-            <element signature="e#5114#5119#0" expanded="false" />
-            <element signature="e#5132#5135#0" expanded="false" />
-            <element signature="e#5148#5152#0" expanded="false" />
-            <element signature="e#5163#5166#0" expanded="false" />
-            <element signature="e#5168#6272#0" expanded="false" />
-            <element signature="e#5193#5313#0" expanded="false" />
-            <element signature="e#5214#5218#0" expanded="false" />
-            <element signature="e#5244#5249#0" expanded="false" />
-            <element signature="e#5262#5265#0" expanded="false" />
-            <element signature="e#5283#5287#0" expanded="false" />
-            <element signature="e#5309#5313#0" expanded="false" />
-            <element signature="e#5316#5451#0" expanded="false" />
-            <element signature="e#5336#5340#0" expanded="false" />
-            <element signature="e#5366#5371#0" expanded="false" />
-            <element signature="e#5384#5387#0" expanded="false" />
-            <element signature="e#5400#5404#0" expanded="false" />
-            <element signature="e#5426#5429#0" expanded="false" />
-            <element signature="e#5447#5451#0" expanded="false" />
-            <element signature="e#5454#5566#0" expanded="false" />
-            <element signature="e#5479#5483#0" expanded="false" />
-            <element signature="e#5509#5515#0" expanded="false" />
-            <element signature="e#5528#5531#0" expanded="false" />
-            <element signature="e#5544#5548#0" expanded="false" />
-            <element signature="e#5562#5566#0" expanded="false" />
-            <element signature="e#5569#5672#0" expanded="false" />
-            <element signature="e#5589#5593#0" expanded="false" />
-            <element signature="e#5619#5622#0" expanded="false" />
-            <element signature="e#5635#5638#0" expanded="false" />
-            <element signature="e#5651#5655#0" expanded="false" />
-            <element signature="e#5668#5672#0" expanded="false" />
-            <element signature="e#5675#5766#0" expanded="false" />
-            <element signature="e#5698#5702#0" expanded="false" />
-            <element signature="e#5728#5734#0" expanded="false" />
-            <element signature="e#5747#5750#0" expanded="false" />
-            <element signature="e#5763#5766#0" expanded="false" />
-            <element signature="e#5769#5863#0" expanded="false" />
-            <element signature="e#5795#5799#0" expanded="false" />
-            <element signature="e#5825#5831#0" expanded="false" />
-            <element signature="e#5844#5847#0" expanded="false" />
-            <element signature="e#5860#5863#0" expanded="false" />
-            <element signature="e#5866#5956#0" expanded="false" />
-            <element signature="e#5888#5892#0" expanded="false" />
-            <element signature="e#5918#5924#0" expanded="false" />
-            <element signature="e#5937#5940#0" expanded="false" />
-            <element signature="e#5953#5956#0" expanded="false" />
-            <element signature="e#5959#6111#0" expanded="false" />
-            <element signature="e#5998#6002#0" expanded="false" />
-            <element signature="e#6028#6032#0" expanded="false" />
-            <element signature="e#6045#6048#0" expanded="false" />
-            <element signature="e#6059#6063#0" expanded="false" />
-            <element signature="e#6085#6089#0" expanded="false" />
-            <element signature="e#6107#6111#0" expanded="false" />
-            <element signature="e#6114#6272#0" expanded="false" />
+            <element signature="e#3147#3150#0" expanded="false" />
+            <element signature="e#3258#3261#0" expanded="false" />
+            <element signature="e#3356#3531#0" expanded="false" />
+            <element signature="e#3390#3394#0" expanded="false" />
+            <element signature="e#3407#3409#0" expanded="false" />
+            <element signature="e#3442#3445#0" expanded="false" />
+            <element signature="e#3528#3531#0" expanded="false" />
+            <element signature="e#3682#5217#0" expanded="false" />
+            <element signature="e#3812#4069#0" expanded="false" />
+            <element signature="e#4011#4014#0" expanded="false" />
+            <element signature="e#4027#4030#0" expanded="false" />
+            <element signature="e#4048#4051#0" expanded="false" />
+            <element signature="e#4066#4069#0" expanded="false" />
+            <element signature="e#4072#4831#0" expanded="false" />
+            <element signature="e#4191#4195#0" expanded="false" />
+            <element signature="e#4217#4221#0" expanded="false" />
+            <element signature="e#4243#4247#0" expanded="false" />
+            <element signature="e#4277#4281#0" expanded="false" />
+            <element signature="e#4308#4312#0" expanded="false" />
+            <element signature="e#4340#4343#0" expanded="false" />
+            <element signature="e#4373#4376#0" expanded="false" />
+            <element signature="e#4404#4407#0" expanded="false" />
+            <element signature="e#4439#4442#0" expanded="false" />
+            <element signature="e#4472#4475#0" expanded="false" />
+            <element signature="e#4664#4667#0" expanded="false" />
+            <element signature="e#4705#4708#0" expanded="false" />
+            <element signature="e#4744#4747#0" expanded="false" />
+            <element signature="e#4787#4790#0" expanded="false" />
+            <element signature="e#4828#4831#0" expanded="false" />
+            <element signature="e#4834#4955#0" expanded="false" />
+            <element signature="e#4856#4860#0" expanded="false" />
+            <element signature="e#4887#4890#0" expanded="false" />
+            <element signature="e#4905#4908#0" expanded="false" />
+            <element signature="e#4921#4924#0" expanded="false" />
+            <element signature="e#4937#4941#0" expanded="false" />
+            <element signature="e#4952#4955#0" expanded="false" />
+            <element signature="e#4980#4984#0" expanded="false" />
+            <element signature="e#5034#5038#0" expanded="false" />
+            <element signature="e#5051#5054#0" expanded="false" />
+            <element signature="e#5067#5071#0" expanded="false" />
+            <element signature="e#5082#5085#0" expanded="false" />
+            <element signature="e#5088#5217#0" expanded="false" />
+            <element signature="e#5114#5118#0" expanded="false" />
+            <element signature="e#5145#5150#0" expanded="false" />
+            <element signature="e#5165#5170#0" expanded="false" />
+            <element signature="e#5183#5186#0" expanded="false" />
+            <element signature="e#5199#5203#0" expanded="false" />
+            <element signature="e#5214#5217#0" expanded="false" />
+            <element signature="e#5219#6323#0" expanded="false" />
+            <element signature="e#5244#5364#0" expanded="false" />
+            <element signature="e#5265#5269#0" expanded="false" />
+            <element signature="e#5295#5300#0" expanded="false" />
+            <element signature="e#5313#5316#0" expanded="false" />
+            <element signature="e#5334#5338#0" expanded="false" />
+            <element signature="e#5360#5364#0" expanded="false" />
+            <element signature="e#5367#5502#0" expanded="false" />
+            <element signature="e#5387#5391#0" expanded="false" />
+            <element signature="e#5417#5422#0" expanded="false" />
+            <element signature="e#5435#5438#0" expanded="false" />
+            <element signature="e#5451#5455#0" expanded="false" />
+            <element signature="e#5477#5480#0" expanded="false" />
+            <element signature="e#5498#5502#0" expanded="false" />
+            <element signature="e#5505#5617#0" expanded="false" />
+            <element signature="e#5530#5534#0" expanded="false" />
+            <element signature="e#5560#5566#0" expanded="false" />
+            <element signature="e#5579#5582#0" expanded="false" />
+            <element signature="e#5595#5599#0" expanded="false" />
+            <element signature="e#5613#5617#0" expanded="false" />
+            <element signature="e#5620#5723#0" expanded="false" />
+            <element signature="e#5640#5644#0" expanded="false" />
+            <element signature="e#5670#5673#0" expanded="false" />
+            <element signature="e#5686#5689#0" expanded="false" />
+            <element signature="e#5702#5706#0" expanded="false" />
+            <element signature="e#5719#5723#0" expanded="false" />
+            <element signature="e#5726#5817#0" expanded="false" />
+            <element signature="e#5749#5753#0" expanded="false" />
+            <element signature="e#5779#5785#0" expanded="false" />
+            <element signature="e#5798#5801#0" expanded="false" />
+            <element signature="e#5814#5817#0" expanded="false" />
+            <element signature="e#5820#5914#0" expanded="false" />
+            <element signature="e#5846#5850#0" expanded="false" />
+            <element signature="e#5876#5882#0" expanded="false" />
+            <element signature="e#5895#5898#0" expanded="false" />
+            <element signature="e#5911#5914#0" expanded="false" />
+            <element signature="e#5917#6007#0" expanded="false" />
+            <element signature="e#5939#5943#0" expanded="false" />
+            <element signature="e#5969#5975#0" expanded="false" />
+            <element signature="e#5988#5991#0" expanded="false" />
+            <element signature="e#6004#6007#0" expanded="false" />
+            <element signature="e#6010#6162#0" expanded="false" />
+            <element signature="e#6049#6053#0" expanded="false" />
+            <element signature="e#6079#6083#0" expanded="false" />
+            <element signature="e#6096#6099#0" expanded="false" />
+            <element signature="e#6110#6114#0" expanded="false" />
+            <element signature="e#6136#6140#0" expanded="false" />
             <element signature="e#6158#6162#0" expanded="false" />
-            <element signature="e#6188#6191#0" expanded="false" />
-            <element signature="e#6204#6207#0" expanded="false" />
-            <element signature="e#6229#6233#0" expanded="false" />
-            <element signature="e#6251#6254#0" expanded="false" />
-            <element signature="e#6269#6272#0" expanded="false" />
-            <element signature="e#6274#6505#0" expanded="false" />
-            <element signature="e#6305#6309#0" expanded="false" />
-            <element signature="e#6393#6397#0" expanded="false" />
-            <element signature="e#6432#6435#0" expanded="false" />
-            <element signature="e#6448#6451#0" expanded="false" />
-            <element signature="e#6465#6470#0" expanded="false" />
-            <element signature="e#6485#6490#0" expanded="false" />
-            <element signature="e#6501#6505#0" expanded="false" />
-            <element signature="e#6507#6623#0" expanded="false" />
-            <element signature="e#6543#6547#0" expanded="false" />
-            <element signature="e#6569#6572#0" expanded="false" />
-            <element signature="e#6584#6587#0" expanded="false" />
-            <element signature="e#6599#6602#0" expanded="false" />
-            <element signature="e#6619#6623#0" expanded="false" />
-            <element signature="e#6651#6655#0" expanded="false" />
-            <element signature="e#6679#6681#0" expanded="false" />
-            <element signature="e#6833#6836#0" expanded="false" />
-            <element signature="e#6921#6925#0" expanded="false" />
-            <element signature="e#6937#6941#0" expanded="false" />
-            <element signature="e#6943#7697#0" expanded="false" />
-            <element signature="e#6964#7074#0" expanded="false" />
-            <element signature="e#6991#6995#0" expanded="false" />
-            <element signature="e#7021#7024#0" expanded="false" />
-            <element signature="e#7037#7040#0" expanded="false" />
-            <element signature="e#7053#7056#0" expanded="false" />
-            <element signature="e#7071#7074#0" expanded="false" />
-            <element signature="e#7077#7200#0" expanded="false" />
-            <element signature="e#7102#7106#0" expanded="false" />
-            <element signature="e#7160#7164#0" expanded="false" />
-            <element signature="e#7179#7183#0" expanded="false" />
-            <element signature="e#7197#7200#0" expanded="false" />
-            <element signature="e#7203#7264#0" expanded="false" />
-            <element signature="e#7226#7230#0" expanded="false" />
-            <element signature="e#7261#7264#0" expanded="false" />
-            <element signature="e#7267#7324#0" expanded="false" />
-            <element signature="e#7292#7296#0" expanded="false" />
-            <element signature="e#7321#7324#0" expanded="false" />
-            <element signature="e#7327#7420#0" expanded="false" />
-            <element signature="e#7350#7354#0" expanded="false" />
-            <element signature="e#7380#7383#0" expanded="false" />
-            <element signature="e#7396#7399#0" expanded="false" />
-            <element signature="e#7417#7420#0" expanded="false" />
-            <element signature="e#7423#7544#0" expanded="false" />
-            <element signature="e#7440#7444#0" expanded="false" />
-            <element signature="e#7470#7473#0" expanded="false" />
-            <element signature="e#7505#7509#0" expanded="false" />
-            <element signature="e#7524#7527#0" expanded="false" />
-            <element signature="e#7540#7544#0" expanded="false" />
-            <element signature="e#7547#7697#0" expanded="false" />
-            <element signature="e#7580#7584#0" expanded="false" />
-            <element signature="e#7610#7614#0" expanded="false" />
-            <element signature="e#7627#7630#0" expanded="false" />
-            <element signature="e#7644#7647#0" expanded="false" />
-            <element signature="e#7662#7665#0" expanded="false" />
+            <element signature="e#6165#6323#0" expanded="false" />
+            <element signature="e#6209#6213#0" expanded="false" />
+            <element signature="e#6239#6242#0" expanded="false" />
+            <element signature="e#6255#6258#0" expanded="false" />
+            <element signature="e#6280#6284#0" expanded="false" />
+            <element signature="e#6302#6305#0" expanded="false" />
+            <element signature="e#6320#6323#0" expanded="false" />
+            <element signature="e#6325#6556#0" expanded="false" />
+            <element signature="e#6356#6360#0" expanded="false" />
+            <element signature="e#6444#6448#0" expanded="false" />
+            <element signature="e#6483#6486#0" expanded="false" />
+            <element signature="e#6499#6502#0" expanded="false" />
+            <element signature="e#6516#6521#0" expanded="false" />
+            <element signature="e#6536#6541#0" expanded="false" />
+            <element signature="e#6552#6556#0" expanded="false" />
+            <element signature="e#6558#6674#0" expanded="false" />
+            <element signature="e#6594#6598#0" expanded="false" />
+            <element signature="e#6620#6623#0" expanded="false" />
+            <element signature="e#6635#6638#0" expanded="false" />
+            <element signature="e#6650#6653#0" expanded="false" />
+            <element signature="e#6670#6674#0" expanded="false" />
+            <element signature="e#6676#6992#0" expanded="false" />
+            <element signature="e#6702#6706#0" expanded="false" />
+            <element signature="e#6730#6732#0" expanded="false" />
+            <element signature="e#6884#6887#0" expanded="false" />
+            <element signature="e#6972#6976#0" expanded="false" />
+            <element signature="e#6988#6992#0" expanded="false" />
+            <element signature="e#6994#7748#0" expanded="false" />
+            <element signature="e#7015#7125#0" expanded="false" />
+            <element signature="e#7042#7046#0" expanded="false" />
+            <element signature="e#7072#7075#0" expanded="false" />
+            <element signature="e#7088#7091#0" expanded="false" />
+            <element signature="e#7104#7107#0" expanded="false" />
+            <element signature="e#7122#7125#0" expanded="false" />
+            <element signature="e#7128#7251#0" expanded="false" />
+            <element signature="e#7153#7157#0" expanded="false" />
+            <element signature="e#7211#7215#0" expanded="false" />
+            <element signature="e#7230#7234#0" expanded="false" />
+            <element signature="e#7248#7251#0" expanded="false" />
+            <element signature="e#7254#7315#0" expanded="false" />
+            <element signature="e#7277#7281#0" expanded="false" />
+            <element signature="e#7312#7315#0" expanded="false" />
+            <element signature="e#7318#7375#0" expanded="false" />
+            <element signature="e#7343#7347#0" expanded="false" />
+            <element signature="e#7372#7375#0" expanded="false" />
+            <element signature="e#7378#7471#0" expanded="false" />
+            <element signature="e#7401#7405#0" expanded="false" />
+            <element signature="e#7431#7434#0" expanded="false" />
+            <element signature="e#7447#7450#0" expanded="false" />
+            <element signature="e#7468#7471#0" expanded="false" />
+            <element signature="e#7474#7595#0" expanded="false" />
+            <element signature="e#7491#7495#0" expanded="false" />
+            <element signature="e#7521#7524#0" expanded="false" />
+            <element signature="e#7556#7560#0" expanded="false" />
+            <element signature="e#7575#7578#0" expanded="false" />
+            <element signature="e#7591#7595#0" expanded="false" />
+            <element signature="e#7598#7748#0" expanded="false" />
+            <element signature="e#7631#7635#0" expanded="false" />
+            <element signature="e#7661#7665#0" expanded="false" />
             <element signature="e#7678#7681#0" expanded="false" />
-            <element signature="e#7694#7697#0" expanded="false" />
-            <element signature="e#7791#8484#0" expanded="false" />
-            <element signature="e#7803#7810#0" expanded="false" />
-            <element signature="e#7814#7819#0" expanded="false" />
-            <element signature="e#7823#7829#0" expanded="false" />
-            <element signature="e#7833#7842#0" expanded="false" />
-            <element signature="e#7846#7853#0" expanded="false" />
-            <element signature="e#7857#7863#0" expanded="false" />
-            <element signature="e#7867#7876#0" expanded="false" />
-            <element signature="e#7880#7897#0" expanded="false" />
-            <element signature="e#7901#7912#0" expanded="false" />
-            <element signature="e#7916#7921#0" expanded="false" />
-            <element signature="e#7925#7934#0" expanded="false" />
-            <element signature="e#7938#7948#0" expanded="false" />
-            <element signature="e#7952#7969#0" expanded="false" />
-            <element signature="e#7973#7989#0" expanded="false" />
-            <element signature="e#7993#8010#0" expanded="false" />
-            <element signature="e#8014#8031#0" expanded="false" />
-            <element signature="e#8035#8054#0" expanded="false" />
-            <element signature="e#8058#8073#0" expanded="false" />
-            <element signature="e#8077#8088#0" expanded="false" />
-            <element signature="e#8092#8103#0" expanded="false" />
-            <element signature="e#8107#8117#0" expanded="false" />
-            <element signature="e#8121#8132#0" expanded="false" />
-            <element signature="e#8136#8147#0" expanded="false" />
-            <element signature="e#8151#8164#0" expanded="false" />
-            <element signature="e#8168#8179#0" expanded="false" />
-            <element signature="e#8183#8195#0" expanded="false" />
-            <element signature="e#8199#8208#0" expanded="false" />
-            <element signature="e#8212#8225#0" expanded="false" />
-            <element signature="e#8229#8244#0" expanded="false" />
-            <element signature="e#8248#8262#0" expanded="false" />
-            <element signature="e#8266#8289#0" expanded="false" />
-            <element signature="e#8293#8315#0" expanded="false" />
-            <element signature="e#8319#8324#0" expanded="false" />
-            <element signature="e#8328#8340#0" expanded="false" />
-            <element signature="e#8344#8355#0" expanded="false" />
-            <element signature="e#8359#8371#0" expanded="false" />
-            <element signature="e#8375#8389#0" expanded="false" />
-            <element signature="e#8393#8405#0" expanded="false" />
-            <element signature="e#8409#8421#0" expanded="false" />
-            <element signature="e#8425#8438#0" expanded="false" />
-            <element signature="e#8442#8450#0" expanded="false" />
-            <element signature="e#8454#8463#0" expanded="false" />
-            <element signature="e#8467#8476#0" expanded="false" />
-            <element signature="e#8480#8484#0" expanded="false" />
+            <element signature="e#7695#7698#0" expanded="false" />
+            <element signature="e#7713#7716#0" expanded="false" />
+            <element signature="e#7729#7732#0" expanded="false" />
+            <element signature="e#7745#7748#0" expanded="false" />
+            <element signature="e#7842#8535#0" expanded="false" />
+            <element signature="e#7854#7861#0" expanded="false" />
+            <element signature="e#7865#7870#0" expanded="false" />
+            <element signature="e#7874#7880#0" expanded="false" />
+            <element signature="e#7884#7893#0" expanded="false" />
+            <element signature="e#7897#7904#0" expanded="false" />
+            <element signature="e#7908#7914#0" expanded="false" />
+            <element signature="e#7918#7927#0" expanded="false" />
+            <element signature="e#7931#7948#0" expanded="false" />
+            <element signature="e#7952#7963#0" expanded="false" />
+            <element signature="e#7967#7972#0" expanded="false" />
+            <element signature="e#7976#7985#0" expanded="false" />
+            <element signature="e#7989#7999#0" expanded="false" />
+            <element signature="e#8003#8020#0" expanded="false" />
+            <element signature="e#8024#8040#0" expanded="false" />
+            <element signature="e#8044#8061#0" expanded="false" />
+            <element signature="e#8065#8082#0" expanded="false" />
+            <element signature="e#8086#8105#0" expanded="false" />
+            <element signature="e#8109#8124#0" expanded="false" />
+            <element signature="e#8128#8139#0" expanded="false" />
+            <element signature="e#8143#8154#0" expanded="false" />
+            <element signature="e#8158#8168#0" expanded="false" />
+            <element signature="e#8172#8183#0" expanded="false" />
+            <element signature="e#8187#8198#0" expanded="false" />
+            <element signature="e#8202#8215#0" expanded="false" />
+            <element signature="e#8219#8230#0" expanded="false" />
+            <element signature="e#8234#8246#0" expanded="false" />
+            <element signature="e#8250#8259#0" expanded="false" />
+            <element signature="e#8263#8276#0" expanded="false" />
+            <element signature="e#8280#8295#0" expanded="false" />
+            <element signature="e#8299#8313#0" expanded="false" />
+            <element signature="e#8317#8340#0" expanded="false" />
+            <element signature="e#8344#8366#0" expanded="false" />
+            <element signature="e#8370#8375#0" expanded="false" />
+            <element signature="e#8379#8391#0" expanded="false" />
+            <element signature="e#8395#8406#0" expanded="false" />
+            <element signature="e#8410#8422#0" expanded="false" />
+            <element signature="e#8426#8440#0" expanded="false" />
+            <element signature="e#8444#8456#0" expanded="false" />
+            <element signature="e#8460#8472#0" expanded="false" />
+            <element signature="e#8476#8489#0" expanded="false" />
+            <element signature="e#8493#8501#0" expanded="false" />
+            <element signature="e#8505#8514#0" expanded="false" />
+            <element signature="e#8518#8527#0" expanded="false" />
+            <element signature="e#8531#8535#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ressources/itemsrequirements.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="74">
+          <caret line="141" column="8" selection-start-line="141" selection-start-column="8" selection-end-line="141" selection-end-column="8" />
+          <folding>
+            <element signature="e#415#417#0" expanded="false" />
+            <element signature="e#454#456#0" expanded="false" />
+            <element signature="e#457#492#0" expanded="false" />
+            <element signature="e#490#492#0" expanded="false" />
+            <element signature="e#527#529#0" expanded="false" />
+            <element signature="e#531#577#0" expanded="false" />
+            <element signature="e#561#563#0" expanded="false" />
+            <element signature="e#575#577#0" expanded="false" />
+            <element signature="e#578#621#0" expanded="false" />
+            <element signature="e#619#621#0" expanded="false" />
+            <element signature="e#622#662#0" expanded="false" />
+            <element signature="e#660#662#0" expanded="false" />
+            <element signature="e#663#704#0" expanded="false" />
+            <element signature="e#702#704#0" expanded="false" />
+            <element signature="e#706#747#0" expanded="false" />
+            <element signature="e#731#733#0" expanded="false" />
+            <element signature="e#745#747#0" expanded="false" />
+            <element signature="e#748#786#0" expanded="false" />
+            <element signature="e#784#786#0" expanded="false" />
+            <element signature="e#787#822#0" expanded="false" />
+            <element signature="e#820#822#0" expanded="false" />
+            <element signature="e#823#859#0" expanded="false" />
+            <element signature="e#857#859#0" expanded="false" />
+            <element signature="e#861#907#0" expanded="false" />
+            <element signature="e#891#893#0" expanded="false" />
+            <element signature="e#905#907#0" expanded="false" />
+            <element signature="e#908#952#0" expanded="false" />
+            <element signature="e#936#938#0" expanded="false" />
+            <element signature="e#950#952#0" expanded="false" />
+            <element signature="e#953#994#0" expanded="false" />
+            <element signature="e#978#980#0" expanded="false" />
+            <element signature="e#992#994#0" expanded="false" />
+            <element signature="e#995#1037#0" expanded="false" />
+            <element signature="e#1021#1023#0" expanded="false" />
+            <element signature="e#1035#1037#0" expanded="false" />
+            <element signature="e#1039#1083#0" expanded="false" />
+            <element signature="e#1067#1069#0" expanded="false" />
+            <element signature="e#1081#1083#0" expanded="false" />
+            <element signature="e#1084#1126#0" expanded="false" />
+            <element signature="e#1110#1112#0" expanded="false" />
+            <element signature="e#1124#1126#0" expanded="false" />
+            <element signature="e#1127#1166#0" expanded="false" />
+            <element signature="e#1150#1152#0" expanded="false" />
+            <element signature="e#1164#1166#0" expanded="false" />
+            <element signature="e#1167#1207#0" expanded="false" />
+            <element signature="e#1191#1193#0" expanded="false" />
+            <element signature="e#1205#1207#0" expanded="false" />
+            <element signature="e#1209#1258#0" expanded="false" />
+            <element signature="e#1242#1244#0" expanded="false" />
+            <element signature="e#1256#1258#0" expanded="false" />
+            <element signature="e#1259#1306#0" expanded="false" />
+            <element signature="e#1290#1292#0" expanded="false" />
+            <element signature="e#1304#1306#0" expanded="false" />
+            <element signature="e#1307#1351#0" expanded="false" />
+            <element signature="e#1335#1337#0" expanded="false" />
+            <element signature="e#1349#1351#0" expanded="false" />
+            <element signature="e#1352#1397#0" expanded="false" />
+            <element signature="e#1381#1383#0" expanded="false" />
+            <element signature="e#1395#1397#0" expanded="false" />
+            <element signature="e#1399#1443#0" expanded="false" />
+            <element signature="e#1427#1429#0" expanded="false" />
+            <element signature="e#1441#1443#0" expanded="false" />
+            <element signature="e#1444#1486#0" expanded="false" />
+            <element signature="e#1470#1472#0" expanded="false" />
+            <element signature="e#1484#1486#0" expanded="false" />
+            <element signature="e#1487#1526#0" expanded="false" />
+            <element signature="e#1510#1512#0" expanded="false" />
+            <element signature="e#1524#1526#0" expanded="false" />
+            <element signature="e#1527#1567#0" expanded="false" />
+            <element signature="e#1551#1553#0" expanded="false" />
+            <element signature="e#1565#1567#0" expanded="false" />
+            <element signature="e#1569#1618#0" expanded="false" />
+            <element signature="e#1602#1604#0" expanded="false" />
+            <element signature="e#1616#1618#0" expanded="false" />
+            <element signature="e#1619#1666#0" expanded="false" />
+            <element signature="e#1650#1652#0" expanded="false" />
+            <element signature="e#1664#1666#0" expanded="false" />
+            <element signature="e#1667#1711#0" expanded="false" />
+            <element signature="e#1695#1697#0" expanded="false" />
+            <element signature="e#1709#1711#0" expanded="false" />
+            <element signature="e#1712#1757#0" expanded="false" />
+            <element signature="e#1741#1743#0" expanded="false" />
+            <element signature="e#1755#1757#0" expanded="false" />
+            <element signature="e#1759#1816#0" expanded="false" />
+            <element signature="e#1783#1785#0" expanded="false" />
+            <element signature="e#1796#1798#0" expanded="false" />
+            <element signature="e#1814#1816#0" expanded="false" />
+            <element signature="e#1817#1878#0" expanded="false" />
+            <element signature="e#1845#1847#0" expanded="false" />
+            <element signature="e#1858#1860#0" expanded="false" />
+            <element signature="e#1876#1878#0" expanded="false" />
+            <element signature="e#1879#1935#0" expanded="false" />
+            <element signature="e#1902#1904#0" expanded="false" />
+            <element signature="e#1915#1917#0" expanded="false" />
+            <element signature="e#1933#1935#0" expanded="false" />
+            <element signature="e#1936#1995#0" expanded="false" />
+            <element signature="e#1962#1964#0" expanded="false" />
+            <element signature="e#1975#1977#0" expanded="false" />
+            <element signature="e#1993#1995#0" expanded="false" />
+            <element signature="e#1997#2028#0" expanded="false" />
+            <element signature="e#2026#2028#0" expanded="false" />
+            <element signature="e#2029#2066#0" expanded="false" />
+            <element signature="e#2050#2052#0" expanded="false" />
+            <element signature="e#2064#2066#0" expanded="false" />
+            <element signature="e#2067#2109#0" expanded="false" />
+            <element signature="e#2092#2094#0" expanded="false" />
+            <element signature="e#2107#2109#0" expanded="false" />
+            <element signature="e#2110#2150#0" expanded="false" />
+            <element signature="e#2134#2136#0" expanded="false" />
+            <element signature="e#2148#2150#0" expanded="false" />
+            <element signature="e#2163#2198#0" expanded="false" />
+            <element signature="e#2196#2198#0" expanded="false" />
+            <element signature="e#2199#2236#0" expanded="false" />
+            <element signature="e#2220#2222#0" expanded="false" />
+            <element signature="e#2234#2236#0" expanded="false" />
+            <element signature="e#2237#2270#0" expanded="false" />
+            <element signature="e#2268#2270#0" expanded="false" />
+            <element signature="e#2272#2312#0" expanded="false" />
+            <element signature="e#2296#2298#0" expanded="false" />
+            <element signature="e#2310#2312#0" expanded="false" />
+            <element signature="e#2313#2350#0" expanded="false" />
+            <element signature="e#2334#2336#0" expanded="false" />
+            <element signature="e#2348#2350#0" expanded="false" />
+            <element signature="e#2351#2390#0" expanded="false" />
+            <element signature="e#2374#2376#0" expanded="false" />
+            <element signature="e#2388#2390#0" expanded="false" />
+            <element signature="e#2392#2433#0" expanded="false" />
+            <element signature="e#2415#2418#0" expanded="false" />
+            <element signature="e#2430#2433#0" expanded="false" />
+            <element signature="e#2434#2473#0" expanded="false" />
+            <element signature="e#2455#2458#0" expanded="false" />
+            <element signature="e#2470#2473#0" expanded="false" />
+            <element signature="e#2474#2516#0" expanded="false" />
+            <element signature="e#2498#2501#0" expanded="false" />
+            <element signature="e#2513#2516#0" expanded="false" />
+            <element signature="e#2518#2570#0" expanded="false" />
+            <element signature="e#2537#2539#0" expanded="false" />
+            <element signature="e#2551#2554#0" expanded="false" />
+            <element signature="e#2567#2570#0" expanded="false" />
+            <element signature="e#2593#2595#0" expanded="false" />
+            <element signature="e#2607#2610#0" expanded="false" />
+            <element signature="e#2612#2678#0" expanded="false" />
+            <element signature="e#2633#2635#0" expanded="false" />
+            <element signature="e#2647#2649#0" expanded="false" />
+            <element signature="e#2660#2662#0" expanded="false" />
+            <element signature="e#2675#2678#0" expanded="false" />
+            <element signature="e#2680#2796#0" expanded="false" />
+            <element signature="e#2692#2695#0" expanded="false" />
+            <element signature="e#2707#2710#0" expanded="false" />
+            <element signature="e#2721#2724#0" expanded="false" />
+            <element signature="e#2737#2740#0" expanded="false" />
+            <element signature="e#2760#2763#0" expanded="false" />
+            <element signature="e#2774#2777#0" expanded="false" />
+            <element signature="e#2793#2796#0" expanded="false" />
+            <element signature="e#2798#2840#0" expanded="false" />
+            <element signature="e#2838#2840#0" expanded="false" />
+            <element signature="e#2841#2894#0" expanded="false" />
+            <element signature="e#2863#2865#0" expanded="false" />
+            <element signature="e#2877#2879#0" expanded="false" />
+            <element signature="e#2892#2894#0" expanded="false" />
+            <element signature="e#2895#2953#0" expanded="false" />
+            <element signature="e#2922#2924#0" expanded="false" />
+            <element signature="e#2936#2938#0" expanded="false" />
+            <element signature="e#2951#2953#0" expanded="false" />
+            <element signature="e#2954#3015#0" expanded="false" />
+            <element signature="e#2984#2986#0" expanded="false" />
+            <element signature="e#2998#3000#0" expanded="false" />
+            <element signature="e#3013#3015#0" expanded="false" />
+            <element signature="e#3016#3082#0" expanded="false" />
+            <element signature="e#3051#3053#0" expanded="false" />
+            <element signature="e#3065#3067#0" expanded="false" />
+            <element signature="e#3080#3082#0" expanded="false" />
+            <element signature="e#3109#3111#0" expanded="false" />
+            <element signature="e#3127#3129#0" expanded="false" />
+            <element signature="e#3159#3161#0" expanded="false" />
+            <element signature="e#3200#3202#0" expanded="false" />
+            <element signature="e#3218#3220#0" expanded="false" />
+            <element signature="e#3246#3248#0" expanded="false" />
+            <element signature="e#3264#3266#0" expanded="false" />
+            <element signature="e#3291#3293#0" expanded="false" />
+            <element signature="e#3309#3311#0" expanded="false" />
+            <element signature="e#3312#3361#0" expanded="false" />
+            <element signature="e#3341#3343#0" expanded="false" />
+            <element signature="e#3359#3361#0" expanded="false" />
+            <element signature="e#3362#3405#0" expanded="false" />
+            <element signature="e#3403#3405#0" expanded="false" />
+            <element signature="e#3406#3455#0" expanded="false" />
+            <element signature="e#3435#3437#0" expanded="false" />
+            <element signature="e#3453#3455#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ressources/skills.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="573">
+          <caret line="180" column="16" selection-start-line="180" selection-start-column="16" selection-end-line="180" selection-end-column="16" />
+          <folding>
+            <element signature="e#822#826#0" expanded="false" />
+            <element signature="e#883#885#0" expanded="false" />
+            <element signature="e#4638#4640#0" expanded="false" />
+            <element signature="e#4675#4739#0" expanded="false" />
+            <element signature="e#4737#4739#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/config/Skills.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+          <folding>
+            <element signature="e#876#877#0" expanded="true" />
+            <element signature="e#907#908#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/commun/Helper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="178" column="25" selection-start-line="178" selection-start-column="25" selection-end-line="178" selection-end-column="25" />
+          <folding>
+            <element signature="docComment;class#Helper#0" expanded="false" />
+            <element signature="method#eval#0;class#Helper#0" expanded="false" />
+            <element signature="class#324:3409" expanded="false" />
+            <element signature="method#eat#0;class#324:3409" expanded="false" />
+            <element signature="method#parse#0;class#324:3409" expanded="false" />
+            <element signature="e#982#993#0" expanded="false" />
+            <element signature="method#parseExpression#0;class#324:3409" expanded="false" />
+            <element signature="method#parseTerm#0;class#324:3409" expanded="false" />
+            <element signature="method#parseFactor#0;class#324:3409" expanded="false" />
+            <element signature="method#FormatStringWithValues#0;class#Helper#0" expanded="false" />
+            <element signature="docComment;method#StringIsNullOrEmpty#0;class#Helper#0" expanded="false" />
+            <element signature="docComment;method#randomFloat#0;class#Helper#0" expanded="false" />
+            <element signature="method#randomFloat#0;class#Helper#0" expanded="false" />
+            <element signature="docComment;method#randomInt#0;class#Helper#0" expanded="false" />
+            <element signature="method#randomInt#0;class#Helper#0" expanded="false" />
+            <element signature="docComment;method#intTryParse#0;class#Helper#0" expanded="false" />
+            <element signature="method#intTryParse#0;class#Helper#0" expanded="false" />
+            <element signature="docComment;method#dateTryParse#0;class#Helper#0" expanded="false" />
+            <element signature="method#dateTryParse#0;class#Helper#0" expanded="false" />
+            <element signature="docComment;method#rotateYAxis#0;class#Helper#0" expanded="false" />
+            <element signature="docComment;method#getXValue#0;class#Helper#0" expanded="false" />
+            <element signature="method#getXValue#0;class#Helper#0" expanded="false" />
+            <element signature="docComment;method#getMaxStats#0;class#Helper#0" expanded="false" />
+            <element signature="method#getMaxStats#0;class#Helper#0" expanded="false" />
+            <element signature="docComment;method#Slope#0;class#Helper#0" expanded="false" />
+            <element signature="method#Slope#0;class#Helper#0" expanded="false" />
+            <element signature="docComment;method#ValueFromFunction#0;class#Helper#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/config/ItemsRequirements.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="27" column="18" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
+          <folding>
+            <element signature="e#909#910#0" expanded="true" />
+            <element signature="e#940#941#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGSkill.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="668">
+          <caret line="214" column="27" selection-start-line="214" selection-start-column="27" selection-end-line="214" selection-end-column="27" />
+          <folding>
+            <element signature="docComment;class#RPGSkill#0" expanded="false" />
+            <element signature="method#getManaCost#0;class#RPGSkill#0" expanded="false" />
+            <element signature="method#canExecute#0;class#RPGSkill#0" expanded="false" />
+            <element signature="method#operation#1;class#RPGSkill#0" expanded="false" />
           </folding>
         </state>
       </provider>

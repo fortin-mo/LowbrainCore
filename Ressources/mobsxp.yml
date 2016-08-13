@@ -1,3 +1,13 @@
+# base_xp : xp gained when player kills mob
+# xp_bonus_interval : interval between each bonus ( ex : if set to 50, player will gain bonus xp at each 50 kills)
+# xp_bonus_multiplier : bonus experience multiplier ( ex : if base_xp = 15 and intervall = 50.... if kills = 50, xp will be 150, at 100 kills, xp will be 15 * 10 * 2, etc
+
+# you can set a default
+# default:
+#  base_xp: 15
+#  xp_bonus_interval: 50
+#  xp_bonus_multiplier: 10
+
 bat:
  base_xp: 15
  xp_bonus_interval: 50

@@ -326,10 +326,12 @@ public class RPGPlayer {
 						return this.getRpgRace().getName().equals(v) ? 0 : -1;
 					}else return -1;
 				case "kills":
+				case "kill":
 					v1 = this.getKills();
 					v2 = (int)v;
 					break;
 				case "deaths":
+				case "death":
 					v1 = this.getDeaths();
 					v2 = (int)v;
 					break;
@@ -359,7 +361,7 @@ public class RPGPlayer {
 		if(item.getItemMeta() != null && item.getItemMeta().getDisplayName() != null){//custom items
 			name = item.getItemMeta().getDisplayName().substring(2);
 		}else{//vanilla items
-			name = item.getType().name();
+			name = item.getType().name().toLowerCase();
 		}
 
 		Main.ItemRequirements i = PlayerListener.plugin.itemsRequirements.get(name);
@@ -380,7 +382,7 @@ public class RPGPlayer {
 		if(item.getItemMeta().getDisplayName() != null){//custom items
 			name = item.getItemMeta().getDisplayName().substring(2);
 		}else{//vanilla items
-			name = item.getType().name();
+			name = item.getType().name().toLowerCase();
 		}
 
 		Main.ItemRequirements i = PlayerListener.plugin.itemsRequirements.get(name);

@@ -319,6 +319,28 @@ public class RPGCommand implements CommandExecutor{
 						}
 						rp.SendMessage(sk);
 						break;
+					case "myskill":
+						if(args.length == 2){
+							RPGSkill s = rp.getSkills().get(args[1]);
+							if(s != null){
+								rp.SendMessage(s.info(),ChatColor.LIGHT_PURPLE);
+							}
+							else{
+								rp.SendMessage("There is no such skill !",ChatColor.RED);
+							}
+						}
+						break;
+					case "skill":
+						if(args.length == 2){
+							RPGSkill s = rp.getSkills().get(args[1]);
+							if(s != null){
+								rp.SendMessage(s.toString(),ChatColor.LIGHT_PURPLE);
+							}
+							else{
+								rp.SendMessage("There is no such skill !",ChatColor.RED);
+							}
+						}
+						break;
 				}
 				return true;
 			}

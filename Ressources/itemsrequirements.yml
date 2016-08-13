@@ -1,3 +1,8 @@
+# use lowercase
+# for vanilla item, use material name such as diamond_sword, diamond_chestplate, etc. Dont forget the underscore
+# for custom item, use item name such as diamond_sword_plus, emerald_sword
+# possible requirements : level, intelligence, dexterity, agility, strength, defence, magic_resistance, health, race (race name), class (class name), kills, deaths,
+
 #armor
 gold_chestplate:
  level: 5
@@ -210,3 +215,28 @@ diamond_fire_compound_bow:
  level: 40
  strength: 50
  dexterity: 80
+
+staff_teleport:
+ level:  20
+ intelligence: 20
+staff_teleport_plus:
+ level: 40
+ intelligence: 20
+staff_fire:
+ level: 10
+ intelligence: 30
+staff_fire_plus:
+ level: 20
+ intelligence: 45
+staff_fireball:
+ level: 50
+ intelligence: 75
+staff_fireball_plus:
+ level: 60
+ intelligence: 90
+staff_freezing:
+ level: 5
+ intelligence: 20
+staff_freezing_plus:
+ level: 15
+ intelligence: 40
