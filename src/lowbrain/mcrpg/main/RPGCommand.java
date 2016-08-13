@@ -125,7 +125,7 @@ public class RPGCommand implements CommandExecutor{
 						rp.addAgility(1,true,true);
 						break;
 					case "stats":
-						if(args.length == 2 && sender.isOp() || sender.hasPermission("mcrpg.stats-others")){
+						if(args.length == 2 && (sender.isOp() || sender.hasPermission("mcrpg.stats-others"))){
 							Player p = plugin.getServer().getPlayer(args[1]);
 							if(p != null){
 								RPGPlayer rp2 = plugin.connectedPlayers.get(p.getUniqueId());

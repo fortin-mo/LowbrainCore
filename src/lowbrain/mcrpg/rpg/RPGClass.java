@@ -3,8 +3,6 @@ package lowbrain.mcrpg.rpg;
 import lowbrain.mcrpg.config.Classes;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import lowbrain.mcrpg.events.PlayerListener;
-
 import java.util.*;
 
 public class RPGClass {
@@ -28,15 +26,16 @@ public class RPGClass {
 	
 	public void Initialize(){
 		FileConfiguration config = Classes.getInstance();
-		tag = config.getString(name+".tag");
-		health = config.getInt(name+".health");
-		strength = config.getInt(name+".strength");
-		defence = config.getInt(name+".defence");
-		dexterity = config.getInt(name+".dexterity");
-		intelligence = config.getInt(name+".intelligence");
-		magicResistance = config.getInt(name+".magic_resistance");
-		agility = config.getInt(name+".agility");
+		tag = config.getString(name+".tag","");
+		health = config.getInt(name+".health",0);
+		strength = config.getInt(name+".strength",0);
+		defence = config.getInt(name+".defence",0);
+		dexterity = config.getInt(name+".dexterity",0);
+		intelligence = config.getInt(name+".intelligence",0);
+		magicResistance = config.getInt(name+".magic_resistance",0);
+		agility = config.getInt(name+".agility",0);
 		bonusAttributes = config.getStringList(name+".bonus_attributes");
+		if(bonusAttributes == null)bonusAttributes = new ArrayList<String>();
 		SetPowers();
 	}
 
@@ -111,6 +110,7 @@ public class RPGClass {
      */
 	private void SetPowers(){
 		this.powers = Classes.getInstance().getStringList(name+".powers");
+		if(this.powers == null) this.powers = new ArrayList<String>();
 	}
 
 

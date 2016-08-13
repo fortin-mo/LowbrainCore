@@ -9,6 +9,8 @@ import java.io.File;
  * Created by Moofy on 10/08/2016.
  */
 public class Config extends absConfig {
+    private static FileConfiguration instance;
+    private static File file;
     public static FileConfiguration getInstance(){
         if(instance == null){
             file = new File(getDataFolder(),"config.yml");
@@ -26,6 +28,9 @@ public class Config extends absConfig {
             }
         }
         return instance;
+    }
+    public static void reload(){
+        instance = null;
     }
 
 

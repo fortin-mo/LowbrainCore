@@ -1,5 +1,6 @@
 package lowbrain.mcrpg.commun;
 
+import lowbrain.mcrpg.config.Config;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -13,27 +14,27 @@ public class Settings {
 
     private static Settings instance;
 
-    public float first_lvl_exp= 75;
-    public int max_lvl= 100;
-    public int max_stats= 100;
-    public boolean can_switch_class= false;
-    public boolean can_switch_race = false;
-    public boolean allow_deduction_points = false;
-    public int points_per_lvl= 2;
-    public int starting_points= 3;
-    public boolean auto_save= true;
-    public int save_interval= 360;
-    public boolean allow_stats_reset = false;
-    public boolean allow_complete_reset = false;
-    public boolean debug = false;
+    public float first_lvl_exp;
+    public int max_lvl;
+    public int max_stats;
+    public boolean can_switch_class;
+    public boolean can_switch_race;
+    public boolean allow_deduction_points;
+    public int points_per_lvl;
+    public int starting_points;
+    public boolean auto_save;
+    public int save_interval;
+    public boolean allow_stats_reset;
+    public boolean allow_complete_reset;
+    public boolean debug;
     public List<Integer> lstClassId = new ArrayList<Integer>();
-    public int mana_regen_interval = 5;
-    public int starting_skill_points = 0;
-    public int skill_points_level_interval = 5;
-    public int skill_points_per_level = 1;
-    public boolean automatic_server_difficulty = true;
-    public boolean nearby_players_gain_xp = true;
-    public float nearby_players_max_distance = 15;
+    public int mana_regen_interval;
+    public int starting_skill_points;
+    public int skill_points_level_interval;
+    public int skill_points_per_level;
+    public boolean automatic_server_difficulty;
+    public boolean nearby_players_gain_xp;
+    public float nearby_players_max_distance;
 
     public MathSettings math;
 
@@ -64,7 +65,7 @@ public class Settings {
 
     public static Settings getInstance(){
         if(instance == null){
-            instance = new Settings(lowbrain.mcrpg.config.Config.getInstance());
+            instance = new Settings(Config.getInstance());
         }
         return instance;
     }

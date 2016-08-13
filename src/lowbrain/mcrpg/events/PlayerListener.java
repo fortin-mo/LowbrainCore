@@ -27,12 +27,10 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -103,7 +101,6 @@ public class PlayerListener implements Listener {
                     if(staffSection != null){
                         Boolean gravity = staffSection.getBoolean("gravity");
                         double speed = staffSection.getDouble("speed");
-                        double spread = staffSection.getDouble("spread");
                         int maxDurability = staffSection.getInt("durability");
                         int durability = maxDurability;
                         int cooldown = staffSection.getInt("cooldown",0);
@@ -125,12 +122,8 @@ public class PlayerListener implements Listener {
                         //if has lastUsed lore, get the last used date
                         if(!Helper.StringIsNullOrEmpty(sLastUsed)){
                             String[] tmp = sLastUsed.split(" : ");
-                            plugin.debugMessage(lastUsed.getTime());
                             lastUsed = tmp.length > 1 ? Helper.dateTryParse(tmp[1],lastUsed) : lastUsed;
-                            plugin.debugMessage(lastUsed.getTime());
                         }
-
-                        plugin.debugMessage("" + lastUsed.getTime());
 
                         lastUsed.add(Calendar.SECOND,cooldown);
                         if(lastUsed.after(Calendar.getInstance())) return;
@@ -151,6 +144,7 @@ public class PlayerListener implements Listener {
                                 Fireball fireBall = rp.getPlayer().launchProjectile(Fireball.class,rp.getPlayer().getLocation().getDirection().clone().multiply(speed));
                                 fireBall.setCustomName(n);
                                 fireBall.setGravity(gravity);
+                                fireBall.setShooter(rp.getPlayer());
                                 rp.getPlayer().getWorld().playEffect(rp.getPlayer().getLocation(),Effect.BOW_FIRE,1,0);
                                 break;
                             case "freezing_ball":
@@ -563,6 +557,8 @@ public class PlayerListener implements Listener {
             damager = plugin.connectedPlayers.get(e.getDamager().getUniqueId());
             plugin.debugMessage("Attacked by another player : " + damager.getPlayer().getName());
             normalAttack  = true;
+            magicAttack = false;
+            arrowAttack = false;
         } else if (e.getDamager() instanceof Arrow) {
             Arrow ar = (Arrow) e.getDamager();
 
@@ -571,6 +567,8 @@ public class PlayerListener implements Listener {
             }
             plugin.debugMessage("Attacked by arrow");
             arrowAttack = true;
+            normalAttack = false;
+            magicAttack = false;
         } else if (e.getDamager() instanceof ThrownPotion) {
             ThrownPotion pot = (ThrownPotion) e.getDamager();
             if (pot.getShooter() instanceof Player) {
@@ -578,9 +576,8 @@ public class PlayerListener implements Listener {
             }
             plugin.debugMessage("Attacked by potion");
             magicAttack = true;
-        }
-        else{
-            normalAttack  = true;
+            normalAttack = false;
+            arrowAttack = false;
         }
 
         //CUSTOM PROJECTILE (SKILLS AND STAFFS)
@@ -606,11 +603,19 @@ public class PlayerListener implements Listener {
                 else{
                     ConfigurationSection staffSection = Staffs.getInstance().getConfigurationSection(projectile.getCustomName());
                     if(staffSection != null){
+
                         double baseDamage = staffSection.getDouble("base_damage",-1);
                         String effect = staffSection.getString("effect","");
                         int effectDuration = staffSection.getInt("effect_duration",3);
+                        plugin.debugMessage("Attacked by magic projectile");
 
-                        if(baseDamage >= 0) e.setDamage(baseDamage);
+                        if(baseDamage >= 0) {
+                            e.setDamage(baseDamage);
+                            oldDamage = baseDamage;
+                            magicAttack = true;
+                            arrowAttack = false;
+                            normalAttack = false;
+                        }
 
                         switch (effect){
                             case "freezing_ball":
@@ -654,13 +659,13 @@ public class PlayerListener implements Listener {
 
         //APPLYING DAMAGE CHANGE DEPENDING ON OFFENCIVE ATTRIBUTES
         if(arrowAttack && damager != null && Settings.getInstance().math.onPlayerAttackEntity.attackEntityBy.projectile_enable){
-            e.setDamage(getAttackByProjectile(damager,oldDamage));
+            e.setDamage(getAttackByProjectile(damager,e.getDamage()));
         }
         else if(normalAttack && damager != null && Settings.getInstance().math.onPlayerAttackEntity.attackEntityBy.weapon_enable){
-            e.setDamage(getAttackByWeapon(damager,oldDamage));
+            e.setDamage(getAttackByWeapon(damager,e.getDamage()));
         }
         else if(magicAttack && damager != null && Settings.getInstance().math.onPlayerAttackEntity.attackEntityBy.potion_enable){
-            e.setDamage(getAttackByPotion(damager,oldDamage));
+            e.setDamage(getAttackByPotion(damager,e.getDamage()));
         }
 
         //applying skilled attack if necessary
@@ -687,7 +692,7 @@ public class PlayerListener implements Listener {
                         ticksRun++;
                         int directionY = ticksRun < 10 ? 1 : -1;
                         holoDamage.teleport(holoDamage.getLocation().add(0.025 * directionX, 0.125*directionY, 0.025 * directionZ));
-                        if (ticksRun > 100) { // 100 ticks = 5 seconds
+                        if (ticksRun > 60) { // 100 ticks = 5 seconds
                             holoDamage.delete();
                             cancel();
                         }

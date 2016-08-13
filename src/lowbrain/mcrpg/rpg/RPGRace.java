@@ -1,13 +1,10 @@
 package lowbrain.mcrpg.rpg;
 
 import lowbrain.mcrpg.config.Races;
-import lowbrain.mcrpg.events.PlayerListener;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Moofy on 19/07/2016.
@@ -38,21 +35,22 @@ public class RPGRace {
 
     public void Initialize(){
         FileConfiguration config = Races.getInstance();
-        tag = config.getString(name+".tag");
-        health = config.getInt(name+".health");
-        strength = config.getInt(name+".strength");
-        defence = config.getInt(name+".defence");
-        dexterity = config.getInt(name+".dexterity");
-        intelligence = config.getInt(name+".intelligence");
-        magicResistance = config.getInt(name+".magic_resistance");
-        agility = config.getInt(name+".agility");
+        tag = config.getString(name+".tag","");
+        health = config.getInt(name+".health",0);
+        strength = config.getInt(name+".strength",0);
+        defence = config.getInt(name+".defence",0);
+        dexterity = config.getInt(name+".dexterity",0);
+        intelligence = config.getInt(name+".intelligence",0);
+        magicResistance = config.getInt(name+".magic_resistance",0);
+        agility = config.getInt(name+".agility",0);
 
-        max_health = (float)config.getDouble(name+".max_health");
-        base_health = (float)config.getDouble(name+".base_health");
-        max_mana = (float)config.getDouble(name+".max_mana");
-        base_mana = (float)config.getDouble(name+".base_mana");
+        max_health = (float)config.getDouble(name+".max_health",0);
+        base_health = (float)config.getDouble(name+".base_health",0);
+        max_mana = (float)config.getDouble(name+".max_mana",0);
+        base_mana = (float)config.getDouble(name+".base_mana",0);
 
         bonusAttributes = config.getStringList(name+".bonus_attributes");
+        if(bonusAttributes == null)bonusAttributes = new ArrayList<String>();
         SetPowers();
     }
 
@@ -61,6 +59,7 @@ public class RPGRace {
      */
     private void SetPowers(){
         this.powers = Races.getInstance().getStringList(name+".powers");
+        if(this.powers == null) this.powers = new ArrayList<String>();
     }
 
     public String toString() {

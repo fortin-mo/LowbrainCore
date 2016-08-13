@@ -194,27 +194,27 @@ public class RPGPlayer {
 			}
 		}
 
-		classIsSet = playerData.getBoolean("class.is_set");
-		className = playerData.getString("class.name");
+		classIsSet = playerData.getBoolean("class.is_set",false);
+		className = playerData.getString("class.name","");
 
-		raceIsSet = playerData.getBoolean("race.is_set");
-		raceName = playerData.getString("race.name");
+		raceIsSet = playerData.getBoolean("race.is_set",false);
+		raceName = playerData.getString("race.name","");
 
-        strength = playerData.getInt("stats.strength");
-        intelligence = playerData.getInt("stats.intelligence");
-        health = playerData.getInt("stats.health");
-        defence = playerData.getInt("stats.defence");
-        dexterity = playerData.getInt("stats.dexterity");
-		magicResistance = playerData.getInt("stats.magic_resistance");
-        experience = (float)playerData.getDouble("stats.experience");
-        points = playerData.getInt("stats.points");
-		skillPoints = playerData.getInt("stats.skill_points");
-        lvl = playerData.getInt("stats.lvl");
-        nextLvl = (float)playerData.getDouble("stats.next_lvl");
-		kills = playerData.getInt("stats.kills");
-		deaths = playerData.getInt("stats.deaths");
-		currentMana = (float)playerData.getDouble("stats.current_mana");
-		agility = playerData.getInt("stats.agility");
+        strength = playerData.getInt("stats.strength",0);
+        intelligence = playerData.getInt("stats.intelligence",0);
+        health = playerData.getInt("stats.health",0);
+        defence = playerData.getInt("stats.defence",0);
+        dexterity = playerData.getInt("stats.dexterity",0);
+		magicResistance = playerData.getInt("stats.magic_resistance",0);
+        experience = (float)playerData.getDouble("stats.experience",0);
+        points = playerData.getInt("stats.points",0);
+		skillPoints = playerData.getInt("stats.skill_points",0);
+        lvl = playerData.getInt("stats.lvl",0);
+        nextLvl = (float)playerData.getDouble("stats.next_lvl",0);
+		kills = playerData.getInt("stats.kills",0);
+		deaths = playerData.getInt("stats.deaths",0);
+		currentMana = (float)playerData.getDouble("stats.current_mana",0);
+		agility = playerData.getInt("stats.agility",0);
 
 		ConfigurationSection skillsSection = playerData.getConfigurationSection("skills");
 
@@ -363,7 +363,7 @@ public class RPGPlayer {
 		}
 
 		Main.ItemRequirements i = PlayerListener.plugin.itemsRequirements.get(name);
-
+		if(i == null) return true;
 		return meetRequirements(i.getRequirements());
 	}
 
@@ -384,7 +384,7 @@ public class RPGPlayer {
 		}
 
 		Main.ItemRequirements i = PlayerListener.plugin.itemsRequirements.get(name);
-
+		if(i == null)return msg;
 		return meetRequirementsString(i.getRequirements());
 	}
 

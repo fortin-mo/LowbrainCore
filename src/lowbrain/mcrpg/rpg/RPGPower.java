@@ -3,12 +3,14 @@ package lowbrain.mcrpg.rpg;
 import lowbrain.mcrpg.commun.Helper;
 import lowbrain.mcrpg.config.Powers;
 import lowbrain.mcrpg.events.PlayerListener;
+import net.minecraft.server.v1_10_R1.PlayerList;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import sun.util.resources.cldr.aa.CalendarData_aa_DJ;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -45,25 +47,23 @@ public class RPGPower {
         this.requirements = new HashMap<>();
         this.cooldown_influence = new HashMap<>();
         FileConfiguration config = Powers.getInstance();
-        this.mana = (float)config.getDouble(this.name + ".mana");
-        this.cast_range = (float)config.getDouble(this.name + ".cast_range");
+        this.mana = (float)config.getDouble(this.name + ".mana",0);
+        this.cast_range = (float)config.getDouble(this.name + ".cast_range",0);
 
-        this.minimum_cooldown = config.getInt(this.name + ".minimum_cooldown");
-        this.maximum_cooldown = config.getInt(this.name + ".maximum_cooldown");
+        this.maximum_amplifier = (float)config.getDouble(this.name + ".cast.amplifier.maximum",0);
+        this.minimum_amplifier = (float)config.getDouble(this.name + ".cast.amplifier.minimum",0);
+        this.amplifier_range = (float)config.getDouble(this.name + ".cast.amplifier.range",0);
+        this.amplifier_intelligence = (float)config.getDouble(this.name + ".cast.amplifier.intelligence",0);
+        this.amplifier_dexterity = (float)config.getDouble(this.name + ".cast.amplifier.dexterity",0);
+        this.amplifier_function = config.getString(this.name + ".cast.amplifier.function","");
 
-        this.maximum_amplifier = (float)config.getDouble(this.name + ".cast.amplifier.maximum");
-        this.minimum_amplifier = (float)config.getDouble(this.name + ".cast.amplifier.minimum");
-        this.amplifier_range = (float)config.getDouble(this.name + ".cast.amplifier.range");
-        this.amplifier_intelligence = (float)config.getDouble(this.name + ".cast.amplifier.intelligence");
-        this.amplifier_dexterity = (float)config.getDouble(this.name + ".cast.amplifier.dexterity");
-        this.amplifier_function = config.getString(this.name + ".cast.amplifier.function");
-
-        this.maximum_duration = (float)config.getDouble(this.name + ".cast.duration.maximum");
-        this.minimum_duration = (float)config.getDouble(this.name + ".cast.duration.minimum");
-        this.duration_range = (float)config.getDouble(this.name + ".cast.duration.range");
-        this.duration_intelligence = (float)config.getDouble(this.name + ".cast.duration.intelligence");
-        this.duration_dexterity = (float)config.getDouble(this.name + ".cast.duration.dexterity");
-        this.duration_function = config.getString(this.name + ".cast.duration.function");
+        this.maximum_duration = (float)config.getDouble(this.name + ".cast.duration.maximum",0);
+        this.minimum_duration = (float)config.getDouble(this.name + ".cast.duration.minimum",0);
+        this.duration_range = (float)config.getDouble(this.name + ".cast.duration.range",0);
+        this.duration_intelligence = (float)config.getDouble(this.name + ".cast.duration.intelligence",0);
+        this.duration_dexterity = (float)config.getDouble(this.name + ".cast.duration.dexterity",0);
+        this.duration_function = config.getString(this.name + ".cast.duration.function","");
+        this.lastCast = Calendar.getInstance();
 
         ConfigurationSection requirementsSection = config.getConfigurationSection(this.name + ".requirements");
         if(requirementsSection != null){
@@ -73,7 +73,7 @@ public class RPGPower {
             }
         }
 
-        ConfigurationSection cooldownSection = config.getConfigurationSection(this.name + ".cooldown");
+        ConfigurationSection cooldownSection = config.getConfigurationSection(this.name + ".cast.cooldown");
         if(cooldownSection != null){
             maximum_cooldown = cooldownSection.getInt("maximum");
             minimum_cooldown = cooldownSection.getInt("minimum");
@@ -211,8 +211,8 @@ public class RPGPower {
             Calendar cooldowntime = Calendar.getInstance();
             cooldowntime.add(Calendar.SECOND,-getCooldown(from));
 
-            if(this.lastCast.before((cooldowntime))){
-                int rest = (int)(lastCast.getTimeInMillis() - cooldowntime.getTimeInMillis() / 1000);
+            if(this.lastCast.after(cooldowntime)){
+                int rest = (int)((lastCast.getTimeInMillis() - cooldowntime.getTimeInMillis()) / 1000);
                 from.SendMessage("Spell in cooldown ! " + rest + " seconds left !",ChatColor.RED);
                 return false;
             }
@@ -251,7 +251,8 @@ public class RPGPower {
 
             from.setCurrentMana(from.getCurrentMana() - this.getMana());
             this.lastCast = Calendar.getInstance();
-
+            PlayerListener.plugin.debugMessage(from.getPlayer().getName() + " cast " + this.getName());
+            from.SendMessage("Cast succeeded !");
             return true;
         }catch (Exception e){
             from.SendMessage("Failed to cast " + this.name, ChatColor.RED);

@@ -12,6 +12,8 @@ import java.io.File;
  * Created by Moofy on 10/08/2016.
  */
 public class Classes extends absConfig {
+    private static FileConfiguration instance;
+    private static File file;
     public static FileConfiguration getInstance(){
         if(instance == null){
             file = new File(getDataFolder(),"classes.yml");
@@ -30,6 +32,9 @@ public class Classes extends absConfig {
             }
         }
         return instance;
+    }
+    public static void reload(){
+        instance = null;
     }
 
 

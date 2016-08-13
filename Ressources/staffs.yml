@@ -23,7 +23,7 @@ staff_teleport:
    - S,STICK
 staff_teleport_plus:
  enable: true
- material: STICK
+ material: BLAZE_ROD
  cooldown: 10
  gravity: true
  speed: 3
@@ -56,10 +56,11 @@ staff_fire:
    - S,STICK
 staff_fire_plus:
  enable: true
- material: STICK
+ material: BLAZE_ROD
  cooldown: 6
  gravity: true
  speed: 3
+ base_damage: 8
  efect_duration: 6
  effect: fire_tick
  durability: 120
@@ -89,9 +90,10 @@ staff_fireball:
    - S,STICK
 staff_fireball_plus:
  enable: true
- material: STICK
+ material: BLAZE_ROD
  cooldown: 15
  gravity: true
+ base_damage: 10
  speed: 1
  effect: fire_ball
  durability: 120
@@ -109,7 +111,7 @@ staff_freezing:
  cooldown: 15
  gravity: true
  speed: 1
- base_damage: 0
+ base_damage: 4
  effect_duration: 3
  effect: freezing_ball
  durability: 60
@@ -122,11 +124,11 @@ staff_freezing:
    - S,STICK
 staff_freezing_plus:
  enable: true
- material: STICK
+ material: BLAZE_ROD
  cooldown: 15
  gravity: true
  speed: 1
- base_damage: 0
+ base_damage: 6
  effect_duratoin: 6
  effect: freezing_ball
  durability: 120

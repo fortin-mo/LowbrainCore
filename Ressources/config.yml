@@ -99,7 +99,7 @@ maths: # everything needed to calculate damage, resitance, etc
   by_potion:
    enable: true
    function:
-   intelligence: 85
+   intelligence: 0.85
    dexterity: 0.15
    maximum: 2.5
    minimum: 0.05

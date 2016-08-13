@@ -1,5 +1,6 @@
 package lowbrain.mcrpg.main;
 
+import java.io.File;
 import java.util.*;
 
 import lowbrain.mcrpg.commun.Settings;
@@ -58,7 +59,7 @@ public class Main extends JavaPlugin {
         PlayerListener playerListener = new PlayerListener(this);
 
 	    getServer().getPluginManager().registerEvents(playerListener, this);
-		getServer().getPluginManager().registerEvents(new ArmorListener(getConfig().getStringList("blocked")), this);
+		getServer().getPluginManager().registerEvents(new ArmorListener(Config.getInstance().getStringList("blocked")), this);
 	    this.getCommand("mcrpg").setExecutor(new RPGCommand(this));
 	    this.getLogger().info("[LowbrainMCRPG] " + getDescription().getVersion() + " enabled!");
 
@@ -71,13 +72,22 @@ public class Main extends JavaPlugin {
 			}, 0, Settings.getInstance().save_interval * 20);
 		}
 
-
-		ScoreboardManager manager = Bukkit.getScoreboardManager();
-
     }
 
     private void InitialisingConfigFile(){
 		try {
+
+			Config.getInstance();
+			Classes.getInstance();
+			CustomItems.getInstance();
+			ItemsRequirements.getInstance();
+			MobsXP.getInstance();
+			Powers.getInstance();
+			Races.getInstance();
+			Skills.getInstance();
+			Staffs.getInstance();
+			Settings.getInstance();
+
 			loadSkills();
 			loadItemsRequirements();
 			createCustomItems();
@@ -119,7 +129,7 @@ public class Main extends JavaPlugin {
 
     private boolean evaluateFunctions(){
     	List<String> functions = new ArrayList<String>();
-		recursiveConfigFunctionSearch(this.getConfig(),functions);
+		recursiveConfigFunctionSearch(Config.getInstance(),functions);
 
 		for (String key: Powers.getInstance().getKeys(false)
 			 ) {

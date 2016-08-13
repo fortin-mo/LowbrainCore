@@ -6,7 +6,6 @@ import lowbrain.mcrpg.events.PlayerListener;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
