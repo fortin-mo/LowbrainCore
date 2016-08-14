@@ -40,6 +40,9 @@ public class PlayerListener implements Listener {
 
 	public static Main plugin;
 
+    //used when a projectile is laucnh by a staff so when EntityDamageEvent (cause is projectile) we use magic attack defence instead
+    private static boolean forceMagicAttack = false;
+
     public PlayerListener(Main instance) {
         plugin = instance;
     }
@@ -225,7 +228,7 @@ public class PlayerListener implements Listener {
             //MAGIC POTION DAMAGE
             else if((e.getCause().equals(EntityDamageEvent.DamageCause.MAGIC)
                     || e.getCause().equals(EntityDamageEvent.DamageCause.WITHER)
-                    || e.getCause().equals(EntityDamageEvent.DamageCause.POISON)) && Settings.getInstance().math.onPlayerGetDamaged.magic_enable){
+                    || e.getCause().equals(EntityDamageEvent.DamageCause.POISON) || forceMagicAttack) && Settings.getInstance().math.onPlayerGetDamaged.magic_enable){
                 plugin.debugMessage("Damage caused by : " + e.getCause().name());
                 multiplier = getDamagedByMagic(damagee);
 
@@ -243,6 +246,7 @@ public class PlayerListener implements Listener {
                 else if(Settings.getInstance().math.onPlayerGetDamaged.reducingBadPotionEffect.enable){
                     ReducingBadPotionEffect(damagee);
                 }
+                forceMagicAttack = false;
             }
 
             //ARROW
@@ -446,7 +450,7 @@ public class PlayerListener implements Listener {
      * call when a player attacks
      * @param e
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerAttack(EntityDamageByEntityEvent e) {
         RPGPlayer damager = null;
 
@@ -519,6 +523,7 @@ public class PlayerListener implements Listener {
                             magicAttack = true;
                             arrowAttack = false;
                             normalAttack = false;
+                            forceMagicAttack = true;
                         }
 
                         switch (effect){
