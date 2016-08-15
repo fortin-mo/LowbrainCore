@@ -9,7 +9,7 @@
 # base_cooldown : time between each attack (in second) (at level 1)
 # base_requirements : look at itemrequirements.yml (without race and class)
 
-spread_of_arrow:
+spread:
  enable: true
  max_level: 5
  base_skillpoints_cost: 2
@@ -27,7 +27,7 @@ spread_of_arrow:
   level: 15
   dexterity: 15
 
-barrage_of_arrow:
+barrage:
  enable: true
  max_level: 5
  base_skillpoints_cost: 2
@@ -84,7 +84,7 @@ frozen_arrow:
   dexterity: 15
   intelligence: 15
 
-straight_arrow:
+sniper:
  enable: true
  max_level: 3
  base_skillpoints_cost: 1

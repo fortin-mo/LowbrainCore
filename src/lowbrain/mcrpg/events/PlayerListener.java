@@ -2,6 +2,7 @@ package lowbrain.mcrpg.events;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+
 import lowbrain.mcrpg.commun.Helper;
 import lowbrain.mcrpg.commun.Settings;
 import lowbrain.mcrpg.config.MobsXP;
@@ -9,7 +10,6 @@ import lowbrain.mcrpg.config.Staffs;
 import lowbrain.mcrpg.main.Main;
 import lowbrain.mcrpg.rpg.RPGSkill;
 import org.bukkit.*;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.*;
 import org.bukkit.event.Event;
@@ -39,9 +39,6 @@ import java.util.Locale;
 public class PlayerListener implements Listener {
 
 	public static Main plugin;
-
-    //used when a projectile is laucnh by a staff so when EntityDamageEvent (cause is projectile) we use magic attack defence instead
-    private static boolean forceMagicAttack = false;
 
     public PlayerListener(Main instance) {
         plugin = instance;
@@ -189,90 +186,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    /**
-     * Called when a player get damaged
-     * @param e
-     */
-    @EventHandler
-    public void onPlayerDamaged(EntityDamageEvent e){
-        if(e.getEntity() instanceof Player){
-            RPGPlayer damagee = plugin.connectedPlayers.get(e.getEntity().getUniqueId());
-            if(damagee == null) return;
-            // multiplier = a * x + b : where a = max-min/max_stats, and b = min
-            float multiplier = 1;
 
-            plugin.debugMessage("Initial damage : " +e.getDamage());
-
-            //FALL DAMAGE
-            if(e.getCause().equals(EntityDamageEvent.DamageCause.FALL) && Settings.getInstance().math.onPlayerGetDamaged.fall_enable){
-                plugin.debugMessage("Damage caused by : " + e.getCause().name());
-                multiplier = getDamagedByFall(damagee);
-            }
-
-            //FIRE DAMAGE
-            else if((e.getCause().equals(EntityDamageEvent.DamageCause.FIRE_TICK)
-                    || e.getCause().equals(EntityDamageEvent.DamageCause.FIRE)
-                    || e.getCause().equals(EntityDamageEvent.DamageCause.DRAGON_BREATH)
-                    || e.getCause().equals(EntityDamageEvent.DamageCause.LIGHTNING)) && Settings.getInstance().math.onPlayerGetDamaged.fire_enable){
-                plugin.debugMessage("Damage caused by : " + e.getCause().name());
-                multiplier = getDamagedByFire(damagee);
-            }
-
-            //EXPLOSION
-            else if((e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)
-                    || e.getCause().equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION))&& Settings.getInstance().math.onPlayerGetDamaged.explosion_enable){
-                plugin.debugMessage("Damage caused by : " + e.getCause().name());
-                multiplier = getDamagedByExplosion(damagee);
-            }
-
-            //MAGIC POTION DAMAGE
-            else if((e.getCause().equals(EntityDamageEvent.DamageCause.MAGIC)
-                    || e.getCause().equals(EntityDamageEvent.DamageCause.WITHER)
-                    || e.getCause().equals(EntityDamageEvent.DamageCause.POISON) || forceMagicAttack) && Settings.getInstance().math.onPlayerGetDamaged.magic_enable){
-                plugin.debugMessage("Damage caused by : " + e.getCause().name());
-                multiplier = getDamagedByMagic(damagee);
-
-                float changeOfRemovingEffect = -1F;
-
-                if(Settings.getInstance().math.onPlayerGetDamaged.chanceOfRemovingMagicEffect.enable){
-                    changeOfRemovingEffect = getChangeOfRemovingPotionEffect(damagee);
-                }
-
-                double rdm = Math.random();
-                if(rdm < changeOfRemovingEffect){
-                    RemoveBadPotionEffect(damagee.getPlayer());
-                    plugin.debugMessage("all effect removed");
-                }
-                else if(Settings.getInstance().math.onPlayerGetDamaged.reducingBadPotionEffect.enable){
-                    ReducingBadPotionEffect(damagee);
-                }
-                forceMagicAttack = false;
-            }
-
-            //ARROW
-            else if(e.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE) && Settings.getInstance().math.onPlayerGetDamaged.projectile_enable){
-                plugin.debugMessage("Damage caused by : " + e.getCause().name());
-                multiplier = getDamagedByProjectile(damagee);
-            }
-
-            //CONTACT
-            else if(e.getCause().equals(EntityDamageEvent.DamageCause.CONTACT) && Settings.getInstance().math.onPlayerGetDamaged.contact_enable){
-                plugin.debugMessage("Damage caused by : " + e.getCause().name());
-                multiplier = getDamagedByContact(damagee);
-            }
-
-            else if(Settings.getInstance().math.onPlayerGetDamaged.weapon_enable){
-                if(e.getCause() != null) {
-                    plugin.debugMessage("Damage caused by : " + e.getCause().name());
-                }
-                multiplier = getDamagedByWeapon(damagee);
-            }
-
-            plugin.debugMessage("Deffencive damage multiplier : " + multiplier);
-            e.setDamage(e.getDamage() * multiplier);
-            plugin.debugMessage("Damage after deffencive multiplier : " + e.getDamage());
-        }
-    }
 
     /**
      * called when a player experience changes naturally
@@ -450,7 +364,7 @@ public class PlayerListener implements Listener {
      * call when a player attacks
      * @param e
      */
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerAttack(EntityDamageByEntityEvent e) {
         RPGPlayer damager = null;
 
@@ -523,7 +437,31 @@ public class PlayerListener implements Listener {
                             magicAttack = true;
                             arrowAttack = false;
                             normalAttack = false;
-                            forceMagicAttack = true;
+
+                            if(e.getEntity() instanceof Player){
+                                RPGPlayer damagee = plugin.connectedPlayers.get(e.getEntity().getUniqueId());
+                                if(damagee != null){
+                                    double multiplier = getDamagedByMagic(damagee);
+                                    plugin.debugMessage("Damage from magic projectile reduced by : " + multiplier);
+                                    float changeOfRemovingEffect = -1F;
+
+                                    if(Settings.getInstance().math.onPlayerGetDamaged.chanceOfRemovingMagicEffect.enable){
+                                        changeOfRemovingEffect = getChangeOfRemovingPotionEffect(damagee);
+                                    }
+
+                                    double rdm = Math.random();
+                                    if(rdm < changeOfRemovingEffect){
+                                        RemoveBadPotionEffect(damagee.getPlayer());
+                                        plugin.debugMessage("all effect removed");
+                                    }
+                                    else if(Settings.getInstance().math.onPlayerGetDamaged.reducingBadPotionEffect.enable){
+                                        ReducingBadPotionEffect(damagee);
+                                    }
+
+                                    e.setDamage(e.getDamage() * multiplier);
+                                }
+                            }
+
                         }
 
                         switch (effect){
@@ -554,7 +492,7 @@ public class PlayerListener implements Listener {
             plugin.debugMessage("From " + damager.getPlayer().getName());
             double chanceOfMagicEffect = Helper.ValueFromFunction(Settings.getInstance().math.onPlayerAttackEntity.chanceOfCreatingMagicAttack.maximum,Settings.getInstance().math.onPlayerAttackEntity.chanceOfCreatingMagicAttack.minimum,
                     (damager.getIntelligence() * Settings.getInstance().math.onPlayerAttackEntity.chanceOfCreatingMagicAttack.intelligence
-                    + damager.getDexterity() * Settings.getInstance().math.onPlayerAttackEntity.chanceOfCreatingMagicAttack.dexterity));
+                            + damager.getDexterity() * Settings.getInstance().math.onPlayerAttackEntity.chanceOfCreatingMagicAttack.dexterity));
 
             double rdm = Math.random();
             if(rdm < chanceOfMagicEffect){
@@ -615,6 +553,93 @@ public class PlayerListener implements Listener {
             plugin.debugMessage("Damage after offencive multiplier : " + e.getDamage());
         }
 
+    }
+
+    /**
+     * Called when a player get damaged
+     * @param e
+     */
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onPlayerDamaged(EntityDamageEvent e){
+        if(e.getEntity() instanceof Player){
+
+            if(e.getDamage() <= 0 ) return;
+
+            RPGPlayer damagee = plugin.connectedPlayers.get(e.getEntity().getUniqueId());
+            if(damagee == null) return;
+            // multiplier = a * x + b : where a = max-min/max_stats, and b = min
+            float multiplier = 1;
+
+            plugin.debugMessage("Initial damage : " +e.getDamage());
+
+            //FALL DAMAGE
+            if(e.getCause().equals(EntityDamageEvent.DamageCause.FALL) && Settings.getInstance().math.onPlayerGetDamaged.fall_enable){
+                plugin.debugMessage("Damage caused by : " + e.getCause().name());
+                multiplier = getDamagedByFall(damagee);
+            }
+
+            //FIRE DAMAGE
+            else if((e.getCause().equals(EntityDamageEvent.DamageCause.FIRE_TICK)
+                    || e.getCause().equals(EntityDamageEvent.DamageCause.FIRE)
+                    || e.getCause().equals(EntityDamageEvent.DamageCause.DRAGON_BREATH)
+                    || e.getCause().equals(EntityDamageEvent.DamageCause.LIGHTNING)) && Settings.getInstance().math.onPlayerGetDamaged.fire_enable){
+                plugin.debugMessage("Damage caused by : " + e.getCause().name());
+                multiplier = getDamagedByFire(damagee);
+            }
+
+            //EXPLOSION
+            else if((e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)
+                    || e.getCause().equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION))&& Settings.getInstance().math.onPlayerGetDamaged.explosion_enable){
+                plugin.debugMessage("Damage caused by : " + e.getCause().name());
+                multiplier = getDamagedByExplosion(damagee);
+            }
+
+            //MAGIC POTION DAMAGE
+            else if((e.getCause().equals(EntityDamageEvent.DamageCause.MAGIC)
+                    || e.getCause().equals(EntityDamageEvent.DamageCause.WITHER)
+                    || e.getCause().equals(EntityDamageEvent.DamageCause.POISON)) && Settings.getInstance().math.onPlayerGetDamaged.magic_enable){
+                plugin.debugMessage("Damage caused by : " + e.getCause().name());
+                multiplier = getDamagedByMagic(damagee);
+
+                float changeOfRemovingEffect = -1F;
+
+                if(Settings.getInstance().math.onPlayerGetDamaged.chanceOfRemovingMagicEffect.enable){
+                    changeOfRemovingEffect = getChangeOfRemovingPotionEffect(damagee);
+                }
+
+                double rdm = Math.random();
+                if(rdm < changeOfRemovingEffect){
+                    RemoveBadPotionEffect(damagee.getPlayer());
+                    plugin.debugMessage("all effect removed");
+                }
+                else if(Settings.getInstance().math.onPlayerGetDamaged.reducingBadPotionEffect.enable){
+                    ReducingBadPotionEffect(damagee);
+                }
+            }
+
+            //ARROW
+            else if(e.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE) && Settings.getInstance().math.onPlayerGetDamaged.projectile_enable){
+                plugin.debugMessage("Damage caused by : " + e.getCause().name());
+                multiplier = getDamagedByProjectile(damagee);
+            }
+
+            //CONTACT
+            else if(e.getCause().equals(EntityDamageEvent.DamageCause.CONTACT) && Settings.getInstance().math.onPlayerGetDamaged.contact_enable){
+                plugin.debugMessage("Damage caused by : " + e.getCause().name());
+                multiplier = getDamagedByContact(damagee);
+            }
+
+            else if(Settings.getInstance().math.onPlayerGetDamaged.weapon_enable){
+                if(e.getCause() != null) {
+                    plugin.debugMessage("Damage caused by : " + e.getCause().name());
+                }
+                multiplier = getDamagedByWeapon(damagee);
+            }
+
+            plugin.debugMessage("Deffencive damage multiplier : " + multiplier);
+            e.setDamage(e.getDamage() * multiplier);
+            plugin.debugMessage("Damage after deffencive multiplier : " + e.getDamage());
+        }
     }
 
     /**

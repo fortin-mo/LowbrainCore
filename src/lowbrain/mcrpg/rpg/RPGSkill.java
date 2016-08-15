@@ -184,7 +184,7 @@ public class RPGSkill {
             if(!canExecute(p))return succeed;
 
             switch (this.name) {
-                case "spread_of_arrow":
+                case "spread":
                     int[] angles = new int[currentLevel * 2];
                     for (int i = 0; i < angles.length / 2; i++) {
                         angles[i] = (i + 1) * 3;
@@ -201,7 +201,7 @@ public class RPGSkill {
                     }
                     succeed = true;
                     break;
-                case "barrage_of_arrow":
+                case "barrage":
                     new BukkitRunnable() {
                         int counts = 1;
                         @Override
@@ -229,7 +229,7 @@ public class RPGSkill {
                     ar.setGlowing(true);
                     succeed = true;
                     break;
-                case "straight_arrow":
+                case "sniper":
                     ar.setVelocity(ar.getVelocity().normalize().multiply(speed * currentLevel));
                     ar.setGravity(false);
                     ar.setGlowing(true);

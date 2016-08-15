@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPlayer.java" description="for(Map.Entry&lt;String, Integer&gt; r : s.getRequiremen..." line="1321" />
+    <bookmark url="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPlayer.java" description="for(Map.Entry&lt;String, Integer&gt; r : s.getRequiremen..." line="1347" />
     <bookmark url="file://$PROJECT_DIR$/Ressources/staffs.yml" line="6" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a78d8515-e588-4e56-ac33-4f32766633d5" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/LowbrainMCRPG.jar" afterPath="$PROJECT_DIR$/target/LowbrainMCRPG.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ressources/skills.yml" afterPath="$PROJECT_DIR$/Ressources/skills.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/events/PlayerListener.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/events/PlayerListener.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPlayer.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPlayer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGSkill.java" afterPath="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGSkill.java" />
     </list>
     <ignored path="LowbrainMCRPG.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -30,24 +35,24 @@
       <file leaf-file-name="PlayerListener.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/events/PlayerListener.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="259" column="81" selection-start-line="259" selection-start-column="81" selection-end-line="259" selection-end-column="81" />
+            <state relative-caret-position="561">
+              <caret line="33" column="26" selection-start-line="33" selection-start-column="26" selection-end-line="33" selection-end-column="26" />
               <folding>
                 <element signature="docComment;method#onPlayerTeleport#0;class#PlayerListener#0" expanded="false" />
                 <element signature="method#onPlayerTeleport#0;class#PlayerListener#0" expanded="false" />
                 <element signature="docComment;method#onPlayerEquipArmor#0;class#PlayerListener#0" expanded="false" />
                 <element signature="method#onPlayerEquipArmor#0;class#PlayerListener#0" expanded="false" />
                 <element signature="method#onPlayerInteract#0;class#PlayerListener#0" expanded="false" />
-                <element signature="docComment;method#onPlayerDamaged#0;class#PlayerListener#0" expanded="false" />
                 <element signature="docComment;method#onPlayerExpChange#0;class#PlayerListener#0" expanded="false" />
                 <element signature="method#onPlayerExpChange#0;class#PlayerListener#0" expanded="false" />
                 <element signature="docComment;method#onEntityDeath#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#onEntityDeath#0;class#PlayerListener#0" expanded="false" />
                 <element signature="method#onPlayerItemHeld#0;class#PlayerListener#0" expanded="false" />
-                <element signature="method#onPlayerSwapHandItems#0;class#PlayerListener#0" expanded="false" />
                 <element signature="docComment;method#onPlayerAttack#0;class#PlayerListener#0" expanded="false" />
-                <element signature="class#29289:29868" expanded="false" />
-                <element signature="method#run#0;class#29289:29868" expanded="false" />
+                <element signature="method#onPlayerAttack#0;class#PlayerListener#0" expanded="false" />
+                <element signature="class#26245:26824" expanded="false" />
+                <element signature="method#run#0;class#26245:26824" expanded="false" />
+                <element signature="docComment;method#onPlayerDamaged#0;class#PlayerListener#0" expanded="false" />
+                <element signature="method#onPlayerDamaged#0;class#PlayerListener#0" expanded="false" />
                 <element signature="docComment;method#onPlayerConsumePotion#0;class#PlayerListener#0" expanded="false" />
                 <element signature="method#onPlayerConsumePotion#0;class#PlayerListener#0" expanded="false" />
                 <element signature="docComment;method#onPlayerShootBow#0;class#PlayerListener#0" expanded="false" />
@@ -71,6 +76,7 @@
                 <element signature="method#getDamagedByFall#0;class#PlayerListener#0" expanded="false" />
                 <element signature="method#getDamagedByExplosion#0;class#PlayerListener#0" expanded="false" />
                 <element signature="method#getDamagedByProjectile#0;class#PlayerListener#0" expanded="false" />
+                <element signature="method#getChangeOfRemovingPotionEffect#0;class#PlayerListener#0" expanded="false" />
                 <element signature="method#getReducingPotionEffect#0;class#PlayerListener#0" expanded="false" />
                 <element signature="method#getBowArrowSpeed#0;class#PlayerListener#0" expanded="false" />
                 <element signature="method#getBowPrecision#0;class#PlayerListener#0" expanded="false" />
@@ -86,249 +92,8 @@
                 <element signature="method#getPlayerKnockbackResistance#0;class#PlayerListener#0" expanded="false" />
                 <element signature="method#getPlayerLuck#0;class#PlayerListener#0" expanded="false" />
                 <element signature="method#getPlayerDropPercentage#0;class#PlayerListener#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="config.yml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Ressources/config.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="334">
-              <caret line="46" column="34" selection-start-line="46" selection-start-column="34" selection-end-line="46" selection-end-column="34" />
-              <folding>
-                <element signature="e#1424#1426#0" expanded="false" />
-                <element signature="e#1476#1479#0" expanded="false" />
-                <element signature="e#1561#1564#0" expanded="false" />
-                <element signature="e#1662#1667#0" expanded="false" />
-                <element signature="e#1759#1764#0" expanded="false" />
-                <element signature="e#1859#1864#0" expanded="false" />
-                <element signature="e#1960#1966#0" expanded="false" />
-                <element signature="e#2105#2111#0" expanded="false" />
-                <element signature="e#2445#2449#0" expanded="false" />
-                <element signature="e#2486#2489#0" expanded="false" />
-                <element signature="e#2571#2575#0" expanded="false" />
-                <element signature="e#2802#2806#0" expanded="false" />
-                <element signature="e#2956#2960#0" expanded="false" />
-                <element signature="e#2990#2992#0" expanded="false" />
-                <element signature="e#3147#3150#0" expanded="false" />
-                <element signature="e#3258#3261#0" expanded="false" />
-                <element signature="e#3356#3531#0" expanded="false" />
-                <element signature="e#3390#3394#0" expanded="false" />
-                <element signature="e#3407#3409#0" expanded="false" />
-                <element signature="e#3442#3445#0" expanded="false" />
-                <element signature="e#3528#3531#0" expanded="false" />
-                <element signature="e#3682#5217#0" expanded="false" />
-                <element signature="e#3812#4069#0" expanded="false" />
-                <element signature="e#4011#4014#0" expanded="false" />
-                <element signature="e#4027#4030#0" expanded="false" />
-                <element signature="e#4048#4051#0" expanded="false" />
-                <element signature="e#4066#4069#0" expanded="false" />
-                <element signature="e#4072#4831#0" expanded="false" />
-                <element signature="e#4191#4195#0" expanded="false" />
-                <element signature="e#4217#4221#0" expanded="false" />
-                <element signature="e#4243#4247#0" expanded="false" />
-                <element signature="e#4277#4281#0" expanded="false" />
-                <element signature="e#4308#4312#0" expanded="false" />
-                <element signature="e#4340#4343#0" expanded="false" />
-                <element signature="e#4373#4376#0" expanded="false" />
-                <element signature="e#4404#4407#0" expanded="false" />
-                <element signature="e#4439#4442#0" expanded="false" />
-                <element signature="e#4472#4475#0" expanded="false" />
-                <element signature="e#4664#4667#0" expanded="false" />
-                <element signature="e#4705#4708#0" expanded="false" />
-                <element signature="e#4744#4747#0" expanded="false" />
-                <element signature="e#4787#4790#0" expanded="false" />
-                <element signature="e#4828#4831#0" expanded="false" />
-                <element signature="e#4834#4955#0" expanded="false" />
-                <element signature="e#4856#4860#0" expanded="false" />
-                <element signature="e#4887#4890#0" expanded="false" />
-                <element signature="e#4905#4908#0" expanded="false" />
-                <element signature="e#4921#4924#0" expanded="false" />
-                <element signature="e#4937#4941#0" expanded="false" />
-                <element signature="e#4952#4955#0" expanded="false" />
-                <element signature="e#4980#4984#0" expanded="false" />
-                <element signature="e#5034#5038#0" expanded="false" />
-                <element signature="e#5051#5054#0" expanded="false" />
-                <element signature="e#5067#5071#0" expanded="false" />
-                <element signature="e#5082#5085#0" expanded="false" />
-                <element signature="e#5088#5217#0" expanded="false" />
-                <element signature="e#5114#5118#0" expanded="false" />
-                <element signature="e#5145#5150#0" expanded="false" />
-                <element signature="e#5165#5170#0" expanded="false" />
-                <element signature="e#5183#5186#0" expanded="false" />
-                <element signature="e#5199#5203#0" expanded="false" />
-                <element signature="e#5214#5217#0" expanded="false" />
-                <element signature="e#5219#6323#0" expanded="false" />
-                <element signature="e#5244#5364#0" expanded="false" />
-                <element signature="e#5265#5269#0" expanded="false" />
-                <element signature="e#5295#5300#0" expanded="false" />
-                <element signature="e#5313#5316#0" expanded="false" />
-                <element signature="e#5334#5338#0" expanded="false" />
-                <element signature="e#5360#5364#0" expanded="false" />
-                <element signature="e#5367#5502#0" expanded="false" />
-                <element signature="e#5387#5391#0" expanded="false" />
-                <element signature="e#5417#5422#0" expanded="false" />
-                <element signature="e#5435#5438#0" expanded="false" />
-                <element signature="e#5451#5455#0" expanded="false" />
-                <element signature="e#5477#5480#0" expanded="false" />
-                <element signature="e#5498#5502#0" expanded="false" />
-                <element signature="e#5505#5617#0" expanded="false" />
-                <element signature="e#5530#5534#0" expanded="false" />
-                <element signature="e#5560#5566#0" expanded="false" />
-                <element signature="e#5579#5582#0" expanded="false" />
-                <element signature="e#5595#5599#0" expanded="false" />
-                <element signature="e#5613#5617#0" expanded="false" />
-                <element signature="e#5620#5723#0" expanded="false" />
-                <element signature="e#5640#5644#0" expanded="false" />
-                <element signature="e#5670#5673#0" expanded="false" />
-                <element signature="e#5686#5689#0" expanded="false" />
-                <element signature="e#5702#5706#0" expanded="false" />
-                <element signature="e#5719#5723#0" expanded="false" />
-                <element signature="e#5726#5817#0" expanded="false" />
-                <element signature="e#5749#5753#0" expanded="false" />
-                <element signature="e#5779#5785#0" expanded="false" />
-                <element signature="e#5798#5801#0" expanded="false" />
-                <element signature="e#5814#5817#0" expanded="false" />
-                <element signature="e#5820#5914#0" expanded="false" />
-                <element signature="e#5846#5850#0" expanded="false" />
-                <element signature="e#5876#5882#0" expanded="false" />
-                <element signature="e#5895#5898#0" expanded="false" />
-                <element signature="e#5911#5914#0" expanded="false" />
-                <element signature="e#5917#6007#0" expanded="false" />
-                <element signature="e#5939#5943#0" expanded="false" />
-                <element signature="e#5969#5975#0" expanded="false" />
-                <element signature="e#5988#5991#0" expanded="false" />
-                <element signature="e#6004#6007#0" expanded="false" />
-                <element signature="e#6010#6162#0" expanded="false" />
-                <element signature="e#6049#6053#0" expanded="false" />
-                <element signature="e#6079#6083#0" expanded="false" />
-                <element signature="e#6096#6099#0" expanded="false" />
-                <element signature="e#6110#6114#0" expanded="false" />
-                <element signature="e#6136#6140#0" expanded="false" />
-                <element signature="e#6158#6162#0" expanded="false" />
-                <element signature="e#6165#6323#0" expanded="false" />
-                <element signature="e#6209#6213#0" expanded="false" />
-                <element signature="e#6239#6242#0" expanded="false" />
-                <element signature="e#6255#6258#0" expanded="false" />
-                <element signature="e#6280#6284#0" expanded="false" />
-                <element signature="e#6302#6305#0" expanded="false" />
-                <element signature="e#6320#6323#0" expanded="false" />
-                <element signature="e#6325#6556#0" expanded="false" />
-                <element signature="e#6356#6360#0" expanded="false" />
-                <element signature="e#6444#6448#0" expanded="false" />
-                <element signature="e#6483#6486#0" expanded="false" />
-                <element signature="e#6499#6502#0" expanded="false" />
-                <element signature="e#6516#6521#0" expanded="false" />
-                <element signature="e#6536#6541#0" expanded="false" />
-                <element signature="e#6552#6556#0" expanded="false" />
-                <element signature="e#6558#6674#0" expanded="false" />
-                <element signature="e#6594#6598#0" expanded="false" />
-                <element signature="e#6620#6623#0" expanded="false" />
-                <element signature="e#6635#6638#0" expanded="false" />
-                <element signature="e#6650#6653#0" expanded="false" />
-                <element signature="e#6670#6674#0" expanded="false" />
-                <element signature="e#6676#6992#0" expanded="false" />
-                <element signature="e#6702#6706#0" expanded="false" />
-                <element signature="e#6730#6732#0" expanded="false" />
-                <element signature="e#6884#6887#0" expanded="false" />
-                <element signature="e#6972#6976#0" expanded="false" />
-                <element signature="e#6988#6992#0" expanded="false" />
-                <element signature="e#6994#7748#0" expanded="false" />
-                <element signature="e#7015#7125#0" expanded="false" />
-                <element signature="e#7042#7046#0" expanded="false" />
-                <element signature="e#7072#7075#0" expanded="false" />
-                <element signature="e#7088#7091#0" expanded="false" />
-                <element signature="e#7104#7107#0" expanded="false" />
-                <element signature="e#7122#7125#0" expanded="false" />
-                <element signature="e#7128#7251#0" expanded="false" />
-                <element signature="e#7153#7157#0" expanded="false" />
-                <element signature="e#7211#7215#0" expanded="false" />
-                <element signature="e#7230#7234#0" expanded="false" />
-                <element signature="e#7248#7251#0" expanded="false" />
-                <element signature="e#7254#7315#0" expanded="false" />
-                <element signature="e#7277#7281#0" expanded="false" />
-                <element signature="e#7312#7315#0" expanded="false" />
-                <element signature="e#7318#7375#0" expanded="false" />
-                <element signature="e#7343#7347#0" expanded="false" />
-                <element signature="e#7372#7375#0" expanded="false" />
-                <element signature="e#7378#7471#0" expanded="false" />
-                <element signature="e#7401#7405#0" expanded="false" />
-                <element signature="e#7431#7434#0" expanded="false" />
-                <element signature="e#7447#7450#0" expanded="false" />
-                <element signature="e#7468#7471#0" expanded="false" />
-                <element signature="e#7474#7595#0" expanded="false" />
-                <element signature="e#7491#7495#0" expanded="false" />
-                <element signature="e#7521#7524#0" expanded="false" />
-                <element signature="e#7556#7560#0" expanded="false" />
-                <element signature="e#7575#7578#0" expanded="false" />
-                <element signature="e#7591#7595#0" expanded="false" />
-                <element signature="e#7598#7748#0" expanded="false" />
-                <element signature="e#7631#7635#0" expanded="false" />
-                <element signature="e#7661#7665#0" expanded="false" />
-                <element signature="e#7678#7681#0" expanded="false" />
-                <element signature="e#7695#7698#0" expanded="false" />
-                <element signature="e#7713#7716#0" expanded="false" />
-                <element signature="e#7729#7732#0" expanded="false" />
-                <element signature="e#7745#7748#0" expanded="false" />
-                <element signature="e#7842#8535#0" expanded="false" />
-                <element signature="e#7854#7861#0" expanded="false" />
-                <element signature="e#7865#7870#0" expanded="false" />
-                <element signature="e#7874#7880#0" expanded="false" />
-                <element signature="e#7884#7893#0" expanded="false" />
-                <element signature="e#7897#7904#0" expanded="false" />
-                <element signature="e#7908#7914#0" expanded="false" />
-                <element signature="e#7918#7927#0" expanded="false" />
-                <element signature="e#7931#7948#0" expanded="false" />
-                <element signature="e#7952#7963#0" expanded="false" />
-                <element signature="e#7967#7972#0" expanded="false" />
-                <element signature="e#7976#7985#0" expanded="false" />
-                <element signature="e#7989#7999#0" expanded="false" />
-                <element signature="e#8003#8020#0" expanded="false" />
-                <element signature="e#8024#8040#0" expanded="false" />
-                <element signature="e#8044#8061#0" expanded="false" />
-                <element signature="e#8065#8082#0" expanded="false" />
-                <element signature="e#8086#8105#0" expanded="false" />
-                <element signature="e#8109#8124#0" expanded="false" />
-                <element signature="e#8128#8139#0" expanded="false" />
-                <element signature="e#8143#8154#0" expanded="false" />
-                <element signature="e#8158#8168#0" expanded="false" />
-                <element signature="e#8172#8183#0" expanded="false" />
-                <element signature="e#8187#8198#0" expanded="false" />
-                <element signature="e#8202#8215#0" expanded="false" />
-                <element signature="e#8219#8230#0" expanded="false" />
-                <element signature="e#8234#8246#0" expanded="false" />
-                <element signature="e#8250#8259#0" expanded="false" />
-                <element signature="e#8263#8276#0" expanded="false" />
-                <element signature="e#8280#8295#0" expanded="false" />
-                <element signature="e#8299#8313#0" expanded="false" />
-                <element signature="e#8317#8340#0" expanded="false" />
-                <element signature="e#8344#8366#0" expanded="false" />
-                <element signature="e#8370#8375#0" expanded="false" />
-                <element signature="e#8379#8391#0" expanded="false" />
-                <element signature="e#8395#8406#0" expanded="false" />
-                <element signature="e#8410#8422#0" expanded="false" />
-                <element signature="e#8426#8440#0" expanded="false" />
-                <element signature="e#8444#8456#0" expanded="false" />
-                <element signature="e#8460#8472#0" expanded="false" />
-                <element signature="e#8476#8489#0" expanded="false" />
-                <element signature="e#8493#8501#0" expanded="false" />
-                <element signature="e#8505#8514#0" expanded="false" />
-                <element signature="e#8518#8527#0" expanded="false" />
-                <element signature="e#8531#8535#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ItemsRequirements.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/config/ItemsRequirements.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="27" column="18" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
-              <folding>
-                <element signature="e#909#910#0" expanded="true" />
-                <element signature="e#940#941#0" expanded="true" />
+                <marker date="1471293974873" expanded="false" signature="9813:17008" ph="{...}" />
+                <marker date="1471293974873" expanded="false" signature="17392:17414" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -337,13 +102,14 @@
       <file leaf-file-name="RPGSkill.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGSkill.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="688">
-              <caret line="354" column="0" selection-start-line="354" selection-start-column="0" selection-end-line="354" selection-end-column="0" />
+            <state relative-caret-position="1810">
+              <caret line="237" column="19" selection-start-line="237" selection-start-column="19" selection-end-line="237" selection-end-column="19" />
               <folding>
                 <element signature="docComment;class#RPGSkill#0" expanded="false" />
+                <element signature="method#RPGSkill#1;class#RPGSkill#0" expanded="false" />
+                <element signature="method#initialize#0;class#RPGSkill#0" expanded="false" />
                 <element signature="method#getManaCost#0;class#RPGSkill#0" expanded="false" />
                 <element signature="method#getRequirement#0;class#RPGSkill#0" expanded="false" />
-                <element signature="method#executeBowSkill#0;class#RPGSkill#0" expanded="false" />
                 <element signature="method#executeWeaponAttackSkill#0;class#RPGSkill#0" expanded="false" />
                 <element signature="method#canExecute#0;class#RPGSkill#0" expanded="false" />
                 <element signature="method#operation#0;class#RPGSkill#0" expanded="false" />
@@ -353,140 +119,47 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Helper.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/commun/Helper.java">
+      <file leaf-file-name="RPGClass.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGClass.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="241" column="24" selection-start-line="241" selection-start-column="24" selection-end-line="241" selection-end-column="24" />
+            <state relative-caret-position="382">
+              <caret line="30" column="26" selection-start-line="30" selection-start-column="26" selection-end-line="30" selection-end-column="26" />
               <folding>
-                <element signature="docComment;class#Helper#0" expanded="false" />
-                <element signature="method#eval#0;class#Helper#0" expanded="false" />
-                <element signature="class#324:3409" expanded="false" />
-                <element signature="method#eat#0;class#324:3409" expanded="false" />
-                <element signature="method#parse#0;class#324:3409" expanded="false" />
-                <element signature="e#982#993#0" expanded="false" />
-                <element signature="method#parseExpression#0;class#324:3409" expanded="false" />
-                <element signature="method#parseTerm#0;class#324:3409" expanded="false" />
-                <element signature="method#parseFactor#0;class#324:3409" expanded="false" />
-                <element signature="method#FormatStringWithValues#0;class#Helper#0" expanded="false" />
-                <element signature="docComment;method#StringIsNullOrEmpty#0;class#Helper#0" expanded="false" />
-                <element signature="docComment;method#randomFloat#0;class#Helper#0" expanded="false" />
-                <element signature="method#randomFloat#0;class#Helper#0" expanded="false" />
-                <element signature="docComment;method#randomInt#0;class#Helper#0" expanded="false" />
-                <element signature="method#randomInt#0;class#Helper#0" expanded="false" />
-                <element signature="docComment;method#intTryParse#0;class#Helper#0" expanded="false" />
-                <element signature="method#intTryParse#0;class#Helper#0" expanded="false" />
-                <element signature="docComment;method#dateTryParse#0;class#Helper#0" expanded="false" />
-                <element signature="method#dateTryParse#0;class#Helper#0" expanded="false" />
-                <element signature="docComment;method#rotateYAxis#0;class#Helper#0" expanded="false" />
-                <element signature="docComment;method#getXValue#0;class#Helper#0" expanded="false" />
-                <element signature="method#getXValue#0;class#Helper#0" expanded="false" />
-                <element signature="docComment;method#getMaxStats#0;class#Helper#0" expanded="false" />
-                <element signature="method#getMaxStats#0;class#Helper#0" expanded="false" />
-                <element signature="docComment;method#Slope#0;class#Helper#0" expanded="false" />
-                <element signature="method#Slope#0;class#Helper#0" expanded="false" />
-                <element signature="docComment;method#ValueFromFunction#0;class#Helper#0" expanded="false" />
+                <element signature="imports" expanded="true" />
+                <element signature="method#RPGClass#0;class#RPGClass#0" expanded="false" />
+                <element signature="method#toString#0;class#RPGClass#0" expanded="false" />
+                <element signature="docComment;method#SetPowers#0;class#RPGClass#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="staffs.yml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Ressources/staffs.yml">
+      <file leaf-file-name="RPGRace.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGRace.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+            <state relative-caret-position="935">
+              <caret line="59" column="29" selection-start-line="59" selection-start-column="29" selection-end-line="59" selection-end-column="29" />
               <folding>
-                <element signature="e#753#975#0" expanded="false" />
-                <element signature="e#778#782#0" expanded="false" />
-                <element signature="e#811#813#0" expanded="false" />
-                <element signature="e#824#828#0" expanded="false" />
-                <element signature="e#848#856#0" expanded="false" />
-                <element signature="e#870#872#0" expanded="false" />
-                <element signature="e#917#928#0" expanded="false" />
-                <element signature="e#949#962#0" expanded="false" />
-                <element signature="e#968#975#0" expanded="false" />
-                <element signature="e#976#1212#0" expanded="false" />
-                <element signature="e#1006#1010#0" expanded="false" />
-                <element signature="e#1022#1031#0" expanded="false" />
-                <element signature="e#1043#1045#0" expanded="false" />
-                <element signature="e#1056#1060#0" expanded="false" />
-                <element signature="e#1080#1088#0" expanded="false" />
-                <element signature="e#1102#1105#0" expanded="false" />
-                <element signature="e#1133#1212#0" expanded="false" />
-                <element signature="e#1150#1161#0" expanded="false" />
-                <element signature="e#1164#1212#0" expanded="false" />
-                <element signature="e#1182#1195#0" expanded="false" />
-                <element signature="e#1201#1212#0" expanded="false" />
-                <element signature="e#1214#1471#0" expanded="false" />
-                <element signature="e#1235#1239#0" expanded="false" />
-                <element signature="e#1268#1270#0" expanded="false" />
-                <element signature="e#1281#1285#0" expanded="false" />
-                <element signature="e#1294#1297#0" expanded="false" />
-                <element signature="e#1342#1351#0" expanded="false" />
-                <element signature="e#1365#1367#0" expanded="false" />
-                <element signature="e#1395#1471#0" expanded="false" />
-                <element signature="e#1412#1423#0" expanded="false" />
-                <element signature="e#1426#1471#0" expanded="false" />
-                <element signature="e#1444#1458#0" expanded="false" />
-                <element signature="e#1464#1471#0" expanded="false" />
-                <element signature="e#1472#1740#0" expanded="false" />
-                <element signature="e#1498#1502#0" expanded="false" />
-                <element signature="e#1514#1523#0" expanded="false" />
-                <element signature="e#1547#1551#0" expanded="false" />
-                <element signature="e#1606#1615#0" expanded="false" />
-                <element signature="e#1629#1632#0" expanded="false" />
-                <element signature="e#1660#1740#0" expanded="false" />
-                <element signature="e#1677#1688#0" expanded="false" />
-                <element signature="e#1691#1740#0" expanded="false" />
-                <element signature="e#1709#1723#0" expanded="false" />
-                <element signature="e#1729#1740#0" expanded="false" />
-                <element signature="e#1742#1981#0" expanded="false" />
-                <element signature="e#1767#1771#0" expanded="false" />
-                <element signature="e#1783#1788#0" expanded="false" />
-                <element signature="e#1800#1802#0" expanded="false" />
-                <element signature="e#1813#1817#0" expanded="false" />
-                <element signature="e#1853#1862#0" expanded="false" />
-                <element signature="e#1876#1878#0" expanded="false" />
-                <element signature="e#1906#1981#0" expanded="false" />
-                <element signature="e#1923#1934#0" expanded="false" />
-                <element signature="e#1937#1981#0" expanded="false" />
-                <element signature="e#1955#1968#0" expanded="false" />
-                <element signature="e#1974#1981#0" expanded="false" />
-                <element signature="e#1982#2235#0" expanded="false" />
-                <element signature="e#2012#2016#0" expanded="false" />
-                <element signature="e#2049#2051#0" expanded="false" />
-                <element signature="e#2062#2066#0" expanded="false" />
-                <element signature="e#2102#2111#0" expanded="false" />
-                <element signature="e#2125#2128#0" expanded="false" />
-                <element signature="e#2156#2235#0" expanded="false" />
-                <element signature="e#2173#2184#0" expanded="false" />
-                <element signature="e#2187#2235#0" expanded="false" />
-                <element signature="e#2205#2218#0" expanded="false" />
-                <element signature="e#2224#2235#0" expanded="false" />
-                <element signature="e#2237#2500#0" expanded="false" />
-                <element signature="e#2262#2266#0" expanded="false" />
-                <element signature="e#2278#2283#0" expanded="false" />
-                <element signature="e#2295#2297#0" expanded="false" />
-                <element signature="e#2308#2312#0" expanded="false" />
-                <element signature="e#2368#2381#0" expanded="false" />
-                <element signature="e#2395#2397#0" expanded="false" />
-                <element signature="e#2425#2500#0" expanded="false" />
-                <element signature="e#2442#2453#0" expanded="false" />
-                <element signature="e#2456#2500#0" expanded="false" />
-                <element signature="e#2474#2487#0" expanded="false" />
-                <element signature="e#2493#2500#0" expanded="false" />
-                <element signature="e#2501#2778#0" expanded="false" />
-                <element signature="e#2531#2535#0" expanded="false" />
-                <element signature="e#2568#2570#0" expanded="false" />
-                <element signature="e#2581#2585#0" expanded="false" />
-                <element signature="e#2641#2654#0" expanded="false" />
-                <element signature="e#2668#2671#0" expanded="false" />
-                <element signature="e#2699#2778#0" expanded="false" />
-                <element signature="e#2716#2727#0" expanded="false" />
-                <element signature="e#2730#2778#0" expanded="false" />
-                <element signature="e#2748#2761#0" expanded="false" />
-                <element signature="e#2767#2778#0" expanded="false" />
+                <element signature="imports" expanded="true" />
+                <element signature="docComment;class#RPGRace#0" expanded="false" />
+                <element signature="docComment;method#SetPowers#0;class#RPGRace#0" expanded="false" />
+                <element signature="method#toString#0;class#RPGRace#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="skills.yml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Ressources/skills.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="756">
+              <caret line="69" column="13" selection-start-line="69" selection-start-column="13" selection-end-line="69" selection-end-column="13" />
+              <folding>
+                <element signature="e#813#817#0" expanded="false" />
+                <element signature="e#874#876#0" expanded="false" />
+                <element signature="e#4612#4614#0" expanded="false" />
+                <element signature="e#4649#4713#0" expanded="false" />
+                <element signature="e#4711#4713#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -512,7 +185,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/weapon.yml" />
         <option value="$PROJECT_DIR$/weapons.yml" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/FireBallStaff.java" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/Fireball.java" />
@@ -554,12 +226,13 @@
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPower.java" />
         <option value="$PROJECT_DIR$/plugin.yml" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/main/RPGCommand.java" />
-        <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPlayer.java" />
         <option value="$PROJECT_DIR$/Ressources/staffs.yml" />
         <option value="$PROJECT_DIR$/Ressources/mobsxp.yml" />
         <option value="$PROJECT_DIR$/Ressources/config.yml" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/commun/Settings.java" />
         <option value="$PROJECT_DIR$/Ressources/itemsrequirements.yml" />
+        <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPlayer.java" />
+        <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/commun/DamageCause.java" />
         <option value="$PROJECT_DIR$/Ressources/skills.yml" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGSkill.java" />
         <option value="$PROJECT_DIR$/src/lowbrain/mcrpg/events/PlayerListener.java" />
@@ -689,54 +362,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="mcrpg" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LowbrainMCRPG" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LowbrainMCRPG" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mcrpg" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="events" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LowbrainMCRPG" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LowbrainMCRPG" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mcrpg" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="config" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1147,13 +772,13 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/lowbrain/mcrpg/events/PlayerListener.java</url>
-          <line>433</line>
+          <url>file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGSkill.java</url>
+          <line>178</line>
           <properties />
-          <option name="timeStamp" value="161" />
+          <option name="timeStamp" value="176" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="175" />
+      <option name="time" value="177" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1168,21 +793,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/Fireball.java" />
-    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/inventory/ItemStack.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="219" column="114" selection-start-line="219" selection-start-column="104" selection-end-line="219" selection-end-column="114" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/Material.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1591">
-          <caret line="538" column="76" selection-start-line="538" selection-start-column="76" selection-end-line="538" selection-end-column="76" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/module_lowbrainmcrpg.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="612">
@@ -2043,17 +1653,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/config/absConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
-          <folding>
-            <element signature="e#436#437#0" expanded="false" />
-            <element signature="e#502#503#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/config/Classes.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="527">
@@ -2101,19 +1700,6 @@
             <element signature="e#906#908#0" expanded="false" />
             <element signature="e#921#923#0" expanded="false" />
             <element signature="e#939#941#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGClass.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="35" column="49" selection-start-line="35" selection-start-column="49" selection-end-line="35" selection-end-column="49" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#RPGClass#0;class#RPGClass#0" expanded="false" />
-            <element signature="method#toString#0;class#RPGClass#0" expanded="false" />
-            <element signature="docComment;method#SetPowers#0;class#RPGClass#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2311,158 +1897,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGRace.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="875">
-          <caret line="59" column="29" selection-start-line="59" selection-start-column="29" selection-end-line="59" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="docComment;class#RPGRace#0" expanded="false" />
-            <element signature="docComment;method#SetPowers#0;class#RPGRace#0" expanded="false" />
-            <element signature="method#toString#0;class#RPGRace#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/entity/Entity.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="49" column="9" selection-start-line="49" selection-start-column="9" selection-end-line="49" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/plugin.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="535">
           <caret line="38" column="65" selection-start-line="38" selection-start-column="65" selection-end-line="38" selection-end-column="65" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPlayer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1166">
-          <caret line="328" column="26" selection-start-line="328" selection-start-column="26" selection-end-line="328" selection-end-column="26" />
-          <folding>
-            <element signature="docComment;method#RPGPlayer#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#RPGPlayer#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#initialiseScoreBoard#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#initialiseScoreBoard#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="e#2179#2257#0" expanded="false" />
-            <element signature="docComment;method#toggleScoreboard#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#toggleScoreboard#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#toggleScoreboard#1;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#toggleScoreboard#1;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#refreshScoreBoard#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#refreshScoreBoard#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#InitialisePlayer#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#InitialisePlayer#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="e#8619#8726#0" expanded="false" />
-            <element signature="docComment;method#compareAttributesByName#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#canEquipItem#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#canEquipItemString#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#meetRequirements#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#meetRequirementsString#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#getAttribute#1;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#castSpell#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#castSpell#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#SaveData#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#SaveData#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#Disconnect#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#Disconnect#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#levelUP#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#levelUP#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#reset#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#reset#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#resetAll#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#resetAll#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="e#17936#18042#0" expanded="false" />
-            <element signature="docComment;method#addExp#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#addExp#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#setExperience#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#setStrength#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#setStrength#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#addStrength#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#addStrength#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#setIntelligence#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#setIntelligence#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#addIntelligence#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#addIntelligence#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#setDexterity#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#setDexterity#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#addDexterity#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#addDexterity#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#setHealth#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#setHealth#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#addHealth#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#addHealth#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#setDefence#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#setDefence#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#addDefence#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#addDefence#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#setMagicResistance#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#setMagicResistance#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#addMagicResistance#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#addMagicResistance#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#setAgility#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#setAgility#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#addAgility#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#addAgility#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#setPoints#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#setPoints#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#addPoints#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#addPoints#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#setLvl#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#addLevel#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#addLevel#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#addKills#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#addDeaths#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#setCurrentMana#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#setRace#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#setRace#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#setClass#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#setClass#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#setCurrentSkill#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#setCurrentSkill#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#addSkillPoints#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#addSkillPoints#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#upgradeSkill#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#upgradeSkill#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="e#37113#37216#0" expanded="false" />
-            <element signature="docComment;method#toString#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#toString#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#getRpgClass#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#getPlayer#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#getNextLvl#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#getKnockBackResistance#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#getMovementSpeed#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="e#40775#40880#0" expanded="false" />
-            <element signature="method#setAttackSpeed#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#setKnockBackResistance#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#setMovementSpeed#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#setPlayerMaxHealth#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#setPlayerMaxHealth#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#setMana#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#setMana#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="e#42173#42261#0" expanded="false" />
-            <element signature="docComment;method#setDisplayName#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#setDisplayName#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#setLuck#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="e#42892#42997#0" expanded="false" />
-            <element signature="docComment;method#AttributeHasChanged#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#AttributeHasChanged#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#errorMessageNotEnoughPoints#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#errorMessageNotEnoughPoints#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#RegenMana#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#RegenMana#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#StartManaRegenTask#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#StartManaRegenTask#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="docComment;method#StopManaRegenTask#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#StopManaRegenTask#0;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#SendMessage#3;class#RPGPlayer#0" expanded="false" />
-            <element signature="method#AddBonusAttributes#0;class#RPGPlayer#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2739,132 +2178,187 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Ressources/skills.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="573">
-          <caret line="180" column="16" selection-start-line="180" selection-start-column="16" selection-end-line="180" selection-end-column="16" />
-          <folding>
-            <element signature="e#822#826#0" expanded="false" />
-            <element signature="e#883#885#0" expanded="false" />
-            <element signature="e#4638#4640#0" expanded="false" />
-            <element signature="e#4675#4739#0" expanded="false" />
-            <element signature="e#4737#4739#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Ressources/staffs.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding>
-            <element signature="e#753#975#0" expanded="false" />
-            <element signature="e#778#782#0" expanded="false" />
-            <element signature="e#811#813#0" expanded="false" />
-            <element signature="e#824#828#0" expanded="false" />
-            <element signature="e#848#856#0" expanded="false" />
-            <element signature="e#870#872#0" expanded="false" />
-            <element signature="e#917#928#0" expanded="false" />
-            <element signature="e#949#962#0" expanded="false" />
-            <element signature="e#968#975#0" expanded="false" />
-            <element signature="e#976#1212#0" expanded="false" />
-            <element signature="e#1006#1010#0" expanded="false" />
-            <element signature="e#1022#1031#0" expanded="false" />
-            <element signature="e#1043#1045#0" expanded="false" />
-            <element signature="e#1056#1060#0" expanded="false" />
-            <element signature="e#1080#1088#0" expanded="false" />
-            <element signature="e#1102#1105#0" expanded="false" />
-            <element signature="e#1133#1212#0" expanded="false" />
-            <element signature="e#1150#1161#0" expanded="false" />
-            <element signature="e#1164#1212#0" expanded="false" />
-            <element signature="e#1182#1195#0" expanded="false" />
-            <element signature="e#1201#1212#0" expanded="false" />
-            <element signature="e#1214#1471#0" expanded="false" />
-            <element signature="e#1235#1239#0" expanded="false" />
-            <element signature="e#1268#1270#0" expanded="false" />
-            <element signature="e#1281#1285#0" expanded="false" />
-            <element signature="e#1294#1297#0" expanded="false" />
-            <element signature="e#1342#1351#0" expanded="false" />
-            <element signature="e#1365#1367#0" expanded="false" />
-            <element signature="e#1395#1471#0" expanded="false" />
-            <element signature="e#1412#1423#0" expanded="false" />
-            <element signature="e#1426#1471#0" expanded="false" />
-            <element signature="e#1444#1458#0" expanded="false" />
-            <element signature="e#1464#1471#0" expanded="false" />
-            <element signature="e#1472#1740#0" expanded="false" />
-            <element signature="e#1498#1502#0" expanded="false" />
-            <element signature="e#1514#1523#0" expanded="false" />
-            <element signature="e#1547#1551#0" expanded="false" />
-            <element signature="e#1606#1615#0" expanded="false" />
-            <element signature="e#1629#1632#0" expanded="false" />
-            <element signature="e#1660#1740#0" expanded="false" />
-            <element signature="e#1677#1688#0" expanded="false" />
-            <element signature="e#1691#1740#0" expanded="false" />
-            <element signature="e#1709#1723#0" expanded="false" />
-            <element signature="e#1729#1740#0" expanded="false" />
-            <element signature="e#1742#1981#0" expanded="false" />
-            <element signature="e#1767#1771#0" expanded="false" />
-            <element signature="e#1783#1788#0" expanded="false" />
-            <element signature="e#1800#1802#0" expanded="false" />
-            <element signature="e#1813#1817#0" expanded="false" />
-            <element signature="e#1853#1862#0" expanded="false" />
-            <element signature="e#1876#1878#0" expanded="false" />
-            <element signature="e#1906#1981#0" expanded="false" />
-            <element signature="e#1923#1934#0" expanded="false" />
-            <element signature="e#1937#1981#0" expanded="false" />
-            <element signature="e#1955#1968#0" expanded="false" />
-            <element signature="e#1974#1981#0" expanded="false" />
-            <element signature="e#1982#2235#0" expanded="false" />
-            <element signature="e#2012#2016#0" expanded="false" />
-            <element signature="e#2049#2051#0" expanded="false" />
-            <element signature="e#2062#2066#0" expanded="false" />
-            <element signature="e#2102#2111#0" expanded="false" />
-            <element signature="e#2125#2128#0" expanded="false" />
-            <element signature="e#2156#2235#0" expanded="false" />
-            <element signature="e#2173#2184#0" expanded="false" />
-            <element signature="e#2187#2235#0" expanded="false" />
-            <element signature="e#2205#2218#0" expanded="false" />
-            <element signature="e#2224#2235#0" expanded="false" />
-            <element signature="e#2237#2500#0" expanded="false" />
-            <element signature="e#2262#2266#0" expanded="false" />
-            <element signature="e#2278#2283#0" expanded="false" />
-            <element signature="e#2295#2297#0" expanded="false" />
-            <element signature="e#2308#2312#0" expanded="false" />
-            <element signature="e#2368#2381#0" expanded="false" />
-            <element signature="e#2395#2397#0" expanded="false" />
-            <element signature="e#2425#2500#0" expanded="false" />
-            <element signature="e#2442#2453#0" expanded="false" />
-            <element signature="e#2456#2500#0" expanded="false" />
-            <element signature="e#2474#2487#0" expanded="false" />
-            <element signature="e#2493#2500#0" expanded="false" />
-            <element signature="e#2501#2778#0" expanded="false" />
-            <element signature="e#2531#2535#0" expanded="false" />
-            <element signature="e#2568#2570#0" expanded="false" />
-            <element signature="e#2581#2585#0" expanded="false" />
-            <element signature="e#2641#2654#0" expanded="false" />
-            <element signature="e#2668#2671#0" expanded="false" />
-            <element signature="e#2699#2778#0" expanded="false" />
-            <element signature="e#2716#2727#0" expanded="false" />
-            <element signature="e#2730#2778#0" expanded="false" />
-            <element signature="e#2748#2761#0" expanded="false" />
-            <element signature="e#2767#2778#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/event/entity/EntityDamageEvent.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="161" column="23" selection-start-line="161" selection-start-column="23" selection-end-line="161" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Ressources/configV2.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="444">
           <caret line="117" column="0" selection-start-line="117" selection-start-column="0" selection-end-line="117" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/config/ItemsRequirements.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="27" column="18" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
+          <folding>
+            <element signature="e#909#910#0" expanded="true" />
+            <element signature="e#940#941#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/commun/Helper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="241" column="24" selection-start-line="241" selection-start-column="24" selection-end-line="241" selection-end-column="24" />
+          <folding>
+            <element signature="docComment;class#Helper#0" expanded="false" />
+            <element signature="method#eval#0;class#Helper#0" expanded="false" />
+            <element signature="class#324:3409" expanded="false" />
+            <element signature="method#eat#0;class#324:3409" expanded="false" />
+            <element signature="method#parse#0;class#324:3409" expanded="false" />
+            <element signature="e#982#993#0" expanded="false" />
+            <element signature="method#parseExpression#0;class#324:3409" expanded="false" />
+            <element signature="method#parseTerm#0;class#324:3409" expanded="false" />
+            <element signature="method#parseFactor#0;class#324:3409" expanded="false" />
+            <element signature="method#FormatStringWithValues#0;class#Helper#0" expanded="false" />
+            <element signature="docComment;method#StringIsNullOrEmpty#0;class#Helper#0" expanded="false" />
+            <element signature="docComment;method#randomFloat#0;class#Helper#0" expanded="false" />
+            <element signature="method#randomFloat#0;class#Helper#0" expanded="false" />
+            <element signature="docComment;method#randomInt#0;class#Helper#0" expanded="false" />
+            <element signature="method#randomInt#0;class#Helper#0" expanded="false" />
+            <element signature="docComment;method#intTryParse#0;class#Helper#0" expanded="false" />
+            <element signature="method#intTryParse#0;class#Helper#0" expanded="false" />
+            <element signature="docComment;method#dateTryParse#0;class#Helper#0" expanded="false" />
+            <element signature="method#dateTryParse#0;class#Helper#0" expanded="false" />
+            <element signature="docComment;method#rotateYAxis#0;class#Helper#0" expanded="false" />
+            <element signature="docComment;method#getXValue#0;class#Helper#0" expanded="false" />
+            <element signature="method#getXValue#0;class#Helper#0" expanded="false" />
+            <element signature="docComment;method#getMaxStats#0;class#Helper#0" expanded="false" />
+            <element signature="method#getMaxStats#0;class#Helper#0" expanded="false" />
+            <element signature="docComment;method#Slope#0;class#Helper#0" expanded="false" />
+            <element signature="method#Slope#0;class#Helper#0" expanded="false" />
+            <element signature="docComment;method#ValueFromFunction#0;class#Helper#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-121">
+          <caret line="1426" column="0" selection-start-line="1426" selection-start-column="0" selection-end-line="1426" selection-end-column="0" />
+          <folding>
+            <element signature="docComment;method#RPGPlayer#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#RPGPlayer#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#initialiseScoreBoard#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#initialiseScoreBoard#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="e#2179#2257#0" expanded="false" />
+            <element signature="docComment;method#toggleScoreboard#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#toggleScoreboard#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#toggleScoreboard#1;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#toggleScoreboard#1;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#refreshScoreBoard#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#refreshScoreBoard#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#InitialisePlayer#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="e#8645#8752#0" expanded="false" />
+            <element signature="docComment;method#compareAttributesByName#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#compareAttributesByName#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#validateEquippedArmor#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#canEquipItem#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#canEquipItem#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#canEquipItemString#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#canEquipItemString#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#meetRequirements#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#meetRequirementsString#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#getAttribute#1;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#castSpell#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#castSpell#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#SaveData#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#SaveData#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#Disconnect#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#Disconnect#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#levelUP#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#levelUP#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#reset#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#reset#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#resetAll#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#resetAll#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="e#19153#19259#0" expanded="false" />
+            <element signature="docComment;method#addExp#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#addExp#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#setExperience#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#setStrength#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#setStrength#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#addStrength#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#addStrength#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#setIntelligence#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#setIntelligence#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#addIntelligence#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#addIntelligence#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#setDexterity#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#setDexterity#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#addDexterity#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#addDexterity#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#setHealth#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#setHealth#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#addHealth#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#addHealth#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#setDefence#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#setDefence#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#addDefence#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#addDefence#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#setMagicResistance#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#setMagicResistance#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#addMagicResistance#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#addMagicResistance#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#setAgility#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#setAgility#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#addAgility#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#addAgility#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#setPoints#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#setPoints#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#addPoints#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#addPoints#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#setLvl#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#addLevel#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#addLevel#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#addKills#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#addDeaths#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#setCurrentMana#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#setRace#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#setRace#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#setClass#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#setClass#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#setCurrentSkill#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#setCurrentSkill#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#addSkillPoints#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#addSkillPoints#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#upgradeSkill#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#upgradeSkill#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="e#38330#38433#0" expanded="false" />
+            <element signature="docComment;method#toString#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#toString#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#getRpgClass#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#getPlayer#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#getNextLvl#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#getKnockBackResistance#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#getMovementSpeed#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="e#41992#42097#0" expanded="false" />
+            <element signature="method#setAttackSpeed#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#setKnockBackResistance#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#setMovementSpeed#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#setPlayerMaxHealth#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#setPlayerMaxHealth#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#setMana#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#setMana#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="e#43390#43478#0" expanded="false" />
+            <element signature="docComment;method#setDisplayName#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#setDisplayName#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#setLuck#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="e#44109#44214#0" expanded="false" />
+            <element signature="docComment;method#AttributeHasChanged#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#AttributeHasChanged#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#errorMessageNotEnoughPoints#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#errorMessageNotEnoughPoints#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#RegenMana#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#RegenMana#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="docComment;method#StartManaRegenTask#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#StartManaRegenTask#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="class#45426:45500" expanded="false" />
+            <element signature="docComment;method#StopManaRegenTask#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#StopManaRegenTask#0;class#RPGPlayer#0" expanded="false" />
+            <element signature="method#AddBonusAttributes#0;class#RPGPlayer#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3096,26 +2590,209 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/config/ItemsRequirements.java">
+    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/commun/DamageCause.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="27" column="18" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/event/entity/EntityEvent.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="11" column="22" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/config/absConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
           <folding>
-            <element signature="e#909#910#0" expanded="true" />
-            <element signature="e#940#941#0" expanded="true" />
+            <element signature="e#436#437#0" expanded="true" />
+            <element signature="e#502#503#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/entity/Entity.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="71" column="9" selection-start-line="71" selection-start-column="9" selection-end-line="71" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/event/entity/EntityDamageEvent.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="125" column="55" selection-start-line="125" selection-start-column="55" selection-end-line="125" selection-end-column="55" />
+          <folding>
+            <element signature="class#DamageCause#0;class#EntityDamageEvent#0" expanded="false" />
+            <element signature="class#DamageModifier#0;class#EntityDamageEvent#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/event/entity/EntityDamageByEntityEvent.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ressources/staffs.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding>
+            <element signature="e#753#975#0" expanded="false" />
+            <element signature="e#778#782#0" expanded="false" />
+            <element signature="e#811#813#0" expanded="false" />
+            <element signature="e#824#828#0" expanded="false" />
+            <element signature="e#848#856#0" expanded="false" />
+            <element signature="e#870#872#0" expanded="false" />
+            <element signature="e#917#928#0" expanded="false" />
+            <element signature="e#949#962#0" expanded="false" />
+            <element signature="e#968#975#0" expanded="false" />
+            <element signature="e#976#1212#0" expanded="false" />
+            <element signature="e#1006#1010#0" expanded="false" />
+            <element signature="e#1022#1031#0" expanded="false" />
+            <element signature="e#1043#1045#0" expanded="false" />
+            <element signature="e#1056#1060#0" expanded="false" />
+            <element signature="e#1080#1088#0" expanded="false" />
+            <element signature="e#1102#1105#0" expanded="false" />
+            <element signature="e#1133#1212#0" expanded="false" />
+            <element signature="e#1150#1161#0" expanded="false" />
+            <element signature="e#1164#1212#0" expanded="false" />
+            <element signature="e#1182#1195#0" expanded="false" />
+            <element signature="e#1201#1212#0" expanded="false" />
+            <element signature="e#1214#1471#0" expanded="false" />
+            <element signature="e#1235#1239#0" expanded="false" />
+            <element signature="e#1268#1270#0" expanded="false" />
+            <element signature="e#1281#1285#0" expanded="false" />
+            <element signature="e#1294#1297#0" expanded="false" />
+            <element signature="e#1342#1351#0" expanded="false" />
+            <element signature="e#1365#1367#0" expanded="false" />
+            <element signature="e#1395#1471#0" expanded="false" />
+            <element signature="e#1412#1423#0" expanded="false" />
+            <element signature="e#1426#1471#0" expanded="false" />
+            <element signature="e#1444#1458#0" expanded="false" />
+            <element signature="e#1464#1471#0" expanded="false" />
+            <element signature="e#1472#1740#0" expanded="false" />
+            <element signature="e#1498#1502#0" expanded="false" />
+            <element signature="e#1514#1523#0" expanded="false" />
+            <element signature="e#1547#1551#0" expanded="false" />
+            <element signature="e#1606#1615#0" expanded="false" />
+            <element signature="e#1629#1632#0" expanded="false" />
+            <element signature="e#1660#1740#0" expanded="false" />
+            <element signature="e#1677#1688#0" expanded="false" />
+            <element signature="e#1691#1740#0" expanded="false" />
+            <element signature="e#1709#1723#0" expanded="false" />
+            <element signature="e#1729#1740#0" expanded="false" />
+            <element signature="e#1742#1981#0" expanded="false" />
+            <element signature="e#1767#1771#0" expanded="false" />
+            <element signature="e#1783#1788#0" expanded="false" />
+            <element signature="e#1800#1802#0" expanded="false" />
+            <element signature="e#1813#1817#0" expanded="false" />
+            <element signature="e#1853#1862#0" expanded="false" />
+            <element signature="e#1876#1878#0" expanded="false" />
+            <element signature="e#1906#1981#0" expanded="false" />
+            <element signature="e#1923#1934#0" expanded="false" />
+            <element signature="e#1937#1981#0" expanded="false" />
+            <element signature="e#1955#1968#0" expanded="false" />
+            <element signature="e#1974#1981#0" expanded="false" />
+            <element signature="e#1982#2235#0" expanded="false" />
+            <element signature="e#2012#2016#0" expanded="false" />
+            <element signature="e#2049#2051#0" expanded="false" />
+            <element signature="e#2062#2066#0" expanded="false" />
+            <element signature="e#2102#2111#0" expanded="false" />
+            <element signature="e#2125#2128#0" expanded="false" />
+            <element signature="e#2156#2235#0" expanded="false" />
+            <element signature="e#2173#2184#0" expanded="false" />
+            <element signature="e#2187#2235#0" expanded="false" />
+            <element signature="e#2205#2218#0" expanded="false" />
+            <element signature="e#2224#2235#0" expanded="false" />
+            <element signature="e#2237#2500#0" expanded="false" />
+            <element signature="e#2262#2266#0" expanded="false" />
+            <element signature="e#2278#2283#0" expanded="false" />
+            <element signature="e#2295#2297#0" expanded="false" />
+            <element signature="e#2308#2312#0" expanded="false" />
+            <element signature="e#2368#2381#0" expanded="false" />
+            <element signature="e#2395#2397#0" expanded="false" />
+            <element signature="e#2425#2500#0" expanded="false" />
+            <element signature="e#2442#2453#0" expanded="false" />
+            <element signature="e#2456#2500#0" expanded="false" />
+            <element signature="e#2474#2487#0" expanded="false" />
+            <element signature="e#2493#2500#0" expanded="false" />
+            <element signature="e#2501#2778#0" expanded="false" />
+            <element signature="e#2531#2535#0" expanded="false" />
+            <element signature="e#2568#2570#0" expanded="false" />
+            <element signature="e#2581#2585#0" expanded="false" />
+            <element signature="e#2641#2654#0" expanded="false" />
+            <element signature="e#2668#2671#0" expanded="false" />
+            <element signature="e#2699#2778#0" expanded="false" />
+            <element signature="e#2716#2727#0" expanded="false" />
+            <element signature="e#2730#2778#0" expanded="false" />
+            <element signature="e#2748#2761#0" expanded="false" />
+            <element signature="e#2767#2778#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGRace.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="935">
+          <caret line="59" column="29" selection-start-line="59" selection-start-column="29" selection-end-line="59" selection-end-column="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="docComment;class#RPGRace#0" expanded="false" />
+            <element signature="docComment;method#SetPowers#0;class#RPGRace#0" expanded="false" />
+            <element signature="method#toString#0;class#RPGRace#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGClass.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="382">
+          <caret line="30" column="26" selection-start-line="30" selection-start-column="26" selection-end-line="30" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#RPGClass#0;class#RPGClass#0" expanded="false" />
+            <element signature="method#toString#0;class#RPGClass#0" expanded="false" />
+            <element signature="docComment;method#SetPowers#0;class#RPGClass#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ressources/skills.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="756">
+          <caret line="69" column="13" selection-start-line="69" selection-start-column="13" selection-end-line="69" selection-end-column="13" />
+          <folding>
+            <element signature="e#813#817#0" expanded="false" />
+            <element signature="e#874#876#0" expanded="false" />
+            <element signature="e#4612#4614#0" expanded="false" />
+            <element signature="e#4649#4713#0" expanded="false" />
+            <element signature="e#4711#4713#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGSkill.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="688">
-          <caret line="354" column="0" selection-start-line="354" selection-start-column="0" selection-end-line="354" selection-end-column="0" />
+        <state relative-caret-position="1810">
+          <caret line="237" column="19" selection-start-line="237" selection-start-column="19" selection-end-line="237" selection-end-column="19" />
           <folding>
             <element signature="docComment;class#RPGSkill#0" expanded="false" />
+            <element signature="method#RPGSkill#1;class#RPGSkill#0" expanded="false" />
+            <element signature="method#initialize#0;class#RPGSkill#0" expanded="false" />
             <element signature="method#getManaCost#0;class#RPGSkill#0" expanded="false" />
             <element signature="method#getRequirement#0;class#RPGSkill#0" expanded="false" />
-            <element signature="method#executeBowSkill#0;class#RPGSkill#0" expanded="false" />
             <element signature="method#executeWeaponAttackSkill#0;class#RPGSkill#0" expanded="false" />
             <element signature="method#canExecute#0;class#RPGSkill#0" expanded="false" />
             <element signature="method#operation#0;class#RPGSkill#0" expanded="false" />
@@ -3124,62 +2801,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/commun/Helper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="241" column="24" selection-start-line="241" selection-start-column="24" selection-end-line="241" selection-end-column="24" />
-          <folding>
-            <element signature="docComment;class#Helper#0" expanded="false" />
-            <element signature="method#eval#0;class#Helper#0" expanded="false" />
-            <element signature="class#324:3409" expanded="false" />
-            <element signature="method#eat#0;class#324:3409" expanded="false" />
-            <element signature="method#parse#0;class#324:3409" expanded="false" />
-            <element signature="e#982#993#0" expanded="false" />
-            <element signature="method#parseExpression#0;class#324:3409" expanded="false" />
-            <element signature="method#parseTerm#0;class#324:3409" expanded="false" />
-            <element signature="method#parseFactor#0;class#324:3409" expanded="false" />
-            <element signature="method#FormatStringWithValues#0;class#Helper#0" expanded="false" />
-            <element signature="docComment;method#StringIsNullOrEmpty#0;class#Helper#0" expanded="false" />
-            <element signature="docComment;method#randomFloat#0;class#Helper#0" expanded="false" />
-            <element signature="method#randomFloat#0;class#Helper#0" expanded="false" />
-            <element signature="docComment;method#randomInt#0;class#Helper#0" expanded="false" />
-            <element signature="method#randomInt#0;class#Helper#0" expanded="false" />
-            <element signature="docComment;method#intTryParse#0;class#Helper#0" expanded="false" />
-            <element signature="method#intTryParse#0;class#Helper#0" expanded="false" />
-            <element signature="docComment;method#dateTryParse#0;class#Helper#0" expanded="false" />
-            <element signature="method#dateTryParse#0;class#Helper#0" expanded="false" />
-            <element signature="docComment;method#rotateYAxis#0;class#Helper#0" expanded="false" />
-            <element signature="docComment;method#getXValue#0;class#Helper#0" expanded="false" />
-            <element signature="method#getXValue#0;class#Helper#0" expanded="false" />
-            <element signature="docComment;method#getMaxStats#0;class#Helper#0" expanded="false" />
-            <element signature="method#getMaxStats#0;class#Helper#0" expanded="false" />
-            <element signature="docComment;method#Slope#0;class#Helper#0" expanded="false" />
-            <element signature="method#Slope#0;class#Helper#0" expanded="false" />
-            <element signature="docComment;method#ValueFromFunction#0;class#Helper#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/events/PlayerListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="259" column="81" selection-start-line="259" selection-start-column="81" selection-end-line="259" selection-end-column="81" />
+        <state relative-caret-position="561">
+          <caret line="33" column="26" selection-start-line="33" selection-start-column="26" selection-end-line="33" selection-end-column="26" />
           <folding>
             <element signature="docComment;method#onPlayerTeleport#0;class#PlayerListener#0" expanded="false" />
             <element signature="method#onPlayerTeleport#0;class#PlayerListener#0" expanded="false" />
             <element signature="docComment;method#onPlayerEquipArmor#0;class#PlayerListener#0" expanded="false" />
             <element signature="method#onPlayerEquipArmor#0;class#PlayerListener#0" expanded="false" />
             <element signature="method#onPlayerInteract#0;class#PlayerListener#0" expanded="false" />
-            <element signature="docComment;method#onPlayerDamaged#0;class#PlayerListener#0" expanded="false" />
             <element signature="docComment;method#onPlayerExpChange#0;class#PlayerListener#0" expanded="false" />
             <element signature="method#onPlayerExpChange#0;class#PlayerListener#0" expanded="false" />
             <element signature="docComment;method#onEntityDeath#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#onEntityDeath#0;class#PlayerListener#0" expanded="false" />
             <element signature="method#onPlayerItemHeld#0;class#PlayerListener#0" expanded="false" />
-            <element signature="method#onPlayerSwapHandItems#0;class#PlayerListener#0" expanded="false" />
             <element signature="docComment;method#onPlayerAttack#0;class#PlayerListener#0" expanded="false" />
-            <element signature="class#29289:29868" expanded="false" />
-            <element signature="method#run#0;class#29289:29868" expanded="false" />
+            <element signature="method#onPlayerAttack#0;class#PlayerListener#0" expanded="false" />
+            <element signature="class#26245:26824" expanded="false" />
+            <element signature="method#run#0;class#26245:26824" expanded="false" />
+            <element signature="docComment;method#onPlayerDamaged#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#onPlayerDamaged#0;class#PlayerListener#0" expanded="false" />
             <element signature="docComment;method#onPlayerConsumePotion#0;class#PlayerListener#0" expanded="false" />
             <element signature="method#onPlayerConsumePotion#0;class#PlayerListener#0" expanded="false" />
             <element signature="docComment;method#onPlayerShootBow#0;class#PlayerListener#0" expanded="false" />
@@ -3203,6 +2844,7 @@
             <element signature="method#getDamagedByFall#0;class#PlayerListener#0" expanded="false" />
             <element signature="method#getDamagedByExplosion#0;class#PlayerListener#0" expanded="false" />
             <element signature="method#getDamagedByProjectile#0;class#PlayerListener#0" expanded="false" />
+            <element signature="method#getChangeOfRemovingPotionEffect#0;class#PlayerListener#0" expanded="false" />
             <element signature="method#getReducingPotionEffect#0;class#PlayerListener#0" expanded="false" />
             <element signature="method#getBowArrowSpeed#0;class#PlayerListener#0" expanded="false" />
             <element signature="method#getBowPrecision#0;class#PlayerListener#0" expanded="false" />
@@ -3218,6 +2860,8 @@
             <element signature="method#getPlayerKnockbackResistance#0;class#PlayerListener#0" expanded="false" />
             <element signature="method#getPlayerLuck#0;class#PlayerListener#0" expanded="false" />
             <element signature="method#getPlayerDropPercentage#0;class#PlayerListener#0" expanded="false" />
+            <marker date="1471293974873" expanded="false" signature="9813:17008" ph="{...}" />
+            <marker date="1471293974873" expanded="false" signature="17392:17414" ph="{...}" />
           </folding>
         </state>
       </provider>

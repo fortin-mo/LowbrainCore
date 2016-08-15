@@ -253,7 +253,7 @@ public class RPGPlayer {
 		}
 
 		initialiseScoreBoard();
-
+		validateEquippedArmor();
 		AttributeHasChanged();
 		setDisplayName();
 		StartManaRegenTask();
@@ -346,6 +346,32 @@ public class RPGPlayer {
 			return -1;
 		}
 
+	}
+
+	/***
+	 * validate if player can wear equipped armor
+	 */
+	public void validateEquippedArmor(){
+		if(!canEquipItem(this.getPlayer().getInventory().getHelmet())){
+			this.getPlayer().getInventory().addItem(this.getPlayer().getInventory().getHelmet());
+			this.getPlayer().getInventory().setHelmet(null);
+		}
+		if(!canEquipItem(this.getPlayer().getInventory().getChestplate())){
+			this.getPlayer().getInventory().addItem(this.getPlayer().getInventory().getChestplate());
+			this.getPlayer().getInventory().setChestplate(null);
+		}
+		if(!canEquipItem(this.getPlayer().getInventory().getLeggings())){
+			this.getPlayer().getInventory().addItem(this.getPlayer().getInventory().getLeggings());
+			this.getPlayer().getInventory().setLeggings(null);
+		}
+		if(!canEquipItem(this.getPlayer().getInventory().getBoots())){
+			this.getPlayer().getInventory().addItem(this.getPlayer().getInventory().getBoots());
+			this.getPlayer().getInventory().setBoots(null);
+		}
+		if(!canEquipItem(this.getPlayer().getInventory().getItemInOffHand())){
+			this.getPlayer().getInventory().addItem(this.getPlayer().getInventory().getItemInOffHand());
+			this.getPlayer().getInventory().setItemInOffHand(null);
+		}
 	}
 
 	/**
