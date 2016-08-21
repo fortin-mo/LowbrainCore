@@ -30,19 +30,19 @@ healing:
    maximum: 1
    minimum: 10
    range: 1
-   variables:
-    intelligence: 1.0
+   intelligence: 1.0
+   dexterity: 0.0
   amplifier: #Healing is 2 (Heart.svg) × 2level.
    function:
    maximium: 4
    minimum: 0
    range: 0.0
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   cooldown:
    minimum: 15
    maximum: 10
-   variables:
+   influence:
     intelligence: 1
 fire_resistance:
  mana: 10
@@ -56,19 +56,19 @@ fire_resistance:
    maximum: 30
    minimum: 5
    range: 2
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   amplifier: #amplifier has no effect
    function:
    maximium: 0
    minimum: 0
    range: 0
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   cooldown:
    minimum: 60
    maximum: 50
-   variables:
+   influence:
     intelligence: 1
 resistance:
  mana: 10
@@ -82,19 +82,19 @@ resistance:
    maximum: 20
    minimum: 5
    range: 2
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   amplifier: #Reduces damage by (20 × level)%
    function:
    maximium: 3
    minimum: 0
    range: 0
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   cooldown:
    minimum: 60
    maximum: 50
-   variables:
+   influence:
     intelligence: 1
 water_breathing:
  mana: 7
@@ -108,19 +108,19 @@ water_breathing:
    maximum: 30
    minimum: 5
    range: 2
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   amplifier: #amplifier has no effect
    function:
    maximium: 0
    minimum: 0
    range: 0
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   cooldown:
    minimum: 30
    maximum: 20
-   variables:
+   influence:
     intelligence: 1
 invisibility:
  mana: 20
@@ -134,19 +134,19 @@ invisibility:
    maximum: 25
    minimum: 5
    range: 2
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   amplifier: #amplifier has no effect
    function:
    maximium: 0
    minimum: 0
    range: 0
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   cooldown:
    minimum: 90
    maximum: 70
-   variables:
+   influence:
     intelligence: 1
 regeneration:
  mana: 5
@@ -160,19 +160,19 @@ regeneration:
    maximum: 15
    minimum: 5
    range: 1
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   amplifier:
    function:
    maximium: 5
    minimum: 0
    range: 0
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   cooldown:
    minimum: 25
    maximum: 15
-   variables:
+   influence:
     intelligence: 1
 jump_boost:
  mana: 5
@@ -185,19 +185,19 @@ jump_boost:
    maximum: 20
    minimum: 5
    range: 1
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   amplifier: #jump height is (level+4.2)^2/16
    function:
    maximium: 5
    minimum: 0
    range: 0
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   cooldown:
    minimum: 15
    maximum: 10
-   variables:
+   influence:
     intelligence: 1
 strength:
  mana: 20
@@ -211,19 +211,19 @@ strength:
    maximum: 25
    minimum: 5
    range: 1
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   amplifier: #Adds 3 ×level damage.
    function:
    maximium: 6
    minimum: 0
    range: 0
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   cooldown:
    minimum: 60
    maximum: 50
-   variables:
+   influence:
     intelligence: 1
 haste:
  mana: 7
@@ -237,19 +237,19 @@ haste:
    maximum: 15
    minimum: 5
    range: 1
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   amplifier: #Digging speed increases by 20% × level. Attack speed increases by 10% × level.
    function:
    maximium: 3
    minimum: 0
    range: 0
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   cooldown:
    minimum: 60
    maximum: 50
-   variables:
+   influence:
     intelligence: 1
 speed:
  mana: 15
@@ -260,22 +260,22 @@ speed:
  cast:
   duration:
    function:
-   maximum: 20
-   minimum: 0
-   range: 1
-   variables:
-    intelligence: 1
+   maximum:
+   minimum:
+   range:
+   intelligence:
+   dexterity:
   amplifier:
    function:
-   maximium: 4
-   minimum: 0
-   range: 0
-   variables:
-    intelligence: 1
+   maximium:
+   minimum:
+   range:
+   intelligence:
+   dexterity:
   cooldown:
    minimum: 30
    maximum: 20
-   variables:
+   influence:
     intelligence: 1
 night_vision:
  mana: 10
@@ -301,7 +301,7 @@ night_vision:
   cooldown:
    minimum: 15
    maximum: 10
-   variables:
+   influence:
     intelligence: 1
 health_boost:
  mana: 10
@@ -315,19 +315,19 @@ health_boost:
    maximum: 20
    minimum: 5
    range: 1
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   amplifier:
    function: #Adds 4  × level base health
    maximium: 4
    minimum: 0
    range: 0
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   cooldown:
    minimum: 30
    maximum: 20
-   variables:
+   influence:
     intelligence: 1
 absorption:
  mana: 10
@@ -341,19 +341,19 @@ absorption:
    maximum: 25
    minimum: 5
    range: 1
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   amplifier: #Adds 4  × level absorption health
    function:
    maximium: 4
    minimum: 0
    range: 0
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   cooldown:
    minimum: 30
    maximum: 20
-   variables:
+   influence:
     intelligence: 1
 saturation:
  mana: 7
@@ -367,17 +367,17 @@ saturation:
    maximum: 0.05
    minimum: 10
    range: 0
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   amplifier: #Replenishes 1 (Half Hunger.svg) × level and 2 × level points of saturation.
    function:
    maximium: 16
    minimum: 0
    range: 0
-   variables:
-    intelligence: 1
+   intelligence: 1
+   dexterity: 0
   cooldown:
    minimum: 15
    maximum: 10
-   variables:
+   influence:
     intelligence: 1

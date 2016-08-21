@@ -11,6 +11,10 @@ permission:
   description: save you own stats
  mcrpg.stats-others:
   description: show other players stats
+ mcrpg.reload:
+  description: reload plugin
+ mcrpg.setattributes-others:
+  description: set / change other players attributes by command
 commands:
    mcrpg:
       usage: |

@@ -162,14 +162,14 @@ diamond_sword:
  strength: 30
 
 emerald_sword:
- level: 100
- strength: 100
+ level: 25
+ strength: 50
 emerald_axe:
- level: 100
- strength: 100
+ level: 30
+ strength: 60
 emerald_katana:
- level: 100
- strength: 100
+ level: 30
+ strength: 60
 
 excalibur:
  level: 75

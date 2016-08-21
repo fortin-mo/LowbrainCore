@@ -1,6 +1,5 @@
 package lowbrain.mcrpg.main;
 
-import java.io.File;
 import java.util.*;
 
 import lowbrain.mcrpg.commun.Settings;
@@ -21,7 +20,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import lowbrain.mcrpg.commun.*;
-import org.bukkit.scoreboard.*;
 
 
 /**
@@ -31,9 +29,19 @@ import org.bukkit.scoreboard.*;
  */
 public class Main extends JavaPlugin {
 
-	public Map<UUID, RPGPlayer> connectedPlayers = new HashMap<UUID, RPGPlayer>();
-	public HashMap<String,ItemRequirements> itemsRequirements = new HashMap<String,ItemRequirements>();
-	public HashMap<String,RPGSkill> skills = new HashMap<String,RPGSkill>();
+	public Map<UUID, RPGPlayer> connectedPlayers;
+	public HashMap<String,ItemRequirements> itemsRequirements;
+	public HashMap<String,RPGSkill> skills;
+
+	private static final String CLASSES_V = "1.0";
+	private static final String CONFIG_V = "2.1";
+	private static final String CUSTOM_ITEMS_V = "1.0";
+	private static final String ITEMS_REQUIREMENTS_V = "1.0";
+	private static final String MOBS_XP_V = "1.0";
+	private static final String POWERS_V = "2.0";
+	private static final String RACES_V = "1.0";
+	private static final String SKILLS_V = "2.0";
+	private static final String STAFFS_V = "1.0";
 
 	public boolean useHolographicDisplays;
 
@@ -45,10 +53,15 @@ public class Main extends JavaPlugin {
 
 		this.getLogger().info("Loading LowbrainMCRPG.jar");
 
+		this.connectedPlayers = new HashMap<>();
+
 		InitialisingConfigFile();
+
+		validateConfigVersion();
+
 		useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
 		String enabled = useHolographicDisplays ? "enabled" : "disabled";
-		debugMessage("HologramDisplays is "+enabled+" !");
+		debugInfo("HologramDisplays is "+enabled+" !");
 
 		if(!evaluateFunctions()){
 			this.getLogger().info("[ERROR] functions in config file and not correctly formated !!!");
@@ -76,7 +89,6 @@ public class Main extends JavaPlugin {
 
     private void InitialisingConfigFile(){
 		try {
-
 			Config.getInstance();
 			Classes.getInstance();
 			CustomItems.getInstance();
@@ -104,15 +116,21 @@ public class Main extends JavaPlugin {
     }
 
     public void SaveData(){
-		connectedPlayers.forEach((uuid, rpgPlayer) -> rpgPlayer.SaveData());
-		debugMessage("Data saved correctly");
+		connectedPlayers.forEach((uuid, rpgPlayer) -> rpgPlayer.saveData());
+		debugInfo("Data saved correctly");
 	}
 
-	public void debugMessage(Object msg){
+	public void debugInfo(Object msg){
 	    if(Settings.getInstance().debug){
 	        this.getLogger().info("[DEBUG] : " + msg);
         }
     }
+
+	public void debugWarning(Object msg){
+		if(Settings.getInstance().debug){
+			this.getLogger().warning("[DEBUG] : " + msg);
+		}
+	}
 
     public void reloadConfig(){
     	Classes.reload();
@@ -125,6 +143,8 @@ public class Main extends JavaPlugin {
 		Staffs.reload();
 		Races.reload();
 		Settings.reload();
+
+		this.connectedPlayers.forEach((uuid, rpgPlayer) -> rpgPlayer.reload());
 	}
 
     private boolean evaluateFunctions(){
@@ -153,7 +173,7 @@ public class Main extends JavaPlugin {
 
 	private void recursiveConfigFunctionSearch(ConfigurationSection start, List<String> functions){
 		if(start == null){
-			this.debugMessage("Could not find settings !");
+			this.debugInfo("Could not find settings !");
 			return;
 		}
 		for (String key: start.getKeys(false)) {
@@ -167,6 +187,7 @@ public class Main extends JavaPlugin {
 	}
 
 	private void loadSkills(){
+		this.skills = new HashMap<>();
 		for (String skillName :
 				Skills.getInstance().getKeys(false)) {
 			if(Skills.getInstance().getBoolean(skillName + ".enable")){
@@ -465,6 +486,58 @@ public class Main extends JavaPlugin {
 			return false;
 		}
 		return true;
+	}
+
+	private void validateConfigVersion(){
+		ConfigurationSection versions = Config.getInstance().getConfigurationSection("versions");
+
+		if(versions == null)return;
+
+		boolean valid = true;
+
+		if(!versions.getString("config","").equals(CONFIG_V)){
+			this.getLogger().warning("config.yml is outdated");
+			valid = false;
+		}
+		if(!versions.getString("classes","").equals(CLASSES_V)){
+			this.getLogger().warning("classes.yml is outdated");
+			valid = false;
+		}
+		if(!versions.getString("customitems","").equals(CUSTOM_ITEMS_V)){
+			this.getLogger().warning("customitems.yml is outdated");
+			valid = false;
+		}
+		if(!versions.getString("itemsrequirements","").equals(ITEMS_REQUIREMENTS_V)){
+			this.getLogger().warning("itemsrequirements.yml is outdated");
+			valid = false;
+		}
+		if(!versions.getString("mobsxp","").equals(MOBS_XP_V)){
+			this.getLogger().warning("mobsxp.yml is outdated");
+			valid = false;
+		}
+		if(!versions.getString("powers","").equals(POWERS_V)){
+			this.getLogger().warning("powers.yml is outdated");
+			valid = false;
+		}
+		if(!versions.getString("races","").equals(RACES_V)){
+			this.getLogger().warning("races.yml is outdated");
+			valid = false;
+		}
+		if(!versions.getString("skills","").equals(SKILLS_V)){
+			this.getLogger().warning("skills.yml is outdated");
+			valid = false;
+		}
+		if(!versions.getString("staffs","").equals(STAFFS_V)){
+			this.getLogger().warning("staffs.yml is outdated");
+			valid = false;
+		}
+
+		if(!valid){
+			this.getLogger().warning("Yrou're config files are outdated");
+			this.getLogger().warning("To update : Make a copy of your current .yml files in the plugin directory");
+			this.getLogger().warning("Then delete all of them and reload your server.");
+		}
+
 	}
 
 	public class ItemRequirements {

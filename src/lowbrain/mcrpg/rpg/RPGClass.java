@@ -40,22 +40,22 @@ public class RPGClass {
 	}
 
 	public String toString() {
-		String s = "Name: " + name + "\n";
-		s += "Tag: " + tag + "\n";
-		s += "Defence: " + defence + "\n";
-		s += "Strength: " + strength + "\n";
-		s += "Health: " + health + "\n";
-		s += "Dexterity: " + dexterity + "\n";
-		s += "Intelligence: " + intelligence + "\n";
-		s += "Magic Resistance: " + magicResistance + "\n";
-		s += "Bonus Attributes: ";
+		String s = "Name : " + name + "\n";
+		s += "Tag : " + tag + "\n";
+		s += "Defence : " + defence + "\n";
+		s += "Strength : " + strength + "\n";
+		s += "Health : " + health + "\n";
+		s += "Dexterity : " + dexterity + "\n";
+		s += "Intelligence : " + intelligence + "\n";
+		s += "Magic Resistance : " + magicResistance + "\n";
+		s += "Bonus Attributes : ";
 		for (String attributes :
 				bonusAttributes) {
 			s += bonusAttributes + ", ";
 		}
 		s += "\n";
 
-		s += "Powers: ";
+		s += "Powers : ";
 		for (String powa :
 				powers) {
 			s += powa + ", ";

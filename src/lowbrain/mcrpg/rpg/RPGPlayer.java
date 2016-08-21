@@ -254,9 +254,9 @@ public class RPGPlayer {
 
 		initialiseScoreBoard();
 		validateEquippedArmor();
-		AttributeHasChanged();
+		attributeHasChanged();
 		setDisplayName();
-		StartManaRegenTask();
+		startManaRegenTask();
 
 	}
 
@@ -442,7 +442,7 @@ public class RPGPlayer {
 	}
 
 	public int getAttribute(String n){
-		return getAttribute(n, -1);
+		return getAttribute(n, 0);
 	}
 
 	public int getAttribute(String n, int d){
@@ -481,6 +481,14 @@ public class RPGPlayer {
 			case "magicresistance":
 			case "mr":
 				return this.getMagicResistance();
+			case "kills":
+			case "kill":
+				return this.getKills();
+
+			case "deaths":
+			case "death":
+				return this.getDeaths();
+
 		}
 		return d;
 	}
@@ -496,7 +504,7 @@ public class RPGPlayer {
 		RPGPower powa = this.powers.get(name);
 
 		if(powa == null){
-			SendMessage("You can't cast this spell !");
+			sendMessage("You can't cast this spell !");
 			return false;
 		}
 
@@ -510,7 +518,7 @@ public class RPGPlayer {
 	/**
 	 * save player current data in yml
 	 */
-	public void SaveData(){
+	public void saveData(){
 		try {
 	        File userdata = new File(PlayerListener.plugin.getDataFolder(), File.separator + "PlayerDB");
 	        File f = new File(userdata, File.separator + this.player.getUniqueId() + ".yml");
@@ -564,9 +572,20 @@ public class RPGPlayer {
 	/**
 	 * player diconnect
      */
-	public void Disconnect(){
-		StopManaRegenTask();
-		this.SaveData();
+	public void disconnect(){
+		stopManaRegenTask();
+		this.saveData();
+	}
+
+	/***
+	 * reload everything when config are reloaded
+	 */
+	public void reload(){
+		saveData();
+		stopManaRegenTask();
+		attributeHasChanged();
+		validateEquippedArmor();
+		startManaRegenTask();
 	}
 
 	/**
@@ -576,12 +595,12 @@ public class RPGPlayer {
 		if((getSettings().max_lvl < 0 || this.lvl <  getSettings().max_lvl)){
 			this.lvl += 1;
 
-			AddBonusAttributes(1);
+			addBonusAttributes(1);
 
 			this.addPoints(getSettings().points_per_lvl);
 
 			if(this.lvl % getSettings().skill_points_level_interval == 0){
-				this.addSkillPoints(getSettings().skill_points_per_level);
+				this.addSkillPoints(getSettings().skill_points_per_interval);
 			}
 
 			double lvlExponential = getSettings().math.next_lvl_multiplier;
@@ -590,7 +609,7 @@ public class RPGPlayer {
 
 			player.setHealth(player.getMaxHealth()); //restore health on level up
 			this.currentMana = this.maxMana;//restore maxMana on level up
-			SendMessage("LEVEL UP !!!! You are now lvl " + this.lvl);
+			sendMessage("LEVEL UP !!!! You are now lvl " + this.lvl);
 			this.getPlayer().getWorld().playSound(this.getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,0);
 		}
 	}
@@ -633,7 +652,7 @@ public class RPGPlayer {
 			currentMana = 0;
 			agility = 0;
 
-			//AttributeHasChanged();
+			//attributeHasChanged();
 			this.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(2);
 			this.getPlayer().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(0);
 			this.getPlayer().setWalkSpeed(0.2F);
@@ -641,10 +660,10 @@ public class RPGPlayer {
 			this.getPlayer().getAttribute(Attribute.GENERIC_LUCK).setBaseValue(0);
 
 			setDisplayName();
-			SendMessage("Your stats have been reset to zero !");
+			sendMessage("Your stats have been reset to zero !");
 		}
 		else{
-			SendMessage("You are not allowed to completely reset your stats !");
+			sendMessage("You are not allowed to completely reset your stats !");
 		}
 	}
 
@@ -683,7 +702,7 @@ public class RPGPlayer {
 		this.strength = strength;
 		if(getSettings().max_stats >=0 && this.strength > getSettings().max_stats)this.strength = getSettings().max_stats;
 		else if(this.strength < 0) this.strength = 0;
-		AttributeHasChanged();
+		attributeHasChanged();
 	}
 	
 	/**
@@ -697,11 +716,11 @@ public class RPGPlayer {
 			return;
 		}
 		else if(!getSettings().allow_deduction_points && nb < 0){
-			SendMessage("You are not allowed to deduct attribute points !");
+			sendMessage("You are not allowed to deduct attribute points !");
 			return;
 		}
 		else if (getSettings().allow_deduction_points && nb < 0 && this.strength == 0){
-			SendMessage("You cannot deduct any more points !");
+			sendMessage("You cannot deduct any more points !");
 			return;
 		}
 		else if(usePoints && this.points >= nb){
@@ -717,21 +736,21 @@ public class RPGPlayer {
 			int dif = this.strength - oldStrength;
 			
 			this.points -= dif;
-			if(callChange)AttributeHasChanged();
-			SendMessage("Strength incremented by " + dif);
+			if(callChange) attributeHasChanged();
+			sendMessage("Strength incremented by " + dif);
 		}
 		else if(!usePoints){
 			this.strength += nb;
 			if(maxStats >= 0 && this.strength > maxStats){
 				this.strength = maxStats;
-				SendMessage("Strength set to " + maxStats);
+				sendMessage("Strength set to " + maxStats);
 			}else {
-				SendMessage("Strength incremented by " + nb);
+				sendMessage("Strength incremented by " + nb);
 			}
-			if(callChange)AttributeHasChanged();
+			if(callChange) attributeHasChanged();
 		}
 		else{
-			this.errorMessageNotEnoughPoints();
+			sendMessage("Not enought points !",ChatColor.RED);
 			return;
 		}
 	}
@@ -744,7 +763,7 @@ public class RPGPlayer {
 		this.intelligence = intelligence;
 		if(getSettings().max_stats >=0 && this.intelligence > getSettings().max_stats)this.intelligence = getSettings().max_stats;
 		else if(this.intelligence < 0) this.intelligence = 0;
-		AttributeHasChanged();
+		attributeHasChanged();
 	}
 	
 	/**
@@ -758,11 +777,11 @@ public class RPGPlayer {
 			return;
 		}
 		else if(!getSettings().allow_deduction_points && nb < 0){
-			SendMessage("You are not allowed to deduct attribute points !");
+			sendMessage("You are not allowed to deduct attribute points !");
 			return;
 		}
 		else if (getSettings().allow_deduction_points && nb < 0 && this.intelligence == 0){
-			SendMessage("You cannot deduct any more points !");
+			sendMessage("You cannot deduct any more points !");
 			return;
 		}
 		else if(usePoints && this.points >= nb){
@@ -777,23 +796,23 @@ public class RPGPlayer {
 			int dif = this.intelligence - oldIntelligence;
 			
 			this.points -= dif;
-			if(callChange)AttributeHasChanged();
-			SendMessage("Intelligence incremented by " + dif);
+			if(callChange) attributeHasChanged();
+			sendMessage("Intelligence incremented by " + dif);
 
 		}
 		else if(!usePoints){
 			this.intelligence += nb;
 			if(maxStats >= 0 && this.intelligence > maxStats){
 				this.intelligence = maxStats;
-				SendMessage("Intelligence set to " + maxStats);
+				sendMessage("Intelligence set to " + maxStats);
 			}
 			else{
-				SendMessage("Intelligence incremented by " + nb);
+				sendMessage("Intelligence incremented by " + nb);
 			}
-			if(callChange)AttributeHasChanged();
+			if(callChange) attributeHasChanged();
 		}
 		else{
-			this.errorMessageNotEnoughPoints();
+			sendMessage("Not enought points !",ChatColor.RED);
 			return;
 		}
 	}
@@ -806,7 +825,7 @@ public class RPGPlayer {
 		this.dexterity = dexterity;
 		if(getSettings().max_stats >=0 && this.dexterity > getSettings().max_stats)this.dexterity = getSettings().max_stats;
 		else if(this.dexterity < 0) this.dexterity = 0;
-		AttributeHasChanged();
+		attributeHasChanged();
 	}
 	
 	/**
@@ -820,11 +839,11 @@ public class RPGPlayer {
 			return;
 		}
 		else if(!getSettings().allow_deduction_points && nb < 0){
-			SendMessage("You are not allowed to deduct attribute points !");
+			sendMessage("You are not allowed to deduct attribute points !");
 			return;
 		}
 		else if (getSettings().allow_deduction_points && nb < 0 && this.dexterity == 0){
-			SendMessage("You cannot deduct any more points !");
+			sendMessage("You cannot deduct any more points !");
 			return;
 		}
 		else if(usePoints && this.points >= nb){
@@ -839,21 +858,21 @@ public class RPGPlayer {
 			int dif = this.dexterity - oldDexterity;
 			
 			this.points -= dif;
-			if(callChange)AttributeHasChanged();
-			SendMessage("Dexterity incremented by " + dif);
+			if(callChange) attributeHasChanged();
+			sendMessage("Dexterity incremented by " + dif);
 		}
 		else if(!usePoints){
 			this.dexterity += nb;
 			if(maxStats >= 0 && this.dexterity > maxStats){
 				this.dexterity = maxStats;
-				SendMessage("Dexterity set to " + maxStats);
+				sendMessage("Dexterity set to " + maxStats);
 			}else {
-				SendMessage("Dexterity incremented by " + nb);
+				sendMessage("Dexterity incremented by " + nb);
 			}
-			if(callChange)AttributeHasChanged();
+			if(callChange) attributeHasChanged();
 		}
 		else{
-			this.errorMessageNotEnoughPoints();
+			sendMessage("Not enought points !",ChatColor.RED);
 			return;
 		}
 	}
@@ -880,11 +899,11 @@ public class RPGPlayer {
 			return;
 		}
 		else if(!getSettings().allow_deduction_points && nb < 0){
-			SendMessage("You are not allowed to deduct attribute points !");
+			sendMessage("You are not allowed to deduct attribute points !");
 			return;
 		}
 		else if (getSettings().allow_deduction_points && nb < 0 && this.health == 0){
-			SendMessage("You cannot deduct any more points !");
+			sendMessage("You cannot deduct any more points !");
 			return;
 		}
 		else if(usePoints && this.points >= nb){
@@ -898,21 +917,21 @@ public class RPGPlayer {
 			int dif = this.health - oldHealth;
 			
 			this.points -= dif;
-			if(callChange)AttributeHasChanged();
-			SendMessage("Health incremented by " + dif);
+			if(callChange) attributeHasChanged();
+			sendMessage("Health incremented by " + dif);
 		}
 		else if(!usePoints){
 			this.health += nb;
 			if(maxStats >= 0 && this.health > maxStats){
 				this.health = maxStats;
-				SendMessage("Health set to " + maxStats);
+				sendMessage("Health set to " + maxStats);
 			}else{
-				SendMessage("Health incremented by " + nb);
+				sendMessage("Health incremented by " + nb);
 			}
-			if(callChange)AttributeHasChanged();
+			if(callChange) attributeHasChanged();
 		}
 		else{
-			this.errorMessageNotEnoughPoints();
+			sendMessage("Not enought points !",ChatColor.RED);
 			return;
 		}
 	}
@@ -925,7 +944,7 @@ public class RPGPlayer {
 		this.defence = defence;
 		if(getSettings().max_stats >=0 && this.defence > getSettings().max_stats)this.defence = getSettings().max_stats;
 		else if(this.defence < 0) this.defence = 0;
-		AttributeHasChanged();
+		attributeHasChanged();
 	}
 
 	/**
@@ -940,11 +959,11 @@ public class RPGPlayer {
 			return;
 		}
 		else if(!getSettings().allow_deduction_points && nb < 0){
-			SendMessage("You are not allowed to deduct attribute points !");
+			sendMessage("You are not allowed to deduct attribute points !");
 			return;
 		}
 		else if (getSettings().allow_deduction_points && nb < 0 && this.defence == 0){
-			SendMessage("You cannot deduct any more points !");
+			sendMessage("You cannot deduct any more points !");
 			return;
 		}
 		else if(usePoints && this.points >= nb){
@@ -958,21 +977,21 @@ public class RPGPlayer {
 			double dif = this.defence - oldDefence;
 			
 			this.points -= dif;
-			if(callChange)AttributeHasChanged();
-			SendMessage("Defence incremented by " + dif);
+			if(callChange) attributeHasChanged();
+			sendMessage("Defence incremented by " + dif);
 		}
 		else if(!usePoints){
 			this.defence += nb;
 			if(maxStats >= 0 && this.defence > maxStats){
 				this.defence = maxStats;
-				SendMessage("Defence set to " + maxStats);
+				sendMessage("Defence set to " + maxStats);
 			}else{
-				SendMessage("Defence incremented by " + nb);
+				sendMessage("Defence incremented by " + nb);
 			}
-			if(callChange)AttributeHasChanged();
+			if(callChange) attributeHasChanged();
 		}
 		else{
-			this.errorMessageNotEnoughPoints();
+			sendMessage("Not enought points !",ChatColor.RED);
 			return;
 		}
 	}
@@ -985,7 +1004,7 @@ public class RPGPlayer {
 		this.magicResistance = magicResistance;
 		if(getSettings().max_stats >=0 && this.magicResistance > getSettings().max_stats)this.magicResistance = getSettings().max_stats;
 		else if(this.magicResistance < 0) this.magicResistance = 0;
-		AttributeHasChanged();
+		attributeHasChanged();
 	}
 
 	/**
@@ -1000,11 +1019,11 @@ public class RPGPlayer {
 			return;
 		}
 		else if(!getSettings().allow_deduction_points && nb < 0){
-			SendMessage("You are not allowed to deduct attribute points !");
+			sendMessage("You are not allowed to deduct attribute points !");
 			return;
 		}
 		else if (getSettings().allow_deduction_points && nb < 0 && this.magicResistance == 0){
-			SendMessage("You cannot deduct any more points !");
+			sendMessage("You cannot deduct any more points !");
 			return;
 		}
 		else if(usePoints && this.points >= nb){
@@ -1016,23 +1035,23 @@ public class RPGPlayer {
 			else if (this.magicResistance < 0)this.magicResistance = 0;
 
 			double dif = this.magicResistance - oldMagicResistance;
-			if(callChange)AttributeHasChanged();
+			if(callChange) attributeHasChanged();
 			this.points -= dif;
 
-			SendMessage("Magic Resistance incremented by " + dif);
+			sendMessage("Magic Resistance incremented by " + dif);
 		}
 		else if(!usePoints){
 			this.magicResistance += nb;
 			if(maxStats >= 0 && this.magicResistance > maxStats){
 				this.magicResistance = maxStats;
-				SendMessage("Magic Resistance set to " + maxStats);
+				sendMessage("Magic Resistance set to " + maxStats);
 			} else{
-				SendMessage("Magic Resistance incremented by " + nb);
+				sendMessage("Magic Resistance incremented by " + nb);
 			}
-			if(callChange)AttributeHasChanged();
+			if(callChange) attributeHasChanged();
 		}
 		else{
-			this.errorMessageNotEnoughPoints();
+			sendMessage("Not enought points !",ChatColor.RED);
 			return;
 		}
 	}
@@ -1045,7 +1064,7 @@ public class RPGPlayer {
 		this.agility = agility;
 		if(getSettings().max_stats >=0 && this.agility > getSettings().max_stats)this.agility = getSettings().max_stats;
 		else if(this.agility < 0) this.agility = 0;
-		AttributeHasChanged();
+		attributeHasChanged();
 	}
 
 	/**
@@ -1060,11 +1079,11 @@ public class RPGPlayer {
 			return;
 		}
 		else if(!getSettings().allow_deduction_points && nb < 0){
-			SendMessage("You are not allowed to deduct attribute points !");
+			sendMessage("You are not allowed to deduct attribute points !");
 			return;
 		}
 		else if (getSettings().allow_deduction_points && nb < 0 && this.agility == 0){
-			SendMessage("You cannot deduct any more points !");
+			sendMessage("You cannot deduct any more points !");
 			return;
 		}
 		else if(usePoints && this.points >= nb){
@@ -1077,21 +1096,21 @@ public class RPGPlayer {
 
 			double dif = this.agility - oldAgility;
 			this.points -= dif;
-			if(callChange)AttributeHasChanged();
-			SendMessage("Agility incremented by " + dif);
+			if(callChange) attributeHasChanged();
+			sendMessage("Agility incremented by " + dif);
 		}
 		else if(!usePoints){
 			this.agility += nb;
 			if(maxStats >= 0 && this.agility > maxStats){
 				this.agility = maxStats;
-				SendMessage("Agility set to " + maxStats);
+				sendMessage("Agility set to " + maxStats);
 			}else{
-				SendMessage("Agility incremented by " + nb);
+				sendMessage("Agility incremented by " + nb);
 			}
-			if(callChange)AttributeHasChanged();
+			if(callChange) attributeHasChanged();
 		}
 		else{
-			this.errorMessageNotEnoughPoints();
+			sendMessage("Not enought points !",ChatColor.RED);
 			return;
 		}
 	}
@@ -1103,6 +1122,11 @@ public class RPGPlayer {
 	public void setPoints(int points) {
 		this.points = points;
 		if(this.points < 0)this.points = 0;
+	}
+
+	public void setSkillPoints(int pts){
+		this.skillPoints = pts;
+		if(this.skillPoints < 0)this.skillPoints = 0;
 	}
 	
 	/**
@@ -1141,7 +1165,7 @@ public class RPGPlayer {
 			this.points += dif * nbPointsPerLevel;
 			if(this.points < 0) this.points = 0;
 
-			AddBonusAttributes(dif);
+			addBonusAttributes(dif);
 		}
 	}
 
@@ -1152,6 +1176,10 @@ public class RPGPlayer {
 	public void addKills(int kills) {
 		this.kills += kills;
 	}
+
+	public void setKills(int kills){this.kills = kills;}
+
+	public void setDeaths(int deaths){this.deaths = deaths;}
 
 	/**
 	 * add deaths
@@ -1194,13 +1222,13 @@ public class RPGPlayer {
 			this.experience = 0;
 			this.nextLvl = getSettings().first_lvl_exp;
 			this.lvl = 1;
-			SendMessage("You are now a " + rpgRace.getName());
+			sendMessage("You are now a " + rpgRace.getName());
 			this.raceIsSet = true;
-			AttributeHasChanged();
+			attributeHasChanged();
 		}
 		else if(getSettings().can_switch_race){
 			if(this.raceName == n){
-				SendMessage("You are already a " + rpgRace.getName());
+				sendMessage("You are already a " + rpgRace.getName());
 				return;
 			}
 
@@ -1214,7 +1242,7 @@ public class RPGPlayer {
 			this.health -= rpgRace.getHealth();
 			this.agility -= rpgRace.getAgility();
 
-			AddBonusAttributes(this.lvl * -1 - 1);
+			addBonusAttributes(this.lvl * -1 - 1);
 
 			this.defence += newRace.getDefence();
 			this.dexterity += newRace.getDexterity();
@@ -1225,12 +1253,12 @@ public class RPGPlayer {
 			this.raceName = n;
 			this.rpgRace = newRace;
 
-			AddBonusAttributes(this.lvl -1);
+			addBonusAttributes(this.lvl -1);
 
-			SendMessage("You are now a " + newRace.getName());
+			sendMessage("You are now a " + newRace.getName());
 		}
 		else{
-			SendMessage("You cannot switch race !");
+			sendMessage("You cannot switch race !");
 		}
 		this.raceIsSet = true;
 	}
@@ -1256,13 +1284,13 @@ public class RPGPlayer {
 			this.experience = 0;
 			this.nextLvl = getSettings().first_lvl_exp;
 			this.lvl = 1;
-			SendMessage("You are now a " + rpgClass.getName());
+			sendMessage("You are now a " + rpgClass.getName());
 			this.classIsSet = true;
-			AttributeHasChanged();
+			attributeHasChanged();
 		}
 		else if(getSettings().can_switch_class){
 			if(this.className == n){
-				SendMessage("You are already a " + rpgClass.getName());
+				sendMessage("You are already a " + rpgClass.getName());
 				return;
 			}
 
@@ -1276,7 +1304,7 @@ public class RPGPlayer {
 			this.health -= rpgClass.getHealth();
 			this.agility -= rpgClass.getAgility();
 
-			AddBonusAttributes(this.lvl * -1 - 1);
+			addBonusAttributes(this.lvl * -1 - 1);
 
 			this.defence += newClass.getDefence();
 			this.dexterity += newClass.getDexterity();
@@ -1287,12 +1315,12 @@ public class RPGPlayer {
 			this.className = n;
 			this.rpgClass = newClass;
 
-			AddBonusAttributes(this.lvl -1);
+			addBonusAttributes(this.lvl -1);
 
-			SendMessage("You are now a " + newClass.getName());
+			sendMessage("You are now a " + newClass.getName());
 		}
 		else{
-			SendMessage("You cannot switch class !");
+			sendMessage("You cannot switch class !");
 		}
 		this.classIsSet = true;
 	}
@@ -1304,13 +1332,13 @@ public class RPGPlayer {
 	public void setCurrentSkill(String n) {
 		if(this.skills.containsKey(n)) {
 			if(this.skills.get(n).getCurrentLevel() == 0){
-				this.SendMessage("You cannot use this skill yet ! You must upgrade it to level one first !",ChatColor.RED);
+				this.sendMessage("You cannot use this skill yet ! You must upgrade it to level one first !",ChatColor.RED);
 				return;
 			}
 			this.currentSkill = n;
 		}
 		else{
-			this.SendMessage("There is no such skill !",ChatColor.RED);
+			this.sendMessage("There is no such skill !",ChatColor.RED);
 		}
 	}
 
@@ -1329,18 +1357,18 @@ public class RPGPlayer {
 	 */
 	public void upgradeSkill(String n){
 		if(!PlayerListener.plugin.skills.containsKey(n)){
-			this.SendMessage("There is no such skill !",ChatColor.RED);
+			this.sendMessage("There is no such skill !",ChatColor.RED);
 			return;
 		}
 
 		RPGSkill s = this.skills.get(n);
 		if(!s.isEnable()){
-			this.SendMessage("This skill is disabled !",ChatColor.RED);
+			this.sendMessage("This skill is disabled !",ChatColor.RED);
 			return;
 		}
 
 		if(s.getMaxLevel() <= s.getCurrentLevel()){
-			this.SendMessage("This skill is alreary fully upgraded !",ChatColor.RED);
+			this.sendMessage("This skill is already fully upgraded !",ChatColor.RED);
 			return;
 		}
 
@@ -1354,12 +1382,12 @@ public class RPGPlayer {
 		}
 
 		if(!Helper.StringIsNullOrEmpty(msg)){
-			this.SendMessage("You do not meet the requirements to upgrade this skill ! ==>" + msg,ChatColor.RED);
+			this.sendMessage("You do not meet the requirements to upgrade this skill ! ==>" + msg,ChatColor.RED);
 			return;
 		}
 
 		if(s.getSkillpointsCost() > this.skillPoints){
-			this.SendMessage("This skill requires " + s.getBaseSkillpointsCost() + " points to upgrade !",ChatColor.RED);
+			this.sendMessage("This skill requires " + s.getBaseSkillpointsCost() + " points to upgrade !",ChatColor.RED);
 			return;
 		}
 
@@ -1378,32 +1406,32 @@ public class RPGPlayer {
      */
 	public String toString(){
 		if(classIsSet && raceIsSet) {
-			String s = "Level: " + lvl + "\n";
-			s += "Class: " + getClassName() + "\n";
-			s += "Race: " + getRaceName() + "\n";
-			s += "Defence: " + defence + "\n";
-			s += "Strength: " + strength + "\n";
-			s += "Health: " + health + "\n";
-			s += "Dexterity: " + dexterity + "\n";
-			s += "Intelligence: " + intelligence + "\n";
-			s += "Magic Resistance: " + magicResistance + "\n";
-			s += "Agility: " + agility + "\n";
-			s += "Kills: " + kills + "\n";
-			s += "Deaths: " + deaths + "\n";
-			s += "Points: " + points + "\n";
-			s += "Skill points" + skillPoints + "\n";
-			s += "Experience: " + experience + "\n";
-			s += "Next lvl in: " + (nextLvl - experience) + " xp" + "\n";
+			String s = "Level : " + lvl + "\n";
+			s += "Class : " + getClassName() + "\n";
+			s += "Race : " + getRaceName() + "\n";
+			s += "Defence : " + defence + "\n";
+			s += "Strength : " + strength + "\n";
+			s += "Health : " + health + "\n";
+			s += "Dexterity : " + dexterity + "\n";
+			s += "Intelligence : " + intelligence + "\n";
+			s += "Magic Resistance : " + magicResistance + "\n";
+			s += "Agility : " + agility + "\n";
+			s += "Kills : " + kills + "\n";
+			s += "Deaths : " + deaths + "\n";
+			s += "Points : " + points + "\n";
+			s += "Skill points: " + skillPoints + "\n";
+			s += "Experience : " + experience + "\n";
+			s += "Next lvl in : " + (nextLvl - experience) + " xp" + "\n";
 
 			s += "Attack speed : " + this.getAttackSpeed()+ "\n";
 			s += "Movement speed : " + this.getMovementSpeed()+ "\n";
-			s += "Mana regen : " + PlayerListener.getPlayerManaRegen(this)+ "\n";
+			s += "Mana regen : " + Helper.getPlayerManaRegen(this)+ "\n";
 			s += "Max maxMana : " + this.getMaxMana()+ "\n";
 			s += "Max health : " + this.getPlayer().getMaxHealth()+ "\n";
 			s += "Luck : " + this.getLuck()+ "\n";
 			s += "Knockback resistance : " + this.getKnockBackResistance()+ "\n";
 
-			s += "Powers: ";
+			s += "Powers : ";
 			for (RPGPower powa :
 					this.powers.values()) {
 				s += powa.getName() + ", ";
@@ -1543,20 +1571,20 @@ public class RPGPlayer {
 
 	private void setAttackSpeed(){
 		if(getSettings().math.playerAttributes.attack_speed_enable) {
-			this.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(PlayerListener.getPlayerAttackSpeed(this));
+			this.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(Helper.getPlayerAttackSpeed(this));
 		}
 	}
 
 	private void setKnockBackResistance(){
 		if(getSettings().math.playerAttributes.knockback_resistance_enable) {
-			this.getPlayer().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(PlayerListener.getPlayerKnockbackResistance(this));
+			this.getPlayer().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(Helper.getPlayerKnockbackResistance(this));
 		}
 	}
 
 	private void setMovementSpeed(){
 		if(getSettings().math.playerAttributes.movement_speed_enable){
 			//this.getPlayer().getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)
-			this.getPlayer().setWalkSpeed(PlayerListener.getPlayerMovementSpeed(this));
+			this.getPlayer().setWalkSpeed(Helper.getPlayerMovementSpeed(this));
 		}
 
 	}
@@ -1566,7 +1594,7 @@ public class RPGPlayer {
 	 */
 	private void setPlayerMaxHealth(){
 		if(getSettings().math.playerAttributes.total_health_enable) {
-			this.getPlayer().setMaxHealth(PlayerListener.getPlayerMaxHealth(this));
+			this.getPlayer().setMaxHealth(Helper.getPlayerMaxHealth(this));
 		}
 	}
 
@@ -1575,7 +1603,7 @@ public class RPGPlayer {
 	 */
 	private void setMana() {
 		if(getSettings().math.playerAttributes.total_mana_enable) {
-			this.maxMana = PlayerListener.getPlayerMaxMana(this);
+			this.maxMana = Helper.getPlayerMaxMana(this);
 		}
 		//this.maxMana = (float)Gradient(this.rpgRace.getMax_mana(),this.rpgRace.getBase_mana())
 		//		* this.intelligence * getSettings().math.attribute_total_mana_intelligence
@@ -1596,7 +1624,7 @@ public class RPGPlayer {
 
 	private void setLuck(){
 		if(getSettings().math.playerAttributes.luck_enable){
-			this.getPlayer().getAttribute(Attribute.GENERIC_LUCK).setBaseValue(PlayerListener.getPlayerLuck(this));
+			this.getPlayer().getAttribute(Attribute.GENERIC_LUCK).setBaseValue(Helper.getPlayerLuck(this));
 		}
 	}
 
@@ -1607,7 +1635,7 @@ public class RPGPlayer {
 	/**
 	 * reset player generic attributes when changes are made
      */
-	private void AttributeHasChanged(){
+	private void attributeHasChanged(){
 		if(classIsSet && raceIsSet) {
 			setPlayerMaxHealth();
 			setLuck();
@@ -1620,22 +1648,14 @@ public class RPGPlayer {
 	}
 
 	/**
-	 * send error message to current player
-	 */
-	private void errorMessageNotEnoughPoints(){
-		SendMessage("Not enough points !");
-		SendMessage("You currently have " + this.points + " points");
-	}
-
-	/**
 	 * regenerate player maxMana based on player intelligence
      */
-	private void RegenMana(){
+	private void regenMana(){
 		if(currentMana == maxMana){
 			return;
 		}
 		if(getSettings().math.playerAttributes.mana_regen_enable){
-			float regen = PlayerListener.getPlayerManaRegen(this);
+			float regen = Helper.getPlayerManaRegen(this);
 			this.currentMana += regen;
 			if(this.currentMana > maxMana)this.currentMana = maxMana;
 			refreshScoreBoard();
@@ -1645,21 +1665,21 @@ public class RPGPlayer {
 	/**
 	 * start a new maxMana regeneration task on the server
      */
-	private void StartManaRegenTask(){
+	private void startManaRegenTask(){
 		this.manaRegenTask = PlayerListener.plugin.getServer().getScheduler().runTaskTimer(PlayerListener.plugin, new Runnable() {
 			@Override
 			public void run() {
-				RegenMana();
+				regenMana();
 			}
 		}, 0, getSettings().mana_regen_interval * 20);
 
-		PlayerListener.plugin.debugMessage("Start regen maxMana task !");
+		PlayerListener.plugin.debugInfo("Start regen maxMana task !");
 	}
 
 	/**
 	 * stop maxMana regeneration task on server
      */
-	private void StopManaRegenTask(){
+	private void stopManaRegenTask(){
 		if (PlayerListener.plugin != null && this.manaRegenTask != null){
 			PlayerListener.plugin.getServer().getScheduler().cancelTask(this.manaRegenTask.getTaskId());
 		}
@@ -1669,23 +1689,23 @@ public class RPGPlayer {
 		return Settings.getInstance();
 	}
 
-	public void SendMessage(String msg){
-		SendMessage(msg,ChatColor.GREEN,"");
+	public void sendMessage(String msg){
+		sendMessage(msg,ChatColor.GREEN,"");
 	}
 
-	public void SendMessage(String msg, ChatColor color){
-		SendMessage(msg, color,"");
+	public void sendMessage(String msg, ChatColor color){
+		sendMessage(msg, color,"");
 	}
 
-	public void SendMessage(String msg, String prefix){
-		SendMessage(msg,ChatColor.GREEN, prefix);
+	public void sendMessage(String msg, String prefix){
+		sendMessage(msg,ChatColor.GREEN, prefix);
 	}
 
-	public void SendMessage(String msg, ChatColor color, String prefix){
+	public void sendMessage(String msg, ChatColor color, String prefix){
 		this.getPlayer().sendMessage(prefix + color + msg);
 	}
 
-	private void AddBonusAttributes(int nb){
+	private void addBonusAttributes(int nb){
 		for (String attribute :
 				this.rpgClass.getBonusAttributes()) {
 			switch (attribute){
@@ -1760,7 +1780,7 @@ public class RPGPlayer {
 			}
 		}
 		
-		AttributeHasChanged();
+		attributeHasChanged();
 	}
 
 	//===============================================END OF PRIVATE METHODES HELPER===============================

@@ -3,14 +3,11 @@ package lowbrain.mcrpg.rpg;
 import lowbrain.mcrpg.commun.Helper;
 import lowbrain.mcrpg.config.Powers;
 import lowbrain.mcrpg.events.PlayerListener;
-import net.minecraft.server.v1_10_R1.PlayerList;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import sun.util.resources.cldr.aa.CalendarData_aa_DJ;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -28,41 +25,29 @@ public class RPGPower {
     private float minimum_amplifier;
     private float duration_range;
     private float amplifier_range;
-    private float amplifier_intelligence;
-    private float amplifier_dexterity;
-    private float duration_intelligence;
-    private float duration_dexterity;
     private String amplifier_function;
     private String duration_function;
     private PotionEffectType potionEffectType;
     private Calendar lastCast;
     private int minimum_cooldown;
     private int maximum_cooldown;
-    private HashMap<String,Float> cooldown_influence;
+    private HashMap<String,Float> cooldown_variables;
+    private HashMap<String,Float> amplifier_variables;
+    private HashMap<String,Float> duration_variables;
     private HashMap<String,Integer> requirements;
 
 
     public RPGPower(String name){
         this.name = name;
         this.requirements = new HashMap<>();
-        this.cooldown_influence = new HashMap<>();
+        this.cooldown_variables = new HashMap<>();
+        this.amplifier_variables = new HashMap<>();
+        this.duration_variables = new HashMap<>();
         FileConfiguration config = Powers.getInstance();
         this.mana = (float)config.getDouble(this.name + ".mana",0);
         this.cast_range = (float)config.getDouble(this.name + ".cast_range",0);
-
-        this.maximum_amplifier = (float)config.getDouble(this.name + ".cast.amplifier.maximum",0);
-        this.minimum_amplifier = (float)config.getDouble(this.name + ".cast.amplifier.minimum",0);
         this.amplifier_range = (float)config.getDouble(this.name + ".cast.amplifier.range",0);
-        this.amplifier_intelligence = (float)config.getDouble(this.name + ".cast.amplifier.intelligence",0);
-        this.amplifier_dexterity = (float)config.getDouble(this.name + ".cast.amplifier.dexterity",0);
         this.amplifier_function = config.getString(this.name + ".cast.amplifier.function","");
-
-        this.maximum_duration = (float)config.getDouble(this.name + ".cast.duration.maximum",0);
-        this.minimum_duration = (float)config.getDouble(this.name + ".cast.duration.minimum",0);
-        this.duration_range = (float)config.getDouble(this.name + ".cast.duration.range",0);
-        this.duration_intelligence = (float)config.getDouble(this.name + ".cast.duration.intelligence",0);
-        this.duration_dexterity = (float)config.getDouble(this.name + ".cast.duration.dexterity",0);
-        this.duration_function = config.getString(this.name + ".cast.duration.function","");
         this.lastCast = Calendar.getInstance();
 
         ConfigurationSection requirementsSection = config.getConfigurationSection(this.name + ".requirements");
@@ -73,15 +58,45 @@ public class RPGPower {
             }
         }
 
+        ConfigurationSection durationSection = config.getConfigurationSection(this.name + ".cast.duration");
+        this.maximum_duration = (float)config.getDouble(this.name + ".cast.duration.maximum",0);
+        this.minimum_duration = (float)config.getDouble(this.name + ".cast.duration.minimum",0);
+        this.duration_range = (float)config.getDouble(this.name + ".cast.duration.range",0);
+        this.duration_function = config.getString(this.name + ".cast.duration.function","");
+        if(durationSection != null){
+            ConfigurationSection var = durationSection.getConfigurationSection("variables");
+            if(var != null){
+                for (String key :
+                        var.getKeys(false)) {
+                    this.duration_variables.put(key,(float)var.getDouble(key));
+                }
+            }
+        }
+
+        ConfigurationSection amplifierSection = config.getConfigurationSection(this.name + ".cast.amplifier");
+        this.maximum_amplifier = (float)config.getDouble(this.name + ".cast.amplifier.maximum",0);
+        this.minimum_amplifier = (float)config.getDouble(this.name + ".cast.amplifier.minimum",0);
+        if(amplifierSection != null){
+            ConfigurationSection var = amplifierSection.getConfigurationSection("variables");
+            if(var != null){
+                for (String key :
+                        var.getKeys(false)) {
+                    this.amplifier_variables.put(key,(float)var.getDouble(key));
+                }
+            }
+        }
+
+
+
         ConfigurationSection cooldownSection = config.getConfigurationSection(this.name + ".cast.cooldown");
         if(cooldownSection != null){
             maximum_cooldown = cooldownSection.getInt("maximum");
             minimum_cooldown = cooldownSection.getInt("minimum");
-            ConfigurationSection influ = cooldownSection.getConfigurationSection("influence");
+            ConfigurationSection influ = cooldownSection.getConfigurationSection("variables");
             if(influ != null){
                 for (String key :
                         influ.getKeys(false)) {
-                    this.cooldown_influence.put(key,(float)influ.getDouble(key));
+                    this.cooldown_variables.put(key,(float)influ.getDouble(key));
                 }
             }
         }
@@ -104,9 +119,7 @@ public class RPGPower {
     private int getCastDuration(RPGPlayer from){
         float result = 0F;
         if(Helper.StringIsNullOrEmpty(duration_function)) {
-            result =  Helper.ValueFromFunction(maximum_duration,minimum_duration,
-                    (from.getIntelligence() * duration_intelligence
-                    + from.getDexterity() * duration_dexterity));
+            result =  Helper.ValueFromFunction(maximum_duration,minimum_duration,duration_variables,from);
         }
         else{
             String[] st = duration_function.split(",");
@@ -130,9 +143,7 @@ public class RPGPower {
     private int getCastAmplifier(RPGPlayer from){
         float result = 0F;
         if(Helper.StringIsNullOrEmpty(amplifier_function)) {
-            result = Helper.ValueFromFunction(maximum_amplifier,minimum_amplifier,
-                    (from.getIntelligence() * amplifier_intelligence
-                    + from.getDexterity() * amplifier_dexterity));
+            result = Helper.ValueFromFunction(maximum_amplifier,minimum_amplifier,amplifier_variables,from);
         }
         else{
             String[] st = amplifier_function.split(",");
@@ -201,7 +212,7 @@ public class RPGPower {
     }
 
     private int getCooldown(RPGPlayer p){
-        return (int)Helper.ValueFromFunction(maximum_cooldown,minimum_cooldown,cooldown_influence,p);
+        return (int)Helper.ValueFromFunction(maximum_cooldown,minimum_cooldown, cooldown_variables,p);
     }
 
     public boolean Cast(RPGPlayer from, RPGPlayer to){
@@ -213,12 +224,12 @@ public class RPGPower {
 
             if(this.lastCast.after(cooldowntime)){
                 int rest = (int)((lastCast.getTimeInMillis() - cooldowntime.getTimeInMillis()) / 1000);
-                from.SendMessage("Spell in cooldown ! " + rest + " seconds left !",ChatColor.RED);
+                from.sendMessage("Spell in cooldown ! " + rest + " seconds left !",ChatColor.RED);
                 return false;
             }
 
             if(to != null && this.getCast_range() == 0){
-                from.SendMessage("You cannot cast this spell on others !",ChatColor.RED);
+                from.sendMessage("You cannot cast this spell on others !",ChatColor.RED);
                 return false;
             }
             if(to != null && this.getCast_range() > 0){
@@ -229,7 +240,7 @@ public class RPGPower {
                 double distance = Math.sqrt(x*x + y*y + z*z);
 
                 if(this.getCast_range() < distance){
-                    from.SendMessage("The player is to far away ! Range : " + this.getCast_range() + "/" + distance,ChatColor.RED);
+                    from.sendMessage("The player is to far away ! Range : " + this.getCast_range() + "/" + distance,ChatColor.RED);
                     return false;
                 }
             }
@@ -237,12 +248,12 @@ public class RPGPower {
             String msg = from.meetRequirementsString(this.requirements);
 
             if(!Helper.StringIsNullOrEmpty(msg)){
-                from.SendMessage("You cannot cast this spell yet ! Requirements ===>" + msg,ChatColor.RED);
+                from.sendMessage("You cannot cast this spell yet ! Requirements ===>" + msg,ChatColor.RED);
                 return false;
             }
 
             if(from.getCurrentMana() < this.getMana()){
-                from.SendMessage("Insufficient mana ! " + this.getMana() + "/" + from.getCurrentMana(),ChatColor.RED);
+                from.sendMessage("Insufficient mana ! " + this.getMana() + "/" + from.getCurrentMana(),ChatColor.RED);
                 return false;
             }
 
@@ -251,11 +262,11 @@ public class RPGPower {
 
             from.setCurrentMana(from.getCurrentMana() - this.getMana());
             this.lastCast = Calendar.getInstance();
-            PlayerListener.plugin.debugMessage(from.getPlayer().getName() + " cast " + this.getName());
-            from.SendMessage("Cast succeeded !");
+            PlayerListener.plugin.debugInfo(from.getPlayer().getName() + " cast " + this.getName());
+            from.sendMessage("Cast succeeded !");
             return true;
         }catch (Exception e){
-            from.SendMessage("Failed to cast " + this.name, ChatColor.RED);
+            from.sendMessage("Failed to cast " + this.name, ChatColor.RED);
         }
         return false;
     }

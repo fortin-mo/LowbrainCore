@@ -125,8 +125,8 @@ witch:
  xp_bonus_interval: 50
  xp_bonus_multiplier: 10
 wither:
- base_xp: 35
- xp_bonus_interval: 50
+ base_xp: 1000
+ xp_bonus_interval: 5
  xp_bonus_multiplier: 10
 wolf:
  base_xp: 20

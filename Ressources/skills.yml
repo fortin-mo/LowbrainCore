@@ -9,8 +9,41 @@
 # base_cooldown : time between each attack (in second) (at level 1)
 # base_requirements : look at itemrequirements.yml (without race and class)
 
+#event_type:
+# bow_shoot
+# attack_entity
+# both
+
+#effects:
+# fire_tick
+# freeze
+# poison
+# lightning
+# absorb
+# damage
+# kockback
+# gravity (bow_shoot only) (0 = false, 1 = true)
+# speed (bow_shoot only)
+
+#effects value:
+# template ==> effect: min,max (if max is not set, will use min * maxlevel)
+# for fire_tick, poison, freeze = duration(at lvl 1)
+# for damage = the additionnal damage done (at lvl 1)
+# for absorb = the amount of the damage absorbed at level 1
+# for knockback = the power at wich the player well be knockback at level 1
+
+
+#effects_function_type
+# function_type 0 = lineare : a x + b
+# function_type 1 = cubique : a x^2 + b ==> difference between level 1 and 2 is lower then level 99 and 100
+# function_type 2 = square : a x^0.5 + b ==> difference between level 1 and 2 is higher then level 99 and 100
+
+#Hardcoded skills (by name, you can still edit the rest or disable them)
+
 spread:
  enable: true
+ event_type: bow_shoot
+ angle: 3
  max_level: 5
  base_skillpoints_cost: 2
  base_cooldown: 30
@@ -23,12 +56,14 @@ spread:
  mana_cost_operation_value: 0
  cooldown_operation_value: -2
  requirements_operation_value: 1
+ description: Shoots a spread of arrow (higher level means wider spread)
  base_requirements:
   level: 15
   dexterity: 15
 
 barrage:
  enable: true
+ event_type: bow_shoot
  max_level: 5
  base_skillpoints_cost: 2
  base_cooldown: 45
@@ -41,51 +76,18 @@ barrage:
  mana_cost_operation_value: 0
  cooldown_operation_value: -2
  requirements_operation_value: 1
+ descrition: Shoots a barrage (burst) of arrow. Higher level means more arrow
  base_requirements:
   level: 15
   dexterity: 15
   agility: 15
 
-flaming_arrow:
- enable: true
- max_level: 5
- base_skillpoints_cost: 2
- base_cooldown: 45
- base_mana_cost: 10
- skillpoints_operation: 0
- mana_cost_operation: 0
- requirements_operation: 2
- cooldown_opration: 0
- skillpoints_operation_value: 0
- mana_cost_operation_value: 0
- cooldown_operation_value: -2
- requirements_operation_value: 1
- base_requirements:
-  level: 15
-  dexterity: 15
-  intelligence: 15
-
-frozen_arrow:
- enable: true
- max_level: 5
- base_skillpoints_cost: 2
- base_cooldown: 30
- base_mana_cost: 5
- skillpoints_operation: 0
- mana_cost_operation: 0
- requirements_operation: 2
- cooldown_opration: 0
- skillpoints_operation_value: 0
- mana_cost_operation_value: 0
- cooldown_operation_value: -2
- requirements_operation_value: 1
- base_requirements:
-  level: 10
-  dexterity: 15
-  intelligence: 15
+#Customizable skills
 
 sniper:
  enable: true
+ event_type: bow_shoot
+ effects_function_type: 0
  max_level: 3
  base_skillpoints_cost: 1
  base_cooldown: 15
@@ -98,13 +100,20 @@ sniper:
  mana_cost_operation_value: 0
  cooldown_operation_value: -2
  requirements_operation_value: 1
+ description: Shoots a straight arrow not affected by gravity with higher velocity and knockback power
  base_requirements:
   level: 10
   dexterity: 15
   strength: 15
+ effects:
+  gravity: 0
+  knockback: 0.5,2
+  speed: 1,2
 
-fire_slash:
+flaming_arrow:
  enable: true
+ event_type: bow_shoot
+ effects_function_type: 0
  max_level: 5
  base_skillpoints_cost: 2
  base_cooldown: 45
@@ -117,13 +126,42 @@ fire_slash:
  mana_cost_operation_value: 0
  cooldown_operation_value: -2
  requirements_operation_value: 1
+ description: Shoots an arrow that set the target on fire
  base_requirements:
-  level: 10
+  level: 15
   dexterity: 15
   intelligence: 15
-  
-frozen_slash:
+ effects:
+  fire_tick: 1.5
+
+poison_arrow:
  enable: true
+ event_type: bow_shoot
+ effects_function_type: 0
+ max_level: 5
+ base_skillpoints_cost: 2
+ base_cooldown: 45
+ base_mana_cost: 10
+ skillpoints_operation: 0
+ mana_cost_operation: 0
+ requirements_operation: 2
+ cooldown_opration: 0
+ skillpoints_operation_value: 0
+ mana_cost_operation_value: 0
+ cooldown_operation_value: -2
+ requirements_operation_value: 1
+ description: Shoots an arrow that poisons the target
+ base_requirements:
+  level: 15
+  dexterity: 15
+  intelligence: 15
+ effects:
+  poison: 1.5
+
+frozen_arrow:
+ enable: true
+ event_type: bow_shoot
+ effects_function_type: 0
  max_level: 5
  base_skillpoints_cost: 2
  base_cooldown: 30
@@ -136,13 +174,90 @@ frozen_slash:
  mana_cost_operation_value: 0
  cooldown_operation_value: -2
  requirements_operation_value: 1
+ description: Shoots an arrow that freezes the target
+ base_requirements:
+  level: 10
+  dexterity: 15
+  intelligence: 15
+ effects:
+  freeze: 1.5
+
+fire_slash:
+ enable: true
+ event_type: attack_entity
+ effects_function_type: 0
+ max_level: 5
+ base_skillpoints_cost: 2
+ base_cooldown: 45
+ base_mana_cost: 10
+ skillpoints_operation: 0
+ mana_cost_operation: 0
+ requirements_operation: 2
+ cooldown_opration: 0
+ skillpoints_operation_value: 0
+ mana_cost_operation_value: 0
+ cooldown_operation_value: -2
+ requirements_operation_value: 1
+ description: Set the target on fire on contact
+ base_requirements:
+  level: 10
+  dexterity: 15
+  intelligence: 15
+ effects:
+  fire_tick: 1.5
+
+poison_slash:
+ enable: true
+ event_type: attack_entity
+ effects_function_type: 0
+ max_level: 5
+ base_skillpoints_cost: 2
+ base_cooldown: 45
+ base_mana_cost: 10
+ skillpoints_operation: 0
+ mana_cost_operation: 0
+ requirements_operation: 2
+ cooldown_opration: 0
+ skillpoints_operation_value: 0
+ mana_cost_operation_value: 0
+ cooldown_operation_value: -2
+ requirements_operation_value: 1
+ description: Poisons the target on contact
+ base_requirements:
+  level: 10
+  dexterity: 15
+  intelligence: 15
+ effects:
+  poison: 1.5
+
+frozen_slash:
+ enable: true
+ event_type: attack_entity
+ effects_function_type: 0
+ max_level: 5
+ base_skillpoints_cost: 2
+ base_cooldown: 30
+ base_mana_cost: 5
+ skillpoints_operation: 0
+ mana_cost_operation: 0
+ requirements_operation: 2
+ cooldown_opration: 0
+ skillpoints_operation_value: 0
+ mana_cost_operation_value: 0
+ cooldown_operation_value: -2
+ requirements_operation_value: 1
+ description: Freezes the target on contact
  base_requirements:
   level: 10
   dexterity: 10
   intelligence: 10
+ effects:
+  freeze: 1.5
 
 power_hit:
  enable: true
+ event_type: attack_entity
+ effects_function_type: 0
  max_level: 5
  base_skillpoints_cost: 2
  base_cooldown: 60
@@ -155,13 +270,19 @@ power_hit:
  mana_cost_operation_value: 0
  cooldown_operation_value: -2
  requirements_operation_value: 1
+ description: Execute a powerfull hit with additionnal damage and knockback power
  base_requirements:
   level: 15
   strength: 15
   intelligence: 10
+ effects:
+  kockback: 0.5,2
+  damage: 1
 
 absorb:
  enable: true
+ event_type: both
+ effects_function_type: 0
  max_level: 5
  base_skillpoints_cost: 3
  base_cooldown: 60
@@ -174,12 +295,18 @@ absorb:
  mana_cost_operation_value: 0
  cooldown_operation_value: -2
  requirements_operation_value: 1
+ description: Absorb damage done into HP
  base_requirements:
   level: 15
   intelligence: 15
+  dexterity: 15
+ effects:
+  absorb: 0.25
 
 lightning_strike:
  enable: true
+ event_type: attack_entity
+ effects_function_type: 0
  max_level: 5
  base_skillpoints_cost: 3
  base_cooldown: 60
@@ -192,8 +319,38 @@ lightning_strike:
  mana_cost_operation_value: 0
  cooldown_operation_value: -2
  requirements_operation_value: 1
+ description: Execute a powerfull hit with lightning effect, additionnal damage and set the target on fire
  base_requirements:
   level: 20
   strength: 20
   intelligence: 20
+ effects:
+  lightning: 0
+  damage: 1.5
+  fire_tick: 1
 
+lightning_bolt:
+ enable: true
+ event_type: bow_shoot
+ effects_function_type: 0
+ max_level: 5
+ base_skillpoints_cost: 3
+ base_cooldown: 60
+ base_mana_cost: 15
+ skillpoints_operation: 0
+ mana_cost_operation: 0
+ requirements_operation: 2
+ cooldown_opration: 0
+ skillpoints_operation_value: 0
+ mana_cost_operation_value: 0
+ cooldown_operation_value: -2
+ requirements_operation_value: 1
+ description: Shoots an arrow with lightning effect, additionnal damage and set the target on fire
+ base_requirements:
+  level: 20
+  strength: 20
+  intelligence: 20
+ effects:
+  lightning: 0
+  damage: 1
+  fire_tick: 1

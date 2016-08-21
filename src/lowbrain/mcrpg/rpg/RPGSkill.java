@@ -6,6 +6,7 @@ import lowbrain.mcrpg.events.PlayerListener;
 import net.minecraft.server.v1_10_R1.EntityArrow;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_10_R1.entity.CraftArrow;
 import org.bukkit.entity.Arrow;
@@ -41,20 +42,26 @@ public class RPGSkill {
     private boolean enable;
     private Calendar lastExecuted;
     private int currentLevel;
+    private String eventType;
+    private HashMap<String,String> effects;
+    private int angle;
+    private int functionType;
+    private String description;
 
     public String info(){
         String s = "";
         s += "-------------------------" + "\n";
-        s += "Name : " + name + "\n";
+        s += "Name : " + getName() + "\n";
         s += "Skillpoints cost : " + getSkillpointsCost() + "\n";
         s += "Mana cost : " + getManaCost() + "\n";
         s += "Cooldown : " + getCoolDown() + "\n";
-        s += "Max level : " + maxLevel + "\n";
-        s += "Current level : " + currentLevel + "\n";
+        s += "Max level : " + getMaxLevel() + "\n";
+        s += "Current level : " + getCurrentLevel() + "\n";
+        s += "Description : " + getDescription() + "\n";
         s += "Next upgrade requirements : ";
 
         for (Map.Entry<String, Integer> r :
-                baseRequirements.entrySet()) {
+                getBaseRequirements().entrySet()) {
             s += r.getKey() + " ";
             s += getRequirement(r.getKey());
             s += " ";
@@ -66,16 +73,16 @@ public class RPGSkill {
     public String toString(){
         String s = "";
         s += "-------------------------" + "\n";
-        s += "Name : " + name + "\n";
-        s += "Skillpoints cost : " + baseSkillpointsCost + "\n";
-        s += "Mana cost : " + baseManaCost + "\n";
-        s += "Cooldown : " + baseCooldown + "\n";
-        s += "Max level : " + maxLevel + "\n";
-
+        s += "Name : " + getName() + "\n";
+        s += "Skillpoints cost : " + getBaseSkillpointsCost() + "\n";
+        s += "Mana cost : " + getBaseManaCost() + "\n";
+        s += "Cooldown : " + getBaseCooldown() + "\n";
+        s += "Max level : " + getMaxLevel() + "\n";
+        s += "Description : " + getDescription() + "\n";
         s += "Requirements : ";
 
         for (Map.Entry<String, Integer> r :
-                baseRequirements.entrySet()) {
+                getBaseRequirements().entrySet()) {
             s += r.getKey() + " ";
             s += r.getValue();
             s += " ";
@@ -105,12 +112,15 @@ public class RPGSkill {
             return;
         }
         enable = true;
+        this.description = sec.getString("description");
         this.enable = sec.getBoolean("enable");
+        this.angle = sec.getInt("angle");
+        this.functionType = sec.getInt("effects_function_type",0);
         this.maxLevel = sec.getInt("max_level");
         this.baseCooldown = sec.getInt("base_cooldown");
-        this.baseManaCost = (float)sec.getDouble("base_mana_cost");
+        this.baseManaCost = (float)sec.getDouble("base_mana_cost",0);
         this.baseSkillpointsCost = sec.getInt("base_skillpoints_cost");
-
+        this.eventType = sec.getString("event_type");
         this.skillpointsOperation = sec.getInt("base_skillpoints_operation");
         this.manaCostOperation = sec.getInt("mana_cost_operation");
         this.cooldownOperation = sec.getInt("cooldown_operation");
@@ -120,7 +130,8 @@ public class RPGSkill {
         this.cooldownOperationValue = sec.getInt("cooldown_operation_value");
         this.requirementsOperationValue = sec.getInt("requirements_operation_value");
 
-        this.baseRequirements = new HashMap<String,Integer>();
+        this.baseRequirements = new HashMap<>();
+        this.effects = new HashMap<>();
 
         ConfigurationSection requirementsSection = sec.getConfigurationSection("base_requirements");
         if(requirementsSection != null){
@@ -129,6 +140,15 @@ public class RPGSkill {
                 this.baseRequirements.put(key,requirementsSection.getInt(key));
             }
         }
+
+        ConfigurationSection effectsSection = sec.getConfigurationSection("effects");
+        if(effectsSection != null){
+            for (String key :
+                    effectsSection.getKeys(false)) {
+                this.effects.put(key,effectsSection.getString(key));
+            }
+        }
+
     }
 
     public String getName() {
@@ -187,14 +207,15 @@ public class RPGSkill {
                 case "spread":
                     int[] angles = new int[currentLevel * 2];
                     for (int i = 0; i < angles.length / 2; i++) {
-                        angles[i] = (i + 1) * 3;
-                        angles[i + (angles.length / 2)] = (i + 1) * -3;
+                        angles[i] = (i + 1) * angle;
+                        angles[i + (angles.length / 2)] = (i + 1) * -(angle);
                     }
 
                     for (int angle : angles) {
                         Vector vec;
                         vec = Helper.rotateYAxis(p.getPlayer().getLocation().getDirection().clone().normalize(), angle);
                         Arrow marrow = p.getPlayer().launchProjectile(Arrow.class,vec.clone().multiply(ar.getVelocity().length()));
+                        applyEffectToArrow(marrow);
                         marrow.setShooter(p.getPlayer());
                         marrow.setBounce(false);
                         ((CraftArrow)marrow).getHandle().fromPlayer = EntityArrow.PickupStatus.DISALLOWED;
@@ -210,6 +231,7 @@ public class RPGSkill {
                                 cancel();
                             }
                             Arrow arrow = p.getPlayer().launchProjectile(Arrow.class,p.getPlayer().getLocation().getDirection().clone().normalize().multiply(ar.getVelocity().length()));
+                            applyEffectToArrow(arrow);
                             arrow.setShooter(p.getPlayer());
                             arrow.setBounce(false);
                             ((CraftArrow)arrow).getHandle().fromPlayer = EntityArrow.PickupStatus.DISALLOWED;
@@ -219,21 +241,10 @@ public class RPGSkill {
                     }.runTaskTimer(PlayerListener.plugin, 4L, 4L);
                     succeed = true;
                     break;
-                case "flaming_arrow":
-                    ar.setFireTicks(currentLevel * 2 * 10);
+                default:
+                    applyEffectToArrow(ar);
+                    ar.setCustomName(this.name);
                     ar.setGlowing(true);
-                    succeed = true;
-                    break;
-                case "frozen_arrow":
-                    ar.setCustomName(this.name+","+ currentLevel);
-                    ar.setGlowing(true);
-                    succeed = true;
-                    break;
-                case "sniper":
-                    ar.setVelocity(ar.getVelocity().normalize().multiply(speed * currentLevel));
-                    ar.setGravity(false);
-                    ar.setGlowing(true);
-                    ar.setKnockbackStrength(currentLevel);
                     succeed = true;
                     break;
             }
@@ -241,8 +252,8 @@ public class RPGSkill {
             if(succeed){
                 this.setLastExecuted(Calendar.getInstance());
                 p.setCurrentMana(p.getCurrentMana() - getBaseManaCost());
-                PlayerListener.plugin.debugMessage(this.name);
-                p.SendMessage("Skilled attack succeeded !");
+                PlayerListener.plugin.debugInfo(this.name);
+                p.sendMessage("Skilled attack succeeded !");
             }
 
             return succeed;
@@ -251,54 +262,78 @@ public class RPGSkill {
         }
     }
 
+    private void applyEffectToArrow(Arrow arrow){
+        String speed = this.getEffects().getOrDefault("speed",null);
+        if(!Helper.StringIsNullOrEmpty(speed)){
+            arrow.setVelocity(arrow.getVelocity().normalize().multiply(getEffectValue(speed)));
+        }
+        int gravity = Helper.intTryParse(this.getEffects().getOrDefault("gravity","1"),1);
+        arrow.setGravity(gravity <= 0 ? false : true);
+    }
+
+    public float getEffectValue(String effect){
+        if(Helper.StringIsNullOrEmpty(effect))return 0F;
+
+        String[] tmp = effect.split(",");
+        float min = 0F;
+        float max = 0F;
+
+        min = tmp.length > 0 ? Helper.floatTryParse(tmp[0],0F) : 0F;
+        max = tmp.length > 1 ? Helper.floatTryParse(tmp[1],0F) : min * this.getMaxLevel();
+
+        return Helper.Slope(max,min,this.getMaxLevel(),this.getFunctionType()) * this.getCurrentLevel() + min;
+    }
+
     public boolean executeWeaponAttackSkill(RPGPlayer p, LivingEntity to, double damage){
 
         try {
-            boolean succeed = false;
+            if(p == null || to == null) return false;
 
-            if(p == null || to == null) return succeed;
+            if(!canExecute(p))return false;
 
-            if(!canExecute(p))return succeed;
-
-            switch (this.name){
-                case "fire_slash":
-                    to.setFireTicks(currentLevel * 20);
-                    succeed = true;
-                    break;
-                case "frozen_slash":
-                    PotionEffect po = new PotionEffect(PotionEffectType.SLOW,currentLevel * 2 *20,currentLevel,true,true);
+            PotionEffect po = null;
+            for (Map.Entry<String, String> effect :
+                    this.getEffects().entrySet()) {
+                switch (effect.getKey()){
+                    case "poison":
+                        po = new PotionEffect(PotionEffectType.POISON,(int)(getEffectValue(effect.getValue()) *20),this.getCurrentLevel(),true,true);
+                        break;
+                    case "fire_tick":
+                        to.setFireTicks((int)(getEffectValue(effect.getValue()) * 20));
+                        break;
+                    case "freeze":
+                        po = new PotionEffect(PotionEffectType.SLOW,(int)(getEffectValue(effect.getValue()) *20),this.getCurrentLevel(),true,true);
+                        break;
+                    case "absorb":
+                        double pc = getEffectValue(effect.getValue());
+                        double absorb = damage * pc;
+                        double newHealth = p.getPlayer().getHealth() + absorb;
+                        newHealth = newHealth > p.getPlayer().getMaxHealth() ? p.getPlayer().getMaxHealth() : newHealth;
+                        p.getPlayer().setHealth(newHealth);
+                        p.sendMessage(absorb + "HP absorbed !");
+                        break;
+                    case "knockback":
+                        to.setVelocity(to.getLocation().getDirection().multiply(-1 * getEffectValue(effect.getValue())));
+                        break;
+                    case "lightning":
+                        to.getWorld().strikeLightningEffect(to.getLocation());
+                        break;
+                    case "damage":
+                        to.damage(getEffectValue(effect.getValue()));
+                        break;
+                }
+                if(po != null){
                     po.apply(to);
-                    succeed = true;
-                    break;
-                case "power_hit":
-                    to.setVelocity(to.getLocation().getDirection().multiply(-1 * currentLevel / 2));
-                    to.damage(currentLevel);
-                    succeed = true;
-                    break;
-                case "absorb":
-                    double pc = 1 * currentLevel / this.maxLevel ;
-                    double absorb = damage * pc;
-                    double newHealth = p.getPlayer().getHealth() + absorb;
-                    newHealth = newHealth > p.getPlayer().getMaxHealth() ? p.getPlayer().getMaxHealth() : newHealth;
-                    p.getPlayer().setHealth(newHealth);
-                    p.SendMessage(absorb + "HP absorbed !");
-                    succeed = true;
-                    break;
-                case "lightning_strike":
-                    to.setFireTicks(currentLevel * 10);
-                    to.damage(currentLevel * 1.5);
-                    to.getWorld().strikeLightningEffect(to.getLocation());
-                    break;
+                    po = null;
+                }
             }
 
-            if(succeed){
-                this.setLastExecuted(Calendar.getInstance());
-                p.setCurrentMana(p.getCurrentMana() - getBaseManaCost());
-                PlayerListener.plugin.debugMessage(this.name);
-                p.SendMessage("Skilled attack succeeded !");
-            }
+            this.setLastExecuted(Calendar.getInstance());
+            p.setCurrentMana(p.getCurrentMana() - getBaseManaCost());
+            PlayerListener.plugin.debugInfo(this.name);
+            p.sendMessage("Skilled attack succeeded !");
 
-            return succeed;
+            return true;
         }catch (Exception e){
             return false;
         }
@@ -314,7 +349,7 @@ public class RPGSkill {
 
             if(this.getLastExecuted().before(cooldownTime)){
                 if(p.getCurrentMana() < this.getManaCost()){
-                    p.SendMessage("Not enough mana !", ChatColor.RED);
+                    p.sendMessage("Not enough mana !", ChatColor.RED);
                     return false;
                 }
                 else {
@@ -323,7 +358,7 @@ public class RPGSkill {
             }
             else{
                 int rest = (int)((getLastExecuted().getTimeInMillis() - cooldownTime.getTimeInMillis()) / 1000);
-                p.SendMessage("Cooldown ! " + rest + " seconds left !",ChatColor.RED);
+                p.sendMessage("Cooldown ! " + rest + " seconds left !",ChatColor.RED);
                 return false;
             }
         }
@@ -414,5 +449,25 @@ public class RPGSkill {
 
     public float getRequirementsOperationValue() {
         return requirementsOperationValue;
+    }
+
+    public String getEventType() {
+        return eventType;
+    }
+
+    public HashMap<String, String> getEffects() {
+        return effects;
+    }
+
+    public int getAngle() {
+        return angle;
+    }
+
+    public int getFunctionType() {
+        return functionType;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }
