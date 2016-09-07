@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="LowbrainMCRPG" default="makejar" basedir=".">
-    <target name="makejar" description="Create a jar for the project">
+<project name="LowbrainCore" default="compileLowbrainCore" basedir=".">
+    <target name="compileLowbrainCore" description="Create a jar for the project">
         <mkdir dir="target"></mkdir>
         <jar destfile="target/${ant.project.name}.jar">
             <fileset dir="bin"></fileset>
-            <fileset dir="Ressources"></fileset>
+            <fileset dir="resources"></fileset>
             <fileset file="plugin.yml"></fileset>
         </jar>
     </target>

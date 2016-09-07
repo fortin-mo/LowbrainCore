@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/LowbrainMCRPG.iml" filepath="$PROJECT_DIR$/LowbrainMCRPG.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LowbrainCore.iml" filepath="$PROJECT_DIR$/LowbrainCore.iml" />
     </modules>
   </component>
 </project>

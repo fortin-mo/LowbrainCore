@@ -1,76 +1,77 @@
-main: lowbrain.mcrpg.main.Main
-name: LowbrainMCRPG
+main: lowbrain.core.main.LowbrainCore
+name: LowbrainCore
 version: 1.1.0
 author: Lowbrain
-softdepend: [HolographicDisplays]
+softdepend: [HolographicDisplays , ArmorEquipEvent, NickNamer, PacketListenerApi]
 description: Add a tones of rpg elements to the game. Such as attributes, skills, spells, new items (armor, weapon, staff), races, classes, etc.
 permission:
- mcrpg.save-all:
+ core.save-all:
   description: save all connected player stats
- mcrpg.save:
+ core.save:
   description: save you own stats
- mcrpg.stats-others:
+ core.stats-others:
   description: show other players stats
- mcrpg.reload:
+ core.reload:
   description: reload plugin
- mcrpg.setattributes-others:
+ core.setattributes-others:
   description: set / change other players attributes by command
 commands:
-   mcrpg:
+   lbcore:
       usage: |
-                  Use /help mcrpg [subcommand] for more information
-                  /mcrpg stats - show your player stats
-                  /mcrpg stats <player> - show stats of player
-                  /mcrpg classes - show all class basic attributes
-                  /mcrpg setclass <name> - set your class
-                  /mcrpg setclass rdm/random - set a random class
-                  /mcrpg races - show all races basic attributes
-                  /mcrpg setrace <name> - set your race
-                  /mcrpg setrace rdm/random - set a random race
-                  /mcrpg cast <spell name> - cast a spell to yourself
-                  /mcrpg cast <spell name> <player name> - cast a spell to someone
-                  /mcrpg togglestats <false or true> - hide or show stats scoreboard
-                  /mcrpg togglestats <0 or 1> - hide or show stats scoreboard
-                  /mcrpg togglestats - toggle stats scoreboard
+                  Use /help lbcore [subcommand] for more information
+                  /lbcore stats - show your player stats
+                  /lbcore stats <player> - show stats of player
+                  /lbcore classes - show all class basic attributes
+                  /lbcore setclass <name> - set your class
+                  /lbcore setclass rdm/random - set a random class
+                  /lbcore races - show all races basic attributes
+                  /lbcore setrace <name> - set your race
+                  /lbcore setrace rdm/random - set a random race
+                  /lbcore cast <spell name> - cast a spell to yourself
+                  /lbcore cast <spell name> <player name> - cast a spell to someone
+                  /lbcore togglestats <false or true> - hide or show stats slbcoreboard
+                  /lbcore togglestats <0 or 1> - hide or show stats slbcoreboard
+                  /lbcore togglestats - toggle stats slbcoreboard
 
-                  /mcrpg mobkills <name> - show how many time you killed this mob
-                  /mcrpg mobkills - show the number of kills you got for each mob
+                  /lbcore mobkills <name> - show how many time you killed this mob
+                  /lbcore mobkills - show the number of kills you got for each mob
 
-                  /mcprg skills - show the list of skills and their current level
-                  /mcrpg setskill <name> - set the current skill to be used
-                  /mcrpg upskill <name> - upgrade skill
-                  /mcrpg getskill - get current skill
-                  /mcrpg skill <name> - get the skill description
-                  /mcrpg myskill <name> - get the skill info (level)
+                  /lbcore skills - show the list of skills and their current level
+                  /lbcore setskill <name> - set the current skill to be used
+                  /lbcore upskill <name> - upgrade skill
+                  /lbcore getskill - get current skill
+                  /lbcore skill <name> - get the skill description
+                  /lbcore myskill <name> - get the skill info (level)
+                  /lbcore mypowers - show your available powers
 
-                  /mcrpg add defence <number>  - add <number> defence or def
-                  /mcrpg add strength <number>  - add <number> strength o str
-                  /mcrpg add health <number>  - add <number> health or hp
-                  /mcrpg add dexterity <number>  - add <number> dexterity or dext
-                  /mcrpg add magicResistance <number>  - add <number> magicResistance or mr
-                  /mcrpg add intelligence <number>  - add <number> intelligence or int
-                  /mcrpg add agility <number> - add <number> agility or ag
-                  /mcrpg +defence - add 1 defence
-                  /mcrpg +def - add 1 defence
-                  /mcrpg +strength - add 1 strength
-                  /mcrpg +str - add 1 strength
-                  /mcrpg +health - add 1 health
-                  /mcrpg +hp - add 1 health
-                  /mcrpg +dexterity - add 1 dexterity
-                  /mcrpg +dext - add 1 dexterity
-                  /mcrpg +magicResistance - add 1 magic resistance
-                  /mcrpg +mr - add 1 magic resistance
-                  /mcrpg +agility - add 1 agility
-                  /mcrpg +ag - add 1 agility
+                  /lbcore add defence <number>  - add <number> defence or def
+                  /lbcore add strength <number>  - add <number> strength o str
+                  /lbcore add health <number>  - add <number> health or hp
+                  /lbcore add dexterity <number>  - add <number> dexterity or dext
+                  /lbcore add magicResistance <number>  - add <number> magicResistance or mr
+                  /lbcore add intelligence <number>  - add <number> intelligence or int
+                  /lbcore add agility <number> - add <number> agility or ag
+                  /lbcore +defence - add 1 defence
+                  /lbcore +def - add 1 defence
+                  /lbcore +strength - add 1 strength
+                  /lbcore +str - add 1 strength
+                  /lbcore +health - add 1 health
+                  /lbcore +hp - add 1 health
+                  /lbcore +dexterity - add 1 dexterity
+                  /lbcore +dext - add 1 dexterity
+                  /lbcore +magicResistance - add 1 magic resistance
+                  /lbcore +mr - add 1 magic resistance
+                  /lbcore +agility - add 1 agility
+                  /lbcore +ag - add 1 agility
 
-                  /mcrpg reset - reset your attributes to your default class
-                  /mcrpg completereset true - reset you whole character (incluing level gained and xp)
-                  /mcrpg reset <class> - reset your attributes to your new class
-                  /mcrpg reset <class> <race>  - reset your attributes to your new class and new race
-                  /mcrpg nextlvl - show how much xp is need for next lvl
-                  /mcrpg save-all - save all player stats
-                  /mcrpg save - save your stats
-                  /mcrpg xp - amount of xp needed left to achieve next level
+                  /lbcore reset - reset your attributes to your default class
+                  /lbcore completereset true - reset you whole character (incluing level gained and xp)
+                  /lbcore reset <class> - reset your attributes to your new class
+                  /lbcore reset <class> <race>  - reset your attributes to your new class and new race
+                  /lbcore nextlvl - show how much xp is need for next lvl
+                  /lbcore save-all - save all player stats
+                  /lbcore save - save your stats
+                  /lbcore xp - amount of xp needed left to achieve next level
 
 
 

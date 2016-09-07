@@ -1,0 +1,454 @@
+# maximum : the best value possible
+# minimum : the worst value possible
+# variables : the amounts by wich the specific attribute is multiplied by to calculate the x value
+# range : creates a range and get a random number in that range
+
+# ex:
+
+#   by_projectile:
+#     enable: true
+#     function:
+#     strength: 0.333
+#     dexterity: 0.666
+#     maximum: 2.5
+#     minimum: 0.05
+#     range: 2.0
+#
+# if max_stats is infinite(<0), will use 100
+# multiplier = [(maximum - minimum)/max_stats] * [0.333 * strength + 0.666 * dexterity] + minimum
+# baseDamage = getDamage() * multiplier;
+# newDamage = (baseDamage - range) + (Math.random() * (baseDamage + range))
+# setDamage(newDamage);
+#
+# if there is no range. the damage is just multiplied
+# in this exemple, a top level player(100) with 100 strength and 100 dexterity with full bow load will damaged
+# is target with 23 to 27 damage. max bow damage in minecraft = 10 so 10*2.5 = 25 +- 2 = 23 -27;
+
+# value means we use the value and we dont multiply : exemple for amplifier..... setAmplifier(value)
+# multiplier mean we use the value as a multiplier : exemple for damage ...  getdamage * multiplier
+
+# function_type 0 = lineare : a x + b
+# function_type 1 = cubique : a x^2 + b ==> difference between level 1 and 2 is lower then level 99 and 100
+# function_type 3 = square : a x^0.5 + b ==> difference between level 1 and 2 is higher then level 99 and 100
+versions:
+ classes: 1.0
+ config: 2.3
+ itemsrequirements: 1.0
+ mobsxp: 1.0
+ powers: 2.1
+ races: 1.0
+ skills: 2.0
+ staffs: 1.0
+ internationalization: 1.0
+
+hard_core:
+ enable: false
+ max_deaths: 1
+disable_mob_no_tick_damage: true
+op_bypass_permission: true
+first_lvl_exp: 75 # experience needed for the first level
+max_lvl: 100 # maximum level. value from 0 to -infinite = infinite number of level
+max_stats: 100 # maximum attributes for each stats. zero and negative values = infinite
+allow_deduction_points: false # allow player to deduct atributes. for exemple : /core add strength -1
+can_switch_class: false # allow player to switch class. it will apply attributes changes accordingly
+can_switch_race: false # allow player to switch race. it will aplly attributes changes accordingly
+allow_stats_reset: false; # allow player to reset stats. it will reset to default race and class. player will keep is level and gained points
+allow_complete_reset: true; # allow player to reset stats complitetely. will remove class and race. will also reset points and gained level
+points_per_lvl: 2 # number of points a player gains on each level up
+starting_points: 3 # number of points a player get a start
+starting_skill_points: 0
+skill_points_level_interval: 5
+skill_points_per_interval: 1
+auto_save: true # enable auto saving
+save_interval: 360 # auto saving interval in second(6min by default). auto_save must be true
+debug: true # debug mode. show stuff in console
+mana_regen_interval: 5 # interval between each mana regen for all connected players. if you change this value, you must rebalance mana regeneration mathematics.
+automatic_server_difficulty:
+ enable: true
+ easy:
+  from: 0
+  to: 25
+ medium:
+  from: 26
+  to: 55
+ hard:
+  from: 56
+  to: -1
+group_xp:
+ enable: true
+ main: 0.666
+ others: 0.333
+ range: 15
+
+maths: # everything needed to calculate damage, resitance, etc
+ function_type: 1
+ next_lvl_multiplier: 1.1 # level multiplier. next level = (current level * multiplier) + current level
+ natural_xp_gain_multiplier: 1.0 # multiplier by wich natural occuring experience(mob kill, mining, farming, etc) is multiply
+ on_player_kills_player:
+  enable: true
+  base_exp: 25
+  killer_level_gain_multiplier: 0.5 # multiplier by wich base exp is multiply by level
+  level_difference_multiplier: 0.5 # multiplier by wich base exp is multiply by level difference between players (low lvl player kill high lvl player = higher exp gain and vice-versa)
+ on_player_attack_entity: # maximum doesnt necesseraly mean the higher value possible. it is meant to be the best value possible
+  critical_hit:
+   enable: true
+   chance:
+    function:
+    maximum: 0.15
+    minimum: 0
+    range: 0
+    variables:
+     agility: 0.25
+     intelligence: 0.5
+     dexterity: 0.25
+   damage_multiplier:
+    function:
+    maximum: 1.75
+    minimum: 1.25
+    range: 0.05
+    variables:
+     agility: 0.25
+     intelligence: 0.25
+     dexterity: 0.5
+  chance_of_creating_magic_attack: # = [(max-min)/max_stats] * [1 * intelligence + 0 * dexterity] + min
+   function: #ex: 0.01 * (  0.75 * {0} + 0.25 * {1} ) + 0.0, intelligence, dexterity
+   maximum: 0.5
+   minimum: 0.0
+   variables:
+    intelligence: 1.0
+  creating_magic_attack: #duration = (max - min / max_stats) * (intelligence * 0.75 + dexterity * 0.25) + min
+   enable: true
+   duration:
+    maximum: 10.0
+    minimum: 0.05
+    variables:
+     intelligence: 0.75
+     dexterity: 0.25
+   harm:
+    enable: true
+    maximum: 3
+    minimum: 0
+    variables:
+     intelligence: 1.0
+   slow:
+    enable: true
+    maximum: 5
+    minimum: 0
+    variables:
+     intelligence: 1.0
+   poison:
+    enable: true
+    maximum: 4
+    minimum: 0
+    variables:
+     intelligence: 1.0
+   weakness:
+    enable: true
+    maximum: 5
+    minimum: 0
+    variables:
+     intelligence: 1.0
+   wither:
+    enable: true
+    maximum: 5
+    minimum: 0
+    variables:
+     intelligence: 1.0
+  by_weapon:
+   enable: true
+   function:
+   maximum: 2.5
+   minimum: 0.05
+   range: 2.0
+   variables:
+    strength: 1.0
+  by_magic:
+   enable: true
+   function:
+   maximum: 2.5
+   minimum: 0.05
+   range: 2.0
+   variables:
+    intelligence: 0.85
+    dexterity: 0.15
+  by_projectile:
+   enable: true
+   function:
+   maximum: 1.5
+   minimum: 0.05
+   range: 2.0
+   variables:
+    strength: 0.333
+    dexterity: 0.666
+ on_player_get_damaged:
+  by_magic:
+   enable: true
+   function:
+   maximum: 0.333
+   minimum: 1.0
+   variables:
+    intelligence: 0.15
+    magic_resistance: 0.85
+  by_poison:
+   enable: true
+   function:
+   maximum: 0.333
+   minimum: 1.0
+   variables:
+    intelligence: 0.15
+    magic_resistance: 0.85
+  by_wither:
+   enable: true
+   function:
+   maximum: 0.333
+   minimum: 1.0
+   variables:
+    intelligence: 0.15
+    magic_resistance: 0.85
+  by_void:
+   enable: true
+   function:
+   maximum: 0.333
+   minimum: 1.0
+   variables:
+    defence: 1.0
+  by_fire:
+   enable: true
+   function:
+   maximum: 0.333
+   minimum: 1.0
+   variables:
+    defence: 0.25
+    magic_resistance: 0.6
+    intelligence: 0.15
+  by_lava:
+   enable: true
+   function:
+   maximum: 0.333
+   minimum: 1.0
+   variables:
+    defence: 0.25
+    magic_resistance: 0.6
+    intelligence: 0.15
+  by_lightning:
+   enable: true
+   function:
+   maximum: 0.333
+   minimum: 1.0
+   variables:
+    defence: 0.25
+    magic_resistance: 0.6
+    intelligence: 0.15
+  by_hot_floor:
+   enable: true
+   function:
+   maximum: 0.333
+   minimum: 1.0
+   variables:
+    defence: 0.4
+    magic_resistance: 0.45
+    intelligence: 0.15
+  by_fire_tick:
+   enable: true
+   function:
+   maximum: 0.333
+   minimum: 1.0
+   variables:
+    defence: 0.25
+    magic_resistance: 0.6
+    intelligence: 0.15
+  by_explosion:
+   enable: true
+   function:
+   maximum: 0.3333
+   minimum: 1.0
+   variables:
+    defence: 0.85
+    strength: 0.15
+  by_fall:
+   enable: true
+   function:
+   maximum: 0.5
+   minimum: 1.0
+   variables:
+    defence: 0.25
+    agility: 0.75
+  by_fly_into_wall:
+   enable: true
+   function:
+   maximum: 0.5
+   minimum: 1.0
+   variables:
+    defence: 0.75
+    agility: 0.25
+  by_contact:
+   enable: true
+   function:
+   maximum: 0.3333
+   minimum: 1.0
+   variables:
+    defence: 1.0
+  by_arrow:
+   enable: true
+   function:
+   maximum: 0.3333
+   minimum: 1.0
+   variables:
+    defence: 1.0
+  by_projectile:
+   enable: true
+   function:
+   maximum: 0.3333
+   minimum: 1.0
+   variables:
+    defence: 1.0
+  by_weapon:
+   enable: true
+   function:
+   maximum: 0.3333
+   minimum: 1.0
+   variables:
+    defence: 1.0
+  by_suffocation:
+   enable: true
+   function:
+   maximum: 0.3333
+   minimum: 1.0
+   variables:
+    defence: 0.15
+    agility: 0.15
+    intelligence: 0.70
+  by_starvation:
+   enable: true
+   function:
+   maximum: 0.333
+   minimum: 1.0
+   variables:
+    defence: 0.15
+    agility: 0.15
+    intelligence: 0.70
+  by_drowning:
+   enable: true
+   function:
+   maximum: 0.3333
+   minimum: 1.0
+   variables:
+    defence: 0.15
+    agility: 0.15
+    intelligence: 0.70
+  by_default:
+   enable: true
+   function:
+   maximum: 0.3333
+   minimum: 1.0
+   variables:
+    defence: 1.0
+  reducing_bad_potion_effect:
+   enable: true
+   function:
+   maximum: 0.333
+   minimum: 1.0
+   range: 0.15
+   variables:
+    magic_resistance: 0.75
+    intelligence: 0.25
+  chance_of_removing_magic_effect:
+   enable: true
+   function:
+   maximum: 0.5
+   minimum: 0.0
+   variables:
+    magic_resistance: 0.70
+    intelligence: 0.2
+    dexterity: 0.1
+ on_player_shoot_bow:
+  enable: true
+  precision:
+   function:
+   minimum: 0.25
+   maximum: 1
+   variables:
+    dexterity: 1
+   range: 0.05
+  speed:
+   function:
+   maximum: 2.0
+   minimum: 0.5
+   variables:
+    strength: 0.666
+    dexterity: 0.333
+   range: 0.05
+ on_player_consume_potion:
+  enable: true
+  function:
+  range: 0.1
+  maximum: 2.0
+  minimum: 1.0
+  variables:
+   intelligence: 1.0
+ on_player_dies:
+  enable: true
+  function:
+  xp_loss: 15 # percentage of experience a player lose on death. Ex : if player has 100xp, after death he will have 75. cannot deduct a level
+  items_drops:
+   enable: true
+   maximum: 0.1
+   minimum: 1
+   variables:
+    intelligence: 0.85
+    agility: 0.15
+ player_attributes:
+  movement_speed:
+   enable: true
+   function:
+   maximum: 0.3
+   minimum: 0.2
+   variables:
+    agility: 1.0
+  attack_speed:
+   enable: true
+   function:
+   maximum: 7
+   minimum: 3
+   variables:
+    agility: 0.85
+    dexterity: 0.15
+  total_mana:
+   enable: true
+   function:
+   variables:
+    intelligence: 1.0
+  total_health:
+   enable: true
+   function:
+   variables:
+    health: 1.0
+  mana_regen:
+   enable: true
+   function:
+   maximum: 2.5
+   minimum: 0.0
+   variables:
+    intelligence: 1.0
+  luck:
+   enable: true
+   function:
+   maximum: 512
+   minimum: 0
+   variables:
+    intelligence: 0.85
+    agility: 0.15
+  knockback_resistance:
+   enable: true
+   function:
+   maximum: 0.99
+   minimum: 0.0
+   variables:
+    strength: 0.5
+    defence: 0.5
+
+
+
+
+
+
