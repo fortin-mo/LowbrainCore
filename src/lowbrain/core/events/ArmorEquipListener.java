@@ -27,7 +27,7 @@ public class ArmorEquipListener implements Listener {
      */
     @EventHandler
     public void onPlayerEquipArmor(ArmorEquipEvent e){
-        LowbrainPlayer rp = LowbrainCore.connectedPlayers.get(e.getPlayer().getUniqueId());
+        LowbrainPlayer rp = LowbrainCore.getInstance().getPlayerHandler().getList().get(e.getPlayer().getUniqueId());
         if(rp == null)return;
 
         if(e.getNewArmorPiece() != null && e.getNewArmorPiece().getType() != Material.AIR){

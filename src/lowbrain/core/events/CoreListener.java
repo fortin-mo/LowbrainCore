@@ -66,7 +66,6 @@ public class CoreListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e){
-        LowbrainPlayer rp = LowbrainCore.connectedPlayers.get(e.getPlayer().getUniqueId());
         if(rp == null)return;
 
         if(e.getItem() == null) return;
@@ -99,8 +98,13 @@ public class CoreListener implements Listener {
                         lastUsed.add(Calendar.SECOND,-cooldown - 1);
 
                         if(e.getItem().getItemMeta().hasLore()){
-                            sLastUsed = iMeta.getLore().get(e.getItem().getItemMeta().getLore().size() - 2); //before last lore
-                            sDurability = iMeta.getLore().get(e.getItem().getItemMeta().getLore().size() - 1); //last lore
+                            
+                            int lastUsedIntex = iMeta.getLore().indexOf("last used : ");
+                            int durabilityIndex = iMeta.getLore().indexOf("durability : ");
+                            //sLastUsed = iMeta.getLore().get(e.getItem().getItemMeta().getLore().size() - 2); //before last lore
+                            //sDurability = iMeta.getLore().get(e.getItem().getItemMeta().getLore().size() - 1); //last lore
+                            sLastUsed = lastUsedIntex >= 0 ? iMeta.getLore().get(lastUsedIntex) : "";
+                            sDurability = durabilityIndex >= 0 ? iMeta.getLore().get(durabilityIndex) : "";
                         }
 
                         //if has durability lore, get the durability
@@ -182,7 +186,6 @@ public class CoreListener implements Listener {
     public void onPlayerExpChange(PlayerExpChangeEvent e){
         if(e.getAmount() > 0) {
             Player p = e.getPlayer();
-            LowbrainPlayer rp = LowbrainCore.connectedPlayers.get(p.getUniqueId());
             if(rp == null)return;
             plugin.debugInfo("Player gains " + e.getAmount() * Settings.getInstance().maths.natural_xp_gain_multiplier + " xp");
             rp.addExp(e.getAmount() * Settings.getInstance().maths.natural_xp_gain_multiplier);
@@ -212,20 +215,16 @@ public class CoreListener implements Listener {
 
             LowbrainPlayer rpKiller = null;
             Player killed = (Player) e.getEntity();
-            LowbrainPlayer rpKilled = LowbrainCore.connectedPlayers.get(killed.getUniqueId());
             if(killed.getKiller() != null) {
                 if(killed.getKiller() instanceof Player) {
                     Player killer = killed.getKiller();
-                    rpKiller = LowbrainCore.connectedPlayers.get(killer.getUniqueId());
                     plugin.debugInfo("Killed by player : " + killed.getKiller().getName());
                 }
             }
             else if(killed.getLastDamageCause() != null && killed.getLastDamageCause().getEntity() != null){
                 if(killed.getLastDamageCause().getEntity() instanceof Player){
-                    rpKiller = LowbrainCore.connectedPlayers.get(killed.getLastDamageCause().getEntity().getUniqueId());
                 }
                 else if(killed.getLastDamageCause().getEntity() instanceof Projectile && ((Projectile) killed.getLastDamageCause().getEntity()).getShooter() instanceof Player){
-                    rpKiller = LowbrainCore.connectedPlayers.get(((Player) ((Projectile) killed.getLastDamageCause().getEntity()).getShooter()).getUniqueId());
                 }
             }
 
@@ -247,7 +246,7 @@ public class CoreListener implements Listener {
             if(Settings.getInstance().maths.onPlayerDies.enable){
                 rpKilled.addExp(-(Settings.getInstance().maths.onPlayerDies.xp_loss / 100 * rpKilled.getExperience()));
 
-                double dropPercentage = Helper.getPlayerDropPercentage(rpKilled);
+                double dropPercentage = rpKilled.getMultipliers().getPlayerDropPercentage();
 
                 plugin.debugInfo("Percentage of dropped items : " + dropPercentage);
 
@@ -273,16 +272,13 @@ public class CoreListener implements Listener {
         else {
             LowbrainPlayer rpKiller = null;
             if(e.getEntity().getKiller() != null && e.getEntity().getKiller() instanceof Player){
-                rpKiller = LowbrainCore.connectedPlayers.get(e.getEntity().getKiller().getUniqueId());
             }
             else if(e.getEntity().getLastDamageCause() != null
                     && e.getEntity().getLastDamageCause().getEntity() instanceof Projectile
                     && ((Projectile) e.getEntity().getLastDamageCause().getEntity()).getShooter() instanceof Player){
-                rpKiller = LowbrainCore.connectedPlayers.get(((Player) ((Projectile) e.getEntity().getLastDamageCause().getEntity()).getShooter()).getUniqueId());
             }
             else if(e.getEntity().getLastDamageCause() != null
                     && e.getEntity().getLastDamageCause().getEntity() instanceof Player){
-                rpKiller = LowbrainCore.connectedPlayers.get(e.getEntity().getLastDamageCause().getEntity().getUniqueId());
             }
 
             if(rpKiller != null){
@@ -304,7 +300,13 @@ public class CoreListener implements Listener {
                     }
 
                     if(Settings.getInstance().group_xp_enable){
-                        List<LowbrainPlayer> others = Helper.getNearbyPlayers(rpKiller,Settings.getInstance().group_xp_range);
+
+                        List<LowbrainPlayer> others;
+
+
+                        }
+
+                        others = Helper.getNearbyPlayers(rpKiller,Settings.getInstance().group_xp_range);
                         rpKiller.addExp(xp * 0.66666);
                         plugin.debugInfo(rpKiller.getPlayer().getName() + " gains "+ xp * Settings.getInstance().group_xp_main +" xp!");
 
@@ -329,7 +331,6 @@ public class CoreListener implements Listener {
     @EventHandler
     public void onPlayerItemHeld(PlayerItemHeldEvent e){
         /*Player p = e.getPlayer();
-        LowbrainPlayer rp = LowbrainCore.connectedPlayers.get(p.getUniqueId());
 
         ItemStack item = e.getPlayer().getItemInHand();
 
@@ -384,27 +385,26 @@ public class CoreListener implements Listener {
 
     private boolean applyDefensive(EntityDamageByEntityEvent e){
         if( !(e.getEntity() instanceof Player)) return false;
-        LowbrainPlayer damagee = LowbrainCore.connectedPlayers.get(e.getEntity().getUniqueId());
         if(damagee == null) return false;
 
         double multiplier = 1;
         boolean damageSet = false;
 
         if(e.getDamager() instanceof Arrow){
-            multiplier = Helper.getDamagedByArrow(damagee);
+            multiplier = damagee.getMultipliers().getDamagedByArrow();
             damageSet = true;
         }
 
         else if(e.getDamager() instanceof ThrownPotion){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_magic_enable){
-                multiplier = Helper.getDamagedByMagic(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByMagic();
                 damageSet = true;
             }
             plugin.debugInfo("Damage from magic projectile reduced by : " + multiplier);
             float changeOfRemovingEffect = -1F;
 
             if(Settings.getInstance().maths.onPlayerGetDamaged.chanceOfRemovingMagicEffect.enable){
-                changeOfRemovingEffect = Helper.getChangeOfRemovingPotionEffect(damagee);
+                changeOfRemovingEffect = damagee.getMultipliers().getChanceOfRemovingPotionEffect();
             }
 
             double rdm = Math.random();
@@ -419,7 +419,7 @@ public class CoreListener implements Listener {
 
         else if(e.getDamager() instanceof LivingEntity && !(e.getDamager() instanceof Creeper)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_weapon_enable){
-                multiplier = Helper.getDamagedByWeapon(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByWeapon();
             }
         }
 
@@ -428,14 +428,14 @@ public class CoreListener implements Listener {
 
             if(projectile.getShooter() instanceof Player && Helper.StringIsNullOrEmpty(projectile.getCustomName())){
                 if(Settings.getInstance().maths.onPlayerGetDamaged.by_magic_enable){
-                    multiplier = Helper.getDamagedByMagic(damagee);
+                    multiplier = damagee.getMultipliers().getDamagedByMagic();
                     damageSet = true;
                 }
                 plugin.debugInfo("Damage from magic projectile reduced by : " + multiplier);
                 float changeOfRemovingEffect = -1F;
-
+                
                 if(Settings.getInstance().maths.onPlayerGetDamaged.chanceOfRemovingMagicEffect.enable){
-                    changeOfRemovingEffect = Helper.getChangeOfRemovingPotionEffect(damagee);
+                    changeOfRemovingEffect = damagee.getMultipliers().getChanceOfRemovingPotionEffect();
                 }
 
                 double rdm = Math.random();
@@ -450,7 +450,7 @@ public class CoreListener implements Listener {
                 e.setDamage(e.getDamage() * multiplier);
             }
             else if(Settings.getInstance().maths.onPlayerGetDamaged.by_projectile_enable){
-                multiplier = Helper.getDamagedByProjectile(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByProjectile();
                 damageSet = true;
             }
 
@@ -478,7 +478,6 @@ public class CoreListener implements Listener {
 
         //DEFINING CAUSE OF DAMAGE
         if (e.getDamager() instanceof Player) {
-            damager = LowbrainCore.connectedPlayers.get(e.getDamager().getUniqueId());
             plugin.debugInfo("Attacked by another player : " + damager.getPlayer().getName());
             normalAttack  = true;
             magicAttack = false;
@@ -487,7 +486,6 @@ public class CoreListener implements Listener {
             Arrow ar = (Arrow) e.getDamager();
 
             if (ar.getShooter() instanceof Player) {
-                damager = LowbrainCore.connectedPlayers.get(((Player)((Arrow) e.getDamager()).getShooter()).getUniqueId());
             }
             plugin.debugInfo("Attacked by arrow");
             arrowAttack = true;
@@ -496,7 +494,6 @@ public class CoreListener implements Listener {
         } else if (e.getDamager() instanceof ThrownPotion) {
             ThrownPotion pot = (ThrownPotion) e.getDamager();
             if (pot.getShooter() instanceof Player) {
-                damager = LowbrainCore.connectedPlayers.get(((Player)((ThrownPotion) e.getDamager()).getShooter()).getUniqueId());
             }
             plugin.debugInfo("Attacked by potion");
             magicAttack = true;
@@ -510,7 +507,6 @@ public class CoreListener implements Listener {
             Projectile projectile = (Projectile) e.getDamager();
 
             if(projectile.getShooter() instanceof Player && damager == null){
-                damager = LowbrainCore.connectedPlayers.get(((Player) projectile.getShooter()).getUniqueId());
             }
 
             if(damager != null && !Helper.StringIsNullOrEmpty(projectile.getCustomName())){
@@ -659,7 +655,6 @@ public class CoreListener implements Listener {
 
         if(!(e.getEntity() instanceof Player))return;
         if(e.getDamage() <= 0 ) return;
-        LowbrainPlayer damagee = LowbrainCore.connectedPlayers.get(e.getEntity().getUniqueId());
 
         if(damagee == null) return;
         float multiplier = 1;
@@ -669,112 +664,112 @@ public class CoreListener implements Listener {
 
         if(e.getCause().equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_explosion_enable){
-                multiplier = Helper.getDamagedByExplosion(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByExplosion();
             }
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.CONTACT)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_contact_enable){
-                multiplier = Helper.getDamagedByContact(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByContact();
             }
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.DRAGON_BREATH)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_fire_enable){
-                multiplier = Helper.getDamagedByFire(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByFire();
             }
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.DROWNING)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_drowning_enable){
-                multiplier = Helper.getDamagedByDrowning(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByDrowning();
             }
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_explosion_enable){
-                multiplier = Helper.getDamagedByExplosion(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByExplosion();
             }
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.FALL)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_fall_enable){
-                multiplier = Helper.getDamagedByFall(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByFall();
             }
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.FALLING_BLOCK)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_weapon_enable){
-                multiplier = Helper.getDamagedByWeapon(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByWeapon();
             }
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.FIRE)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_fire_enable){
-                multiplier = Helper.getDamagedByFire(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByFire();
             }
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.FIRE_TICK)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_fire_tick_enable){
-                multiplier = Helper.getDamagedByFireTick(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByFireTick();
             }
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.FLY_INTO_WALL)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_fly_into_wall_enable){
-                multiplier = Helper.getDamagedByFlyIntoWall(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByFlyIntoWall();
             }
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.HOT_FLOOR)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_hot_floor_enable){
-                multiplier = Helper.getDamagedByHotFloor(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByHotFloor();
             }
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.LAVA)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_lava_enable){
-                multiplier = Helper.getDamagedByLava(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByLava();
             }
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.LIGHTNING)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_lightning_enable){
-                multiplier = Helper.getDamagedByLightning(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByLightning();
             }
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.MAGIC)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_magic_enable){
-                multiplier = Helper.getDamagedByMagic(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByMagic();
             }
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.MELTING)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_magic_enable){
-                multiplier = Helper.getDamagedByMagic(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByMagic();
             }
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.POISON)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_poison_enable){
-                multiplier = Helper.getDamagedByPoison(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByPoison();
             }
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.STARVATION)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_starvation_enable){
-                multiplier = Helper.getDamagedByStarvation(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByStarvation();
             }
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.SUFFOCATION)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_suffocation_enable){
-                multiplier = Helper.getDamagedBySuffocation(damagee);
+                multiplier = damagee.getMultipliers().getDamagedBySuffocation();
             }
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.THORNS)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_weapon_enable){
-                multiplier = Helper.getDamagedByWeapon(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByWeapon();
             }
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.VOID)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_void_enable){
-                multiplier = Helper.getDamagedByVoid(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByVoid();
             }
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.WITHER)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_wither_enable){
-                multiplier = Helper.getDamagedByWither(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByWither();
             }
         }
         else{
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_default_enable){
-                multiplier = Helper.getDamagedByDefault(damagee);
+                multiplier = damagee.getMultipliers().getDamagedByDefault();
             }
         }
 
@@ -790,7 +785,6 @@ public class CoreListener implements Listener {
     @EventHandler
     public void onPlayerConsumePotion(PlayerItemConsumeEvent e){
         if(e.getItem() != null && e.getItem().getType().equals(Material.POTION) && Settings.getInstance().maths.onPlayerConsumePotion.enable){
-            LowbrainPlayer rp = LowbrainCore.connectedPlayers.get(e.getPlayer().getUniqueId());
             if(rp != null && !rp.getPlayer().getActivePotionEffects().isEmpty()) {
 
                 float result = Helper.getConsumedPotionMultiplier(rp);
@@ -816,7 +810,6 @@ public class CoreListener implements Listener {
         if(e.getEntity() instanceof Player && Settings.getInstance().maths.onPlayerShootBow.enable){
             //set new force
             Arrow ar = (Arrow) e.getProjectile();
-            LowbrainPlayer rpPlayer = LowbrainCore.connectedPlayers.get(e.getEntity().getUniqueId());
 
             float speed = Helper.getBowArrowSpeed(rpPlayer);
             plugin.debugInfo("Arrow speed multiplier : " + speed);
@@ -851,8 +844,6 @@ public class CoreListener implements Listener {
      */
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
-    	Player p = e.getPlayer();
-        LowbrainCore.connectedPlayers.put(p.getUniqueId(),new LowbrainPlayer(p));
         SetServerDifficulty();
     }
 
@@ -862,10 +853,6 @@ public class CoreListener implements Listener {
      */
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e){
-        LowbrainPlayer p = LowbrainCore.connectedPlayers.get(e.getPlayer().getUniqueId());
-        if(p == null) return;
-        p.disconnect();
-        LowbrainCore.connectedPlayers.remove(e.getPlayer().getUniqueId());
         SetServerDifficulty();
     }
 
@@ -1009,12 +996,6 @@ public class CoreListener implements Listener {
         if(!Settings.getInstance().asd_enable)return;
 
         Difficulty diff = Difficulty.NORMAL;
-        Double averageLevel = 0.0;
-        for (LowbrainPlayer rp :
-                LowbrainCore.connectedPlayers.values()) {
-            averageLevel += rp.getLvl();
-        }
-        averageLevel = averageLevel / LowbrainCore.connectedPlayers.size();
 
         if(averageLevel >= Settings.getInstance().asd_easy_from && averageLevel <= (Settings.getInstance().asd_easy_to != -1 ? Settings.getInstance().asd_easy_to : 9999999)){
             diff = Difficulty.EASY;

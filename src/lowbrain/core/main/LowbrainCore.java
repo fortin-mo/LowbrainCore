@@ -2,6 +2,7 @@ package lowbrain.core.main;
 
 import java.util.*;
 
+import com.alessiodp.parties.Parties;
 import lowbrain.core.commun.Settings;
 import lowbrain.core.config.*;
 import lowbrain.core.events.ArmorEquipListener;
@@ -20,7 +21,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import lowbrain.core.commun.*;
-import org.inventivetalent.nicknamer.api.NickManager;
 import org.inventivetalent.nicknamer.api.NickNamerAPI;
 import org.inventivetalent.nicknamer.api.SimpleNickManager;
 
@@ -32,27 +32,32 @@ import org.inventivetalent.nicknamer.api.SimpleNickManager;
  */
 public class LowbrainCore extends JavaPlugin {
 
-	public static Map<UUID, LowbrainPlayer> connectedPlayers;
-	public static HashMap<String,ItemRequirements> itemsRequirements;
-	public static HashMap<String,LowbrainSkill> skills;
+	private static LowbrainCore instance;
+
+	private HashMap<String,ItemRequirements> itemsRequirements;
+	private HashMap<String,LowbrainSkill> skills;
+	private PlayerHandler playerHandler;
 
 	private static final String CLASSES_V = "1.0";
-	private static final String CONFIG_V = "2.3";
+	private static final String CONFIG_V = "2.2";
 	private static final String ITEMS_REQUIREMENTS_V = "1.0";
 	private static final String MOBS_XP_V = "1.0";
-	private static final String POWERS_V = "2.1";
+	private static final String POWERS_V = "2.0";
 	private static final String RACES_V = "1.0";
 	private static final String SKILLS_V = "2.0";
 	private static final String STAFFS_V = "1.0";
-	private static final String INTERNATIONALIZATION_V = "1.0";
 
 
-	public static boolean useHolographicDisplays = false;
-	public static boolean useArmorEquipEvent = false;
-	public static boolean useLowbrainMoblevel = false;
-	public static boolean useNickNameAPI = false;
-	public static NickManager nickManager;
+	public boolean useHolographicDisplays = false;
+	public boolean useArmorEquipEvent = false;
+	public boolean useLowbrainMoblevel = false;
+	public boolean useNickNameAPI = false;
+	public boolean useParties = false;
+	public SimpleNickManager nickManager;
 
+	public static LowbrainCore getInstance(){
+		return instance;
+	}
 
 	/**
 	 * called when the plugin is initially enabled
@@ -61,9 +66,11 @@ public class LowbrainCore extends JavaPlugin {
     public void onEnable() {
 
 		try {
+			instance = this;
+
 			this.getLogger().info("Loading LowbrainMCRPG.jar");
 
-			this.connectedPlayers = new HashMap<>();
+			playerHandler = new PlayerHandler(this);
 
 			InitialisingConfigFile();
 
@@ -75,16 +82,19 @@ public class LowbrainCore extends JavaPlugin {
 			useArmorEquipEvent = Bukkit.getPluginManager().isPluginEnabled("ArmorEquipEvent");
 			debugInfo("ArmorEquipEvent is "+ (useArmorEquipEvent ? "enabled" : "disabled") +" !");
 
+			useParties = Bukkit.getPluginManager().isPluginEnabled("Parties");
+			debugInfo("Parties is "+ (useParties ? "enabled" : "disabled") +" !");
+
 			useNickNameAPI = Bukkit.getPluginManager().isPluginEnabled("PacketListenerApi")
 					&& Bukkit.getPluginManager().isPluginEnabled("NickNamer");
 			debugInfo("NickNamer is "+ (useNickNameAPI ? "enabled" : "disabled") +" !");
 
 			if(useNickNameAPI){
-				nickManager = NickNamerAPI.getNickManager();
+				nickManager = new SimpleNickManager(this);
 			}
 
 			if(!evaluateFunctions()){
-				this.getLogger().info("[ERROR] functions in config file and not correctly formatted !!!");
+				this.getLogger().info("[ERROR] functions in config file and not correctly formated !!!");
 				this.getLogger().info("[ERROR] LowbrainCore.jar cannot load !");
 				this.onDisable();
 				return;
@@ -110,7 +120,6 @@ public class LowbrainCore extends JavaPlugin {
 		} catch (Exception e){
 			e.printStackTrace();
 		}
-
     }
 
     private void InitialisingConfigFile(){
@@ -140,10 +149,7 @@ public class LowbrainCore extends JavaPlugin {
     }
 
     public void saveData(){
-		for (LowbrainPlayer p:
-			 this.connectedPlayers.values()) {
-			p.saveData();
-		}
+		this.getPlayerHandler().saveData();
 		debugInfo("Data saved correctly");
 	}
 
@@ -169,11 +175,7 @@ public class LowbrainCore extends JavaPlugin {
 		Staffs.reload();
 		Races.reload();
 		Settings.reload();
-
-		for (LowbrainPlayer p:
-				this.connectedPlayers.values()) {
-			p.reload();
-		}
+		getPlayerHandler().reload();
 	}
 
     private boolean evaluateFunctions(){
@@ -262,7 +264,7 @@ public class LowbrainCore extends JavaPlugin {
 
 					List<String> lores = Staffs.getInstance().getStringList(staffName + ".lores");
 					if(lores == null) lores = new ArrayList<String>();
-					lores.add("last_used : ");
+					lores.add("last used : ");
 					lores.add("durability : " + Staffs.getInstance().getInt(staffName + ".durability"));
 					ESmeta.setLore(lores);
 
@@ -416,10 +418,6 @@ public class LowbrainCore extends JavaPlugin {
 			this.getLogger().warning("staffs.yml is outdated");
 			valid = false;
 		}
-		if(!versions.getString("internationalization","").equals(INTERNATIONALIZATION_V)){
-			this.getLogger().warning("internationalization.yml is outdated");
-			valid = false;
-		}
 
 		if(!valid){
 			this.getLogger().warning("Yrou're config files are outdated");
@@ -427,6 +425,18 @@ public class LowbrainCore extends JavaPlugin {
 			this.getLogger().warning("Then delete all of them and reload your server.");
 		}
 
+	}
+
+	public HashMap<String, ItemRequirements> getItemsRequirements() {
+		return itemsRequirements;
+	}
+
+	public HashMap<String, LowbrainSkill> getSkills() {
+		return skills;
+	}
+
+	public PlayerHandler getPlayerHandler() {
+		return playerHandler;
 	}
 
 	public class ItemRequirements {

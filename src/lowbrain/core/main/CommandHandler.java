@@ -29,7 +29,7 @@ public class CommandHandler implements CommandExecutor{
 		if (cmd.getName().equalsIgnoreCase("lbcore")) {
 			if(args.length > 0){
 				if(sender instanceof Player){
-					LowbrainPlayer rp = LowbrainCore.connectedPlayers.get(((Player) sender).getUniqueId());
+					LowbrainPlayer rp = LowbrainCore.getInstance().getPlayerHandler().getList().get(((Player) sender).getUniqueId());
 					if(rp == null)return false;
 					switch (args[0].toLowerCase()){
 						case "xp":
@@ -120,7 +120,7 @@ public class CommandHandler implements CommandExecutor{
 							if(args.length == 2 && senderHasPermission(sender,"core.stats-others")){
 								Player p = plugin.getServer().getPlayer(args[1]);
 								if(p != null){
-									LowbrainPlayer rp2 = LowbrainCore.connectedPlayers.get(p.getUniqueId());
+									LowbrainPlayer rp2 = LowbrainCore.getInstance().getPlayerHandler().getList().get(p.getUniqueId());
 									if(rp2 != null){
 										rp.sendMessage(rp2.toString());
 									}else{
@@ -233,7 +233,7 @@ public class CommandHandler implements CommandExecutor{
 									rp.sendMessage(Internationalization.getInstance().getString("player_not_connected"));
 								}
 								else {
-									LowbrainPlayer to = LowbrainCore.connectedPlayers.get(p.getUniqueId());
+									LowbrainPlayer to = LowbrainCore.getInstance().getPlayerHandler().getList().get(p.getUniqueId());
 									if(to == null){
 										rp.sendMessage(Internationalization.getInstance().getString("player_not_connected"));
 									}
@@ -358,7 +358,7 @@ public class CommandHandler implements CommandExecutor{
 							String sValue = args[3];
 
 							Player p = plugin.getServer().getPlayer(pName);
-							LowbrainPlayer rp = p != null ? LowbrainCore.connectedPlayers.get(p.getUniqueId()) : null;
+							LowbrainPlayer rp = p != null ? LowbrainCore.getInstance().getPlayerHandler().getList().get(p.getUniqueId()) : null;
 							if(rp == null){
 								sender.sendMessage(Internationalization.getInstance().getString("player_not_connected"));
 							}

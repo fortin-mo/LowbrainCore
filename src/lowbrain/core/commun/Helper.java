@@ -250,16 +250,6 @@ public class Helper {
         return slope;
     }
 
-    public static int getAveragePlayerLevel(){
-        Double averageLevel = 0.0;
-        for (LowbrainPlayer rp :
-                LowbrainCore.connectedPlayers.values()) {
-            averageLevel += rp.getLvl();
-        }
-
-        return averageLevel.intValue();
-    }
-
     /**
      * evaluate value
      * @param max max
@@ -296,7 +286,7 @@ public class Helper {
     public static List<LowbrainPlayer> getNearbyPlayers(LowbrainPlayer p1, double max){
         List<LowbrainPlayer> lst = new ArrayList<LowbrainPlayer>();
 
-        for (LowbrainPlayer p2: LowbrainCore.connectedPlayers.values()) {
+        for (LowbrainPlayer p2: LowbrainCore.getInstance().getPlayerHandler().getList().values()) {
             if(p1.equals(p2))continue;//if its the same player
             if(p1.getPlayer().getWorld().equals(p2.getPlayer().getWorld())){//check if they are in the same world
                 double x = p1.getPlayer().getLocation().getX() - p2.getPlayer().getLocation().getX();
@@ -317,20 +307,7 @@ public class Helper {
     // ON PLAYER ATTACK
 
     public static float getBowArrowSpeed(LowbrainPlayer p){
-        float result = 0F;
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerShootBow.speed_function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().maths.onPlayerShootBow.speed_maximum,Settings.getInstance().maths.onPlayerShootBow.speed_minimum,
-                    Settings.getInstance().maths.onPlayerShootBow.speed_variables,p);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerShootBow.speed_function.split(",");
-            if(st.length > 1){
-                result = Helper.eval(Helper.FormatStringWithValues(st,p));
-            }
-            else{
-                result = Helper.eval(st[0]);
-            }
-        }
+        float result = p.getMultipliers().getBowArrowSpeed();
 
         if(Settings.getInstance().maths.onPlayerShootBow.speed_range > 0){
             result = Helper.randomFloat((result - Settings.getInstance().maths.onPlayerShootBow.speed_range),(result + Settings.getInstance().maths.onPlayerShootBow.speed_range));
@@ -341,20 +318,7 @@ public class Helper {
         return result;
     }
     public static float getBowPrecision(LowbrainPlayer p){
-        float result = 1F;
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerShootBow.precision_function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().maths.onPlayerShootBow.precision_maximum,Settings.getInstance().maths.onPlayerShootBow.precision_minimum,
-                    Settings.getInstance().maths.onPlayerShootBow.precision_variables,p);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerShootBow.precision_function.split(",");
-            if(st.length > 1){
-                result = Helper.eval(Helper.FormatStringWithValues(st,p));
-            }
-            else{
-                result = Helper.eval(st[0]);
-            }
-        }
+        float result = p.getMultipliers().getBowPrecision();
 
         if(Settings.getInstance().maths.onPlayerShootBow.precision_range > 0){
             result = Helper.randomFloat(result - Settings.getInstance().maths.onPlayerShootBow.precision_range,result + Settings.getInstance().maths.onPlayerShootBow.precision_range);
@@ -365,24 +329,11 @@ public class Helper {
         return result;
     }
     public static float getAttackByWeapon(LowbrainPlayer damager, double damage){
-
         float max = Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.weapon_maximum;
         float min = Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.weapon_minimum;
         float range = Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.weapon_range;
 
-        float result = 0F;
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.weapon_function)) {
-            result = (float)damage * Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.weapon_variables,damager);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.weapon_function.split(",");
-            if(st.length > 1){
-                result = Helper.eval(Helper.FormatStringWithValues(st,damager));
-            }
-            else{
-                result = Helper.eval(st[0]);
-            }
-        }
+        float result = (float)damage * damager.getMultipliers().getAttackByWeapon();
         if(range > 0){
             result = Helper.randomFloat(result-range,result+range);
             if(result < 0)result = 0;
@@ -394,19 +345,7 @@ public class Helper {
         float min = Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.projectile_minimum;
         float range = Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.projectile_range;
 
-        float result = 0F;
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.projectile_function)) {
-            result = (float)damage * Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.projectile_variables,damager);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.projectile_function.split(",");
-            if(st.length > 1){
-                result = Helper.eval(Helper.FormatStringWithValues(st,damager));
-            }
-            else{
-                result = Helper.eval(st[0]);
-            }
-        }
+        float result = (float)damage * damager.getMultipliers().getAttackByProjectile();
 
         if(range > 0){
             result = Helper.randomFloat(result - range,result + range);
@@ -420,19 +359,7 @@ public class Helper {
         float min = Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.magic_minimum;
         float range = Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.magic_range;
 
-        float result = 0F;
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.magic_function)) {
-            result = (float)damage * Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.magic_variables,damager);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.magic_function.split(",");
-            if(st.length > 1){
-                result = Helper.eval(Helper.FormatStringWithValues(st,damager));
-            }
-            else{
-                result = Helper.eval(st[0]);
-            }
-        }
+        float result = (float)damage * damager.getMultipliers().getAttackByMagic();
 
         if(range > 0){
             result = Helper.randomFloat(result - range,result + range);
@@ -445,19 +372,7 @@ public class Helper {
         float min = Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.minimumChance;
         float range = Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.chanceRange;
 
-        float result = 0F;
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.chanceFunction)) {
-            result = Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.chanceVariables,damager);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.chanceFunction.split(",");
-            if(st.length > 1){
-                result = Helper.eval(Helper.FormatStringWithValues(st,damager));
-            }
-            else{
-                result = Helper.eval(st[0]);
-            }
-        }
+        float result = damager.getMultipliers().getCriticalHitChance();
 
         if(range > 0){
             result = Helper.randomFloat(result - range,result + range);
@@ -469,19 +384,7 @@ public class Helper {
         float min = Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.minimumDamageMultiplier;
         float range = Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.damageMultiplierRange;
 
-        float result = 0F;
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.damageMultiplierFunction)) {
-            result = Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.damageMultiplierVariables,damager);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.damageMultiplierFunction.split(",");
-            if(st.length > 1){
-                result = Helper.eval(Helper.FormatStringWithValues(st,damager));
-            }
-            else{
-                result = Helper.eval(st[0]);
-            }
-        }
+        float result = damager.getMultipliers().getCriticalHitMultiplier();
 
         if(range > 0){
             result = Helper.randomFloat(result - range,result + range);
@@ -498,19 +401,7 @@ public class Helper {
         float min = Settings.getInstance().maths.onPlayerConsumePotion.minimum;
         float range = Settings.getInstance().maths.onPlayerConsumePotion.range;
 
-        float result = 0F;
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerConsumePotion.function)) {
-            result = Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerConsumePotion.variables,p);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerConsumePotion.function.split(",");
-            if(st.length > 1){
-                result = Helper.eval(Helper.FormatStringWithValues(st,p));
-            }
-            else{
-                result = Helper.eval(st[0]);
-            }
-        }
+        float result = p.getMultipliers().getConsumedPotionMultiplier();
 
         if(range > 0){
             result = Helper.randomFloat(result - range,result + range);
@@ -521,158 +412,13 @@ public class Helper {
         return result;
     }
 
-    //PLAYER ATTRIBUTES
-
-    public static float getPlayerMaxHealth(LowbrainPlayer p){
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.playerAttributes.total_health_function)) {
-            return Helper.ValueFromFunction(p.getLowbrainRace().getMax_health(), p.getLowbrainRace().getBase_health(),Settings.getInstance().maths.playerAttributes.total_health_variables,p);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.playerAttributes.total_health_function.split(",");
-            if(st.length > 1){
-                return Helper.eval(Helper.FormatStringWithValues(st,p));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getPlayerMaxMana(LowbrainPlayer p){
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.playerAttributes.total_mana_function)) {
-            return Helper.ValueFromFunction(p.getLowbrainRace().getMax_mana(), p.getLowbrainRace().getBase_mana(),Settings.getInstance().maths.playerAttributes.total_mana_variables,p);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.playerAttributes.total_mana_function.split(",");
-            if(st.length > 1){
-                return Helper.eval(Helper.FormatStringWithValues(st,p));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getPlayerManaRegen(LowbrainPlayer p){
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.playerAttributes.mana_regen_function)) {
-            return Helper.ValueFromFunction(Settings.getInstance().maths.playerAttributes.mana_regen_maximum,
-                    Settings.getInstance().maths.playerAttributes.mana_regen_minimum,
-                    Settings.getInstance().maths.playerAttributes.mana_regen_variables,p
-            );
-        }
-        else{
-            String[] st = Settings.getInstance().maths.playerAttributes.mana_regen_function.split(",");
-            if(st.length > 1){
-                return Helper.eval(Helper.FormatStringWithValues(st,p));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getPlayerAttackSpeed(LowbrainPlayer p){
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.playerAttributes.attack_speed_function)) {
-            return Helper.ValueFromFunction(Settings.getInstance().maths.playerAttributes.attack_speed_maximum,
-                    Settings.getInstance().maths.playerAttributes.attack_speed_minimum,
-                    Settings.getInstance().maths.playerAttributes.attack_speed_variables,p
-            );
-        }
-        else{
-            String[] st = Settings.getInstance().maths.playerAttributes.attack_speed_function.split(",");
-            if(st.length > 1){
-                return Helper.eval(Helper.FormatStringWithValues(st,p));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getPlayerMovementSpeed(LowbrainPlayer p){
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.playerAttributes.movement_speed_function)) {
-            return Helper.ValueFromFunction(Settings.getInstance().maths.playerAttributes.movement_speed_maximum,Settings.getInstance().maths.playerAttributes.movement_speed_minimum,
-                    Settings.getInstance().maths.playerAttributes.movement_speed_variables,p);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.playerAttributes.movement_speed_function.split(",");
-            if(st.length > 1){
-                return Helper.eval(Helper.FormatStringWithValues(st,p));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getPlayerKnockbackResistance(LowbrainPlayer p){
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.playerAttributes.knockback_resistance_function)) {
-            return Helper.ValueFromFunction(Settings.getInstance().maths.playerAttributes.knockback_resistance_maximum,Settings.getInstance().maths.playerAttributes.knockback_resistance_minimum,
-                    Settings.getInstance().maths.playerAttributes.knockback_resistance_variables,p);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.playerAttributes.knockback_resistance_function.split(",");
-            if(st.length > 1){
-                return Helper.eval(Helper.FormatStringWithValues(st,p));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getPlayerLuck(LowbrainPlayer p){
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.playerAttributes.luck_function)) {
-            return Helper.ValueFromFunction(Settings.getInstance().maths.playerAttributes.luck_maximum,Settings.getInstance().maths.playerAttributes.luck_minimum,
-                    Settings.getInstance().maths.playerAttributes.luck_variables,p);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.playerAttributes.luck_function.split(",");
-            if(st.length > 1){
-                return Helper.eval(Helper.FormatStringWithValues(st,p));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getPlayerDropPercentage(LowbrainPlayer p){
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerDies.function)) {
-            return Helper.ValueFromFunction(Settings.getInstance().maths.onPlayerDies.items_drops_maximum,Settings.getInstance().maths.onPlayerDies.items_drops_minimum,
-                    Settings.getInstance().maths.onPlayerDies.variables,p);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerDies.function.split(",");
-            if(st.length > 1){
-                return Helper.eval(Helper.FormatStringWithValues(st,p));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-
-    //ON PLAYER GET DAMAGED
-
-    public static float getChangeOfRemovingPotionEffect(LowbrainPlayer damagee){
-
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.chanceOfRemovingMagicEffect.function)){
-            float minChance = Settings.getInstance().maths.onPlayerGetDamaged.chanceOfRemovingMagicEffect.minimum;
-            float maxChance = Settings.getInstance().maths.onPlayerGetDamaged.chanceOfRemovingMagicEffect.maximum;
-
-            return Helper.ValueFromFunction(maxChance,minChance,Settings.getInstance().maths.onPlayerGetDamaged.chanceOfRemovingMagicEffect.variables,damagee);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.chanceOfRemovingMagicEffect.function.split(",");
-            if(st.length > 1){
-                return Helper.eval(Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
     public static float getReducingPotionEffect(LowbrainPlayer damagee){
         if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.reducingBadPotionEffect.function)){
             float min = Settings.getInstance().maths.onPlayerGetDamaged.reducingBadPotionEffect.minimum;
             float max = Settings.getInstance().maths.onPlayerGetDamaged.reducingBadPotionEffect.maximum;
             float range = Settings.getInstance().maths.onPlayerGetDamaged.reducingBadPotionEffect.range;
 
-            float reduction = Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerGetDamaged.reducingBadPotionEffect.variables,damagee);
+            float reduction = damagee.getMultipliers().getReducingPotionEffect();
 
             float minReduction = reduction < (min - range) ? reduction + range : min;
 
@@ -682,366 +428,6 @@ public class Helper {
             String[] st = Settings.getInstance().maths.onPlayerGetDamaged.reducingBadPotionEffect.function.split(",");
             if(st.length > 1){
                 return Helper.eval(Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getDamagedByFire(LowbrainPlayer damagee){
-
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_fire_function)){
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_fire_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_fire_minimum;
-
-            return Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerGetDamaged.by_fire_variables,damagee);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_fire_function.split(",");
-            if(st.length > 1){
-                return Helper.eval( Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getDamagedByFireTick(LowbrainPlayer damagee){
-
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_fire_tick_function)){
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_fire_tick_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_fire_tick_minimum;
-
-            return Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerGetDamaged.by_fire_tick_variables,damagee);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_fire_tick_function.split(",");
-            if(st.length > 1){
-                return Helper.eval( Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getDamagedByPoison(LowbrainPlayer damagee){
-
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_poison_function)){
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_poison_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_poison_minimum;
-
-            return Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerGetDamaged.by_poison_variables,damagee);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_poison_function.split(",");
-            if(st.length > 1){
-                return Helper.eval( Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getDamagedByWither(LowbrainPlayer damagee){
-
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_wither_function)){
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_wither_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_wither_minimum;
-
-            return Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerGetDamaged.by_wither_variables,damagee);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_wither_function.split(",");
-            if(st.length > 1){
-                return Helper.eval( Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getDamagedByContact(LowbrainPlayer damagee){
-
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_contact_function)){
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_contact_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_contact_minimum;
-
-            return Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerGetDamaged.by_contact_variables,damagee);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_contact_function.split(",");
-            if(st.length > 1){
-                return Helper.eval( Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getDamagedByFlyIntoWall(LowbrainPlayer damagee){
-
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_fly_into_wall_function)){
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_fly_into_wall_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_fly_into_wall_minimum;
-
-            return Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerGetDamaged.by_fly_into_wall_variables,damagee);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_fly_into_wall_function.split(",");
-            if(st.length > 1){
-                return Helper.eval( Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getDamagedByFall(LowbrainPlayer damagee){
-
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_fall_function)){
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_fall_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_fall_minimum;
-
-            return Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerGetDamaged.by_fall_variables,damagee);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_fall_function.split(",");
-            if(st.length > 1){
-                return Helper.eval( Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getDamagedByWeapon(LowbrainPlayer damagee){
-
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_weapon_function)){
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_weapon_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_weapon_minimum;
-
-            return Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerGetDamaged.by_weapon_variables,damagee);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_weapon_function.split(",");
-            if(st.length > 1){
-                return Helper.eval( Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getDamagedByArrow(LowbrainPlayer damagee){
-
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_arrow_function)){
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_arrow_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_arrow_minimum;
-
-            return Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerGetDamaged.by_arrow_variables,damagee);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_arrow_function.split(",");
-            if(st.length > 1){
-                return Helper.eval( Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getDamagedByProjectile(LowbrainPlayer damagee){
-
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_projectile_function)){
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_projectile_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_projectile_minimum;
-
-            return Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerGetDamaged.by_projectile_variables,damagee);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_projectile_function.split(",");
-            if(st.length > 1){
-                return Helper.eval( Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getDamagedByMagic(LowbrainPlayer damagee){
-
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_magic_function)){
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_magic_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_magic_minimum;
-
-            return Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerGetDamaged.by_magic_variables,damagee);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_magic_function.split(",");
-            if(st.length > 1){
-                return Helper.eval( Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getDamagedBySuffocation(LowbrainPlayer damagee){
-
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_suffocation_function)){
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_suffocation_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_suffocation_minimum;
-
-            return Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerGetDamaged.by_suffocation_variables,damagee);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_suffocation_function.split(",");
-            if(st.length > 1){
-                return Helper.eval( Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getDamagedByDrowning(LowbrainPlayer damagee){
-
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_drowning_function)){
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_drowning_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_drowning_minimum;
-
-            return Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerGetDamaged.by_drowning_variables,damagee);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_drowning_function.split(",");
-            if(st.length > 1){
-                return Helper.eval( Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getDamagedByStarvation(LowbrainPlayer damagee){
-
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_starvation_function)){
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_starvation_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_starvation_minimum;
-
-            return Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerGetDamaged.by_starvation_variables,damagee);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_starvation_function.split(",");
-            if(st.length > 1){
-                return Helper.eval( Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getDamagedByLightning(LowbrainPlayer damagee){
-
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_lightning_function)){
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_lightning_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_lightning_minimum;
-
-            return Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerGetDamaged.by_lightning_variables,damagee);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_lightning_function.split(",");
-            if(st.length > 1){
-                return Helper.eval( Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getDamagedByVoid(LowbrainPlayer damagee){
-
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_void_function)){
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_void_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_void_minimum;
-
-            return Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerGetDamaged.by_void_variables,damagee);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_void_function.split(",");
-            if(st.length > 1){
-                return Helper.eval( Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getDamagedByHotFloor(LowbrainPlayer damagee){
-
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_hot_floor_function)){
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_hot_floor_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_hot_floor_minimum;
-
-            return Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerGetDamaged.by_hot_floor_variables,damagee);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_hot_floor_function.split(",");
-            if(st.length > 1){
-                return Helper.eval( Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getDamagedByExplosion(LowbrainPlayer damagee){
-
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_explosion_function)){
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_explosion_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_explosion_minimum;
-
-            return Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerGetDamaged.by_explosion_variables,damagee);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_explosion_function.split(",");
-            if(st.length > 1){
-                return Helper.eval( Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getDamagedByLava(LowbrainPlayer damagee){
-
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_lava_function)){
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_lava_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_lava_minimum;
-
-            return Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerGetDamaged.by_lava_variables,damagee);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_lava_function.split(",");
-            if(st.length > 1){
-                return Helper.eval( Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-    public static float getDamagedByDefault(LowbrainPlayer damagee){
-
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_default_function)){
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_default_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_default_minimum;
-
-            return Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerGetDamaged.by_default_variables,damagee);
-        }
-        else{
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_default_function.split(",");
-            if(st.length > 1){
-                return Helper.eval( Helper.FormatStringWithValues(st,damagee));
             }
             else{
                 return Helper.eval(st[0]);

@@ -12,5 +12,6 @@
     <orderEntry type="library" name="Spigot" level="project" />
     <orderEntry type="library" name="ArmorEquipEvent" level="project" />
     <orderEntry type="library" name="PacketListenerAPI_v3.4.4" level="project" />
+    <orderEntry type="library" name="Parties-1.6.3" level="project" />
   </component>
 </module>
