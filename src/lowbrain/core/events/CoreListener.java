@@ -66,6 +66,7 @@ public class CoreListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e){
+        LowbrainPlayer rp = plugin.getPlayerHandler().getList().get(e.getPlayer().getUniqueId());
         if(rp == null)return;
 
         if(e.getItem() == null) return;
@@ -186,6 +187,7 @@ public class CoreListener implements Listener {
     public void onPlayerExpChange(PlayerExpChangeEvent e){
         if(e.getAmount() > 0) {
             Player p = e.getPlayer();
+            LowbrainPlayer rp = plugin.getPlayerHandler().getList().get(p.getUniqueId());
             if(rp == null)return;
             plugin.debugInfo("Player gains " + e.getAmount() * Settings.getInstance().maths.natural_xp_gain_multiplier + " xp");
             rp.addExp(e.getAmount() * Settings.getInstance().maths.natural_xp_gain_multiplier);
@@ -215,16 +217,20 @@ public class CoreListener implements Listener {
 
             LowbrainPlayer rpKiller = null;
             Player killed = (Player) e.getEntity();
+            LowbrainPlayer rpKilled = plugin.getPlayerHandler().getList().get(killed.getUniqueId());
             if(killed.getKiller() != null) {
                 if(killed.getKiller() instanceof Player) {
                     Player killer = killed.getKiller();
+                    rpKiller = plugin.getPlayerHandler().getList().get(killer.getUniqueId());
                     plugin.debugInfo("Killed by player : " + killed.getKiller().getName());
                 }
             }
             else if(killed.getLastDamageCause() != null && killed.getLastDamageCause().getEntity() != null){
                 if(killed.getLastDamageCause().getEntity() instanceof Player){
+                    rpKiller = plugin.getPlayerHandler().getList().get(killed.getLastDamageCause().getEntity().getUniqueId());
                 }
                 else if(killed.getLastDamageCause().getEntity() instanceof Projectile && ((Projectile) killed.getLastDamageCause().getEntity()).getShooter() instanceof Player){
+                    rpKiller = plugin.getPlayerHandler().getList().get(((Player) ((Projectile) killed.getLastDamageCause().getEntity()).getShooter()).getUniqueId());
                 }
             }
 
@@ -272,13 +278,16 @@ public class CoreListener implements Listener {
         else {
             LowbrainPlayer rpKiller = null;
             if(e.getEntity().getKiller() != null && e.getEntity().getKiller() instanceof Player){
+                rpKiller = plugin.getPlayerHandler().getList().get(e.getEntity().getKiller().getUniqueId());
             }
             else if(e.getEntity().getLastDamageCause() != null
                     && e.getEntity().getLastDamageCause().getEntity() instanceof Projectile
                     && ((Projectile) e.getEntity().getLastDamageCause().getEntity()).getShooter() instanceof Player){
+                rpKiller = plugin.getPlayerHandler().getList().get(((Player) ((Projectile) e.getEntity().getLastDamageCause().getEntity()).getShooter()).getUniqueId());
             }
             else if(e.getEntity().getLastDamageCause() != null
                     && e.getEntity().getLastDamageCause().getEntity() instanceof Player){
+                rpKiller = plugin.getPlayerHandler().getList().get(e.getEntity().getLastDamageCause().getEntity().getUniqueId());
             }
 
             if(rpKiller != null){
@@ -303,6 +312,7 @@ public class CoreListener implements Listener {
 
                         List<LowbrainPlayer> others;
 
+                        if(plugin.useParties){
 
                         }
 
@@ -331,6 +341,7 @@ public class CoreListener implements Listener {
     @EventHandler
     public void onPlayerItemHeld(PlayerItemHeldEvent e){
         /*Player p = e.getPlayer();
+        LowbrainPlayer rp = plugin.getPlayerHandler().getList().get(p.getUniqueId());
 
         ItemStack item = e.getPlayer().getItemInHand();
 
@@ -385,6 +396,7 @@ public class CoreListener implements Listener {
 
     private boolean applyDefensive(EntityDamageByEntityEvent e){
         if( !(e.getEntity() instanceof Player)) return false;
+        LowbrainPlayer damagee = plugin.getPlayerHandler().getList().get(e.getEntity().getUniqueId());
         if(damagee == null) return false;
 
         double multiplier = 1;
@@ -478,6 +490,7 @@ public class CoreListener implements Listener {
 
         //DEFINING CAUSE OF DAMAGE
         if (e.getDamager() instanceof Player) {
+            damager = plugin.getPlayerHandler().getList().get(e.getDamager().getUniqueId());
             plugin.debugInfo("Attacked by another player : " + damager.getPlayer().getName());
             normalAttack  = true;
             magicAttack = false;
@@ -486,6 +499,7 @@ public class CoreListener implements Listener {
             Arrow ar = (Arrow) e.getDamager();
 
             if (ar.getShooter() instanceof Player) {
+                damager = plugin.getPlayerHandler().getList().get(((Player)((Arrow) e.getDamager()).getShooter()).getUniqueId());
             }
             plugin.debugInfo("Attacked by arrow");
             arrowAttack = true;
@@ -494,6 +508,7 @@ public class CoreListener implements Listener {
         } else if (e.getDamager() instanceof ThrownPotion) {
             ThrownPotion pot = (ThrownPotion) e.getDamager();
             if (pot.getShooter() instanceof Player) {
+                damager = plugin.getPlayerHandler().getList().get(((Player)((ThrownPotion) e.getDamager()).getShooter()).getUniqueId());
             }
             plugin.debugInfo("Attacked by potion");
             magicAttack = true;
@@ -507,6 +522,7 @@ public class CoreListener implements Listener {
             Projectile projectile = (Projectile) e.getDamager();
 
             if(projectile.getShooter() instanceof Player && damager == null){
+                damager = plugin.getPlayerHandler().getList().get(((Player) projectile.getShooter()).getUniqueId());
             }
 
             if(damager != null && !Helper.StringIsNullOrEmpty(projectile.getCustomName())){
@@ -655,6 +671,7 @@ public class CoreListener implements Listener {
 
         if(!(e.getEntity() instanceof Player))return;
         if(e.getDamage() <= 0 ) return;
+        LowbrainPlayer damagee = plugin.getPlayerHandler().getList().get(e.getEntity().getUniqueId());
 
         if(damagee == null) return;
         float multiplier = 1;
@@ -785,6 +802,7 @@ public class CoreListener implements Listener {
     @EventHandler
     public void onPlayerConsumePotion(PlayerItemConsumeEvent e){
         if(e.getItem() != null && e.getItem().getType().equals(Material.POTION) && Settings.getInstance().maths.onPlayerConsumePotion.enable){
+            LowbrainPlayer rp = plugin.getPlayerHandler().getList().get(e.getPlayer().getUniqueId());
             if(rp != null && !rp.getPlayer().getActivePotionEffects().isEmpty()) {
 
                 float result = Helper.getConsumedPotionMultiplier(rp);
@@ -810,6 +828,7 @@ public class CoreListener implements Listener {
         if(e.getEntity() instanceof Player && Settings.getInstance().maths.onPlayerShootBow.enable){
             //set new force
             Arrow ar = (Arrow) e.getProjectile();
+            LowbrainPlayer rpPlayer = plugin.getPlayerHandler().getList().get(e.getEntity().getUniqueId());
 
             float speed = Helper.getBowArrowSpeed(rpPlayer);
             plugin.debugInfo("Arrow speed multiplier : " + speed);
@@ -844,6 +863,7 @@ public class CoreListener implements Listener {
      */
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
+        plugin.getPlayerHandler().add(e.getPlayer());
         SetServerDifficulty();
     }
 
@@ -853,6 +873,7 @@ public class CoreListener implements Listener {
      */
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e){
+        plugin.getPlayerHandler().remove(e.getPlayer());
         SetServerDifficulty();
     }
 
@@ -996,6 +1017,7 @@ public class CoreListener implements Listener {
         if(!Settings.getInstance().asd_enable)return;
 
         Difficulty diff = Difficulty.NORMAL;
+        int averageLevel = plugin.getPlayerHandler().getAverageLevel();
 
         if(averageLevel >= Settings.getInstance().asd_easy_from && averageLevel <= (Settings.getInstance().asd_easy_to != -1 ? Settings.getInstance().asd_easy_to : 9999999)){
             diff = Difficulty.EASY;
