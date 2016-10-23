@@ -51,9 +51,7 @@ public class LowbrainCore extends JavaPlugin {
 	public boolean useHolographicDisplays = false;
 	public boolean useArmorEquipEvent = false;
 	public boolean useLowbrainMoblevel = false;
-	public boolean useNickNameAPI = false;
 	public boolean useParties = false;
-	public SimpleNickManager nickManager;
 
 	public static LowbrainCore getInstance(){
 		return instance;
@@ -84,14 +82,6 @@ public class LowbrainCore extends JavaPlugin {
 
 			useParties = Bukkit.getPluginManager().isPluginEnabled("Parties");
 			debugInfo("Parties is "+ (useParties ? "enabled" : "disabled") +" !");
-
-			useNickNameAPI = Bukkit.getPluginManager().isPluginEnabled("PacketListenerApi")
-					&& Bukkit.getPluginManager().isPluginEnabled("NickNamer");
-			debugInfo("NickNamer is "+ (useNickNameAPI ? "enabled" : "disabled") +" !");
-
-			if(useNickNameAPI){
-				nickManager = new SimpleNickManager(this);
-			}
 
 			if(!evaluateFunctions()){
 				this.getLogger().info("[ERROR] functions in config file and not correctly formated !!!");
@@ -201,6 +191,13 @@ public class LowbrainCore extends JavaPlugin {
     	return succeed;
 	}
 
+	/**
+	 * go through all the section in the config file and check for function
+	 * this way, if a function does not compute correctly (not well formated)
+	 * it will be displayed in the console so the admin can modify it
+	 * @param start
+	 * @param functions
+	 */
 	private void recursiveConfigFunctionSearch(ConfigurationSection start, List<String> functions){
 		if(start == null){
 			this.debugInfo("Could not find settings !");

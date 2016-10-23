@@ -1,5 +1,7 @@
 package lowbrain.core.events;
 
+import com.alessiodp.parties.Parties;
+import com.alessiodp.parties.objects.Party;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import lowbrain.core.commun.Helper;
@@ -10,6 +12,8 @@ import lowbrain.core.config.Staffs;
 import lowbrain.core.main.LowbrainCore;
 import lowbrain.core.rpg.LowbrainPlayer;
 import lowbrain.core.rpg.LowbrainSkill;
+import org.apache.commons.lang.mutable.MutableBoolean;
+import org.apache.commons.lang.mutable.MutableFloat;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.*;
@@ -31,10 +35,7 @@ import org.bukkit.util.Vector;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 
 public class CoreListener implements Listener {
@@ -310,17 +311,34 @@ public class CoreListener implements Listener {
 
                     if(Settings.getInstance().group_xp_enable){
 
-                        List<LowbrainPlayer> others;
+                        List<LowbrainPlayer> others = null;
 
                         if(plugin.useParties){
-
+                            others = new ArrayList<>();
+                            Party party = Parties.getInstance().getPlayerHandler().getPartyFromPlayer(rpKiller.getPlayer());
+                            if(party != null){
+                                for (Player p :
+                                        party.getOnlinePlayers()) {
+                                    if (!p.equals(rpKiller.getPlayer())){
+                                        if(Settings.getInstance().group_xp_range == -1
+                                                || Helper.getDistanceBetweenTwoPlayers(rpKiller.getPlayer(),p) <= Settings.getInstance().group_xp_range){
+                                            LowbrainPlayer p2 = plugin.getPlayerHandler().getList().get(p.getUniqueId());
+                                            if(p2 != null){
+                                                others.add(p2);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        } 
+                        else {
+                            others = Helper.getNearbyPlayers(rpKiller,Settings.getInstance().group_xp_range);
                         }
+                        double mainXP = others != null && others.size() > 0 ? Settings.getInstance().group_xp_main : 1;
+                        rpKiller.addExp(xp * mainXP);
+                        plugin.debugInfo(rpKiller.getPlayer().getName() + " gains "+ xp * mainXP +" xp!");
 
-                        others = Helper.getNearbyPlayers(rpKiller,Settings.getInstance().group_xp_range);
-                        rpKiller.addExp(xp * 0.66666);
-                        plugin.debugInfo(rpKiller.getPlayer().getName() + " gains "+ xp * Settings.getInstance().group_xp_main +" xp!");
-
-                        if(others.size() > 0) {
+                        if(others != null && others.size() > 0) {
                             double othersXP = xp * Settings.getInstance().group_xp_others / others.size();
                             for (LowbrainPlayer other : others) {
                                 other.addExp(othersXP);
@@ -362,18 +380,31 @@ public class CoreListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerAttack(EntityDamageByEntityEvent e) {
-        Boolean isCritical = false;
-        boolean o = applyOffensiveAttack(e,isCritical);
-        boolean d = applyDefensive(e);
+        MutableBoolean isCritical = new MutableBoolean(false);
+        MutableFloat missChance = new MutableFloat(0F);
+        boolean isMissed = false;
+        boolean o = applyOffensiveAttack(e,isCritical, missChance);
+        boolean d = applyDefensive(e, missChance);
+
+        double rdm = Math.random();
+        plugin.debugInfo("Missing chance : " + missChance.floatValue());
+        if(rdm < missChance.floatValue()){
+            plugin.debugInfo("Attack was missed !");
+            e.setDamage(0);
+        }
+
         if(o){
             //CREATING DAMAGE HOLOGRAM
             if(plugin.useHolographicDisplays){
                 NumberFormat formatter = new DecimalFormat("#0.00");
                 Location loc = e.getEntity().getLocation().add(0,2,0);
                 Hologram holoDamage = HologramsAPI.createHologram(plugin,loc);
-                ChatColor color = isCritical ? ChatColor.DARK_RED : ChatColor.RED;
-                holoDamage.appendTextLine(color + formatter.format(e.getFinalDamage()));
-
+                ChatColor color = isCritical.booleanValue() ? ChatColor.DARK_RED : ChatColor.RED;
+                if(isMissed) {
+                    holoDamage.appendTextLine(color + "miss");
+                } else {
+                    holoDamage.appendTextLine(color + formatter.format(e.getFinalDamage()));
+                }
                 int directionX = Helper.randomInt(0,1) == 0 ? -1 : 1;
                 int directionZ = Helper.randomInt(0,1) == 0 ? -1 : 1;
 
@@ -394,7 +425,7 @@ public class CoreListener implements Listener {
         }
     }
 
-    private boolean applyDefensive(EntityDamageByEntityEvent e){
+    private boolean applyDefensive(EntityDamageByEntityEvent e, MutableFloat missChance){
         if( !(e.getEntity() instanceof Player)) return false;
         LowbrainPlayer damagee = plugin.getPlayerHandler().getList().get(e.getEntity().getUniqueId());
         if(damagee == null) return false;
@@ -421,11 +452,11 @@ public class CoreListener implements Listener {
 
             double rdm = Math.random();
             if(rdm < changeOfRemovingEffect){
-                RemoveBadPotionEffect(damagee.getPlayer());
+                removeBadPotionEffect(damagee.getPlayer());
                 plugin.debugInfo("all effect removed");
             }
             else if(Settings.getInstance().maths.onPlayerGetDamaged.reducingBadPotionEffect.enable){
-                ReducingBadPotionEffect(damagee);
+                reducingBadPotionEffect(damagee);
             }
         }
 
@@ -452,11 +483,11 @@ public class CoreListener implements Listener {
 
                 double rdm = Math.random();
                 if(rdm < changeOfRemovingEffect){
-                    RemoveBadPotionEffect(damagee.getPlayer());
+                    removeBadPotionEffect(damagee.getPlayer());
                     plugin.debugInfo("all effect removed");
                 }
                 else if(Settings.getInstance().maths.onPlayerGetDamaged.reducingBadPotionEffect.enable){
-                    ReducingBadPotionEffect(damagee);
+                    reducingBadPotionEffect(damagee);
                 }
 
                 e.setDamage(e.getDamage() * multiplier);
@@ -468,7 +499,16 @@ public class CoreListener implements Listener {
 
         }
 
+        if(damagee != null && Settings.getInstance().maths.onPlayerGetDamaged.chanceOfDodging.enable){
+            float oldChance = missChance.floatValue();
+            float newChance = Settings.getInstance().maths.onPlayerAttackEntity.chanceOfMissing.enable ?
+                        oldChance * damagee.getMultipliers().getChanceOfDodging() : damagee.getMultipliers().getChanceOfDodging();
+            missChance.setValue(newChance);
+        }
+
         if(!damageSet) return damageSet;
+
+
 
         plugin.debugInfo("Initial damage : " + e.getDamage());
         e.setDamage(e.getDamage() * multiplier);
@@ -478,7 +518,7 @@ public class CoreListener implements Listener {
         return damageSet;
     }
 
-    private boolean applyOffensiveAttack(EntityDamageByEntityEvent e, Boolean isCritical){
+    private boolean applyOffensiveAttack(EntityDamageByEntityEvent e, MutableBoolean isCritical, MutableFloat missChance){
         LowbrainPlayer damager = null;
 
         boolean magicAttack = false;
@@ -611,7 +651,7 @@ public class CoreListener implements Listener {
 
             double rdm = Math.random();
             if(rdm < chanceOfMagicEffect){
-                PotionEffect effect = CreateMagicAttack(damager);
+                PotionEffect effect = createMagicAttack(damager);
                 if(e.getEntity() instanceof LivingEntity && effect != null){
                     ((LivingEntity) e.getEntity()).addPotionEffect(effect);
                     plugin.debugInfo("magic effect added : " + effect.getType().getName() + ", " + effect.getDuration()/20 + ", " + effect.getAmplifier());
@@ -640,14 +680,30 @@ public class CoreListener implements Listener {
 
         if(damager == null) return false;
 
+        if(Settings.getInstance().maths.onPlayerAttackEntity.chanceOfMissing.enable) {
+            missChance.setValue(damager.getMultipliers().getChanceOfMissing());
+        }
+
         if(Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.enable){
             double rdm = Math.random();
             double chance = Helper.getCriticalHitChance(damager);
             if(rdm < chance){
-                isCritical = true;
+                isCritical.setValue(true);
                 float criticalHitMultiplier = Helper.getCriticalHitMultiplier(damager);
                 plugin.debugInfo("Critical hit multiplier : " + criticalHitMultiplier);
                 e.setDamage(e.getDamage() * criticalHitMultiplier);
+            }
+        }
+
+        if(Settings.getInstance().maths.onPlayerAttackEntity.backStab.enable){
+            Vector attackerDirection = damager.getPlayer().getLocation().getDirection();
+            Vector victimDirection = e.getEntity().getLocation().getDirection();
+            //determine if the dot product between the vectors is greater than 0
+            if (attackerDirection.dot(victimDirection) > 0) {
+                //player was backstabbed.}
+                float bs =  Helper.getBackstabMultiplier(damager);
+                e.setDamage(e.getDamage() * bs);
+                plugin.debugInfo("Backstap multiplier : " + bs);
             }
         }
 
@@ -864,7 +920,7 @@ public class CoreListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
         plugin.getPlayerHandler().add(e.getPlayer());
-        SetServerDifficulty();
+        setServerDifficulty();
     }
 
     /**
@@ -874,7 +930,7 @@ public class CoreListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e){
         plugin.getPlayerHandler().remove(e.getPlayer());
-        SetServerDifficulty();
+        setServerDifficulty();
     }
 
     /**
@@ -882,7 +938,7 @@ public class CoreListener implements Listener {
      * @param p
      * @return
      */
-    private PotionEffect CreateMagicAttack(LowbrainPlayer p){
+    private PotionEffect createMagicAttack(LowbrainPlayer p){
         int rdm = Helper.randomInt(1,7);
         int duration = 0;
         int amplifier = 0;
@@ -955,7 +1011,7 @@ public class CoreListener implements Listener {
      * remove bad potion effect from player
      * @param p
      */
-    private void RemoveBadPotionEffect(Player p){
+    private void removeBadPotionEffect(Player p){
         if(p.hasPotionEffect(PotionEffectType.BLINDNESS)){
             p.removePotionEffect(PotionEffectType.BLINDNESS);
         }
@@ -983,7 +1039,7 @@ public class CoreListener implements Listener {
      * reducing player potion effect depending on attributes
      * @param rp
      */
-    private void ReducingBadPotionEffect(LowbrainPlayer rp){
+    private void reducingBadPotionEffect(LowbrainPlayer rp){
 
         if(rp.getPlayer().getActivePotionEffects().isEmpty()) return;
 
@@ -1012,7 +1068,7 @@ public class CoreListener implements Listener {
     /**
      * Set the server difficulty depending on average connectedplayer level
      */
-    private void SetServerDifficulty(){
+    private void setServerDifficulty(){
 
         if(!Settings.getInstance().asd_enable)return;
 

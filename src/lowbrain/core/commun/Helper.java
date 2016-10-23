@@ -2,6 +2,7 @@ package lowbrain.core.commun;
 
 import lowbrain.core.main.LowbrainCore;
 import lowbrain.core.rpg.LowbrainPlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.text.MessageFormat;
@@ -289,6 +290,12 @@ public class Helper {
         for (LowbrainPlayer p2: LowbrainCore.getInstance().getPlayerHandler().getList().values()) {
             if(p1.equals(p2))continue;//if its the same player
             if(p1.getPlayer().getWorld().equals(p2.getPlayer().getWorld())){//check if they are in the same world
+
+                if(max < 0){
+                    lst.add(p2);
+                    continue;
+                }
+
                 double x = p1.getPlayer().getLocation().getX() - p2.getPlayer().getLocation().getX();
                 double y = p1.getPlayer().getLocation().getY() - p2.getPlayer().getLocation().getY();
                 double z = p1.getPlayer().getLocation().getZ() - p2.getPlayer().getLocation().getZ();
@@ -302,6 +309,22 @@ public class Helper {
         }
 
         return lst;
+    }
+
+    public static double getDistanceBetweenTwoPlayers(Player p1, Player p2){
+        double dist = 0;
+
+        if(!p1.getWorld().equals(p2.getWorld())){
+           return -1;
+        }
+
+        double x = p1.getLocation().getX() - p2.getLocation().getX();
+        double y = p1.getLocation().getY() - p2.getLocation().getY();
+        double z = p1.getLocation().getZ() - p2.getLocation().getZ();
+
+        dist = Math.pow(x*x + y*y + z*z, 0.5);
+
+        return dist;
     }
 
     // ON PLAYER ATTACK
@@ -428,6 +451,33 @@ public class Helper {
             String[] st = Settings.getInstance().maths.onPlayerGetDamaged.reducingBadPotionEffect.function.split(",");
             if(st.length > 1){
                 return Helper.eval(Helper.FormatStringWithValues(st,damagee));
+            }
+            else{
+                return Helper.eval(st[0]);
+            }
+        }
+    }
+
+    public static float getBackstabMultiplier (LowbrainPlayer p){
+        float result = 1F;
+        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerAttackEntity.backStab.function)){
+            float min = Settings.getInstance().maths.onPlayerAttackEntity.backStab.minimum;
+            float max = Settings.getInstance().maths.onPlayerAttackEntity.backStab.maximum;
+            float range = Settings.getInstance().maths.onPlayerAttackEntity.backStab.range;
+
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerAttackEntity.backStab.variables, p);
+
+            if (range > 0){
+                result = Helper.randomFloat(result + range,result - range);
+                result = result > max ? max : result < min ? min :result;
+            }
+
+            return result;
+        }
+        else{
+            String[] st = Settings.getInstance().maths.onPlayerAttackEntity.backStab.function.split(",");
+            if(st.length > 1){
+                return Helper.eval(Helper.FormatStringWithValues(st,p));
             }
             else{
                 return Helper.eval(st[0]);

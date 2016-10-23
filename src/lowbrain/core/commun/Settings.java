@@ -142,6 +142,8 @@ public class Settings {
             public creatingMagicAttack creatingMagicAttack;
             public attackEntityBy attackEntityBy;
             public criticalHit criticalHit;
+            public chanceOfMissing chanceOfMissing;
+            public backStab backStab;
 
             onPlayerAttackEntity(ConfigurationSection config){
                 if(config == null) throw new NullPointerException("ConfigurationSection for onPlayerAttackEntity cannot be null");
@@ -149,6 +151,8 @@ public class Settings {
                 creatingMagicAttack = new creatingMagicAttack(config.getConfigurationSection("creating_magic_attack"));
                 attackEntityBy = new attackEntityBy(config);
                 criticalHit = new criticalHit(config.getConfigurationSection("critical_hit"));
+                chanceOfMissing = new chanceOfMissing(config.getConfigurationSection("chance_of_missing"));
+                backStab = new backStab(config.getConfigurationSection("backstab"));
             }
 
             public class criticalHit {
@@ -191,6 +195,30 @@ public class Settings {
                         for (String k :
                                 dmVar.getKeys(false)) {
                             damageMultiplierVariables.put(k,(float)dmVar.getDouble(k,0));
+                        }
+                    }
+
+                }
+            }
+
+            public class chanceOfMissing{
+                public boolean enable;
+                public String function;
+                public float maximum;
+                public float minimum;
+                public HashMap<String,Float> variables;
+
+                public chanceOfMissing(ConfigurationSection config){
+                    variables = new HashMap<>();
+                    enable = config.getBoolean("enable");
+                    maximum  = (float)config.getDouble("maximum");
+                    minimum  = (float)config.getDouble("minimum");
+                    function = config.getString("function");
+                    ConfigurationSection vars = config.getConfigurationSection("variables");
+                    if(vars != null) {
+                        for (String var :
+                                vars.getKeys(false)) {
+                            variables.put(var,(float)vars.getDouble(var));
                         }
                     }
 
@@ -407,6 +435,32 @@ public class Settings {
                     }
                 }
             }
+
+            public class backStab{
+                public boolean enable;
+                public String function;
+                public float maximum;
+                public float minimum;
+                public HashMap<String, Float> variables;
+                public float range;
+
+                public backStab(ConfigurationSection config){
+                    variables = new HashMap<>();
+                    enable = config.getBoolean("enable");
+                    range = (float)config.getDouble("range");
+                    maximum  = (float)config.getDouble("maximum");
+                    minimum  = (float)config.getDouble("minimum");
+                    function = config.getString("function");
+                    ConfigurationSection vars = config.getConfigurationSection("variables");
+                    if(vars != null) {
+                        for (String var :
+                                vars.getKeys(false)) {
+                            variables.put(var,(float)vars.getDouble(var));
+                        }
+                    }
+
+                }
+            }
         }
 
         public class onPlayerConsumePotion{
@@ -560,13 +614,16 @@ public class Settings {
 
             public chanceOfRemovingMagicEffect chanceOfRemovingMagicEffect;
             public reducingBadPotionEffect reducingBadPotionEffect;
+            public chanceOfDodging chanceOfDodging;
 
             public onPlayerGetDamaged(ConfigurationSection config){
                 if(config == null) throw new NullPointerException("ConfigurationSection for OnPLayerGetDamaged cannot be null");
 
                 chanceOfRemovingMagicEffect = new chanceOfRemovingMagicEffect(config.getConfigurationSection("chance_of_removing_magic_effect"));
                 reducingBadPotionEffect = new reducingBadPotionEffect(config.getConfigurationSection("reducing_bad_potion_effect"));
-                
+                chanceOfDodging = new chanceOfDodging(config.getConfigurationSection("chance_of_dodging"));
+
+
                 by_magic_variables = new HashMap<>();
                 by_poison_variables = new HashMap<>();
                 by_wither_variables = new HashMap<>();
@@ -831,6 +888,29 @@ public class Settings {
                 }
             }
 
+            public class chanceOfDodging{
+                public boolean enable;
+                public String function;
+                public float maximum;
+                public float minimum;
+                public HashMap<String,Float> variables;
+
+                public chanceOfDodging(ConfigurationSection config){
+                    variables = new HashMap<>();
+                    enable = config.getBoolean("enable");
+                    maximum  = (float)config.getDouble("maximum");
+                    minimum  = (float)config.getDouble("minimum");
+                    function = config.getString("function");
+                    ConfigurationSection vars = config.getConfigurationSection("variables");
+                    if(vars != null) {
+                        for (String var :
+                                vars.getKeys(false)) {
+                            variables.put(var,(float)vars.getDouble(var));
+                        }
+                    }
+
+                }
+            }
 
             public class chanceOfRemovingMagicEffect{
                 //=

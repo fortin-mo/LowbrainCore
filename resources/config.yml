@@ -2,34 +2,31 @@
 # minimum : the worst value possible
 # variables : the amounts by wich the specific attribute is multiplied by to calculate the x value
 # range : creates a range and get a random number in that range
-
+#
+# function: you can use your own string function if you want to. If a function is defines it will automaticly be used
+# instead of variables
+# function format goes like this : 0.5 * {0} + 0.5 * {1} + 10, strength, dexterity
+#
 # ex:
-
 #   by_projectile:
 #     enable: true
 #     function:
-#     strength: 0.333
-#     dexterity: 0.666
+#     variables:
+#       strength: 0.333
+#       dexterity: 0.666
 #     maximum: 2.5
 #     minimum: 0.05
 #     range: 2.0
 #
-# if max_stats is infinite(<0), will use 100
-# multiplier = [(maximum - minimum)/max_stats] * [0.333 * strength + 0.666 * dexterity] + minimum
-# baseDamage = getDamage() * multiplier;
-# newDamage = (baseDamage - range) + (Math.random() * (baseDamage + range))
-# setDamage(newDamage);
-#
 # if there is no range. the damage is just multiplied
-# in this exemple, a top level player(100) with 100 strength and 100 dexterity with full bow load will damaged
-# is target with 23 to 27 damage. max bow damage in minecraft = 10 so 10*2.5 = 25 +- 2 = 23 -27;
+# if a range is set, (higher than 0) a random value between the maximum range and minimum will be calculated
 
-# value means we use the value and we dont multiply : exemple for amplifier..... setAmplifier(value)
-# multiplier mean we use the value as a multiplier : exemple for damage ...  getdamage * multiplier
-
+# all function type possible
 # function_type 0 = lineare : a x + b
 # function_type 1 = cubique : a x^2 + b ==> difference between level 1 and 2 is lower then level 99 and 100
 # function_type 3 = square : a x^0.5 + b ==> difference between level 1 and 2 is higher then level 99 and 100
+
+# dont touch these, they are use to notice admin of config changes
 versions:
  classes: 1.0
  config: 2.3
@@ -41,28 +38,72 @@ versions:
  staffs: 1.0
  internationalization: 1.0
 
+# set an hardcore mod
+# if a player dies more than the defined max deaths, all stats will be reset
 hard_core:
  enable: false
  max_deaths: 1
+
+# disable mob no tick damage
 disable_mob_no_tick_damage: true
+
+# sets if ops bypass permissions
 op_bypass_permission: true
-first_lvl_exp: 75 # experience needed for the first level
-max_lvl: 100 # maximum level. value from 0 to -infinite = infinite number of level
-max_stats: 100 # maximum attributes for each stats. zero and negative values = infinite
-allow_deduction_points: false # allow player to deduct atributes. for exemple : /core add strength -1
-can_switch_class: false # allow player to switch class. it will apply attributes changes accordingly
-can_switch_race: false # allow player to switch race. it will aplly attributes changes accordingly
-allow_stats_reset: false; # allow player to reset stats. it will reset to default race and class. player will keep is level and gained points
-allow_complete_reset: true; # allow player to reset stats complitetely. will remove class and race. will also reset points and gained level
-points_per_lvl: 2 # number of points a player gains on each level up
-starting_points: 3 # number of points a player get a start
+
+# experience needed for the first level
+first_lvl_exp: 75
+
+# maximum level. value from 0 to -infinite = infinite number of level
+max_lvl: 100
+
+# maximum attributes for each stats. zero and negative values = infinite
+# if set to an infinite value (<0), default value of 100 will be used when needed in mathematics
+max_stats: 100
+
+# allow player to deduct atributes. for exemple : /core add strength -1
+allow_deduction_points: false
+
+# allow player to switch class. it will apply attributes changes accordingly
+can_switch_class: false
+
+# allow player to switch race. it will aplly attributes changes accordingly
+can_switch_race: false
+
+# allow player to reset stats. it will reset to default race and class. player will keep is level and gained points
+allow_stats_reset: false
+
+# allow player to reset stats complitetely. will remove class and race. will also reset points and gained level
+allow_complete_reset: true
+
+# number of points a player gains on each level up
+points_per_lvl: 2
+
+# number of points a player gets a start
+starting_points: 3
+
+# number of skillpoints a player gets a start
 starting_skill_points: 0
+
+# the interval at wich players gain skillpoints
 skill_points_level_interval: 5
+
+# the number of skillpoints gained at each interval
 skill_points_per_interval: 1
-auto_save: true # enable auto saving
-save_interval: 360 # auto saving interval in second(6min by default). auto_save must be true
-debug: true # debug mode. show stuff in console
-mana_regen_interval: 5 # interval between each mana regen for all connected players. if you change this value, you must rebalance mana regeneration mathematics.
+
+ # enable auto saving
+auto_save: true
+
+# auto saving interval in second(6min by default). auto_save must be true
+save_interval: 360
+
+# debug mode. show stuff in console
+debug: true
+
+# interval between each mana regen for all connected players.
+# if you change this value, you must rebalance mana regeneration mathematics.
+mana_regen_interval: 5
+
+# set the server difficulty depending on average player level
 automatic_server_difficulty:
  enable: true
  easy:
@@ -74,22 +115,43 @@ automatic_server_difficulty:
  hard:
   from: 56
   to: -1
+
+# shares xp between closed range player
 group_xp:
  enable: true
+ # the amount of experience the player who killed the entity gets (%)
  main: 0.666
+ # the rest is distributed equaly between other players
  others: 0.333
+ # range in blocks
  range: 15
 
-maths: # everything needed to calculate damage, resitance, etc
+# everything needed to calculate damage, resitance, etc
+maths:
+# for information on function type loop at the top of the page
  function_type: 1
- next_lvl_multiplier: 1.1 # level multiplier. next level = (current level * multiplier) + current level
- natural_xp_gain_multiplier: 1.0 # multiplier by wich natural occuring experience(mob kill, mining, farming, etc) is multiply
+
+ # level multiplier. next level = (current level * multiplier) + current level
+ next_lvl_multiplier: 1.1
+
+ # multiplier by wich natural occuring experience(mob kill, mining, farming, etc) is multiply
+ natural_xp_gain_multiplier: 1.0
+
+ # mathematics to when player kills another player
  on_player_kills_player:
   enable: true
+  # the initial amount of experience gained on kill
   base_exp: 25
-  killer_level_gain_multiplier: 0.5 # multiplier by wich base exp is multiply by level
-  level_difference_multiplier: 0.5 # multiplier by wich base exp is multiply by level difference between players (low lvl player kill high lvl player = higher exp gain and vice-versa)
- on_player_attack_entity: # maximum doesnt necesseraly mean the higher value possible. it is meant to be the best value possible
+  # multiplier by wich base exp is multiply by level
+  killer_level_gain_multiplier: 0.5
+  # multiplier by wich base exp is multiply by level difference between players (low lvl player kill high lvl player = higher exp gain and vice-versa)
+  level_difference_multiplier: 0.5
+
+ # mathematic to when a player attack another entity
+ # maximum doesnt necesseraly mean the higher value possible. it is meant to be the best value possible
+ on_player_attack_entity:
+
+  # enable critical hit
   critical_hit:
    enable: true
    chance:
@@ -101,6 +163,7 @@ maths: # everything needed to calculate damage, resitance, etc
      agility: 0.25
      intelligence: 0.5
      dexterity: 0.25
+  # the multipler apply to the damage when a player succeed a critical hit
    damage_multiplier:
     function:
     maximum: 1.75
@@ -110,20 +173,27 @@ maths: # everything needed to calculate damage, resitance, etc
      agility: 0.25
      intelligence: 0.25
      dexterity: 0.5
-  chance_of_creating_magic_attack: # = [(max-min)/max_stats] * [1 * intelligence + 0 * dexterity] + min
-   function: #ex: 0.01 * (  0.75 * {0} + 0.25 * {1} ) + 0.0, intelligence, dexterity
+
+  # enable player to have a chance to apply magic(potion) effect
+  chance_of_creating_magic_attack:
+   function:
    maximum: 0.5
    minimum: 0.0
    variables:
     intelligence: 1.0
-  creating_magic_attack: #duration = (max - min / max_stats) * (intelligence * 0.75 + dexterity * 0.25) + min
+
+  # in case of magic attack succeeded, craete the potion effect depending on variables
+  # to better understand effect level, look for the minecraft potion effect wiki on internet
+  creating_magic_attack:
    enable: true
+   # the duration of the effect (in seconds)
    duration:
     maximum: 10.0
     minimum: 0.05
     variables:
      intelligence: 0.75
      dexterity: 0.25
+  # you can specify for each type of effect, the maximum and minimum level, and the variables
    harm:
     enable: true
     maximum: 3
@@ -154,6 +224,8 @@ maths: # everything needed to calculate damage, resitance, etc
     minimum: 0
     variables:
      intelligence: 1.0
+
+  # mathematics to when a player attack an entity with a weapon (sword, axe, any other type of weapon hit)
   by_weapon:
    enable: true
    function:
@@ -162,6 +234,8 @@ maths: # everything needed to calculate damage, resitance, etc
    range: 2.0
    variables:
     strength: 1.0
+
+  # mathematics to when a player attack an entity with a magic item (potion, flame, etc)
   by_magic:
    enable: true
    function:
@@ -171,6 +245,8 @@ maths: # everything needed to calculate damage, resitance, etc
    variables:
     intelligence: 0.85
     dexterity: 0.15
+
+  # mathematics to when a player attack an entity with a projectile (mainly arrows)
   by_projectile:
    enable: true
    function:
@@ -180,7 +256,34 @@ maths: # everything needed to calculate damage, resitance, etc
    variables:
     strength: 0.333
     dexterity: 0.666
+
+  # enable missing attack. the values are the amount of chance a player can miss an attack
+  # when the entity is an other player, it will be merge with the chance to dodge an attack of the other player
+  chance_of_missing:
+   enable: true
+   function:
+   maximum: 0.01
+   minimum: 0.15
+   variables:
+    agility: 1
+
+  # enable backstack damage booster
+  # by default backstack multiply damage by 1.15 but you can still modify it
+  backstack:
+   enable: true
+   function:
+   maximum: 1.15
+   minimum: 1.15
+   range: 0
+   variables:
+
+
+
+# mathematics to when a player gets damaged (any source)
  on_player_get_damaged:
+  # you can specify the damage multipliers for each source of damage
+  # you can specify a default. if the default is enabled, it will be used whenever the source is not defined here
+  # if you delete a section (source) it will do the same as disabelling it
   by_magic:
    enable: true
    function:
@@ -336,6 +439,7 @@ maths: # everything needed to calculate damage, resitance, etc
     defence: 0.15
     agility: 0.15
     intelligence: 0.70
+  # set a default values
   by_default:
    enable: true
    function:
@@ -343,6 +447,8 @@ maths: # everything needed to calculate damage, resitance, etc
    minimum: 1.0
    variables:
     defence: 1.0
+  # when a player get it, it has the possibility to reduce bad potion effect
+  # it wont reduce the level but the duration
   reducing_bad_potion_effect:
    enable: true
    function:
@@ -352,6 +458,7 @@ maths: # everything needed to calculate damage, resitance, etc
    variables:
     magic_resistance: 0.75
     intelligence: 0.25
+  # it also has the chance to remove completitly the effects
   chance_of_removing_magic_effect:
    enable: true
    function:
@@ -361,8 +468,19 @@ maths: # everything needed to calculate damage, resitance, etc
     magic_resistance: 0.70
     intelligence: 0.2
     dexterity: 0.1
+  # the chance to dodge an attack
+  chance_of_dodging:
+   enable: true
+   function:
+   maximum: 0.15
+   minimum: 0.01
+   variables:
+    agility: 1
+
+# mathematics to when a player shoots with a bow
  on_player_shoot_bow:
   enable: true
+  # precision will affect arrow vector(directon) on both x and y axes
   precision:
    function:
    minimum: 0.25
@@ -370,6 +488,7 @@ maths: # everything needed to calculate damage, resitance, etc
    variables:
     dexterity: 1
    range: 0.05
+  # the speed will affect the arrow vector velocity
   speed:
    function:
    maximum: 2.0
@@ -378,6 +497,9 @@ maths: # everything needed to calculate damage, resitance, etc
     strength: 0.666
     dexterity: 0.333
    range: 0.05
+
+# mathematics to when a player consume a potion
+# will affect potion duration and level on consuming
  on_player_consume_potion:
   enable: true
   function:
@@ -386,10 +508,17 @@ maths: # everything needed to calculate damage, resitance, etc
   minimum: 1.0
   variables:
    intelligence: 1.0
+
+# mathematics to when a player dies
  on_player_dies:
   enable: true
   function:
-  xp_loss: 15 # percentage of experience a player lose on death. Ex : if player has 100xp, after death he will have 75. cannot deduct a level
+  # percentage of experience a player lose on death
+  xp_loss: 15
+
+  # item drop will affect the amount of dropped item
+  # minimum value of 1 means a player will lose 100% of his inventory
+  # maximum value of 0.1 means a player will only lose 10% of his inventory
   items_drops:
    enable: true
    maximum: 0.1
@@ -397,6 +526,9 @@ maths: # everything needed to calculate damage, resitance, etc
    variables:
     intelligence: 0.85
     agility: 0.15
+
+# mathematics to all generic player attributes
+# google minecraft generic attributes for more informations
  player_attributes:
   movement_speed:
    enable: true
