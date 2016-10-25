@@ -9,26 +9,46 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Created by Moofy on 07/09/2016.
+ * Player handler class
+ * this class handles the connected players
  */
 public class PlayerHandler {
     private LowbrainCore lowbrainCore;
     private Map<UUID, LowbrainPlayer> list;
     private int averageLevel;
 
+    /**
+     * initialize the handler
+     * @param lowbrainCore instance of the pluging
+     */
     public PlayerHandler(LowbrainCore lowbrainCore){
         this.lowbrainCore = lowbrainCore;
         list = new HashMap<>();
     }
 
+    /**
+     * remove player using bukking player instance
+     * @param p Bukkit.Player
+     * @return true
+     */
     public boolean remove(Player p){
         return remove(p != null ? p.getUniqueId() : null);
     }
 
+    /**
+     * remove player using uuid
+     * @param uuid Bukkit.Player.getUuid
+     * @return true
+     */
     public boolean remove(UUID uuid){
         return remove(getList().getOrDefault(uuid,null));
     }
 
+    /**
+     * remove player using LowbrainPlayer instance
+     * @param p
+     * @return true
+     */
     public boolean remove(LowbrainPlayer p){
         if(p != null){
             p.disconnect();
@@ -38,6 +58,11 @@ public class PlayerHandler {
         return true;
     }
 
+    /**
+     * add new player with bukkit player instance
+     * @param p bukkit.player
+     * @return true
+     */
     public boolean add(Player p){
         if(p == null) return false;
         getList().put(p.getUniqueId(), new LowbrainPlayer(p));
@@ -45,11 +70,21 @@ public class PlayerHandler {
         return true;
     }
 
+    /**
+     * add new player using uuid.
+     * @param uuid bukkit.player.getuuid
+     * @return
+     */
     public boolean add(UUID uuid){
         if(uuid == null) return false;
         return add(Bukkit.getServer().getPlayer(uuid));
     }
 
+    /**
+     * add player using LowbrainPlayer instance
+     * @param p LowbrainPlayer
+     * @return true
+     */
     public boolean add(LowbrainPlayer p){
         if(p == null) return false;
         if(p.getPlayer() == null) return false;
@@ -58,6 +93,10 @@ public class PlayerHandler {
         return true;
     }
 
+    /**
+     * Save data of all connected player
+     * @return
+     */
     public boolean saveData(){
         for (LowbrainPlayer p:
                 getList().values()) {
@@ -66,6 +105,10 @@ public class PlayerHandler {
         return true;
     }
 
+    /**
+     * reload all data from players
+     * @return
+     */
     public boolean reload() {
         for (LowbrainPlayer p:
                 this.getList().values()) {
@@ -74,14 +117,27 @@ public class PlayerHandler {
         return true;
     }
 
+    /**
+     * return the list of connected players
+     * @return Map<UUID, LowbrainPlayer>
+     */
     public Map<UUID, LowbrainPlayer> getList() {
         return list;
     }
 
+    /**
+     * return the average level
+     * @return
+     */
     public int getAverageLevel(){
         return this.getAverageLevel();
     }
 
+    /**
+     * compute the average level of connected players
+     * is called when a player is removed of added
+     * @return the average level
+     */
     public int computeAverageLevel(){
         Double avg = 0.0;
         for (LowbrainPlayer rp :

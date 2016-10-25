@@ -112,7 +112,10 @@ public class LowbrainCore extends JavaPlugin {
 		}
     }
 
-    private void InitialisingConfigFile(){
+	/**
+	 * first load config file
+	 */
+	private void InitialisingConfigFile(){
 		try {
 			Config.getInstance();
 			Classes.getInstance();
@@ -138,23 +141,37 @@ public class LowbrainCore extends JavaPlugin {
 		Bukkit.getServer().getScheduler().cancelTasks(this);
     }
 
-    public void saveData(){
+	/**
+	 * save all player data
+	 */
+	public void saveData(){
 		this.getPlayerHandler().saveData();
 		debugInfo("Data saved correctly");
 	}
 
+	/**
+	 * log message
+	 * @param msg
+	 */
 	public void debugInfo(Object msg){
 	    if(Settings.getInstance().debug){
 	        this.getLogger().info("[DEBUG] : " + msg);
         }
     }
 
+	/**
+	 * log message has waning
+	 * @param msg
+	 */
 	public void debugWarning(Object msg){
 		if(Settings.getInstance().debug){
 			this.getLogger().warning("[DEBUG] : " + msg);
 		}
 	}
 
+	/**
+	 * reload config
+	 */
     public void reloadConfig(){
     	Classes.reload();
 		Config.reload();
@@ -168,6 +185,10 @@ public class LowbrainCore extends JavaPlugin {
 		getPlayerHandler().reload();
 	}
 
+	/**
+	 * evaluate all string functions from config file
+	 * @return false if one function fails
+	 */
     private boolean evaluateFunctions(){
     	List<String> functions = new ArrayList<String>();
 
@@ -213,6 +234,9 @@ public class LowbrainCore extends JavaPlugin {
 		}
 	}
 
+	/**
+	 * load skill from skills.yml
+	 */
 	private void loadSkills(){
 		this.skills = new HashMap<>();
 		for (String skillName :
@@ -223,6 +247,9 @@ public class LowbrainCore extends JavaPlugin {
 		}
 	}
 
+	/**
+	 * load item requirements from itemrequirements.yml
+	 */
 	private void loadItemsRequirements(){
 		this.itemsRequirements = new HashMap<String,ItemRequirements>();
 		for (String n:ItemsRequirements.getInstance().getKeys(false)) {
@@ -236,7 +263,11 @@ public class LowbrainCore extends JavaPlugin {
 			this.itemsRequirements.put(n,i);
 		}
 	}
-	
+
+	/**
+	 * create custom staffs from staffs.yml
+	 * @return
+	 */
 	private boolean createCustomStaffs(){
 		try {
 			for (String staffName :
@@ -376,6 +407,9 @@ public class LowbrainCore extends JavaPlugin {
 		return true;
 	}
 
+	/**
+	 * validate config file versions
+	 */
 	private void validateConfigVersion(){
 		ConfigurationSection versions = Config.getInstance().getConfigurationSection("versions");
 
@@ -424,6 +458,7 @@ public class LowbrainCore extends JavaPlugin {
 
 	}
 
+
 	public HashMap<String, ItemRequirements> getItemsRequirements() {
 		return itemsRequirements;
 	}
@@ -436,6 +471,9 @@ public class LowbrainCore extends JavaPlugin {
 		return playerHandler;
 	}
 
+	/**
+	 * inner class for item requirements
+	 */
 	public class ItemRequirements {
 		private String name;
 		private HashMap<String,Integer> requirements = new HashMap<String,Integer>();

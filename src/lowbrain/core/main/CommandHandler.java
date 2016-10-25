@@ -448,6 +448,12 @@ public class CommandHandler implements CommandExecutor{
 		return false;
     }
 
+	/**
+	 * check sender pemission
+	 * @param sender
+	 * @param permission
+	 * @return
+	 */
     private boolean senderHasPermission(CommandSender sender, String permission){
     	if(sender.isOp() && Settings.getInstance().op_bypass_permission){
     		return true;

@@ -18,12 +18,19 @@ public class LowbrainClass {
 	private int agility = 0;
 	private List<String> bonusAttributes = new ArrayList<String>();
 	private List<String> powers = new ArrayList<>();
-	
+
+	/**
+	 * Create class object using the name
+	 * @param name
+	 */
 	public LowbrainClass(String name){
 		this.name = name;
 		Initialize();
 	}
-	
+
+	/**
+	 * initialize
+	 */
 	public void Initialize(){
 		FileConfiguration config = Classes.getInstance();
 		tag = config.getString(name+".tag","");
@@ -39,6 +46,10 @@ public class LowbrainClass {
 		SetPowers();
 	}
 
+	/**
+	 * Create a formated string with all the informations of the specific class
+	 * @return
+	 */
 	public String toString() {
 		String s = "Name : " + name + "\n";
 		s += "Tag : " + tag + "\n";
@@ -65,42 +76,82 @@ public class LowbrainClass {
 		return s;
 	}
 
+	/**
+	 * return strength attribute
+	 * @return
+	 */
 	public int getStrength() {
 		return strength;
 	}
 
+	/**
+	 * return intelligence attribute
+	 * @return
+	 */
 	public int getIntelligence() {
 		return intelligence;
 	}
 
+	/**
+	 * return dexterity attribute
+	 * @return
+	 */
 	public int getDexterity() {
 		return dexterity;
 	}
 
+	/**
+	 * return health attribute
+	 * @return
+	 */
 	public int getHealth() {
 		return health;
 	}
 
+	/**
+	 * return defence attribute
+	 * @return
+	 */
 	public int getDefence() {
 		return defence;
 	}
 
+	/**
+	 * return the name of the class
+	 * @return
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * return the magic resitance attribute
+	 * @return
+	 */
 	public int getMagicResistance() {
 		return magicResistance;
 	}
 
+	/**
+	 * return a list of bonus attributes as string
+	 * @return
+	 */
 	public List<String> getBonusAttributes() {
 		return bonusAttributes;
 	}
 
+	/**
+	 * return agility attribute
+	 * @return
+	 */
 	public int getAgility() {
 		return agility;
 	}
 
+	/**
+	 * return a list of available powers as string
+	 * @return
+	 */
 	public List<String> getPowers() {
 		return powers;
 	}
@@ -113,7 +164,10 @@ public class LowbrainClass {
 		if(this.powers == null) this.powers = new ArrayList<String>();
 	}
 
-
+	/**
+	 * return the class tag
+	 * @return
+	 */
 	public String getTag() {
 		return tag;
 	}

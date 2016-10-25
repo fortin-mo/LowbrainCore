@@ -38,6 +38,11 @@ public class LowbrainPower {
     private HashMap<String,Integer> requirements;
 
 
+    /**
+     * construct the power object using the name
+     * will retrieve information from power.yml
+     * @param name
+     */
     public LowbrainPower(String name){
         this.name = name;
         this.requirements = new HashMap<>();
@@ -94,18 +99,35 @@ public class LowbrainPower {
         this.setPotionEffectType();
     }
 
+    /**
+     * return the mana necessary to use the spell
+     * @return
+     */
     public float getMana() {
         return mana;
     }
 
+    /**
+     * return the name of the spell
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * return the cast range of the spell
+     * @return
+     */
     public float getCastRange() {
         return castRange;
     }
-    
+
+    /**
+     * compute cast duration depending on player attributes
+     * @param from LowbrainPlayer
+     * @return cast duration value
+     */
     private int getCastDuration(LowbrainPlayer from){
         float result = 0F;
         if(Helper.StringIsNullOrEmpty(durationFunction)) {
@@ -130,6 +152,11 @@ public class LowbrainPower {
         return (int)(result * 20);
     }
 
+    /**
+     * compute cast amplifier depending on player attribute
+     * @param from LowbrainPlayer
+     * @return cast amplifier value
+     */
     private int getCastAmplifier(LowbrainPlayer from){
         float result = 0F;
         if(Helper.StringIsNullOrEmpty(amplifierFunction)) {
@@ -152,6 +179,9 @@ public class LowbrainPower {
         return (int)(result);
     }
 
+    /**
+     * set the potion effect type using the name
+     */
     private void setPotionEffectType(){
         switch (this.name){
             case"healing":
@@ -199,10 +229,21 @@ public class LowbrainPower {
         }
     }
 
+    /**
+     * compute the cooldown depending on player attributes
+     * @param p LowbrainPlayer
+     * @return cooldown value
+     */
     private int getCooldown(LowbrainPlayer p){
         return (int)Helper.ValueFromFunction(maximumCooldown, minimumCooldown, cooldownVariables,p);
     }
 
+    /**
+     * execute the spell
+     * @param from from this LowbrainPlayer
+     * @param to to this LowbrainPlayer (if set to null, will cast to from/self)
+     * @return true if cast succeeded
+     */
     public boolean Cast(LowbrainPlayer from, LowbrainPlayer to){
         try{
             if(from == null || to == null)return false;

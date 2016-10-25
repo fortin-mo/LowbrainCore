@@ -46,6 +46,12 @@ public class CoreListener implements Listener {
         plugin = instance;
     }
 
+    /**
+     * called when create spawn in the world
+     * we only set no tick damage if needed
+     * @param e
+     */
+    @EventHandler
     public void onCreatureSpawn(CreatureSpawnEvent e){
         if(Settings.getInstance().disable_mob_no_tick_damage){
             e.getEntity().setNoDamageTicks(0);
@@ -425,299 +431,6 @@ public class CoreListener implements Listener {
         }
     }
 
-    private boolean applyDefensive(EntityDamageByEntityEvent e, MutableFloat missChance){
-        if( !(e.getEntity() instanceof Player)) return false;
-        LowbrainPlayer damagee = plugin.getPlayerHandler().getList().get(e.getEntity().getUniqueId());
-        if(damagee == null) return false;
-
-        double multiplier = 1;
-        boolean damageSet = false;
-
-        if(e.getDamager() instanceof Arrow){
-            multiplier = damagee.getMultipliers().getDamagedByArrow();
-            damageSet = true;
-        }
-
-        else if(e.getDamager() instanceof ThrownPotion){
-            if(Settings.getInstance().maths.onPlayerGetDamaged.by_magic_enable){
-                multiplier = damagee.getMultipliers().getDamagedByMagic();
-                damageSet = true;
-            }
-            plugin.debugInfo("Damage from magic projectile reduced by : " + multiplier);
-            float changeOfRemovingEffect = -1F;
-
-            if(Settings.getInstance().maths.onPlayerGetDamaged.chanceOfRemovingMagicEffect.enable){
-                changeOfRemovingEffect = damagee.getMultipliers().getChanceOfRemovingPotionEffect();
-            }
-
-            double rdm = Math.random();
-            if(rdm < changeOfRemovingEffect){
-                removeBadPotionEffect(damagee.getPlayer());
-                plugin.debugInfo("all effect removed");
-            }
-            else if(Settings.getInstance().maths.onPlayerGetDamaged.reducingBadPotionEffect.enable){
-                reducingBadPotionEffect(damagee);
-            }
-        }
-
-        else if(e.getDamager() instanceof LivingEntity && !(e.getDamager() instanceof Creeper)){
-            if(Settings.getInstance().maths.onPlayerGetDamaged.by_weapon_enable){
-                multiplier = damagee.getMultipliers().getDamagedByWeapon();
-            }
-        }
-
-        else if(e.getDamager() instanceof Projectile){
-            Projectile projectile = (Projectile) e.getDamager();
-
-            if(projectile.getShooter() instanceof Player && Helper.StringIsNullOrEmpty(projectile.getCustomName())){
-                if(Settings.getInstance().maths.onPlayerGetDamaged.by_magic_enable){
-                    multiplier = damagee.getMultipliers().getDamagedByMagic();
-                    damageSet = true;
-                }
-                plugin.debugInfo("Damage from magic projectile reduced by : " + multiplier);
-                float changeOfRemovingEffect = -1F;
-                
-                if(Settings.getInstance().maths.onPlayerGetDamaged.chanceOfRemovingMagicEffect.enable){
-                    changeOfRemovingEffect = damagee.getMultipliers().getChanceOfRemovingPotionEffect();
-                }
-
-                double rdm = Math.random();
-                if(rdm < changeOfRemovingEffect){
-                    removeBadPotionEffect(damagee.getPlayer());
-                    plugin.debugInfo("all effect removed");
-                }
-                else if(Settings.getInstance().maths.onPlayerGetDamaged.reducingBadPotionEffect.enable){
-                    reducingBadPotionEffect(damagee);
-                }
-
-                e.setDamage(e.getDamage() * multiplier);
-            }
-            else if(Settings.getInstance().maths.onPlayerGetDamaged.by_projectile_enable){
-                multiplier = damagee.getMultipliers().getDamagedByProjectile();
-                damageSet = true;
-            }
-
-        }
-
-        if(damagee != null && Settings.getInstance().maths.onPlayerGetDamaged.chanceOfDodging.enable){
-            float oldChance = missChance.floatValue();
-            float newChance = Settings.getInstance().maths.onPlayerAttackEntity.chanceOfMissing.enable ?
-                        oldChance * damagee.getMultipliers().getChanceOfDodging() : damagee.getMultipliers().getChanceOfDodging();
-            missChance.setValue(newChance);
-        }
-
-        if(!damageSet) return damageSet;
-
-
-
-        plugin.debugInfo("Initial damage : " + e.getDamage());
-        e.setDamage(e.getDamage() * multiplier);
-        plugin.debugInfo("Defensive damage multiplier : " + multiplier);
-        plugin.debugInfo("Damage after defensive multiplier : " + e.getDamage());
-
-        return damageSet;
-    }
-
-    private boolean applyOffensiveAttack(EntityDamageByEntityEvent e, MutableBoolean isCritical, MutableFloat missChance){
-        LowbrainPlayer damager = null;
-
-        boolean magicAttack = false;
-        boolean arrowAttack = false;
-        boolean normalAttack = false;
-        float absorbDamage = 0F;
-
-        double oldDamage = e.getDamage();
-
-        //DEFINING CAUSE OF DAMAGE
-        if (e.getDamager() instanceof Player) {
-            damager = plugin.getPlayerHandler().getList().get(e.getDamager().getUniqueId());
-            plugin.debugInfo("Attacked by another player : " + damager.getPlayer().getName());
-            normalAttack  = true;
-            magicAttack = false;
-            arrowAttack = false;
-        } else if (e.getDamager() instanceof Arrow) {
-            Arrow ar = (Arrow) e.getDamager();
-
-            if (ar.getShooter() instanceof Player) {
-                damager = plugin.getPlayerHandler().getList().get(((Player)((Arrow) e.getDamager()).getShooter()).getUniqueId());
-            }
-            plugin.debugInfo("Attacked by arrow");
-            arrowAttack = true;
-            normalAttack = false;
-            magicAttack = false;
-        } else if (e.getDamager() instanceof ThrownPotion) {
-            ThrownPotion pot = (ThrownPotion) e.getDamager();
-            if (pot.getShooter() instanceof Player) {
-                damager = plugin.getPlayerHandler().getList().get(((Player)((ThrownPotion) e.getDamager()).getShooter()).getUniqueId());
-            }
-            plugin.debugInfo("Attacked by potion");
-            magicAttack = true;
-            normalAttack = false;
-            arrowAttack = false;
-        }
-
-        //CUSTOM PROJECTILE (SKILLS AND STAFFS)
-        if(e.getDamager() instanceof  Projectile && e.getEntity() instanceof LivingEntity){
-
-            Projectile projectile = (Projectile) e.getDamager();
-
-            if(projectile.getShooter() instanceof Player && damager == null){
-                damager = plugin.getPlayerHandler().getList().get(((Player) projectile.getShooter()).getUniqueId());
-            }
-
-            if(damager != null && !Helper.StringIsNullOrEmpty(projectile.getCustomName())){
-
-                if(damager.getSkills().containsKey(projectile.getCustomName())){
-                    LowbrainSkill skill = damager.getSkills().get(projectile.getCustomName());
-
-                    for (Map.Entry<String, String> effect :
-                            skill.getEffects().entrySet()) {
-
-                        PotionEffect po = null;
-
-                        switch (effect.getKey()){
-                            case "poison":
-                                po = new PotionEffect(PotionEffectType.WITHER,(int)(skill.getEffectValue(effect.getValue()) *20),skill.getCurrentLevel(),true,true);
-                                break;
-                            case "fire_tick":
-                                e.getEntity().setFireTicks((int)(skill.getEffectValue(effect.getValue()) * 20));
-                                break;
-                            case "freeze":
-                                po = new PotionEffect(PotionEffectType.SLOW,(int)(skill.getEffectValue(effect.getValue()) *20),skill.getCurrentLevel(),true,true);
-                                break;
-                            case "absorb":
-                                absorbDamage = skill.getEffectValue(effect.getValue());
-                                break;
-                            case "knockback":
-                                e.getEntity().setVelocity(((LivingEntity) e.getEntity()).getEyeLocation().getDirection().multiply(-1 * skill.getEffectValue(effect.getValue())));
-                                break;
-                            case "lightning":
-                                e.getEntity().getWorld().strikeLightningEffect(e.getEntity().getLocation());
-                                break;
-                            case "damage":
-                                ((LivingEntity) e.getEntity()).damage(skill.getEffectValue(effect.getValue()));
-                                break;
-                        }
-                        if(po != null){
-                            po.apply((LivingEntity)e.getEntity());
-                        }
-                    }
-                }
-                else{
-                    ConfigurationSection staffSection = Staffs.getInstance().getConfigurationSection(projectile.getCustomName());
-                    if(staffSection != null){
-
-                        double baseDamage = staffSection.getDouble("base_damage",-1);
-                        String effect = staffSection.getString("effect","");
-                        int effectDuration = staffSection.getInt("effect_duration",3);
-                        plugin.debugInfo("Attacked by magic projectile");
-
-                        if(baseDamage >= 0) {
-                            e.setDamage(baseDamage);
-                            oldDamage = baseDamage;
-                            magicAttack = true;
-                            arrowAttack = false;
-                            normalAttack = false;
-                        }
-
-                        switch (effect){
-                            case "freezing_ball":
-                                PotionEffect po = new PotionEffect(PotionEffectType.SLOW,effectDuration*20,3,true,true);
-                                po.apply((LivingEntity)e.getEntity());
-                                break;
-                            case "fire_tick":
-                                e.getEntity().setFireTicks(effectDuration * 20);
-                                break;
-                        }
-                    }
-                }
-
-            }
-        }
-
-        //CHECK IF PLAYER CAN USE THE ITEM IN HAND
-        if(damager != null && damager.getPlayer().getInventory().getItemInMainHand() != null){
-            if(!damager.canEquipItem(damager.getPlayer().getInventory().getItemInMainHand())){
-                e.setCancelled(true);
-                return false;
-            }
-        }
-
-        //APPLYING MAGIC EFFECT BY ATTACKER
-        if(damager != null && !magicAttack && Settings.getInstance().maths.onPlayerAttackEntity.creatingMagicAttack.enable){
-            plugin.debugInfo("From " + damager.getPlayer().getName());
-            double chanceOfMagicEffect = Helper.ValueFromFunction(Settings.getInstance().maths.onPlayerAttackEntity.chanceOfCreatingMagicAttack.maximum,
-                    Settings.getInstance().maths.onPlayerAttackEntity.chanceOfCreatingMagicAttack.minimum,Settings.getInstance().maths.onPlayerAttackEntity.chanceOfCreatingMagicAttack.variables,damager);
-
-            double rdm = Math.random();
-            if(rdm < chanceOfMagicEffect){
-                PotionEffect effect = createMagicAttack(damager);
-                if(e.getEntity() instanceof LivingEntity && effect != null){
-                    ((LivingEntity) e.getEntity()).addPotionEffect(effect);
-                    plugin.debugInfo("magic effect added : " + effect.getType().getName() + ", " + effect.getDuration()/20 + ", " + effect.getAmplifier());
-                }
-            }
-        }
-
-        //APPLYING DAMAGE CHANGE DEPENDING ON OFFENCIVE ATTRIBUTES
-        if(arrowAttack && damager != null && Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.projectile_enable){
-            e.setDamage(Helper.getAttackByProjectile(damager,e.getDamage()));
-        }
-        else if(normalAttack && damager != null && Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.weapon_enable){
-            e.setDamage(Helper.getAttackByWeapon(damager,e.getDamage()));
-        }
-        else if(magicAttack && damager != null && Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.magic_enable){
-            e.setDamage(Helper.getAttackByMagic(damager,e.getDamage()));
-        }
-
-        //applying skilled attack if necessary
-        if(normalAttack && damager != null && damager.getCurrentSkill() != null
-                && (damager.getCurrentSkill().getEventType().equals("attack_entity") || damager.getCurrentSkill().getEventType().equals("both"))
-                && e.getEntity() instanceof LivingEntity
-                && damager.getCurrentSkill().executeWeaponAttackSkill(damager,(LivingEntity) e.getEntity(),e.getFinalDamage())){
-
-        }
-
-        if(damager == null) return false;
-
-        if(Settings.getInstance().maths.onPlayerAttackEntity.chanceOfMissing.enable) {
-            missChance.setValue(damager.getMultipliers().getChanceOfMissing());
-        }
-
-        if(Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.enable){
-            double rdm = Math.random();
-            double chance = Helper.getCriticalHitChance(damager);
-            if(rdm < chance){
-                isCritical.setValue(true);
-                float criticalHitMultiplier = Helper.getCriticalHitMultiplier(damager);
-                plugin.debugInfo("Critical hit multiplier : " + criticalHitMultiplier);
-                e.setDamage(e.getDamage() * criticalHitMultiplier);
-            }
-        }
-
-        if(Settings.getInstance().maths.onPlayerAttackEntity.backStab.enable){
-            Vector attackerDirection = damager.getPlayer().getLocation().getDirection();
-            Vector victimDirection = e.getEntity().getLocation().getDirection();
-            //determine if the dot product between the vectors is greater than 0
-            if (attackerDirection.dot(victimDirection) > 0) {
-                //player was backstabbed.}
-                float bs =  Helper.getBackstabMultiplier(damager);
-                e.setDamage(e.getDamage() * bs);
-                plugin.debugInfo("Backstap multiplier : " + bs);
-            }
-        }
-
-        if(absorbDamage > 0){
-            damager.getPlayer().setHealth(damager.getPlayer().getHealth() + absorbDamage);
-        }
-
-        plugin.debugInfo("Initial damage : " + oldDamage);
-        double damageMultiplier = e.getDamage() / oldDamage;
-        plugin.debugInfo("Offencive damage multiplier : " + damageMultiplier);
-        plugin.debugInfo("Damage after offencive multiplier : " + e.getDamage());
-        return true;
-    }
-
     /**
      * Called when a player get damaged
      * @param e
@@ -1092,6 +805,312 @@ public class CoreListener implements Listener {
         }
 
         this.plugin.debugInfo("Server difficulty set to " + diff.name());
+    }
+
+    /**
+     * apply deffensive multipler to damage from event
+     * @param e EntityDamageByEntityEvent
+     * @param missChance mutable float, value of missing chance
+     * @return true if multiplier was applied
+     */
+    private boolean applyDefensive(EntityDamageByEntityEvent e, MutableFloat missChance){
+        if( !(e.getEntity() instanceof Player)) return false;
+        LowbrainPlayer damagee = plugin.getPlayerHandler().getList().get(e.getEntity().getUniqueId());
+        if(damagee == null) return false;
+
+        double multiplier = 1;
+        boolean damageSet = false;
+
+        if(e.getDamager() instanceof Arrow){
+            multiplier = damagee.getMultipliers().getDamagedByArrow();
+            damageSet = true;
+        }
+
+        else if(e.getDamager() instanceof ThrownPotion){
+            if(Settings.getInstance().maths.onPlayerGetDamaged.by_magic_enable){
+                multiplier = damagee.getMultipliers().getDamagedByMagic();
+                damageSet = true;
+            }
+            plugin.debugInfo("Damage from magic projectile reduced by : " + multiplier);
+            float changeOfRemovingEffect = -1F;
+
+            if(Settings.getInstance().maths.onPlayerGetDamaged.chanceOfRemovingMagicEffect.enable){
+                changeOfRemovingEffect = damagee.getMultipliers().getChanceOfRemovingPotionEffect();
+            }
+
+            double rdm = Math.random();
+            if(rdm < changeOfRemovingEffect){
+                removeBadPotionEffect(damagee.getPlayer());
+                plugin.debugInfo("all effect removed");
+            }
+            else if(Settings.getInstance().maths.onPlayerGetDamaged.reducingBadPotionEffect.enable){
+                reducingBadPotionEffect(damagee);
+            }
+        }
+
+        else if(e.getDamager() instanceof LivingEntity && !(e.getDamager() instanceof Creeper)){
+            if(Settings.getInstance().maths.onPlayerGetDamaged.by_weapon_enable){
+                multiplier = damagee.getMultipliers().getDamagedByWeapon();
+            }
+        }
+
+        else if(e.getDamager() instanceof Projectile){
+            Projectile projectile = (Projectile) e.getDamager();
+
+            if(projectile.getShooter() instanceof Player && Helper.StringIsNullOrEmpty(projectile.getCustomName())){
+                if(Settings.getInstance().maths.onPlayerGetDamaged.by_magic_enable){
+                    multiplier = damagee.getMultipliers().getDamagedByMagic();
+                    damageSet = true;
+                }
+                plugin.debugInfo("Damage from magic projectile reduced by : " + multiplier);
+                float changeOfRemovingEffect = -1F;
+
+                if(Settings.getInstance().maths.onPlayerGetDamaged.chanceOfRemovingMagicEffect.enable){
+                    changeOfRemovingEffect = damagee.getMultipliers().getChanceOfRemovingPotionEffect();
+                }
+
+                double rdm = Math.random();
+                if(rdm < changeOfRemovingEffect){
+                    removeBadPotionEffect(damagee.getPlayer());
+                    plugin.debugInfo("all effect removed");
+                }
+                else if(Settings.getInstance().maths.onPlayerGetDamaged.reducingBadPotionEffect.enable){
+                    reducingBadPotionEffect(damagee);
+                }
+
+                e.setDamage(e.getDamage() * multiplier);
+            }
+            else if(Settings.getInstance().maths.onPlayerGetDamaged.by_projectile_enable){
+                multiplier = damagee.getMultipliers().getDamagedByProjectile();
+                damageSet = true;
+            }
+
+        }
+
+        if(damagee != null && Settings.getInstance().maths.onPlayerGetDamaged.chanceOfDodging.enable){
+            float oldChance = missChance.floatValue();
+            float newChance = Settings.getInstance().maths.onPlayerAttackEntity.chanceOfMissing.enable ?
+                    oldChance * damagee.getMultipliers().getChanceOfDodging() : damagee.getMultipliers().getChanceOfDodging();
+            missChance.setValue(newChance);
+        }
+
+        if(!damageSet) return damageSet;
+
+
+
+        plugin.debugInfo("Initial damage : " + e.getDamage());
+        e.setDamage(e.getDamage() * multiplier);
+        plugin.debugInfo("Defensive damage multiplier : " + multiplier);
+        plugin.debugInfo("Damage after defensive multiplier : " + e.getDamage());
+
+        return damageSet;
+    }
+
+    /**
+     * apply offensive multiplier to damage from event
+     * @param e EntityDamageByEntityEvent
+     * @param isCritical set to true if the hit was critical
+     * @param missChance mutable float, value of missing chance
+     * @return true if multiplier was applied
+     */
+    private boolean applyOffensiveAttack(EntityDamageByEntityEvent e, MutableBoolean isCritical, MutableFloat missChance){
+        LowbrainPlayer damager = null;
+
+        boolean magicAttack = false;
+        boolean arrowAttack = false;
+        boolean normalAttack = false;
+        float absorbDamage = 0F;
+
+        double oldDamage = e.getDamage();
+
+        //DEFINING CAUSE OF DAMAGE
+        if (e.getDamager() instanceof Player) {
+            damager = plugin.getPlayerHandler().getList().get(e.getDamager().getUniqueId());
+            plugin.debugInfo("Attacked by another player : " + damager.getPlayer().getName());
+            normalAttack  = true;
+            magicAttack = false;
+            arrowAttack = false;
+        } else if (e.getDamager() instanceof Arrow) {
+            Arrow ar = (Arrow) e.getDamager();
+
+            if (ar.getShooter() instanceof Player) {
+                damager = plugin.getPlayerHandler().getList().get(((Player)((Arrow) e.getDamager()).getShooter()).getUniqueId());
+            }
+            plugin.debugInfo("Attacked by arrow");
+            arrowAttack = true;
+            normalAttack = false;
+            magicAttack = false;
+        } else if (e.getDamager() instanceof ThrownPotion) {
+            ThrownPotion pot = (ThrownPotion) e.getDamager();
+            if (pot.getShooter() instanceof Player) {
+                damager = plugin.getPlayerHandler().getList().get(((Player)((ThrownPotion) e.getDamager()).getShooter()).getUniqueId());
+            }
+            plugin.debugInfo("Attacked by potion");
+            magicAttack = true;
+            normalAttack = false;
+            arrowAttack = false;
+        }
+
+        //CUSTOM PROJECTILE (SKILLS AND STAFFS)
+        if(e.getDamager() instanceof  Projectile && e.getEntity() instanceof LivingEntity){
+
+            Projectile projectile = (Projectile) e.getDamager();
+
+            if(projectile.getShooter() instanceof Player && damager == null){
+                damager = plugin.getPlayerHandler().getList().get(((Player) projectile.getShooter()).getUniqueId());
+            }
+
+            if(damager != null && !Helper.StringIsNullOrEmpty(projectile.getCustomName())){
+
+                if(damager.getSkills().containsKey(projectile.getCustomName())){
+                    LowbrainSkill skill = damager.getSkills().get(projectile.getCustomName());
+
+                    for (Map.Entry<String, String> effect :
+                            skill.getEffects().entrySet()) {
+
+                        PotionEffect po = null;
+
+                        switch (effect.getKey()){
+                            case "poison":
+                                po = new PotionEffect(PotionEffectType.WITHER,(int)(skill.getEffectValue(effect.getValue()) *20),skill.getCurrentLevel(),true,true);
+                                break;
+                            case "fire_tick":
+                                e.getEntity().setFireTicks((int)(skill.getEffectValue(effect.getValue()) * 20));
+                                break;
+                            case "freeze":
+                                po = new PotionEffect(PotionEffectType.SLOW,(int)(skill.getEffectValue(effect.getValue()) *20),skill.getCurrentLevel(),true,true);
+                                break;
+                            case "absorb":
+                                absorbDamage = skill.getEffectValue(effect.getValue());
+                                break;
+                            case "knockback":
+                                e.getEntity().setVelocity(((LivingEntity) e.getEntity()).getEyeLocation().getDirection().multiply(-1 * skill.getEffectValue(effect.getValue())));
+                                break;
+                            case "lightning":
+                                e.getEntity().getWorld().strikeLightningEffect(e.getEntity().getLocation());
+                                break;
+                            case "damage":
+                                ((LivingEntity) e.getEntity()).damage(skill.getEffectValue(effect.getValue()));
+                                break;
+                        }
+                        if(po != null){
+                            po.apply((LivingEntity)e.getEntity());
+                        }
+                    }
+                }
+                else{
+                    ConfigurationSection staffSection = Staffs.getInstance().getConfigurationSection(projectile.getCustomName());
+                    if(staffSection != null){
+
+                        double baseDamage = staffSection.getDouble("base_damage",-1);
+                        String effect = staffSection.getString("effect","");
+                        int effectDuration = staffSection.getInt("effect_duration",3);
+                        plugin.debugInfo("Attacked by magic projectile");
+
+                        if(baseDamage >= 0) {
+                            e.setDamage(baseDamage);
+                            oldDamage = baseDamage;
+                            magicAttack = true;
+                            arrowAttack = false;
+                            normalAttack = false;
+                        }
+
+                        switch (effect){
+                            case "freezing_ball":
+                                PotionEffect po = new PotionEffect(PotionEffectType.SLOW,effectDuration*20,3,true,true);
+                                po.apply((LivingEntity)e.getEntity());
+                                break;
+                            case "fire_tick":
+                                e.getEntity().setFireTicks(effectDuration * 20);
+                                break;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        //CHECK IF PLAYER CAN USE THE ITEM IN HAND
+        if(damager != null && damager.getPlayer().getInventory().getItemInMainHand() != null){
+            if(!damager.canEquipItem(damager.getPlayer().getInventory().getItemInMainHand())){
+                e.setCancelled(true);
+                return false;
+            }
+        }
+
+        //APPLYING MAGIC EFFECT BY ATTACKER
+        if(damager != null && !magicAttack && Settings.getInstance().maths.onPlayerAttackEntity.creatingMagicAttack.enable){
+            plugin.debugInfo("From " + damager.getPlayer().getName());
+            double chanceOfMagicEffect = Helper.ValueFromFunction(Settings.getInstance().maths.onPlayerAttackEntity.chanceOfCreatingMagicAttack.maximum,
+                    Settings.getInstance().maths.onPlayerAttackEntity.chanceOfCreatingMagicAttack.minimum,Settings.getInstance().maths.onPlayerAttackEntity.chanceOfCreatingMagicAttack.variables,damager);
+
+            double rdm = Math.random();
+            if(rdm < chanceOfMagicEffect){
+                PotionEffect effect = createMagicAttack(damager);
+                if(e.getEntity() instanceof LivingEntity && effect != null){
+                    ((LivingEntity) e.getEntity()).addPotionEffect(effect);
+                    plugin.debugInfo("magic effect added : " + effect.getType().getName() + ", " + effect.getDuration()/20 + ", " + effect.getAmplifier());
+                }
+            }
+        }
+
+        //APPLYING DAMAGE CHANGE DEPENDING ON OFFENCIVE ATTRIBUTES
+        if(arrowAttack && damager != null && Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.projectile_enable){
+            e.setDamage(Helper.getAttackByProjectile(damager,e.getDamage()));
+        }
+        else if(normalAttack && damager != null && Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.weapon_enable){
+            e.setDamage(Helper.getAttackByWeapon(damager,e.getDamage()));
+        }
+        else if(magicAttack && damager != null && Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.magic_enable){
+            e.setDamage(Helper.getAttackByMagic(damager,e.getDamage()));
+        }
+
+        //applying skilled attack if necessary
+        if(normalAttack && damager != null && damager.getCurrentSkill() != null
+                && (damager.getCurrentSkill().getEventType().equals("attack_entity") || damager.getCurrentSkill().getEventType().equals("both"))
+                && e.getEntity() instanceof LivingEntity
+                && damager.getCurrentSkill().executeWeaponAttackSkill(damager,(LivingEntity) e.getEntity(),e.getFinalDamage())){
+
+        }
+
+        if(damager == null) return false;
+
+        if(Settings.getInstance().maths.onPlayerAttackEntity.chanceOfMissing.enable) {
+            missChance.setValue(damager.getMultipliers().getChanceOfMissing());
+        }
+
+        if(Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.enable){
+            double rdm = Math.random();
+            double chance = Helper.getCriticalHitChance(damager);
+            if(rdm < chance){
+                isCritical.setValue(true);
+                float criticalHitMultiplier = Helper.getCriticalHitMultiplier(damager);
+                plugin.debugInfo("Critical hit multiplier : " + criticalHitMultiplier);
+                e.setDamage(e.getDamage() * criticalHitMultiplier);
+            }
+        }
+
+        if(Settings.getInstance().maths.onPlayerAttackEntity.backStab.enable){
+            Vector attackerDirection = damager.getPlayer().getLocation().getDirection();
+            Vector victimDirection = e.getEntity().getLocation().getDirection();
+            //determine if the dot product between the vectors is greater than 0
+            if (attackerDirection.dot(victimDirection) > 0) {
+                //player was backstabbed.}
+                float bs =  Helper.getBackstabMultiplier(damager);
+                e.setDamage(e.getDamage() * bs);
+                plugin.debugInfo("Backstap multiplier : " + bs);
+            }
+        }
+
+        if(absorbDamage > 0){
+            damager.getPlayer().setHealth(damager.getPlayer().getHealth() + absorbDamage);
+        }
+
+        plugin.debugInfo("Initial damage : " + oldDamage);
+        double damageMultiplier = e.getDamage() / oldDamage;
+        plugin.debugInfo("Offencive damage multiplier : " + damageMultiplier);
+        plugin.debugInfo("Damage after offencive multiplier : " + e.getDamage());
+        return true;
     }
 
 }

@@ -15,6 +15,12 @@ import java.util.*;
 
 
 public class Helper {
+
+    /**
+     * evaluate string
+     * @param str string
+     * @return return value from evaluation
+     */
     public static float eval(final String str) {
         return new Object() {
             int pos = -1, ch;
@@ -95,6 +101,12 @@ public class Helper {
         }.parse();
     }
 
+    /**
+     * reformat string with values from player attributes
+     * @param st string
+     * @param p LowbrainPlayer
+     * @return
+     */
     public static String FormatStringWithValues(String[] st, LowbrainPlayer p){
         if(st.length > 1 && p != null){
             for (int i = 1; i < st.length; i++) {
@@ -154,6 +166,12 @@ public class Helper {
         }
     }
 
+    /**
+     * parse string to double with default value
+     * @param s string
+     * @param d default value
+     * @return
+     */
     public static double doubleTryParse(String s, Double d){
         try {
             return Double.parseDouble(s);
@@ -162,6 +180,12 @@ public class Helper {
         }
     }
 
+    /**
+     * parse string to float with default value
+     * @param s string
+     * @param d default value
+     * @return
+     */
     public static float floatTryParse(String s, Float d){
         try {
             return Float.parseFloat(s);
@@ -227,14 +251,35 @@ public class Helper {
         return Settings.getInstance().max_stats <= 0 ? 100 : Settings.getInstance().max_stats;
     }
 
+    /**
+     * compute slope
+     * @param max maximum value
+     * @param min minimum value
+     * @return slope using maxStats and default function type
+     */
     public static float Slope(float max, float min){
         return Slope(max,min,getMaxStats());
     }
 
+    /**
+     * compute slope
+     * @param max maximum value
+     * @param min minimum value
+     * @param y y value
+     * @return slope using default function type
+     */
     public static float Slope(float max, float min, float y){
         return Slope(max,min,y,Settings.getInstance().maths.function_type);
     }
 
+    /**
+     *
+     * @param max maximum value
+     * @param min minimum value
+     * @param y y value
+     * @param functionType function type to use
+     * @return slope
+     */
     public static float Slope(float max, float min, float y, int functionType){
         float slope = 0;
         switch (functionType){
@@ -311,6 +356,12 @@ public class Helper {
         return lst;
     }
 
+    /**
+     * return the distance between two players
+     * @param p1 player one
+     * @param p2 player two
+     * @return distance between the two players
+     */
     public static double getDistanceBetweenTwoPlayers(Player p1, Player p2){
         double dist = 0;
 

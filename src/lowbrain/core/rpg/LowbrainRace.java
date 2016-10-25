@@ -28,11 +28,20 @@ public class LowbrainRace {
     private List<String> bonusAttributes = new ArrayList<String>();
     private List<String> powers = new ArrayList<>();
 
+    /**
+     * construct race object using name
+     * will retrieve information from races.yml
+     * @param name
+     */
     public LowbrainRace(String name){
         this.name = name;
         Initialize();
     }
 
+    /**
+     * initialise
+     * called when constructed
+     */
     public void Initialize(){
         FileConfiguration config = Races.getInstance();
         tag = config.getString(name+".tag","");
@@ -62,6 +71,10 @@ public class LowbrainRace {
         if(this.powers == null) this.powers = new ArrayList<String>();
     }
 
+    /**
+     * format a string using race information
+     * @return formated information
+     */
     public String toString() {
         String s = "Name : " + name + "\n";
         s += "Tag : " + tag + "\n";
@@ -92,62 +105,122 @@ public class LowbrainRace {
         return s;
     }
 
+    /**
+     * get the strength attribute
+     * @return
+     */
     public int getStrength() {
         return strength;
     }
 
+    /**
+     * get the intelligence attribute
+     * @return
+     */
     public int getIntelligence() {
         return intelligence;
     }
 
+    /**
+     * get the dexterity attribute
+     * @return
+     */
     public int getDexterity() {
         return dexterity;
     }
 
+    /**
+     * get the health attribute
+     * @return
+     */
     public int getHealth() {
         return health;
     }
 
+    /**
+     * get the defence attribute
+     * @return
+     */
     public int getDefence() {
         return defence;
     }
 
+    /**
+     * get the name of the race
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * get the magic resitance attribute
+     * @return
+     */
     public int getMagicResistance() {
         return magicResistance;
     }
 
+    /**
+     * get the list of bonus attirbutes as strings
+     * @return
+     */
     public List<String> getBonusAttributes() {
         return bonusAttributes;
     }
 
+    /**
+     * get agility attribute
+     * @return
+     */
     public int getAgility() {
         return agility;
     }
 
+    /**
+     * get the list of availables powers as strings
+     * @return
+     */
     public List<String> getPowers() {
         return powers;
     }
 
+    /**
+     * get the race tag
+     * @return
+     */
     public String getTag() {
         return tag;
     }
 
+    /**
+     * get the race max health
+     * @return
+     */
     public float getMax_health() {
         return max_health;
     }
 
+    /**
+     * get the race base health / minimum
+     * @return
+     */
     public float getBase_health() {
         return base_health;
     }
 
+    /**
+     * get the race max mana
+     * @return
+     */
     public float getMax_mana() {
         return max_mana;
     }
 
+    /**
+     * get the race base mana / minimum
+     * @return
+     */
     public float getBase_mana() {
         return base_mana;
     }
