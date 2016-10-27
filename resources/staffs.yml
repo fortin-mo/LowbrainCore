@@ -140,7 +140,7 @@ staff_freezing_plus:
  gravity: true
  speed: 1
  base_damage: 5
- effect_duratoin: 6
+ effect_duration: 6
  effect: freezing_ball
  durability: 120
  display_color: 1
