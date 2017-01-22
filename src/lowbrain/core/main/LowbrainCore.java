@@ -9,21 +9,19 @@ import lowbrain.core.events.ArmorEquipListener;
 import lowbrain.core.events.CoreListener;
 import lowbrain.core.rpg.LowbrainPlayer;
 import lowbrain.core.rpg.LowbrainSkill;
-import net.minecraft.server.v1_10_R1.*;
+import net.minecraft.server.v1_11_R1.*;
+// import net.minecraft.server.v1_10_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.v1_10_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_11_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import lowbrain.core.commun.*;
-import org.inventivetalent.nicknamer.api.NickNamerAPI;
-import org.inventivetalent.nicknamer.api.SimpleNickManager;
-
 
 /**
  * LowbrainCore plugin class
@@ -38,12 +36,12 @@ public class LowbrainCore extends JavaPlugin {
 	private HashMap<String,LowbrainSkill> skills;
 	private PlayerHandler playerHandler;
 
-	private static final String CLASSES_V = "1.0";
-	private static final String CONFIG_V = "2.2";
+	private static final String CLASSES_V = "1.1";
+	private static final String CONFIG_V = "2.4";
 	private static final String ITEMS_REQUIREMENTS_V = "1.0";
 	private static final String MOBS_XP_V = "1.0";
-	private static final String POWERS_V = "2.0";
-	private static final String RACES_V = "1.0";
+	private static final String POWERS_V = "2.1";
+	private static final String RACES_V = "1.1";
 	private static final String SKILLS_V = "2.0";
 	private static final String STAFFS_V = "1.0";
 
@@ -80,7 +78,7 @@ public class LowbrainCore extends JavaPlugin {
 			useArmorEquipEvent = Bukkit.getPluginManager().isPluginEnabled("ArmorEquipEvent");
 			debugInfo("ArmorEquipEvent is "+ (useArmorEquipEvent ? "enabled" : "disabled") +" !");
 
-			useParties = Bukkit.getPluginManager().isPluginEnabled("Parties");
+			useParties = Settings.getInstance().group_xp_enable_parties && Bukkit.getPluginManager().isPluginEnabled("Parties");
 			debugInfo("Parties is "+ (useParties ? "enabled" : "disabled") +" !");
 
 			if(!evaluateFunctions()){
@@ -299,7 +297,7 @@ public class LowbrainCore extends JavaPlugin {
 					customStaff.setItemMeta(ESmeta);
 
 					ConfigurationSection attributes = Staffs.getInstance().getConfigurationSection(staffName + ".attributes");
-					net.minecraft.server.v1_10_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(customStaff);
+					net.minecraft.server.v1_11_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(customStaff);
 					NBTTagCompound compound = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
 					NBTTagList modifiers = new NBTTagList();
 

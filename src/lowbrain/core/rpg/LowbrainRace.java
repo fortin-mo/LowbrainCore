@@ -14,7 +14,7 @@ public class LowbrainRace {
     private String tag = "";
     private int intelligence = 0;
     private int dexterity = 0;
-    private int health = 0;
+    private int vitality = 0;
     private int defence = 0;
     private String name = "";
     private int magicResistance = 0;
@@ -45,7 +45,7 @@ public class LowbrainRace {
     public void Initialize(){
         FileConfiguration config = Races.getInstance();
         tag = config.getString(name+".tag","");
-        health = config.getInt(name+".health",0);
+        vitality = config.getInt(name+".vitality",0);
         strength = config.getInt(name+".strength",0);
         defence = config.getInt(name+".defence",0);
         dexterity = config.getInt(name+".dexterity",0);
@@ -80,12 +80,12 @@ public class LowbrainRace {
         s += "Tag : " + tag + "\n";
         s += "Defence : " + defence + "\n";
         s += "Strength : " + strength + "\n";
-        s += "Health : " + health + "\n";
+        s += "Health : " + vitality + "\n";
         s += "Dexterity : " + dexterity + "\n";
         s += "Intelligence : " + intelligence + "\n";
         s += "Magic Resistance : " + magicResistance + "\n";
-        s += "Max health : " + max_health + "\n";
-        s += "Base health : " + base_health + "\n";
+        s += "Max vitality : " + max_health + "\n";
+        s += "Base vitality : " + base_health + "\n";
         s += "Max mana : " + max_mana + "\n";
         s += "Base mana : " + base_mana + "\n";
         s += "Bonus Attributes : ";
@@ -130,11 +130,11 @@ public class LowbrainRace {
     }
 
     /**
-     * get the health attribute
+     * get the vitality attribute
      * @return
      */
-    public int getHealth() {
-        return health;
+    public int getVitality() {
+        return vitality;
     }
 
     /**
@@ -194,7 +194,7 @@ public class LowbrainRace {
     }
 
     /**
-     * get the race max health
+     * get the race max vitality
      * @return
      */
     public float getMax_health() {
@@ -202,7 +202,7 @@ public class LowbrainRace {
     }
 
     /**
-     * get the race base health / minimum
+     * get the race base vitality / minimum
      * @return
      */
     public float getBase_health() {

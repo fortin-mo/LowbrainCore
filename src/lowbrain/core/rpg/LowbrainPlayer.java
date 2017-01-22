@@ -29,7 +29,7 @@ public class LowbrainPlayer {
 	private int strength = 0;
 	private int intelligence = 0;
 	private int dexterity = 0;
-	private int health = 0;
+	private int vitality = 0;
 	private int defence = 0;
 	private float nextLvl = 0;
 	private String className = "";
@@ -161,7 +161,7 @@ public class LowbrainPlayer {
 			playerData.set("race.name", "");
 
 			playerData.createSection("stats");
-			playerData.set("stats.health", 0);
+			playerData.set("stats.vitality", 0);
 			playerData.set("stats.lvl", 1);
 			playerData.set("stats.strength", 0);
 			playerData.set("stats.intelligence", 0);
@@ -206,7 +206,7 @@ public class LowbrainPlayer {
 
         strength = playerData.getInt("stats.strength",0);
         intelligence = playerData.getInt("stats.intelligence",0);
-        health = playerData.getInt("stats.health",0);
+        vitality = playerData.getInt("stats.vitality",0);
         defence = playerData.getInt("stats.defence",0);
         dexterity = playerData.getInt("stats.dexterity",0);
 		magicResistance = playerData.getInt("stats.magic_resistance",0);
@@ -326,9 +326,9 @@ public class LowbrainPlayer {
 					v1 = this.getMagicResistance();
 					v2 = (int)v;
 					break;
-				case "health":
-				case "hp":
-					v1 = this.getHealth();
+				case "vitality":
+				case "vit":
+					v1 = this.getVitality();
 					v2 = (int)v;
 					break;
 				case "level":
@@ -501,9 +501,9 @@ public class LowbrainPlayer {
 			case "agi":
 				return this.getAgility();
 
-			case "health":
+			case "vitality":
 			case "hp":
-				return this.getHealth();
+				return this.getVitality();
 
 			case "strength":
 			case "str":
@@ -570,7 +570,7 @@ public class LowbrainPlayer {
 			playerData.set("race.is_set", this.raceIsSet);
 			playerData.set("race.name", this.raceName);
             
-            playerData.set("stats.health",this.health);
+            playerData.set("stats.vitality",this.vitality);
             playerData.set("stats.lvl", this.lvl);
             playerData.set("stats.strength", this.strength);
             playerData.set("stats.intelligence", this.intelligence);
@@ -648,7 +648,7 @@ public class LowbrainPlayer {
 			this.nextLvl += this.nextLvl * lvlExponential;
 			setDisplayName();
 
-			player.setHealth(player.getMaxHealth()); //restore health on level up
+			player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()); //restore health on level up
 			this.currentMana = this.maxMana;//restore maxMana on level up
 			sendMessage(Internationalization.getInstance().getString("level_up") + " " + this.lvl);
 			this.getPlayer().getWorld().playSound(this.getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,0);
@@ -676,7 +676,7 @@ public class LowbrainPlayer {
 			// reset stats
 			strength = 0;
 			intelligence = 0;
-			health = 0;
+			vitality = 0;
 			defence = 0;
 			dexterity = 0;
 			magicResistance = 0;
@@ -950,18 +950,18 @@ public class LowbrainPlayer {
 	}
 	
 	/**
-	 * set health of current player
-	 * @param health
+	 * set vitality of current player
+	 * @param vitality
 	 */
-	public void setHealth(int health) {
-		this.health = health;
-		if(getSettings().max_stats >=0 && this.health > getSettings().max_stats)this.health = getSettings().max_stats;
-		else if(this.health < 0) this.health = 0;
+	public void setVitality(int vitality) {
+		this.vitality = vitality;
+		if(getSettings().max_stats >=0 && this.vitality > getSettings().max_stats)this.vitality = getSettings().max_stats;
+		else if(this.vitality < 0) this.vitality = 0;
 		setPlayerMaxHealth();
 	}
 
 	/**
-	 * add health to current player
+	 * add vitality to current player
 	 * @param nb
 	 * @param usePoints
 	 */
@@ -974,31 +974,31 @@ public class LowbrainPlayer {
 			sendMessage(Internationalization.getInstance().getString("not_allowed_to_deduct_attributes_point"));
 			return;
 		}
-		else if (getSettings().allow_deduction_points && nb < 0 && this.health == 0){
+		else if (getSettings().allow_deduction_points && nb < 0 && this.vitality == 0){
 			sendMessage(Internationalization.getInstance().getString("cannot_deduct_anymore_point"));
 			return;
 		}
 		else if(usePoints && this.points >= nb){
-			int oldHealth = this.health;
-			this.health += nb;
-			if(maxStats >= 0 && this.health > maxStats){
-				this.health = maxStats;
+			int oldHealth = this.vitality;
+			this.vitality += nb;
+			if(maxStats >= 0 && this.vitality > maxStats){
+				this.vitality = maxStats;
 			}
-			else if (this.health < 0 )this.health = 0;
+			else if (this.vitality < 0 )this.vitality = 0;
 
-			int dif = this.health - oldHealth;
+			int dif = this.vitality - oldHealth;
 			
 			this.points -= dif;
 			if(callChange) attributeHasChanged();
-			sendMessage(Internationalization.getInstance().getString("health_incremented_by") + " " + dif);
+			sendMessage(Internationalization.getInstance().getString("vitality_incremented_by") + " " + dif);
 		}
 		else if(!usePoints){
-			this.health += nb;
-			if(maxStats >= 0 && this.health > maxStats){
-				this.health = maxStats;
-				sendMessage(Internationalization.getInstance().getString("health_set_to") + " " + maxStats);
+			this.vitality += nb;
+			if(maxStats >= 0 && this.vitality > maxStats){
+				this.vitality = maxStats;
+				sendMessage(Internationalization.getInstance().getString("vitality_set_to") + " " + maxStats);
 			}else{
-				sendMessage(Internationalization.getInstance().getString("health_incremented_by") + " " + nb);
+				sendMessage(Internationalization.getInstance().getString("vitality_incremented_by") + " " + nb);
 			}
 			if(callChange) attributeHasChanged();
 		}
@@ -1290,7 +1290,7 @@ public class LowbrainPlayer {
 			this.dexterity += lowbrainRace.getDexterity();
 			this.intelligence += lowbrainRace.getIntelligence();
 			this.strength += lowbrainRace.getStrength();
-			this.health += lowbrainRace.getHealth();
+			this.vitality += lowbrainRace.getVitality();
 			this.magicResistance += lowbrainRace.getMagicResistance();
 			this.agility += lowbrainRace.getAgility();
 
@@ -1316,7 +1316,7 @@ public class LowbrainPlayer {
 			this.dexterity -= lowbrainRace.getDexterity();
 			this.intelligence -= lowbrainRace.getIntelligence();
 			this.strength -= lowbrainRace.getStrength();
-			this.health -= lowbrainRace.getHealth();
+			this.vitality -= lowbrainRace.getVitality();
 			this.agility -= lowbrainRace.getAgility();
 
 			addBonusAttributes(this.lvl * -1 - 1);
@@ -1325,7 +1325,7 @@ public class LowbrainPlayer {
 			this.dexterity += newRace.getDexterity();
 			this.intelligence += newRace.getIntelligence();
 			this.strength += newRace.getStrength();
-			this.health += newRace.getHealth();
+			this.vitality += newRace.getVitality();
 			this.agility += newRace.getAgility();
 			this.raceName = n;
 			this.lowbrainRace = newRace;
@@ -1354,7 +1354,7 @@ public class LowbrainPlayer {
 			this.dexterity = lowbrainClass.getDexterity();
 			this.intelligence = lowbrainClass.getIntelligence();
 			this.strength = lowbrainClass.getStrength();
-			this.health = lowbrainClass.getHealth();
+			this.vitality = lowbrainClass.getVitality();
 			this.magicResistance = lowbrainClass.getMagicResistance();
 			this.agility = lowbrainClass.getAgility();
 
@@ -1381,7 +1381,7 @@ public class LowbrainPlayer {
 			this.dexterity -= lowbrainClass.getDexterity();
 			this.intelligence -= lowbrainClass.getIntelligence();
 			this.strength -= lowbrainClass.getStrength();
-			this.health -= lowbrainClass.getHealth();
+			this.vitality -= lowbrainClass.getVitality();
 			this.agility -= lowbrainClass.getAgility();
 
 			addBonusAttributes(this.lvl * -1 - 1);
@@ -1390,7 +1390,7 @@ public class LowbrainPlayer {
 			this.dexterity += newClass.getDexterity();
 			this.intelligence += newClass.getIntelligence();
 			this.strength += newClass.getStrength();
-			this.health += newClass.getHealth();
+			this.vitality += newClass.getVitality();
 			this.agility += newClass.getAgility();
 			this.className = n;
 			this.lowbrainClass = newClass;
@@ -1494,7 +1494,7 @@ public class LowbrainPlayer {
 			s += "Race : " + getRaceName() + "\n";
 			s += "Defence : " + defence + "\n";
 			s += "Strength : " + strength + "\n";
-			s += "Health : " + health + "\n";
+			s += "Health : " + vitality + "\n";
 			s += "Dexterity : " + dexterity + "\n";
 			s += "Intelligence : " + intelligence + "\n";
 			s += "Magic Resistance : " + magicResistance + "\n";
@@ -1510,7 +1510,7 @@ public class LowbrainPlayer {
 			s += "Movement speed : " + this.getMovementSpeed()+ "\n";
 			s += "Mana regen : " + this.getMultipliers().getPlayerManaRegen()+ "\n";
 			s += "Max maxMana : " + this.getMaxMana()+ "\n";
-			s += "Max health : " + this.getPlayer().getMaxHealth()+ "\n";
+			s += "Max vitality : " + this.getPlayer().getMaxHealth()+ "\n";
 			s += "Luck : " + this.getLuck()+ "\n";
 			s += "Knockback resistance : " + this.getKnockBackResistance()+ "\n";
 
@@ -1597,11 +1597,11 @@ public class LowbrainPlayer {
 	}
 
     /**
-     * get health attribute
+     * get vitality attribute
      * @return
      */
-	public int getHealth() {
-		return health;
+	public int getVitality() {
+		return vitality;
 	}
 
     /**
@@ -1807,11 +1807,11 @@ public class LowbrainPlayer {
     }
 
 	/**
-	 * set player maximum health based on his attributes
+	 * set player maximum vitality based on his attributes
 	 */
 	private void setPlayerMaxHealth(){
 		if(getSettings().maths.playerAttributes.total_health_enable) {
-			this.getPlayer().setMaxHealth(this.getMultipliers().getPlayerMaxHealth());
+			this.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(this.getMultipliers().getPlayerMaxHealth());
 		}
 	}
 
@@ -1926,7 +1926,7 @@ public class LowbrainPlayer {
 		for (String attribute :
 				this.lowbrainClass.getBonusAttributes()) {
 			switch (attribute){
-				case "health":
+				case "vitality":
 					addHealth(nb,false,false);
 					break;
 				case "strength":
@@ -1963,7 +1963,7 @@ public class LowbrainPlayer {
 		for (String attribute :
 				this.lowbrainRace.getBonusAttributes()) {
 			switch (attribute){
-				case "health":
+				case "vitality":
 					addHealth(nb,false,false);
 					break;
 				case "strength":

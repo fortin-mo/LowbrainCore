@@ -60,8 +60,8 @@ public class CommandHandler implements CommandExecutor{
 								case "def":
 									rp.addDefence(amount,true,true);
 									break;
-								case "health":
-								case "hp":
+								case "vitality":
+								case "vit":
 									rp.addHealth(amount,true,true);
 									break;
 								case "dexterity":
@@ -391,7 +391,7 @@ public class CommandHandler implements CommandExecutor{
 											break;
 										case "health":
 										case "hp":
-											rp.setHealth(value);
+											rp.setVitality(value);
 											break;
 										case "strength":
 										case "str":

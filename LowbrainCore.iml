@@ -9,9 +9,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Spigot" level="project" />
     <orderEntry type="library" name="ArmorEquipEvent" level="project" />
-    <orderEntry type="library" name="PacketListenerAPI_v3.4.4" level="project" />
-    <orderEntry type="library" name="Parties-1.6.3" level="project" />
+    <orderEntry type="library" name="Parties-1.7.1" level="project" />
+    <orderEntry type="library" name="HolographicDisplays" level="project" />
+    <orderEntry type="library" name="spigot-1.11.2" level="project" />
   </component>
 </module>

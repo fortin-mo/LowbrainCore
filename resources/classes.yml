@@ -15,7 +15,7 @@
 
 knight:
   tag: k
-  health: 18
+  vitality: 18
   strength: 14
   intelligence: 5
   dexterity: 5
@@ -23,12 +23,12 @@ knight:
   magic_resistance: 4
   agility: 5
   bonus_attributes:
-   - health
+   - vitality
   powers:
 
 paladin:
   tag: p
-  health: 14
+  vitality: 14
   strength: 19
   intelligence: 1
   dexterity: 3
@@ -41,7 +41,7 @@ paladin:
 
 mage:
   tag: m
-  health: 11
+  vitality: 11
   strength: 1
   intelligence: 18
   dexterity: 9
@@ -60,7 +60,7 @@ mage:
 
 hunter:
   tag: h
-  health: 12
+  vitality: 12
   strength: 6
   intelligence: 4
   dexterity: 20
@@ -76,7 +76,7 @@ hunter:
 
 shaman:
   tag: s
-  health: 5
+  vitality: 5
   strength: 5
   intelligence: 15
   dexterity: 0

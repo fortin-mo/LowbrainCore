@@ -11,7 +11,7 @@ public class LowbrainClass {
 	private String tag = "";
 	private int intelligence = 0;
 	private int dexterity = 0;
-	private int health = 0;
+	private int vitality = 0;
 	private int defence = 0;
 	private String name = "";
 	private int magicResistance = 0;
@@ -34,7 +34,7 @@ public class LowbrainClass {
 	public void Initialize(){
 		FileConfiguration config = Classes.getInstance();
 		tag = config.getString(name+".tag","");
-		health = config.getInt(name+".health",0);
+		vitality = config.getInt(name+".vitality",0);
 		strength = config.getInt(name+".strength",0);
 		defence = config.getInt(name+".defence",0);
 		dexterity = config.getInt(name+".dexterity",0);
@@ -55,7 +55,7 @@ public class LowbrainClass {
 		s += "Tag : " + tag + "\n";
 		s += "Defence : " + defence + "\n";
 		s += "Strength : " + strength + "\n";
-		s += "Health : " + health + "\n";
+		s += "Vitality : " + vitality + "\n";
 		s += "Dexterity : " + dexterity + "\n";
 		s += "Intelligence : " + intelligence + "\n";
 		s += "Magic Resistance : " + magicResistance + "\n";
@@ -101,11 +101,11 @@ public class LowbrainClass {
 	}
 
 	/**
-	 * return health attribute
+	 * return vitality attribute
 	 * @return
 	 */
-	public int getHealth() {
-		return health;
+	public int getVitality() {
+		return vitality;
 	}
 
 	/**

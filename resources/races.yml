@@ -1,6 +1,6 @@
 human:
   tag: hum
-  health: 5
+  vitality: 5
   strength: 2
   intelligence: 3
   dexterity: 3
@@ -18,7 +18,7 @@ human:
 
 elf:
   tag: elf
-  health: 2
+  vitality: 2
   strength: 1
   intelligence: 2
   dexterity: 5
@@ -36,7 +36,7 @@ elf:
 
 orc:
   tag: orc
-  health: 2
+  vitality: 2
   strength: 6
   intelligence: 2
   dexterity: 1
@@ -55,7 +55,7 @@ orc:
 
 demon:
   tag: demon
-  health: 2
+  vitality: 2
   strength: 2
   intelligence: 5
   dexterity: 2

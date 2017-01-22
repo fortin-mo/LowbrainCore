@@ -11,14 +11,14 @@ strength_incremented_by: Strength incremented by
 intelligence_incremented_by: Intelligence incremented by
 magicresist_incremented_by: Magic Resistance incremented by
 dexterity_incremented_by: Dexterity incremented by
-health_incremented_by: Health incremented by
+vitality_incremented_by: vitality incremented by
 agility_incremented_by: Agility incremented by
 defence_incremented_by: Defence incremented by
 strength_set_to: Strength set to
 intelligence_set_to: Intelligence set to
 magicresist_set_to: Magic Resistance set to
 dexterity_set_to: Dexterity set to
-health_set_to: Health set to
+vitality_set_to: vitality set to
 agility_set_to: Agility set to
 defence_set_to: Defence set to
 not_enough_points: Not enought points !

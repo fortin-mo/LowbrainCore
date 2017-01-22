@@ -1,6 +1,6 @@
 # mana: mana required to cast the spell
 # range : maximum distance in block between you and the other player... if set to 0 will only be able to cast to self
-# requirements : minimum requirements : possible value = intelligence, magic_resistance, dexterity, strength, agility, health, level, defence
+# requirements : minimum requirements : possible value = intelligence, magic_resistance, dexterity, strength, agility, vitality, level, defence
 
 # cast
 # duration:
@@ -318,7 +318,7 @@ health_boost:
    variables:
     intelligence: 1
   amplifier:
-   function: #Adds 4  × level base health
+   function: #Adds 4  × level base vitality
    maximum: 4
    minimum: 0
    range: 0
@@ -343,7 +343,7 @@ absorption:
    range: 1
    variables:
     intelligence: 1
-  amplifier: #Adds 4  × level absorption health
+  amplifier: #Adds 4  × level absorption vitality
    function:
    maximum: 4
    minimum: 0

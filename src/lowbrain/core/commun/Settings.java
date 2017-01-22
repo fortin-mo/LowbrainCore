@@ -46,6 +46,7 @@ public class Settings {
     public int asd_hard_to;
 
     public boolean group_xp_enable;
+    public boolean group_xp_enable_parties;
     public float group_xp_range;
     public float group_xp_main;
     public float group_xp_others;
@@ -80,7 +81,8 @@ public class Settings {
         asd_hard_from = config.getInt("automatic_server_difficulty.hard.from");
         asd_hard_to = config.getInt("automatic_server_difficulty.hard.to");
 
-        group_xp_enable = config.getBoolean("group_xp_enable.enable");
+        group_xp_enable = config.getBoolean("group_xp.enable");
+        group_xp_enable_parties = config.getBoolean("group_ep_enable.enable_parties");
         group_xp_range = (float)config.getDouble("group_xp.range");
         group_xp_main = (float)config.getDouble("group_xp.main");
         group_xp_others = (float)config.getDouble("group_xp.others");

@@ -28,15 +28,15 @@
 
 # dont touch these, they are use to notice admin of config changes
 versions:
- classes: 1.0
- config: 2.3
+ classes: 1.1
+ config: 2.4
  itemsrequirements: 1.0
  mobsxp: 1.0
  powers: 2.1
- races: 1.0
+ races: 1.1
  skills: 2.0
  staffs: 1.0
- internationalization: 1.0
+ internationalization: 1.1
 
 # set an hardcore mod
 # if a player dies more than the defined max deaths, all stats will be reset
@@ -119,6 +119,8 @@ automatic_server_difficulty:
 # shares xp between closed range player
 group_xp:
  enable: true
+ # enable Parties(plugin) group ex share (Parties must be installed)
+ enable_parties: true
  # the amount of experience the player who killed the entity gets (%)
  main: 0.666
  # the rest is distributed equaly between other players
@@ -554,7 +556,7 @@ maths:
    enable: true
    function:
    variables:
-    health: 1.0
+    vitality: 1.0
   mana_regen:
    enable: true
    function:

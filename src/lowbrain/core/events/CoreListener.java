@@ -169,7 +169,7 @@ public class CoreListener implements Listener {
                             rp.sendMessage(Internationalization.getInstance().getString("item_destroyed"),ChatColor.GRAY);
                         }
                         else{
-                            if(durability <= 10)rp.sendMessage(Internationalization.getInstance().getString("ony_10_cast_left"));
+                            if(durability <= 10)rp.sendMessage(Internationalization.getInstance().getString("only_10_cast_left"));
 
                             List<String> lores = iMeta.getLore();
                             lores.remove(lores.size() - 1);
@@ -1091,7 +1091,8 @@ public class CoreListener implements Listener {
         }
 
         if(Settings.getInstance().maths.onPlayerAttackEntity.backStab.enable){
-            Vector attackerDirection = damager.getPlayer().getLocation().getDirection();
+            Vector attackerDirection = e.getDamager().getLocation().getDirection();
+            // Vector attackerDirection = damager.getPlayer().getLocation().getDirection();
             Vector victimDirection = e.getEntity().getLocation().getDirection();
             //determine if the dot product between the vectors is greater than 0
             if (attackerDirection.dot(victimDirection) > 0) {

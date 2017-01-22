@@ -95,6 +95,8 @@ RawBlameHistory     45 lines (34 sloc)  900 Bytes
 
 # IntelliJ
 /out/
+/target/
+target/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
