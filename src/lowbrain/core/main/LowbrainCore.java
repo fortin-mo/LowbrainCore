@@ -153,7 +153,7 @@ public class LowbrainCore extends JavaPlugin {
 	 */
 	public void debugInfo(Object msg){
 	    if(Settings.getInstance().debug){
-	        this.getLogger().info("[DEBUG] : " + msg);
+	        this.getLogger().info("[Lowbrain Core] : " + msg);
         }
     }
 
