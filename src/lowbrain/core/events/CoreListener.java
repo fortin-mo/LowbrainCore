@@ -196,8 +196,10 @@ public class CoreListener implements Listener {
             Player p = e.getPlayer();
             LowbrainPlayer rp = plugin.getPlayerHandler().getList().get(p.getUniqueId());
             if(rp == null)return;
-            plugin.debugInfo("Player gains " + e.getAmount() * Settings.getInstance().maths.natural_xp_gain_multiplier + " xp");
+            plugin.debugInfo("************* On Player Exp Change ( naturally ) **************");
+            plugin.debugInfo("              Player gains : " + e.getAmount() * Settings.getInstance().maths.natural_xp_gain_multiplier + " xp");
             rp.addExp(e.getAmount() * Settings.getInstance().maths.natural_xp_gain_multiplier);
+            plugin.debugInfo("************* ------------------------ **************");
         }
     }
 
@@ -219,8 +221,8 @@ public class CoreListener implements Listener {
     public void onEntityDeath(EntityDeathEvent e){
         //PLAYER DIES
         if(e.getEntity() instanceof Player){
-
-            plugin.debugInfo(e.getEntity().getName() + " died !");
+            plugin.debugInfo("************* On Player died **************");
+            plugin.debugInfo("              name : " + e.getEntity().getName());
 
             LowbrainPlayer rpKiller = null;
             Player killed = (Player) e.getEntity();
@@ -229,7 +231,7 @@ public class CoreListener implements Listener {
                 if(killed.getKiller() instanceof Player) {
                     Player killer = killed.getKiller();
                     rpKiller = plugin.getPlayerHandler().getList().get(killer.getUniqueId());
-                    plugin.debugInfo("Killed by player : " + killed.getKiller().getName());
+                    plugin.debugInfo("              Killed by player : " + killed.getKiller().getName());
                 }
             }
             else if(killed.getLastDamageCause() != null && killed.getLastDamageCause().getEntity() != null){
@@ -253,7 +255,7 @@ public class CoreListener implements Listener {
                     xpGained = Settings.getInstance().maths.killer_base_exp * (diffLvl * Settings.getInstance().maths.level_difference_multiplier) * rpKiller.getLvl() * Settings.getInstance().maths.killer_level_gain_multiplier;
                 }
                 rpKiller.addExp(xpGained);
-                plugin.debugInfo("Killer gains "+ xpGained+" xp!");
+                plugin.debugInfo("              Killer gained : "+ xpGained+" xp!");
             }
 
             if(Settings.getInstance().maths.onPlayerDies.enable){
@@ -261,7 +263,7 @@ public class CoreListener implements Listener {
 
                 double dropPercentage = rpKilled.getMultipliers().getPlayerDropPercentage();
 
-                plugin.debugInfo("Percentage of dropped items : " + dropPercentage);
+                plugin.debugInfo("              Percentage of dropped items : " + dropPercentage);
 
                 int count = (int)(rpKilled.getPlayer().getInventory().getSize() * dropPercentage);
 
@@ -276,7 +278,7 @@ public class CoreListener implements Listener {
                     }
                 }
 
-                plugin.debugInfo("Items dropped : " + count);
+                plugin.debugInfo("              Items dropped : " + count);
             }
             rpKilled.addDeaths(1);
 
@@ -299,6 +301,8 @@ public class CoreListener implements Listener {
 
             if(rpKiller != null){
 
+                plugin.debugInfo("************* On Mob get killed **************");
+                plugin.debugInfo("              Killed by : " + rpKiller.getPlayer().getName());
                 String mobName = e.getEntity().getType().name().toLowerCase();
 
                 rpKiller.getMobKills().put(mobName,rpKiller.getMobKills().getOrDefault(mobName,0) + 1);
@@ -342,21 +346,21 @@ public class CoreListener implements Listener {
                         }
                         double mainXP = others != null && others.size() > 0 ? Settings.getInstance().group_xp_main : 1;
                         rpKiller.addExp(xp * mainXP);
-                        plugin.debugInfo(rpKiller.getPlayer().getName() + " gains "+ xp * mainXP +" xp!");
+                        plugin.debugInfo("              Killer gained : " + ( xp * mainXP ) +" xp!");
 
                         if(others != null && others.size() > 0) {
                             double othersXP = xp * Settings.getInstance().group_xp_others / others.size();
+                            plugin.debugInfo("              - In party");
                             for (LowbrainPlayer other : others) {
                                 other.addExp(othersXP);
-                                plugin.debugInfo(other.getPlayer().getName() + " gains " + othersXP + " xp!");
+                                plugin.debugInfo("                      " + other.getPlayer().getName() + " gained " + othersXP + " xp!");
                             }
                         }
                     }
                     else{
                         rpKiller.addExp(xp);
-                        plugin.debugInfo(rpKiller.getPlayer().getName() + " gains "+ xp+" xp!");
+                        plugin.debugInfo("              Killer gained : " + ( xp ) +" xp!");;
                     }
-
                 }
             }
         }
@@ -386,6 +390,7 @@ public class CoreListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerAttack(EntityDamageByEntityEvent e) {
+        plugin.debugInfo("************* On Player Attack (EntityDamageByEntityEvent) **************");
         MutableBoolean isCritical = new MutableBoolean(false);
         MutableFloat missChance = new MutableFloat(0F);
         boolean isMissed = false;
@@ -393,9 +398,10 @@ public class CoreListener implements Listener {
         boolean d = applyDefensive(e, missChance);
 
         double rdm = Math.random();
-        plugin.debugInfo("Missing chance : " + missChance.floatValue());
+
+        plugin.debugInfo("              Missing chance : " + missChance.floatValue());
         if(rdm < missChance.floatValue()){
-            plugin.debugInfo("Attack was missed !");
+            plugin.debugInfo("              Attack was missed !");
             e.setDamage(0);
         }
 
@@ -429,6 +435,7 @@ public class CoreListener implements Listener {
                 }.runTaskTimer(plugin, 1L, 1L);
             }
         }
+        plugin.debugInfo("************* ------------------------ **************");
     }
 
     /**
@@ -440,13 +447,14 @@ public class CoreListener implements Listener {
 
         if(!(e.getEntity() instanceof Player))return;
         if(e.getDamage() <= 0 ) return;
-        LowbrainPlayer damagee = plugin.getPlayerHandler().getList().get(e.getEntity().getUniqueId());
+        LowbrainPlayer damagee = plugin.getPlayerHandler().get(e.getEntity().getUniqueId());
 
         if(damagee == null) return;
         float multiplier = 1;
 
-        plugin.debugInfo("Damage caused by : " +e.getCause().name());
-        plugin.debugInfo("Initial damage : " +e.getDamage());
+        plugin.debugInfo("************* On Player get Damaged **************");
+        plugin.debugInfo("              Damage caused by : " +e.getCause().name());
+        plugin.debugInfo("              Initial damage : " +e.getDamage());
 
         if(e.getCause().equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION)){
             if(Settings.getInstance().maths.onPlayerGetDamaged.by_explosion_enable){
@@ -559,9 +567,10 @@ public class CoreListener implements Listener {
             }
         }
 
-        plugin.debugInfo("Defensive damage multiplier : " + multiplier);
+        plugin.debugInfo("              Defensive damage multiplier : " + multiplier);
         e.setDamage(e.getDamage() * multiplier);
-        plugin.debugInfo("Damage after Defensive multiplier : " + e.getDamage());
+        plugin.debugInfo("              Damage after multiplier : " + e.getDamage());
+        plugin.debugInfo("************* ------------------------ **************");
     }
 
     /**
@@ -571,7 +580,7 @@ public class CoreListener implements Listener {
     @EventHandler
     public void onPlayerConsumePotion(PlayerItemConsumeEvent e){
         if(e.getItem() != null && e.getItem().getType().equals(Material.POTION) && Settings.getInstance().maths.onPlayerConsumePotion.enable){
-            LowbrainPlayer rp = plugin.getPlayerHandler().getList().get(e.getPlayer().getUniqueId());
+            LowbrainPlayer rp = plugin.getPlayerHandler().get(e.getPlayer().getUniqueId());
             if(rp != null && !rp.getPlayer().getActivePotionEffects().isEmpty()) {
 
                 float result = Helper.getConsumedPotionMultiplier(rp);
@@ -583,7 +592,9 @@ public class CoreListener implements Listener {
                 rp.getPlayer().removePotionEffect(po.getType());
                 rp.getPlayer().addPotionEffect(tmp);
 
-                plugin.debugInfo("effect duration multiply by " + result);
+                plugin.debugInfo("************* On Player Consume Potion **************");
+                plugin.debugInfo("              Duration multiplied by : " + result);
+                plugin.debugInfo("************* ------------------------ **************");
             }
         }
     }
@@ -597,10 +608,13 @@ public class CoreListener implements Listener {
         if(e.getEntity() instanceof Player && Settings.getInstance().maths.onPlayerShootBow.enable){
             //set new force
             Arrow ar = (Arrow) e.getProjectile();
-            LowbrainPlayer rpPlayer = plugin.getPlayerHandler().getList().get(e.getEntity().getUniqueId());
+            LowbrainPlayer rpPlayer = plugin.getPlayerHandler().get(e.getEntity().getUniqueId());
+
+            plugin.debugInfo("************* On Player Consume Potion **************");
+
 
             float speed = Helper.getBowArrowSpeed(rpPlayer);
-            plugin.debugInfo("Arrow speed multiplier : " + speed);
+            plugin.debugInfo("              Arrow speed multiplier : " + speed);
             ar.setVelocity(ar.getVelocity().multiply(speed));
 
             float precX = Helper.getBowPrecision(rpPlayer);
@@ -615,7 +629,7 @@ public class CoreListener implements Listener {
             direction = Helper.randomInt(0,1) == 0 ? -1 : 1;
             precZ = 1 + (1-precZ)*direction;
 
-            plugin.debugInfo("Arrow precision multiplier : " + precX);
+            plugin.debugInfo("              Arrow precision multiplier : " + precX);
             ar.setVelocity(new Vector(ar.getVelocity().getX() * precX, ar.getVelocity().getY() * precY, ar.getVelocity().getZ() * precZ));
 
             if(rpPlayer.getCurrentSkill() != null
@@ -623,6 +637,7 @@ public class CoreListener implements Listener {
                     && rpPlayer.getCurrentSkill().executeBowSkill(rpPlayer,ar,speed) ){
 
             }
+            plugin.debugInfo("************* ------------------------ **************");
         }
     }
 
@@ -645,6 +660,8 @@ public class CoreListener implements Listener {
         plugin.getPlayerHandler().remove(e.getPlayer());
         setServerDifficulty();
     }
+
+    // PRIVATES
 
     /**
      * create damaging effect depending on player attributes
@@ -775,7 +792,9 @@ public class CoreListener implements Listener {
             rp.getPlayer().addPotionEffect(tmp);
         }
         */
-        plugin.debugInfo("all effect reduced by " + rdm);
+        plugin.debugInfo("------------- Reducing Bad Potion Effect --------------");
+        plugin.debugInfo("              Effects reduced by : " + rdm);
+        plugin.debugInfo("-------------------------------------------------------");
     }
 
     /**
@@ -803,8 +822,9 @@ public class CoreListener implements Listener {
                 this.plugin.getServer().getWorlds()) {
             world.setDifficulty(diff);
         }
-
-        this.plugin.debugInfo("Server difficulty set to " + diff.name());
+        plugin.debugInfo("************* Server Difficulty Reset **************");
+        this.plugin.debugInfo("         Set to : " + diff.name());
+        plugin.debugInfo("************* ------------------------ **************");
     }
 
     /**
@@ -817,6 +837,8 @@ public class CoreListener implements Listener {
         if( !(e.getEntity() instanceof Player)) return false;
         LowbrainPlayer damagee = plugin.getPlayerHandler().getList().get(e.getEntity().getUniqueId());
         if(damagee == null) return false;
+
+        plugin.debugInfo("------------- Applying Defense ---------------");
 
         double multiplier = 1;
         boolean damageSet = false;
@@ -831,17 +853,17 @@ public class CoreListener implements Listener {
                 multiplier = damagee.getMultipliers().getDamagedByMagic();
                 damageSet = true;
             }
-            plugin.debugInfo("Damage from magic projectile reduced by : " + multiplier);
-            float changeOfRemovingEffect = -1F;
+            plugin.debugInfo("              Damage from magic projectile reduced by : " + multiplier);
+            float chanceOfRemovingEffect = -1F;
 
             if(Settings.getInstance().maths.onPlayerGetDamaged.chanceOfRemovingMagicEffect.enable){
-                changeOfRemovingEffect = damagee.getMultipliers().getChanceOfRemovingPotionEffect();
+                chanceOfRemovingEffect = damagee.getMultipliers().getChanceOfRemovingPotionEffect();
+                plugin.debugInfo("              Chance of removing effect : " + chanceOfRemovingEffect);
             }
-
             double rdm = Math.random();
-            if(rdm < changeOfRemovingEffect){
+            if(rdm < chanceOfRemovingEffect){
                 removeBadPotionEffect(damagee.getPlayer());
-                plugin.debugInfo("all effect removed");
+                plugin.debugInfo("              All effect removed");
             }
             else if(Settings.getInstance().maths.onPlayerGetDamaged.reducingBadPotionEffect.enable){
                 reducingBadPotionEffect(damagee);
@@ -862,17 +884,18 @@ public class CoreListener implements Listener {
                     multiplier = damagee.getMultipliers().getDamagedByMagic();
                     damageSet = true;
                 }
-                plugin.debugInfo("Damage from magic projectile reduced by : " + multiplier);
-                float changeOfRemovingEffect = -1F;
+                plugin.debugInfo("              Damage from magic projectile reduced by : " + multiplier);
+                float chanceOfRemovingEffect = -1F;
 
                 if(Settings.getInstance().maths.onPlayerGetDamaged.chanceOfRemovingMagicEffect.enable){
-                    changeOfRemovingEffect = damagee.getMultipliers().getChanceOfRemovingPotionEffect();
+                    chanceOfRemovingEffect = damagee.getMultipliers().getChanceOfRemovingPotionEffect();
+                    plugin.debugInfo("              Chance of removing effects : " + chanceOfRemovingEffect);
                 }
 
                 double rdm = Math.random();
-                if(rdm < changeOfRemovingEffect){
+                if(rdm < chanceOfRemovingEffect){
                     removeBadPotionEffect(damagee.getPlayer());
-                    plugin.debugInfo("all effect removed");
+                    plugin.debugInfo("              All effects removed");
                 }
                 else if(Settings.getInstance().maths.onPlayerGetDamaged.reducingBadPotionEffect.enable){
                     reducingBadPotionEffect(damagee);
@@ -898,11 +921,11 @@ public class CoreListener implements Listener {
 
 
 
-        plugin.debugInfo("Initial damage : " + e.getDamage());
+        plugin.debugInfo("              Initial damage : " + e.getDamage());
         e.setDamage(e.getDamage() * multiplier);
-        plugin.debugInfo("Defensive damage multiplier : " + multiplier);
-        plugin.debugInfo("Damage after defensive multiplier : " + e.getDamage());
-
+        plugin.debugInfo("              Defensive damage multiplier : " + multiplier);
+        plugin.debugInfo("              Damage after defensive multiplier : " + e.getDamage());
+        plugin.debugInfo("-------------------------------------------------");
         return damageSet;
     }
 
@@ -914,6 +937,8 @@ public class CoreListener implements Listener {
      * @return true if multiplier was applied
      */
     private boolean applyOffensiveAttack(EntityDamageByEntityEvent e, MutableBoolean isCritical, MutableFloat missChance){
+
+        plugin.debugInfo("------------- Applying Offensive Attack ------------------");
         LowbrainPlayer damager = null;
 
         boolean magicAttack = false;
@@ -926,7 +951,7 @@ public class CoreListener implements Listener {
         //DEFINING CAUSE OF DAMAGE
         if (e.getDamager() instanceof Player) {
             damager = plugin.getPlayerHandler().getList().get(e.getDamager().getUniqueId());
-            plugin.debugInfo("Attacked by another player : " + damager.getPlayer().getName());
+            plugin.debugInfo("              ---- Attacked by another player : " + damager.getPlayer().getName());
             normalAttack  = true;
             magicAttack = false;
             arrowAttack = false;
@@ -936,7 +961,7 @@ public class CoreListener implements Listener {
             if (ar.getShooter() instanceof Player) {
                 damager = plugin.getPlayerHandler().getList().get(((Player)((Arrow) e.getDamager()).getShooter()).getUniqueId());
             }
-            plugin.debugInfo("Attacked by arrow");
+            plugin.debugInfo("              ---- Attacked by arrow");
             arrowAttack = true;
             normalAttack = false;
             magicAttack = false;
@@ -945,7 +970,7 @@ public class CoreListener implements Listener {
             if (pot.getShooter() instanceof Player) {
                 damager = plugin.getPlayerHandler().getList().get(((Player)((ThrownPotion) e.getDamager()).getShooter()).getUniqueId());
             }
-            plugin.debugInfo("Attacked by potion");
+            plugin.debugInfo("              ---- Attacked by potion");
             magicAttack = true;
             normalAttack = false;
             arrowAttack = false;
@@ -964,6 +989,8 @@ public class CoreListener implements Listener {
 
                 if(damager.getSkills().containsKey(projectile.getCustomName())){
                     LowbrainSkill skill = damager.getSkills().get(projectile.getCustomName());
+
+                    plugin.debugInfo("              ---- getting skilled attack effect");
 
                     for (Map.Entry<String, String> effect :
                             skill.getEffects().entrySet()) {
@@ -996,6 +1023,8 @@ public class CoreListener implements Listener {
                         if(po != null){
                             po.apply((LivingEntity)e.getEntity());
                         }
+
+                        plugin.debugInfo("              skilled attack effect : " + effect.getKey());
                     }
                 }
                 else{
@@ -1005,7 +1034,7 @@ public class CoreListener implements Listener {
                         double baseDamage = staffSection.getDouble("base_damage",-1);
                         String effect = staffSection.getString("effect","");
                         int effectDuration = staffSection.getInt("effect_duration",3);
-                        plugin.debugInfo("Attacked by magic projectile");
+                        plugin.debugInfo("              ---- Attacked by magic projectile : " + effect);
 
                         if(baseDamage >= 0) {
                             e.setDamage(baseDamage);
@@ -1034,22 +1063,23 @@ public class CoreListener implements Listener {
         if(damager != null && damager.getPlayer().getInventory().getItemInMainHand() != null){
             if(!damager.canEquipItem(damager.getPlayer().getInventory().getItemInMainHand())){
                 e.setCancelled(true);
+                plugin.debugInfo("              ---- Player can't use this item !");
                 return false;
             }
         }
 
         //APPLYING MAGIC EFFECT BY ATTACKER
         if(damager != null && !magicAttack && Settings.getInstance().maths.onPlayerAttackEntity.creatingMagicAttack.enable){
-            plugin.debugInfo("From " + damager.getPlayer().getName());
+            plugin.debugInfo("              From : " + damager.getPlayer().getName());
             double chanceOfMagicEffect = Helper.ValueFromFunction(Settings.getInstance().maths.onPlayerAttackEntity.chanceOfCreatingMagicAttack.maximum,
                     Settings.getInstance().maths.onPlayerAttackEntity.chanceOfCreatingMagicAttack.minimum,Settings.getInstance().maths.onPlayerAttackEntity.chanceOfCreatingMagicAttack.variables,damager);
-
+            plugin.debugInfo("              Chance of performing magic attack : " + chanceOfMagicEffect);
             double rdm = Math.random();
             if(rdm < chanceOfMagicEffect){
                 PotionEffect effect = createMagicAttack(damager);
                 if(e.getEntity() instanceof LivingEntity && effect != null){
                     ((LivingEntity) e.getEntity()).addPotionEffect(effect);
-                    plugin.debugInfo("magic effect added : " + effect.getType().getName() + ", " + effect.getDuration()/20 + ", " + effect.getAmplifier());
+                    plugin.debugInfo("              Magic effect added : " + effect.getType().getName() + ", " + effect.getDuration()/20 + ", " + effect.getAmplifier());
                 }
             }
         }
@@ -1082,10 +1112,11 @@ public class CoreListener implements Listener {
         if(Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.enable){
             double rdm = Math.random();
             double chance = Helper.getCriticalHitChance(damager);
+            plugin.debugInfo("              Chance of performing a critical hit : " + chance);
             if(rdm < chance){
                 isCritical.setValue(true);
                 float criticalHitMultiplier = Helper.getCriticalHitMultiplier(damager);
-                plugin.debugInfo("Critical hit multiplier : " + criticalHitMultiplier);
+                plugin.debugInfo("              Critical hit multiplier : " + criticalHitMultiplier);
                 e.setDamage(e.getDamage() * criticalHitMultiplier);
             }
         }
@@ -1099,7 +1130,7 @@ public class CoreListener implements Listener {
                 //player was backstabbed.}
                 float bs =  Helper.getBackstabMultiplier(damager);
                 e.setDamage(e.getDamage() * bs);
-                plugin.debugInfo("Backstap multiplier : " + bs);
+                plugin.debugInfo("              Backstap multiplier : " + bs);
             }
         }
 
@@ -1107,10 +1138,11 @@ public class CoreListener implements Listener {
             damager.getPlayer().setHealth(damager.getPlayer().getHealth() + absorbDamage);
         }
 
-        plugin.debugInfo("Initial damage : " + oldDamage);
+        plugin.debugInfo("              Initial damage : " + oldDamage);
         double damageMultiplier = e.getDamage() / oldDamage;
-        plugin.debugInfo("Offencive damage multiplier : " + damageMultiplier);
-        plugin.debugInfo("Damage after offencive multiplier : " + e.getDamage());
+        plugin.debugInfo("              Offencive damage multiplier : " + damageMultiplier);
+        plugin.debugInfo("              Damage after offensive multiplier : " + e.getDamage());
+        plugin.debugInfo("-------------------------------------------------------");
         return true;
     }
 

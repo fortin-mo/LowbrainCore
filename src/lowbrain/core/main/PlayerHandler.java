@@ -117,6 +117,14 @@ public class PlayerHandler {
         return true;
     }
 
+    public LowbrainPlayer get(Player p) {
+        return this.get(p.getUniqueId());
+    }
+
+    public LowbrainPlayer get(UUID uuid) {
+        return this.getList().getOrDefault(uuid, null);
+    }
+
     /**
      * return the list of connected players
      * @return Map<UUID, LowbrainPlayer>
