@@ -26,6 +26,7 @@ import java.util.Map;
 
 public class LowbrainPlayer {
 	private Player player;
+	private int reputation = 0;
 	private int strength = 0;
 	private int intelligence = 0;
 	private int dexterity = 0;
@@ -644,7 +645,7 @@ public class LowbrainPlayer {
 				this.addSkillPoints(getSettings().skill_points_per_interval);
 			}
 
-			double lvlExponential = getSettings().maths.next_lvl_multiplier;
+			double lvlExponential = getSettings().parameters.next_lvl_multiplier;
 			this.nextLvl += this.nextLvl * lvlExponential;
 			setDisplayName();
 
@@ -1574,7 +1575,7 @@ public class LowbrainPlayer {
 
     /**
      * get strength attribute
-     * @return
+     * @return strength
      */
 	public int getStrength() {
 		return strength;
@@ -1582,7 +1583,7 @@ public class LowbrainPlayer {
 
     /**
      * get intelligence attribute
-     * @return
+     * @return intelligence
      */
 	public int getIntelligence() {
 		return intelligence;
@@ -1590,7 +1591,7 @@ public class LowbrainPlayer {
 
     /**
      * get dexterity attribute
-     * @return
+     * @return dexterity
      */
 	public int getDexterity() {
 		return dexterity;
@@ -1598,7 +1599,7 @@ public class LowbrainPlayer {
 
     /**
      * get vitality attribute
-     * @return
+     * @return vitality
      */
 	public int getVitality() {
 		return vitality;
@@ -1606,7 +1607,7 @@ public class LowbrainPlayer {
 
     /**
      * get defence attribute
-     * @return
+     * @return defence
      */
 	public int getDefence() {
 		return defence;
@@ -1614,7 +1615,7 @@ public class LowbrainPlayer {
 
     /**
      * get the player class name
-     * @return
+     * @return class name
      */
 	public String getClassName() {
 		return className;
@@ -1622,7 +1623,7 @@ public class LowbrainPlayer {
 
     /**
      * get if the player has sets his class
-     * @return
+     * @return class is set
      */
 	public boolean isClassIsSet() {
 		return classIsSet;
@@ -1630,7 +1631,7 @@ public class LowbrainPlayer {
 
     /**
      * get the current amount of points
-     * @return
+     * @return points
      */
 	public int getPoints() {
 		return points;
@@ -1638,7 +1639,7 @@ public class LowbrainPlayer {
 
     /**
      * get the current experience
-     * @return
+     * @return experience
      */
 	public float getExperience() {
 		return experience;
@@ -1646,7 +1647,7 @@ public class LowbrainPlayer {
 
     /**
      * get the level
-     * @return
+     * @return current level
      */
 	public int getLvl() {
 		return lvl;
@@ -1654,7 +1655,7 @@ public class LowbrainPlayer {
 
     /**
      * get the max mana
-     * @return
+     * @return maximum mana
      */
 	public float getMaxMana() {
 		return maxMana;
@@ -1730,7 +1731,7 @@ public class LowbrainPlayer {
 
     /**
      * return the list of mob the player killed (type)
-     * @return HashMap<String, Integer>
+     * @return HashMap<String, Integer> list of mob kills
      */
 	public HashMap<String, Integer> getMobKills() {
 		return mobKills;
@@ -1738,7 +1739,7 @@ public class LowbrainPlayer {
 
     /**
      * return the list of skill
-     * @return HashMap<String, LowbrainSkill>
+     * @return HashMap<String, LowbrainSkill> list of skills
      */
 	public HashMap<String, LowbrainSkill> getSkills() {
 		return skills;
@@ -1746,7 +1747,7 @@ public class LowbrainPlayer {
 
     /**
      * get the current player LowbrainSkill object
-     * @return
+     * @return current skill
      */
 	public LowbrainSkill getCurrentSkill() {
 		return this.skills.get(this.currentSkill);
@@ -1754,7 +1755,7 @@ public class LowbrainPlayer {
 
     /**
      * get the current amount of skill points
-     * @return
+     * @return skill points
      */
 	public int getSkillPoints() {
 		return this.skillPoints;
@@ -1762,7 +1763,7 @@ public class LowbrainPlayer {
 
     /**
      * return the list of powers
-     * @return HashMap<String, LowbrainPowers>
+     * @return HashMap<String, LowbrainPowers> list of powers
      */
     public HashMap<String, LowbrainPower> getPowers() {
         return powers;
@@ -1776,7 +1777,7 @@ public class LowbrainPlayer {
      * set the player generic attribute of attack speed using his attributes
      */
 	private void setAttackSpeed(){
-		if(getSettings().maths.playerAttributes.attack_speed_enable) {
+		if(getSettings().parameters.playerAttributes.attack_speed_enable) {
 			this.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(this.getMultipliers().getPlayerAttackSpeed());
 		}
 	}
@@ -1785,7 +1786,7 @@ public class LowbrainPlayer {
      * set the player generic attribute of knockback resistance using his attributes
      */
 	private void setKnockBackResistance(){
-		if(getSettings().maths.playerAttributes.knockback_resistance_enable) {
+		if(getSettings().parameters.playerAttributes.knockback_resistance_enable) {
 			this.getPlayer().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(this.getMultipliers().getPlayerKnockbackResistance());
 		}
 	}
@@ -1794,7 +1795,7 @@ public class LowbrainPlayer {
      * set the player generic attribute of movement speed using his attributes
      */
 	private void setMovementSpeed(){
-		if(getSettings().maths.playerAttributes.movement_speed_enable){
+		if(getSettings().parameters.playerAttributes.movement_speed_enable){
 			//this.getPlayer().getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)
 			this.getPlayer().setWalkSpeed(this.getMultipliers().getPlayerMovementSpeed());
 		}
@@ -1805,7 +1806,7 @@ public class LowbrainPlayer {
      * set the player generic attribute of luck using his attributes
      */
     private void setLuck(){
-        if(getSettings().maths.playerAttributes.luck_enable){
+        if(getSettings().parameters.playerAttributes.luck_enable){
             this.getPlayer().getAttribute(Attribute.GENERIC_LUCK).setBaseValue(this.getMultipliers().getPlayerLuck());
         }
     }
@@ -1814,7 +1815,7 @@ public class LowbrainPlayer {
 	 * set player maximum vitality based on his attributes
 	 */
 	private void setPlayerMaxHealth(){
-		if(getSettings().maths.playerAttributes.total_health_enable) {
+		if(getSettings().parameters.playerAttributes.total_health_enable) {
 			this.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(this.getMultipliers().getPlayerMaxHealth());
 		}
 	}
@@ -1823,11 +1824,11 @@ public class LowbrainPlayer {
 	 * reset player maxMana
 	 */
 	private void setMana() {
-		if(getSettings().maths.playerAttributes.total_mana_enable) {
+		if(getSettings().parameters.playerAttributes.total_mana_enable) {
 			this.maxMana = this.getMultipliers().getPlayerMaxMana();
 		}
 		//this.maxMana = (float)Gradient(this.lowbrainRace.getMax_mana(),this.lowbrainRace.getBase_mana())
-		//		* this.intelligence * getSettings().maths.attribute_total_mana_intelligence
+		//		* this.intelligence * getSettings().parameters.attribute_total_mana_intelligence
 		//		+ this.lowbrainRace.getBase_mana();
 	}
 
@@ -1881,7 +1882,7 @@ public class LowbrainPlayer {
 		if(currentMana == maxMana){
 			return;
 		}
-		if(getSettings().maths.playerAttributes.mana_regen_enable){
+		if(getSettings().parameters.playerAttributes.mana_regen_enable){
 			float regen = this.getMultipliers().getPlayerManaRegen();
 			this.currentMana += regen;
 			if(this.currentMana > maxMana)this.currentMana = maxMana;

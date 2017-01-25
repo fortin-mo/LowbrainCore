@@ -156,11 +156,11 @@ public class Multipliers{
 
     public void setChanceOfMissing() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerAttackEntity.chanceOfMissing.function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().maths.onPlayerAttackEntity.chanceOfMissing.maximum, Settings.getInstance().maths.onPlayerAttackEntity.chanceOfMissing.minimum,
-                    Settings.getInstance().maths.onPlayerAttackEntity.chanceOfMissing.variables, p);
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerAttackEntity.chanceOfMissing.function)) {
+            result = Helper.ValueFromFunction(Settings.getInstance().parameters.onPlayerAttackEntity.chanceOfMissing.maximum, Settings.getInstance().parameters.onPlayerAttackEntity.chanceOfMissing.minimum,
+                    Settings.getInstance().parameters.onPlayerAttackEntity.chanceOfMissing.variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerAttackEntity.chanceOfMissing.function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerAttackEntity.chanceOfMissing.function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -172,11 +172,11 @@ public class Multipliers{
     }
     public void setBowArrowSpeed() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerShootBow.speed_function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().maths.onPlayerShootBow.speed_maximum, Settings.getInstance().maths.onPlayerShootBow.speed_minimum,
-                    Settings.getInstance().maths.onPlayerShootBow.speed_variables, p);
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerShootBow.speed_function)) {
+            result = Helper.ValueFromFunction(Settings.getInstance().parameters.onPlayerShootBow.speed_maximum, Settings.getInstance().parameters.onPlayerShootBow.speed_minimum,
+                    Settings.getInstance().parameters.onPlayerShootBow.speed_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerShootBow.speed_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerShootBow.speed_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -188,11 +188,11 @@ public class Multipliers{
     }
     public void setBowPrecision() {
         float result = 1F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerShootBow.precision_function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().maths.onPlayerShootBow.precision_maximum, Settings.getInstance().maths.onPlayerShootBow.precision_minimum,
-                    Settings.getInstance().maths.onPlayerShootBow.precision_variables, p);
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerShootBow.precision_function)) {
+            result = Helper.ValueFromFunction(Settings.getInstance().parameters.onPlayerShootBow.precision_maximum, Settings.getInstance().parameters.onPlayerShootBow.precision_minimum,
+                    Settings.getInstance().parameters.onPlayerShootBow.precision_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerShootBow.precision_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerShootBow.precision_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -204,14 +204,14 @@ public class Multipliers{
     }
     public void setAttackByWeapon() {
 
-        float max = Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.weapon_maximum;
-        float min = Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.weapon_minimum;
+        float max = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.weapon_maximum;
+        float min = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.weapon_minimum;
 
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.weapon_function)) {
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.weapon_variables, p);
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.weapon_function)) {
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.weapon_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.weapon_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.weapon_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -222,14 +222,14 @@ public class Multipliers{
         this.AttackByWeapon = result;
     }
     public void setAttackByProjectile() {
-        float max = Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.projectile_maximum;
-        float min = Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.projectile_minimum;
+        float max = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.projectile_maximum;
+        float min = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.projectile_minimum;
 
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.projectile_function)) {
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.projectile_variables, p);
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.projectile_function)) {
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.projectile_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.projectile_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.projectile_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -240,14 +240,14 @@ public class Multipliers{
         this.AttackByProjectile = result;
     }
     public void setAttackByMagic() {
-        float max = Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.magic_maximum;
-        float min = Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.magic_minimum;
+        float max = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.magic_maximum;
+        float min = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.magic_minimum;
 
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.magic_function)) {
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.magic_variables, p);
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.magic_function)) {
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.magic_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerAttackEntity.attackEntityBy.magic_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.magic_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -258,14 +258,14 @@ public class Multipliers{
         this.AttackByMagic = result;
     }
     public void setCriticalHitChance() {
-        float max = Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.maximumChance;
-        float min = Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.minimumChance;
+        float max = Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.maximumChance;
+        float min = Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.minimumChance;
 
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.chanceFunction)) {
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.chanceVariables, p);
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.chanceFunction)) {
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.chanceVariables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.chanceFunction.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.chanceFunction.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -276,14 +276,14 @@ public class Multipliers{
         this.CriticalHitChance = result;
     }
     public void setCriticalHitMultiplier() {
-        float max = Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.maximumDamageMultiplier;
-        float min = Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.minimumDamageMultiplier;
+        float max = Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.maximumDamageMultiplier;
+        float min = Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.minimumDamageMultiplier;
 
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.damageMultiplierFunction)) {
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.damageMultiplierVariables, p);
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.damageMultiplierFunction)) {
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.damageMultiplierVariables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerAttackEntity.criticalHit.damageMultiplierFunction.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.damageMultiplierFunction.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -299,15 +299,15 @@ public class Multipliers{
 
     public void setConsumedPotionMultiplier(){
 
-        float max = Settings.getInstance().maths.onPlayerConsumePotion.maximum;
-        float min = Settings.getInstance().maths.onPlayerConsumePotion.minimum;
+        float max = Settings.getInstance().parameters.onPlayerConsumePotion.maximum;
+        float min = Settings.getInstance().parameters.onPlayerConsumePotion.minimum;
 
         float result = 0F;
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerConsumePotion.function)) {
-            result = Helper.ValueFromFunction(max,min,Settings.getInstance().maths.onPlayerConsumePotion.variables,p);
+        if(Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerConsumePotion.function)) {
+            result = Helper.ValueFromFunction(max,min,Settings.getInstance().parameters.onPlayerConsumePotion.variables,p);
         }
         else{
-            String[] st = Settings.getInstance().maths.onPlayerConsumePotion.function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerConsumePotion.function.split(",");
             if(st.length > 1){
                 result = Helper.eval(Helper.FormatStringWithValues(st,p));
             }
@@ -323,10 +323,10 @@ public class Multipliers{
 
     public void setPlayerMaxHealth() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.playerAttributes.total_health_function)) {
-            result = Helper.ValueFromFunction(p.getLowbrainRace().getMax_health(), p.getLowbrainRace().getBase_health(), Settings.getInstance().maths.playerAttributes.total_health_variables, p);
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.playerAttributes.total_health_function)) {
+            result = Helper.ValueFromFunction(p.getLowbrainRace().getMax_health(), p.getLowbrainRace().getBase_health(), Settings.getInstance().parameters.playerAttributes.total_health_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.playerAttributes.total_health_function.split(",");
+            String[] st = Settings.getInstance().parameters.playerAttributes.total_health_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -337,10 +337,10 @@ public class Multipliers{
     }
     public void setPlayerMaxMana() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.playerAttributes.total_mana_function)) {
-            result = Helper.ValueFromFunction(p.getLowbrainRace().getMax_mana(), p.getLowbrainRace().getBase_mana(), Settings.getInstance().maths.playerAttributes.total_mana_variables, p);
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.playerAttributes.total_mana_function)) {
+            result = Helper.ValueFromFunction(p.getLowbrainRace().getMax_mana(), p.getLowbrainRace().getBase_mana(), Settings.getInstance().parameters.playerAttributes.total_mana_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.playerAttributes.total_mana_function.split(",");
+            String[] st = Settings.getInstance().parameters.playerAttributes.total_mana_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -351,13 +351,13 @@ public class Multipliers{
     }
     public void setPlayerManaRegen() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.playerAttributes.mana_regen_function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().maths.playerAttributes.mana_regen_maximum,
-                    Settings.getInstance().maths.playerAttributes.mana_regen_minimum,
-                    Settings.getInstance().maths.playerAttributes.mana_regen_variables, p
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.playerAttributes.mana_regen_function)) {
+            result = Helper.ValueFromFunction(Settings.getInstance().parameters.playerAttributes.mana_regen_maximum,
+                    Settings.getInstance().parameters.playerAttributes.mana_regen_minimum,
+                    Settings.getInstance().parameters.playerAttributes.mana_regen_variables, p
             );
         } else {
-            String[] st = Settings.getInstance().maths.playerAttributes.mana_regen_function.split(",");
+            String[] st = Settings.getInstance().parameters.playerAttributes.mana_regen_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -368,13 +368,13 @@ public class Multipliers{
     }
     public void setPlayerAttackSpeed() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.playerAttributes.attack_speed_function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().maths.playerAttributes.attack_speed_maximum,
-                    Settings.getInstance().maths.playerAttributes.attack_speed_minimum,
-                    Settings.getInstance().maths.playerAttributes.attack_speed_variables, p
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.playerAttributes.attack_speed_function)) {
+            result = Helper.ValueFromFunction(Settings.getInstance().parameters.playerAttributes.attack_speed_maximum,
+                    Settings.getInstance().parameters.playerAttributes.attack_speed_minimum,
+                    Settings.getInstance().parameters.playerAttributes.attack_speed_variables, p
             );
         } else {
-            String[] st = Settings.getInstance().maths.playerAttributes.attack_speed_function.split(",");
+            String[] st = Settings.getInstance().parameters.playerAttributes.attack_speed_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -385,11 +385,11 @@ public class Multipliers{
     }
     public void setPlayerMovementSpeed() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.playerAttributes.movement_speed_function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().maths.playerAttributes.movement_speed_maximum, Settings.getInstance().maths.playerAttributes.movement_speed_minimum,
-                    Settings.getInstance().maths.playerAttributes.movement_speed_variables, p);
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.playerAttributes.movement_speed_function)) {
+            result = Helper.ValueFromFunction(Settings.getInstance().parameters.playerAttributes.movement_speed_maximum, Settings.getInstance().parameters.playerAttributes.movement_speed_minimum,
+                    Settings.getInstance().parameters.playerAttributes.movement_speed_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.playerAttributes.movement_speed_function.split(",");
+            String[] st = Settings.getInstance().parameters.playerAttributes.movement_speed_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -400,11 +400,11 @@ public class Multipliers{
     }
     public void setPlayerKnockbackResistance() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.playerAttributes.knockback_resistance_function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().maths.playerAttributes.knockback_resistance_maximum, Settings.getInstance().maths.playerAttributes.knockback_resistance_minimum,
-                    Settings.getInstance().maths.playerAttributes.knockback_resistance_variables, p);
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.playerAttributes.knockback_resistance_function)) {
+            result = Helper.ValueFromFunction(Settings.getInstance().parameters.playerAttributes.knockback_resistance_maximum, Settings.getInstance().parameters.playerAttributes.knockback_resistance_minimum,
+                    Settings.getInstance().parameters.playerAttributes.knockback_resistance_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.playerAttributes.knockback_resistance_function.split(",");
+            String[] st = Settings.getInstance().parameters.playerAttributes.knockback_resistance_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -415,11 +415,11 @@ public class Multipliers{
     }
     public void setPlayerLuck() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.playerAttributes.luck_function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().maths.playerAttributes.luck_maximum, Settings.getInstance().maths.playerAttributes.luck_minimum,
-                    Settings.getInstance().maths.playerAttributes.luck_variables, p);
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.playerAttributes.luck_function)) {
+            result = Helper.ValueFromFunction(Settings.getInstance().parameters.playerAttributes.luck_maximum, Settings.getInstance().parameters.playerAttributes.luck_minimum,
+                    Settings.getInstance().parameters.playerAttributes.luck_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.playerAttributes.luck_function.split(",");
+            String[] st = Settings.getInstance().parameters.playerAttributes.luck_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -430,11 +430,11 @@ public class Multipliers{
     }
     public void setPlayerDropPercentage() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerDies.function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().maths.onPlayerDies.items_drops_maximum, Settings.getInstance().maths.onPlayerDies.items_drops_minimum,
-                    Settings.getInstance().maths.onPlayerDies.variables, p);
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerDies.function)) {
+            result = Helper.ValueFromFunction(Settings.getInstance().parameters.onPlayerDies.items_drops_maximum, Settings.getInstance().parameters.onPlayerDies.items_drops_minimum,
+                    Settings.getInstance().parameters.onPlayerDies.variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerDies.function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerDies.function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -448,11 +448,11 @@ public class Multipliers{
 
     public void setChanceOfDodging() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.chanceOfDodging.function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().maths.onPlayerGetDamaged.chanceOfDodging.maximum, Settings.getInstance().maths.onPlayerGetDamaged.chanceOfDodging.minimum,
-                    Settings.getInstance().maths.onPlayerGetDamaged.chanceOfDodging.variables, p);
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfDodging.function)) {
+            result = Helper.ValueFromFunction(Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfDodging.maximum, Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfDodging.minimum,
+                    Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfDodging.variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.chanceOfDodging.function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfDodging.function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -464,13 +464,13 @@ public class Multipliers{
     }
     public void setChanceOfRemovingPotionEffect() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.chanceOfRemovingMagicEffect.function)) {
-            float minChance = Settings.getInstance().maths.onPlayerGetDamaged.chanceOfRemovingMagicEffect.minimum;
-            float maxChance = Settings.getInstance().maths.onPlayerGetDamaged.chanceOfRemovingMagicEffect.maximum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfRemovingMagicEffect.function)) {
+            float minChance = Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfRemovingMagicEffect.minimum;
+            float maxChance = Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfRemovingMagicEffect.maximum;
 
-            result = Helper.ValueFromFunction(maxChance, minChance, Settings.getInstance().maths.onPlayerGetDamaged.chanceOfRemovingMagicEffect.variables, p);
+            result = Helper.ValueFromFunction(maxChance, minChance, Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfRemovingMagicEffect.variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.chanceOfRemovingMagicEffect.function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfRemovingMagicEffect.function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -481,13 +481,13 @@ public class Multipliers{
     }
     public void setReducingPotionEffect() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.reducingBadPotionEffect.function)) {
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.reducingBadPotionEffect.minimum;
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.reducingBadPotionEffect.maximum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.function)) {
+            float min = Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.minimum;
+            float max = Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.maximum;
 
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerGetDamaged.reducingBadPotionEffect.variables, p);
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.reducingBadPotionEffect.function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -498,13 +498,13 @@ public class Multipliers{
     }
     public void setDamagedByFire() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_fire_function)) {
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_fire_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_fire_minimum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_function)) {
+            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_maximum;
+            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_minimum;
 
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerGetDamaged.by_fire_variables, p);
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_fire_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -515,13 +515,13 @@ public class Multipliers{
     }
     public void setDamagedByFireTick() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_fire_tick_function)) {
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_fire_tick_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_fire_tick_minimum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_tick_function)) {
+            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_tick_maximum;
+            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_tick_minimum;
 
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerGetDamaged.by_fire_tick_variables, p);
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_tick_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_fire_tick_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_tick_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -532,13 +532,13 @@ public class Multipliers{
     }
     public void setDamagedByPoison() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_poison_function)) {
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_poison_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_poison_minimum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_poison_function)) {
+            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_poison_maximum;
+            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_poison_minimum;
 
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerGetDamaged.by_poison_variables, p);
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_poison_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_poison_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_poison_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -549,13 +549,13 @@ public class Multipliers{
     }
     public void setDamagedByWither() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_wither_function)) {
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_wither_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_wither_minimum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_wither_function)) {
+            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_wither_maximum;
+            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_wither_minimum;
 
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerGetDamaged.by_wither_variables, p);
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_wither_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_wither_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_wither_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -566,13 +566,13 @@ public class Multipliers{
     }
     public void setDamagedByContact() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_contact_function)) {
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_contact_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_contact_minimum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_contact_function)) {
+            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_contact_maximum;
+            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_contact_minimum;
 
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerGetDamaged.by_contact_variables, p);
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_contact_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_contact_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_contact_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -583,13 +583,13 @@ public class Multipliers{
     }
     public void setDamagedByFlyIntoWall() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_fly_into_wall_function)) {
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_fly_into_wall_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_fly_into_wall_minimum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_fly_into_wall_function)) {
+            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_fly_into_wall_maximum;
+            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_fly_into_wall_minimum;
 
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerGetDamaged.by_fly_into_wall_variables, p);
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_fly_into_wall_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_fly_into_wall_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_fly_into_wall_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -600,13 +600,13 @@ public class Multipliers{
     }
     public void setDamagedByFall() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_fall_function)) {
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_fall_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_fall_minimum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_fall_function)) {
+            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_fall_maximum;
+            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_fall_minimum;
 
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerGetDamaged.by_fall_variables, p);
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_fall_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_fall_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_fall_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -617,13 +617,13 @@ public class Multipliers{
     }
     public void setDamagedByWeapon() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_weapon_function)) {
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_weapon_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_weapon_minimum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_weapon_function)) {
+            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_weapon_maximum;
+            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_weapon_minimum;
 
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerGetDamaged.by_weapon_variables, p);
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_weapon_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_weapon_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_weapon_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -634,13 +634,13 @@ public class Multipliers{
     }
     public void setDamagedByArrow() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_arrow_function)) {
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_arrow_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_arrow_minimum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_arrow_function)) {
+            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_arrow_maximum;
+            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_arrow_minimum;
 
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerGetDamaged.by_arrow_variables, p);
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_arrow_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_arrow_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_arrow_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -651,13 +651,13 @@ public class Multipliers{
     }
     public void setDamagedByProjectile() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_projectile_function)) {
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_projectile_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_projectile_minimum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_projectile_function)) {
+            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_projectile_maximum;
+            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_projectile_minimum;
 
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerGetDamaged.by_projectile_variables, p);
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_projectile_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_projectile_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_projectile_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -668,13 +668,13 @@ public class Multipliers{
     }
     public void setDamagedByMagic() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_magic_function)) {
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_magic_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_magic_minimum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_magic_function)) {
+            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_magic_maximum;
+            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_magic_minimum;
 
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerGetDamaged.by_magic_variables, p);
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_magic_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_magic_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_magic_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -685,13 +685,13 @@ public class Multipliers{
     }
     public void setDamagedBySuffocation() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_suffocation_function)) {
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_suffocation_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_suffocation_minimum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_suffocation_function)) {
+            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_suffocation_maximum;
+            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_suffocation_minimum;
 
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerGetDamaged.by_suffocation_variables, p);
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_suffocation_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_suffocation_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_suffocation_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -702,13 +702,13 @@ public class Multipliers{
     }
     public void setDamagedByDrowning() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_drowning_function)) {
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_drowning_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_drowning_minimum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_drowning_function)) {
+            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_drowning_maximum;
+            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_drowning_minimum;
 
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerGetDamaged.by_drowning_variables, p);
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_drowning_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_drowning_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_drowning_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -719,13 +719,13 @@ public class Multipliers{
     }
     public void setDamagedByStarvation() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_starvation_function)) {
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_starvation_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_starvation_minimum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_starvation_function)) {
+            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_starvation_maximum;
+            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_starvation_minimum;
 
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerGetDamaged.by_starvation_variables, p);
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_starvation_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_starvation_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_starvation_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -736,13 +736,13 @@ public class Multipliers{
     }
     public void setDamagedByLightning() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_lightning_function)) {
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_lightning_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_lightning_minimum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_lightning_function)) {
+            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_lightning_maximum;
+            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_lightning_minimum;
 
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerGetDamaged.by_lightning_variables, p);
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_lightning_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_lightning_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_lightning_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -753,13 +753,13 @@ public class Multipliers{
     }
     public void setDamagedByVoid() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_void_function)) {
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_void_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_void_minimum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_void_function)) {
+            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_void_maximum;
+            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_void_minimum;
 
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerGetDamaged.by_void_variables, p);
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_void_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_void_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_void_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -770,13 +770,13 @@ public class Multipliers{
     }
     public void setDamagedByHotFloor() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_hot_floor_function)) {
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_hot_floor_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_hot_floor_minimum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_hot_floor_function)) {
+            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_hot_floor_maximum;
+            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_hot_floor_minimum;
 
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerGetDamaged.by_hot_floor_variables, p);
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_hot_floor_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_hot_floor_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_hot_floor_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -787,13 +787,13 @@ public class Multipliers{
     }
     public void setDamagedByExplosion() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_explosion_function)) {
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_explosion_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_explosion_minimum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_explosion_function)) {
+            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_explosion_maximum;
+            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_explosion_minimum;
 
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerGetDamaged.by_explosion_variables, p);
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_explosion_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_explosion_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_explosion_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -804,13 +804,13 @@ public class Multipliers{
     }
     public void setDamagedByLava() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_lava_function)) {
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_lava_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_lava_minimum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_lava_function)) {
+            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_lava_maximum;
+            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_lava_minimum;
 
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerGetDamaged.by_lava_variables, p);
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_lava_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_lava_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_lava_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {
@@ -821,13 +821,13 @@ public class Multipliers{
     }
     public void setDamagedByDefault() {
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().maths.onPlayerGetDamaged.by_default_function)) {
-            float max = Settings.getInstance().maths.onPlayerGetDamaged.by_default_maximum;
-            float min = Settings.getInstance().maths.onPlayerGetDamaged.by_default_minimum;
+        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_default_function)) {
+            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_default_maximum;
+            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_default_minimum;
 
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().maths.onPlayerGetDamaged.by_default_variables, p);
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_default_variables, p);
         } else {
-            String[] st = Settings.getInstance().maths.onPlayerGetDamaged.by_default_function.split(",");
+            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_default_function.split(",");
             if (st.length > 1) {
                 result = Helper.eval(Helper.FormatStringWithValues(st, p));
             } else {

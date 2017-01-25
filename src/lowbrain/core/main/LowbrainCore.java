@@ -37,13 +37,14 @@ public class LowbrainCore extends JavaPlugin {
 	private PlayerHandler playerHandler;
 
 	private static final String CLASSES_V = "1.1";
-	private static final String CONFIG_V = "2.4";
+	private static final String CONFIG_V = "2.5";
 	private static final String ITEMS_REQUIREMENTS_V = "1.0";
 	private static final String MOBS_XP_V = "1.0";
 	private static final String POWERS_V = "2.1";
 	private static final String RACES_V = "1.1";
 	private static final String SKILLS_V = "2.0";
 	private static final String STAFFS_V = "1.0";
+	private static final String PARAMETERS_V = "1.0";
 
 
 	public boolean useHolographicDisplays = false;
@@ -448,8 +449,13 @@ public class LowbrainCore extends JavaPlugin {
 			valid = false;
 		}
 
+		if(!versions.getString("parameters","").equals(PARAMETERS_V)){
+			this.getLogger().warning("parameters files are outdated");
+			valid = false;
+		}
+
 		if(!valid){
-			this.getLogger().warning("Yrou're config files are outdated");
+			this.getLogger().warning("Your config files are outdated");
 			this.getLogger().warning("To update : Make a copy of your current .yml files in the plugin directory");
 			this.getLogger().warning("Then delete all of them and reload your server.");
 		}
