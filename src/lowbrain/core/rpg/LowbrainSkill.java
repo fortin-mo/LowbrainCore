@@ -7,6 +7,7 @@ import lowbrain.core.events.CoreListener;
 import net.minecraft.server.v1_11_R1.EntityArrow;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_11_R1.entity.CraftArrow;
 import org.bukkit.entity.Arrow;
@@ -328,7 +329,7 @@ public class LowbrainSkill {
                         double pc = getEffectValue(effect.getValue());
                         double absorb = damage * pc;
                         double newHealth = p.getPlayer().getHealth() + absorb;
-                        newHealth = newHealth > p.getPlayer().getMaxHealth() ? p.getPlayer().getMaxHealth() : newHealth;
+                        newHealth = newHealth > p.getMaxHealth() ? p.getMaxHealth() : newHealth;
                         p.getPlayer().setHealth(newHealth);
                         p.sendMessage(absorb + "HP absorbed !");
                         break;

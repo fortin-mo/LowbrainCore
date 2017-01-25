@@ -699,7 +699,7 @@ public class LowbrainPlayer {
 			this.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(2);
 			this.getPlayer().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(0);
 			this.getPlayer().setWalkSpeed(0.2F);
-			this.getPlayer().setMaxHealth(10);
+			this.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(10);
 			this.getPlayer().getAttribute(Attribute.GENERIC_LUCK).setBaseValue(0);
 
 			// stop mana regen task
@@ -1510,7 +1510,7 @@ public class LowbrainPlayer {
 			s += "Movement speed : " + this.getMovementSpeed()+ "\n";
 			s += "Mana regen : " + this.getMultipliers().getPlayerManaRegen()+ "\n";
 			s += "Max maxMana : " + this.getMaxMana()+ "\n";
-			s += "Max vitality : " + this.getPlayer().getMaxHealth()+ "\n";
+			s += "Max vitality : " + this.getMaxHealth()+ "\n";
 			s += "Luck : " + this.getLuck()+ "\n";
 			s += "Knockback resistance : " + this.getKnockBackResistance()+ "\n";
 
@@ -1706,6 +1706,10 @@ public class LowbrainPlayer {
      */
 	public double getAttackSpeed(){
 		return this.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_SPEED).getBaseValue();
+	}
+
+	public double getMaxHealth() {
+		return this.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
 	}
 
     /**
