@@ -583,7 +583,12 @@ public class CoreListener implements Listener {
             LowbrainPlayer rp = plugin.getPlayerHandler().get(e.getPlayer().getUniqueId());
             if(rp != null && !rp.getPlayer().getActivePotionEffects().isEmpty()) {
 
-                float result = Helper.getConsumedPotionMultiplier(rp);
+                float result = Helper.getRandomBetween(
+                        Settings.getInstance().parameters.onPlayerConsumePotion.minimum,
+                        Settings.getInstance().parameters.onPlayerConsumePotion.maximum,
+                        rp.getMultipliers().getConsumedPotionMultiplier(),
+                        Settings.getInstance().parameters.onPlayerConsumePotion.range
+                );
 
                 PotionEffect po = (PotionEffect) rp.getPlayer().getActivePotionEffects().toArray()[rp.getPlayer().getActivePotionEffects().size() -1];
 
@@ -612,20 +617,43 @@ public class CoreListener implements Listener {
 
             plugin.debugInfo("************* On Player Consume Potion **************");
 
+            float speed = Helper.getRandomBetween(
+                    Settings.getInstance().parameters.onPlayerShootBow.speed_minimum,
+                    Settings.getInstance().parameters.onPlayerShootBow.speed_maximum,
+                    rpPlayer.getMultipliers().getBowArrowSpeed(),
+                    Settings.getInstance().parameters.onPlayerShootBow.speed_range
+            );
 
-            float speed = Helper.getBowArrowSpeed(rpPlayer);
             plugin.debugInfo("              Arrow speed multiplier : " + speed);
             ar.setVelocity(ar.getVelocity().multiply(speed));
 
-            float precX = Helper.getBowPrecision(rpPlayer);
+            float precX = Helper.getRandomBetween(
+                    Settings.getInstance().parameters.onPlayerShootBow.precision_minimum,
+                    Settings.getInstance().parameters.onPlayerShootBow.precision_maximum,
+                    rpPlayer.getMultipliers().getBowPrecision(),
+                    Settings.getInstance().parameters.onPlayerShootBow.precision_range
+            );
+
             int direction = Helper.randomInt(0,1) == 0 ? -1 : 1;
             precX = 1 + (1-precX)*direction;
 
-            float precY = Helper.getBowPrecision(rpPlayer);
+            float precY = Helper.getRandomBetween(
+                    Settings.getInstance().parameters.onPlayerShootBow.precision_minimum,
+                    Settings.getInstance().parameters.onPlayerShootBow.precision_maximum,
+                    rpPlayer.getMultipliers().getBowPrecision(),
+                    Settings.getInstance().parameters.onPlayerShootBow.precision_range
+            );
+
             direction = Helper.randomInt(0,1) == 0 ? -1 : 1;
             precY = 1 + (1-precY)*direction;
 
-            float precZ = Helper.getBowPrecision(rpPlayer);
+            float precZ = Helper.getRandomBetween(
+                    Settings.getInstance().parameters.onPlayerShootBow.precision_minimum,
+                    Settings.getInstance().parameters.onPlayerShootBow.precision_maximum,
+                    rpPlayer.getMultipliers().getBowPrecision(),
+                    Settings.getInstance().parameters.onPlayerShootBow.precision_range
+            );
+
             direction = Helper.randomInt(0,1) == 0 ? -1 : 1;
             precZ = 1 + (1-precZ)*direction;
 
@@ -773,7 +801,12 @@ public class CoreListener implements Listener {
 
         if(rp.getPlayer().getActivePotionEffects().isEmpty()) return;
 
-        float rdm = Helper.getReducingPotionEffect(rp);
+        float rdm = Helper.getRandomBetween(
+                Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.minimum,
+                Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.maximum,
+                rp.getMultipliers().getReducingPotionEffect(),
+                Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.range
+        );
 
         PotionEffect po = (PotionEffect) rp.getPlayer().getActivePotionEffects().toArray()[rp.getPlayer().getActivePotionEffects().size() -1];
 
@@ -1086,13 +1119,31 @@ public class CoreListener implements Listener {
 
         //APPLYING DAMAGE CHANGE DEPENDING ON OFFENCIVE ATTRIBUTES
         if(arrowAttack && damager != null && Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.projectile_enable){
-            e.setDamage(Helper.getAttackByProjectile(damager,e.getDamage()));
+            e.setDamage(Helper.getRandomBetween(
+                    Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.projectile_minimum,
+                    Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.projectile_maximum,
+                    damager.getMultipliers().getAttackByProjectile(),
+                    Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.projectile_range,
+                    true
+            ) * e.getDamage());
         }
         else if(normalAttack && damager != null && Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.weapon_enable){
-            e.setDamage(Helper.getAttackByWeapon(damager,e.getDamage()));
+            e.setDamage(Helper.getRandomBetween(
+                    Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.weapon_minimum,
+                    Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.weapon_maximum,
+                    damager.getMultipliers().getAttackByWeapon(),
+                    Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.weapon_range,
+                    true
+            ) * e.getDamage());
         }
         else if(magicAttack && damager != null && Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.magic_enable){
-            e.setDamage(Helper.getAttackByMagic(damager,e.getDamage()));
+            e.setDamage(Helper.getRandomBetween(
+                    Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.magic_minimum,
+                    Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.magic_maximum,
+                    damager.getMultipliers().getAttackByMagic(),
+                    Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.magic_range,
+                    true
+            ) * e.getDamage());
         }
 
         //applying skilled attack if necessary
@@ -1111,11 +1162,21 @@ public class CoreListener implements Listener {
 
         if(Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.enable){
             double rdm = Math.random();
-            double chance = Helper.getCriticalHitChance(damager);
+            float chance = Helper.getRandomBetween(
+                    Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.minimumChance,
+                    Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.maximumChance,
+                    damager.getMultipliers().getCriticalHitChance(),
+                    Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.chanceRange
+            );
             plugin.debugInfo("              Chance of performing a critical hit : " + chance);
             if(rdm < chance){
                 isCritical.setValue(true);
-                float criticalHitMultiplier = Helper.getCriticalHitMultiplier(damager);
+                float criticalHitMultiplier = Helper.getRandomBetween(
+                        Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.minimumDamageMultiplier,
+                        Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.maximumDamageMultiplier,
+                        damager.getMultipliers().getCriticalHitMultiplier(),
+                        Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.damageMultiplierRange
+                );
                 plugin.debugInfo("              Critical hit multiplier : " + criticalHitMultiplier);
                 e.setDamage(e.getDamage() * criticalHitMultiplier);
             }
@@ -1128,7 +1189,12 @@ public class CoreListener implements Listener {
             //determine if the dot product between the vectors is greater than 0
             if (attackerDirection.dot(victimDirection) > 0) {
                 //player was backstabbed.}
-                float bs =  Helper.getBackstabMultiplier(damager);
+                float bs = Helper.getRandomBetween(
+                        Settings.getInstance().parameters.onPlayerAttackEntity.backStab.minimum,
+                        Settings.getInstance().parameters.onPlayerAttackEntity.backStab.maximum,
+                        damager.getMultipliers().getBackStabMultiplier(),
+                        Settings.getInstance().parameters.onPlayerAttackEntity.backStab.range
+                );
                 e.setDamage(e.getDamage() * bs);
                 plugin.debugInfo("              Backstap multiplier : " + bs);
             }

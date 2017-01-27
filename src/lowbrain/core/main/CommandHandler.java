@@ -62,7 +62,7 @@ public class CommandHandler implements CommandExecutor{
 									break;
 								case "vitality":
 								case "vit":
-									rp.addHealth(amount,true,true);
+									rp.addVitality(amount,true,true);
 									break;
 								case "dexterity":
 								case "dext":
@@ -100,9 +100,9 @@ public class CommandHandler implements CommandExecutor{
 						case "+int":
 							rp.addIntelligence(1,true,true);
 							return true;
-						case "+health":
-						case "+hp":
-							rp.addHealth(1,true,true);
+						case "+vitality":
+						case "+vit":
+							rp.addVitality(1,true,true);
 							return true;
 						case "+magicresistance":
 						case "+mr":

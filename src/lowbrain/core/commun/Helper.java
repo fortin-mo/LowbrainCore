@@ -378,161 +378,37 @@ public class Helper {
         return dist;
     }
 
-    // ON PLAYER ATTACK
-
-    public static float getBowArrowSpeed(LowbrainPlayer p){
-        float result = p.getMultipliers().getBowArrowSpeed();
-
-        if(Settings.getInstance().parameters.onPlayerShootBow.speed_range > 0){
-            result = Helper.randomFloat((result - Settings.getInstance().parameters.onPlayerShootBow.speed_range),(result + Settings.getInstance().parameters.onPlayerShootBow.speed_range));
-            if(result < Settings.getInstance().parameters.onPlayerShootBow.speed_minimum)result = Settings.getInstance().parameters.onPlayerShootBow.speed_minimum;
-            else if(result > Settings.getInstance().parameters.onPlayerShootBow.speed_maximum) result = Settings.getInstance().parameters.onPlayerShootBow.speed_maximum;
+    public static float getRandomBetween(float min, float max, float value, float range, boolean outBound) {
+        range = +range;
+        if (range == 0) {
+            return value;
         }
 
-        return result;
-    }
-    public static float getBowPrecision(LowbrainPlayer p){
-        float result = p.getMultipliers().getBowPrecision();
+        if (min > value) min = value;
+        if (max < value) max = value;
 
-        if(Settings.getInstance().parameters.onPlayerShootBow.precision_range > 0){
-            result = Helper.randomFloat(result - Settings.getInstance().parameters.onPlayerShootBow.precision_range,result + Settings.getInstance().parameters.onPlayerShootBow.precision_range);
-            if(result < 0)result = 0;
-            else if(result > 1) result = 1;
+        float random = Helper.randomFloat(value - range, value + range);
+
+        if (outBound) {
+            return random;
         }
 
-        return result;
-    }
-    public static float getAttackByWeapon(LowbrainPlayer damager, double damage){
-        float max = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.weapon_maximum;
-        float min = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.weapon_minimum;
-        float range = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.weapon_range;
-
-        float result = (float)damage * damager.getMultipliers().getAttackByWeapon();
-        if(range > 0){
-            result = Helper.randomFloat(result-range,result+range);
-            if(result < 0)result = 0;
-        }
-        return result;
-    }
-    public static float getAttackByProjectile(LowbrainPlayer damager, double damage){
-        float max = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.projectile_maximum;
-        float min = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.projectile_minimum;
-        float range = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.projectile_range;
-
-        float result = (float)damage * damager.getMultipliers().getAttackByProjectile();
-
-        if(range > 0){
-            result = Helper.randomFloat(result - range,result + range);
-            if(result < 0)result = 0;
+        if (random > max) {
+            return max;
         }
 
-        return result;
-    }
-    public static float getAttackByMagic(LowbrainPlayer damager, double damage){
-        float max = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.magic_maximum;
-        float min = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.magic_minimum;
-        float range = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.magic_range;
-
-        float result = (float)damage * damager.getMultipliers().getAttackByMagic();
-
-        if(range > 0){
-            result = Helper.randomFloat(result - range,result + range);
-            if(result < 0)result = 0;
+        if (random < min) {
+            return min;
         }
-        return result;
-    }
-    public static float getCriticalHitChance(LowbrainPlayer damager){
-        float max = Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.maximumChance;
-        float min = Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.minimumChance;
-        float range = Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.chanceRange;
 
-        float result = damager.getMultipliers().getCriticalHitChance();
-
-        if(range > 0){
-            result = Helper.randomFloat(result - range,result + range);
-        }
-        return result;
-    }
-    public static float getCriticalHitMultiplier(LowbrainPlayer damager){
-        float max = Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.maximumDamageMultiplier;
-        float min = Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.minimumDamageMultiplier;
-        float range = Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.damageMultiplierRange;
-
-        float result = damager.getMultipliers().getCriticalHitMultiplier();
-
-        if(range > 0){
-            result = Helper.randomFloat(result - range,result + range);
-            result = result < min ? min : result > max ? max : result;
-        }
-        return result;
+        return random;
     }
 
-    // ON PLAYER CONSUME POTION
-
-    public static float getConsumedPotionMultiplier(LowbrainPlayer p){
-
-        float max = Settings.getInstance().parameters.onPlayerConsumePotion.maximum;
-        float min = Settings.getInstance().parameters.onPlayerConsumePotion.minimum;
-        float range = Settings.getInstance().parameters.onPlayerConsumePotion.range;
-
-        float result = p.getMultipliers().getConsumedPotionMultiplier();
-
-        if(range > 0){
-            result = Helper.randomFloat(result - range,result + range);
-            if(result < min)result = min;
-            else if(result > max) result = max;
-        }
-
-        return result;
+    public static float getRandomBetween(float min, float max, float value, float range) {
+        return Helper.getRandomBetween(min, max, value, range, false);
     }
 
-    public static float getReducingPotionEffect(LowbrainPlayer damagee){
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.function)){
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.minimum;
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.maximum;
-            float range = Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.range;
-
-            float reduction = damagee.getMultipliers().getReducingPotionEffect();
-
-            float minReduction = reduction < (min - range) ? reduction + range : min;
-
-            return Helper.randomFloat(reduction,minReduction);
-        }
-        else{
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.function.split(",");
-            if(st.length > 1){
-                return Helper.eval(Helper.FormatStringWithValues(st,damagee));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
-    }
-
-    public static float getBackstabMultiplier (LowbrainPlayer p){
-        float result = 1F;
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerAttackEntity.backStab.function)){
-            float min = Settings.getInstance().parameters.onPlayerAttackEntity.backStab.minimum;
-            float max = Settings.getInstance().parameters.onPlayerAttackEntity.backStab.maximum;
-            float range = Settings.getInstance().parameters.onPlayerAttackEntity.backStab.range;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerAttackEntity.backStab.variables, p);
-
-            if (range > 0){
-                result = Helper.randomFloat(result + range,result - range);
-                result = result > max ? max : result < min ? min :result;
-            }
-
-            return result;
-        }
-        else{
-            String[] st = Settings.getInstance().parameters.onPlayerAttackEntity.backStab.function.split(",");
-            if(st.length > 1){
-                return Helper.eval(Helper.FormatStringWithValues(st,p));
-            }
-            else{
-                return Helper.eval(st[0]);
-            }
-        }
+    public static float getRandomBetween(float value, float range) {
+        return getRandomBetween(value, value, value, range, true);
     }
 }

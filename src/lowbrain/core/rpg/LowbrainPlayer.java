@@ -178,6 +178,7 @@ public class LowbrainPlayer {
 			playerData.set("stats.current_mana",0);
 			playerData.set("stats.skill_points",getSettings().starting_skill_points);
 			playerData.set("stats.current_skill","");
+			playerData.set("stats.reputation", 0);
 
 			playerData.createSection("mob_kills");
 
@@ -220,6 +221,7 @@ public class LowbrainPlayer {
 		deaths = playerData.getInt("stats.deaths",0);
 		currentMana = (float)playerData.getDouble("stats.current_mana",0);
 		agility = playerData.getInt("stats.agility",0);
+		reputation = playerData.getInt("stats.reputation, 0");
 
 		ConfigurationSection skillsSection = playerData.getConfigurationSection("skills");
 
@@ -503,7 +505,7 @@ public class LowbrainPlayer {
 				return this.getAgility();
 
 			case "vitality":
-			case "hp":
+			case "vit":
 				return this.getVitality();
 
 			case "strength":
@@ -530,6 +532,9 @@ public class LowbrainPlayer {
 			case "death":
 				return this.getDeaths();
 
+            case "reputation" :
+            case "rep" :
+                return this.getReputation();
 		}
 		return d;
 	}
@@ -578,14 +583,15 @@ public class LowbrainPlayer {
             playerData.set("stats.dexterity", this.dexterity);
 			playerData.set("stats.magic_resistance",this.magicResistance);
             playerData.set("stats.defence", this.defence);
-			playerData.set("stats.agility",agility);
+			playerData.set("stats.agility",this.agility);
             playerData.set("stats.points", this.points);
             playerData.set("stats.experience", this.experience);
 			playerData.set("stats.next_lvl", this.nextLvl);
-			playerData.set("stats.kills",kills);
-			playerData.set("stats.deaths",deaths);
-			playerData.set("stats.current_mana", currentMana);
-			playerData.set("stats.skill_points", skillPoints);
+			playerData.set("stats.kills",this.kills);
+			playerData.set("stats.deaths",this.deaths);
+			playerData.set("stats.current_mana", this.currentMana);
+			playerData.set("stats.skill_points", this.skillPoints);
+			playerData.set("stats.reputation", this.reputation);
 
 			for(Map.Entry<String, Integer> r : this.mobKills.entrySet()) {
 				String n = r.getKey();
@@ -966,7 +972,7 @@ public class LowbrainPlayer {
 	 * @param nb
 	 * @param usePoints
 	 */
-	public void addHealth(int nb, boolean usePoints,boolean callChange){
+	public void addVitality(int nb, boolean usePoints, boolean callChange){
 		int maxStats = getSettings().max_stats;
 		if(nb == 0){
 			return;
@@ -1480,6 +1486,14 @@ public class LowbrainPlayer {
 
 	}
 
+	public void addReputation(int n) {
+	    this.reputation += n;
+    }
+
+    public void setReputation(int n) {
+	    this.reputation = n;
+    }
+
 	//=============================================== END OF ADD AND SETTER ===============================
 
 	//================================================ GETTER ==============================================
@@ -1769,6 +1783,10 @@ public class LowbrainPlayer {
         return powers;
     }
 
+    public int getReputation() {
+        return this.reputation;
+    }
+
 	//================================================= END OF GETTER =======================================
 
 	//============================================PRIVATE MEHODES FOR PLAYER ATTRIBUTES======================
@@ -1932,7 +1950,7 @@ public class LowbrainPlayer {
 				this.lowbrainClass.getBonusAttributes()) {
 			switch (attribute){
 				case "vitality":
-					addHealth(nb,false,false);
+					addVitality(nb,false,false);
 					break;
 				case "strength":
 					addStrength(nb,false,false);
@@ -1953,12 +1971,12 @@ public class LowbrainPlayer {
 					addAgility(nb,false,false);
 					break;
 				case "all":
-					addHealth(nb,false,false);
+					addVitality(nb,false,false);
 					addDefence(nb,false,false);
 					addMagicResistance(nb,false,false);
 					addDexterity(nb,false,false);
 					addIntelligence(nb,false,false);
-					addHealth(nb,false,false);
+					addVitality(nb,false,false);
 					addStrength(nb,false,false);
 					addAgility(nb, false,false);
 					break;
@@ -1969,7 +1987,7 @@ public class LowbrainPlayer {
 				this.lowbrainRace.getBonusAttributes()) {
 			switch (attribute){
 				case "vitality":
-					addHealth(nb,false,false);
+					addVitality(nb,false,false);
 					break;
 				case "strength":
 					addStrength(nb,false,false);
@@ -1990,12 +2008,12 @@ public class LowbrainPlayer {
 					addAgility(nb,false,false);
 					break;
 				case "all":
-					addHealth(nb,false,false);
+					addVitality(nb,false,false);
 					addDefence(nb,false,false);
 					addMagicResistance(nb,false,false);
 					addDexterity(nb,false,false);
 					addIntelligence(nb,false,false);
-					addHealth(nb,false,false);
+					addVitality(nb,false,false);
 					addStrength(nb,false,false);
 					addAgility(nb, false,false);
 					break;

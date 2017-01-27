@@ -31,6 +31,7 @@ public class Multipliers{
         setCriticalHitChance();
         setCriticalHitMultiplier();
         setChanceOfMissing();
+        setBackStabMultiplier();
 
         // ON PLAYER CONSUME POTION
 
@@ -86,6 +87,7 @@ public class Multipliers{
     private float CriticalHitChance;
     private float CriticalHitMultiplier;
     private float ChanceOfMissing;
+    private float BackStabMultiplier;
 
     // ON PLAYER CONSUME POTION
 
@@ -292,6 +294,26 @@ public class Multipliers{
         }
 
         this.CriticalHitMultiplier = result;
+    }
+    public void setBackStabMultiplier() {
+        float result = 1F;
+        if(Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerAttackEntity.backStab.function)){
+            float min = Settings.getInstance().parameters.onPlayerAttackEntity.backStab.minimum;
+            float max = Settings.getInstance().parameters.onPlayerAttackEntity.backStab.maximum;
+
+            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerAttackEntity.backStab.variables, p);
+        }
+        else{
+            String[] st = Settings.getInstance().parameters.onPlayerAttackEntity.backStab.function.split(",");
+            if(st.length > 1){
+                result = Helper.eval(Helper.FormatStringWithValues(st,p));
+            }
+            else{
+                result = Helper.eval(st[0]);
+            }
+        }
+
+        this.BackStabMultiplier = result;
     }
 
 
@@ -863,6 +885,9 @@ public class Multipliers{
     }
     public float getCriticalHitMultiplier() {
         return CriticalHitMultiplier;
+    }
+    public float getBackStabMultiplier() {
+        return BackStabMultiplier;
     }
     public float getConsumedPotionMultiplier() {
         return ConsumedPotionMultiplier;
