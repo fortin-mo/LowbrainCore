@@ -24,7 +24,10 @@
 # all function type possible
 # function_type 0 = linear : a x + b
 # function_type 1 = cubic : a x^2 + b ==> difference between level 1 and 2 is lower then level 99 and 100
-# function_type 3 = square : a x^0.5 + b ==> difference between level 1 and 2 is higher then level 99 and 100
+# function_type 2 = square : a x^0.5 + b ==> difference between level 1 and 2 is higher then level 99 and 100
+
+# range_type 0 = randomize multiplier
+# range_type 1 = randomize value (after multiplier is applied)
 
 
 # for information on function type look at the top of the page
@@ -440,7 +443,6 @@ on_player_consume_potion:
 # mathematics to when a player dies
 on_player_dies:
  enable: true
- function:
  # percentage of experience a player lose on death
  xp_loss: 15
 

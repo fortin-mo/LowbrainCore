@@ -131,7 +131,7 @@ public class LowbrainPower {
     private int getCastDuration(LowbrainPlayer from){
         float result = 0F;
         if(Helper.StringIsNullOrEmpty(durationFunction)) {
-            result =  Helper.ValueFromFunction(maximumDuration, minimumDuration, durationVariables,from);
+            result =  Helper.valueFromFunction(maximumDuration, minimumDuration, durationVariables,from);
         }
         else{
             String[] st = durationFunction.split(",");
@@ -160,7 +160,7 @@ public class LowbrainPower {
     private int getCastAmplifier(LowbrainPlayer from){
         float result = 0F;
         if(Helper.StringIsNullOrEmpty(amplifierFunction)) {
-            result = Helper.ValueFromFunction(maximumAmplifier, minimumAmplifier, amplifierVariables,from);
+            result = Helper.valueFromFunction(maximumAmplifier, minimumAmplifier, amplifierVariables,from);
         }
         else{
             String[] st = amplifierFunction.split(",");
@@ -235,7 +235,7 @@ public class LowbrainPower {
      * @return cooldown value
      */
     private int getCooldown(LowbrainPlayer p){
-        return (int)Helper.ValueFromFunction(maximumCooldown, minimumCooldown, cooldownVariables,p);
+        return (int)Helper.valueFromFunction(maximumCooldown, minimumCooldown, cooldownVariables,p);
     }
 
     /**

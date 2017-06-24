@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_lowbraincore" default="compile.module.lowbraincore">
+  <dirname property="module.lowbraincore.basedir" file="${ant.file.module_lowbraincore}"/>
+  
+  <property name="module.jdk.home.lowbraincore" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.lowbraincore" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.lowbraincore" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.lowbraincore" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="lowbraincore.output.dir" value="${module.lowbraincore.basedir}/../LowbrainPackage/out/production/LowbrainCore"/>
+  <property name="lowbraincore.testoutput.dir" value="${module.lowbraincore.basedir}/../LowbrainPackage/out/test/LowbrainCore"/>
+  
+  <path id="lowbraincore.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="lowbraincore.module.production.classpath">
+    <path refid="${module.jdk.classpath.lowbraincore}"/>
+    <path refid="library.spigot-1.12.classpath"/>
+    <path refid="library.holographicdisplays.classpath"/>
+    <path refid="library.parties-1.7.6.classpath"/>
+  </path>
+  
+  <path id="lowbraincore.runtime.production.module.classpath">
+    <pathelement location="${lowbraincore.output.dir}"/>
+    <path refid="library.spigot-1.12.classpath"/>
+    <path refid="library.holographicdisplays.classpath"/>
+    <path refid="library.parties-1.7.6.classpath"/>
+  </path>
+  
+  <path id="lowbraincore.module.classpath">
+    <path refid="${module.jdk.classpath.lowbraincore}"/>
+    <pathelement location="${lowbraincore.output.dir}"/>
+    <path refid="library.spigot-1.12.classpath"/>
+    <path refid="library.holographicdisplays.classpath"/>
+    <path refid="library.parties-1.7.6.classpath"/>
+  </path>
+  
+  <path id="lowbraincore.runtime.module.classpath">
+    <pathelement location="${lowbraincore.testoutput.dir}"/>
+    <pathelement location="${lowbraincore.output.dir}"/>
+    <path refid="library.spigot-1.12.classpath"/>
+    <path refid="library.holographicdisplays.classpath"/>
+    <path refid="library.parties-1.7.6.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.lowbraincore">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.lowbraincore">
+    <patternset refid="excluded.from.module.lowbraincore"/>
+  </patternset>
+  
+  <path id="lowbraincore.module.sourcepath">
+    <dirset dir="${module.lowbraincore.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.lowbraincore" depends="compile.module.lowbraincore.production,compile.module.lowbraincore.tests" description="Compile module LowbrainCore"/>
+  
+  <target name="compile.module.lowbraincore.production" depends="register.custom.compilers" description="Compile module LowbrainCore; production classes">
+    <mkdir dir="${lowbraincore.output.dir}"/>
+    <javac2 destdir="${lowbraincore.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.lowbraincore}/javac">
+      <compilerarg line="${compiler.args.lowbraincore}"/>
+      <bootclasspath refid="lowbraincore.module.bootclasspath"/>
+      <classpath refid="lowbraincore.module.production.classpath"/>
+      <src refid="lowbraincore.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.lowbraincore"/>
+    </javac2>
+    
+    <copy todir="${lowbraincore.output.dir}">
+      <fileset dir="${module.lowbraincore.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.lowbraincore.tests" depends="register.custom.compilers,compile.module.lowbraincore.production" description="compile module LowbrainCore; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.lowbraincore" description="cleanup module">
+    <delete dir="${lowbraincore.output.dir}"/>
+    <delete dir="${lowbraincore.testoutput.dir}"/>
+  </target>
+</project>

@@ -1,10 +1,7 @@
 package lowbrain.core.commun;
 
 import lowbrain.core.config.Config;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-
-import java.util.HashMap;
 
 /**
  * Created by Moofy on 14/07/2016.
@@ -13,86 +10,88 @@ public class Settings {
 
     private static Settings instance;
 
-    public boolean op_bypass_permission;
-    public float first_lvl_exp;
-    public int max_lvl;
-    public int max_stats;
-    public boolean can_switch_class;
-    public boolean can_switch_race;
-    public boolean allow_deduction_points;
-    public int points_per_lvl;
-    public int starting_points;
-    public boolean auto_save;
-    public int save_interval;
-    public boolean allow_stats_reset;
-    public boolean allow_complete_reset;
-    public boolean debug;
-    public int mana_regen_interval;
-    public int starting_skill_points;
-    public int skill_points_level_interval;
-    public int skill_points_per_interval;
-    public boolean disable_mob_no_tick_damage;
-    public boolean hard_core_enable;
-    public int hard_core_max_deaths;
+    private boolean opBypassPermission;
+    private float firstLvlExp;
+    private int maxLvl;
+    private int maxStats;
+    private boolean canSwitchClass;
+    private boolean canSwitchRace;
+    private boolean allowDeductionPoints;
+    private int pointsPerLvl;
+    private int startingPoints;
+    private boolean autoSave;
+    private int saveInterval;
+    private boolean allowStatsReset;
+    private boolean allowCompleteReset;
+    private boolean debug;
+    private int manaRegenInterval;
+    private int startingSkillPoints;
+    private int skillPointsLevelInterval;
+    private int skillPointsPerInterval;
+    private boolean disableMobNoTickDamage;
+    private float reduceBreedingSpawn;
+    private boolean hardCoreEnable;
+    private int hardCoreMaxDeaths;
 
-    public boolean asd_enable;
-    public int asd_easy_from;
-    public int asd_easy_to;
-    public int asd_medium_from;
-    public int asd_medium_to;
-    public int asd_hard_from;
-    public int asd_hard_to;
+    private boolean asdEnable;
+    private int asdEasyFrom;
+    private int asdEasyTo;
+    private int asdMediumFrom;
+    private int asdMediumTo;
+    private int asdHardFrom;
+    private int asdHardTo;
 
-    public boolean group_xp_enable;
-    public boolean group_xp_enable_parties;
-    public float group_xp_range;
-    public float group_xp_main;
-    public float group_xp_others;
+    private boolean groupXpEnable;
+    private boolean groupXpEnableParties;
+    private float groupXpRange;
+    private float groupXpMain;
+    private float groupXpOthers;
 
-    public String parameters_file;
-    public Parameters parameters;
+    private String parametersFile;
+    private Parameters parameters;
 
     private Settings(FileConfiguration config){
-        hard_core_enable = config.getBoolean("hard_core.enable");
-        hard_core_max_deaths = config.getInt("hard_core.max_deaths");
-        disable_mob_no_tick_damage = config.getBoolean("disable_mob_no_tick_damage");
-        op_bypass_permission = config.getBoolean("op_bypass_permission");
-        allow_deduction_points = config.getBoolean("allow_deduction_points");
-        can_switch_class = config.getBoolean("can_switch_class");
-        can_switch_race = config.getBoolean("can_switch_race");
-        first_lvl_exp = (float)config.getDouble("first_lvl_exp");
-        max_lvl = config.getInt("max_lvl");
-        max_stats = config.getInt("max_stats");
-        points_per_lvl = config.getInt("points_per_lvl");
-        starting_points = config.getInt("starting_points");
-        auto_save = config.getBoolean("auto_save");
-        save_interval = config.getInt("save_interval");
-        allow_stats_reset = config.getBoolean("allow_stats_reset");
-        allow_complete_reset = config.getBoolean("allow_complete_reset");
+        hardCoreEnable = config.getBoolean("hard_core.enable");
+        hardCoreMaxDeaths = config.getInt("hard_core.max_deaths");
+        disableMobNoTickDamage = config.getBoolean("disable_mob_no_tick_damage");
+        reduceBreedingSpawn = (float)config.getDouble("reduce_breeding_spawn", 1);
+        opBypassPermission = config.getBoolean("op_bypass_permission");
+        allowDeductionPoints = config.getBoolean("allow_deduction_points");
+        canSwitchClass = config.getBoolean("can_switch_class");
+        canSwitchRace = config.getBoolean("can_switch_race");
+        firstLvlExp = (float)config.getDouble("first_lvl_exp");
+        maxLvl = config.getInt("max_lvl");
+        maxStats = config.getInt("max_stats");
+        pointsPerLvl = config.getInt("points_per_lvl");
+        startingPoints = config.getInt("startingPoints");
+        autoSave = config.getBoolean("auto_save");
+        saveInterval = config.getInt("save_interval");
+        allowStatsReset = config.getBoolean("allow_stats_reset");
+        allowCompleteReset = config.getBoolean("allow_complete_reset");
         debug = config.getBoolean("debug");
-        mana_regen_interval = config.getInt("mana_regen_interval");
+        manaRegenInterval = config.getInt("mana_regen_interval");
 
-        asd_enable = config.getBoolean("automatic_server_difficulty.enable");
-        asd_easy_from = config.getInt("automatic_server_difficulty.easy.from");
-        asd_easy_to = config.getInt("automatic_server_difficulty.easy.to");
-        asd_medium_from = config.getInt("automatic_server_difficulty.medium.from");
-        asd_medium_to = config.getInt("automatic_server_difficulty.medium.to");
-        asd_hard_from = config.getInt("automatic_server_difficulty.hard.from");
-        asd_hard_to = config.getInt("automatic_server_difficulty.hard.to");
+        asdEnable = config.getBoolean("automatic_server_difficulty.enable");
+        asdEasyFrom = config.getInt("automatic_server_difficulty.easy.from");
+        asdEasyTo = config.getInt("automatic_server_difficulty.easy.to");
+        asdMediumFrom = config.getInt("automatic_server_difficulty.medium.from");
+        asdMediumTo = config.getInt("automatic_server_difficulty.medium.to");
+        asdHardFrom = config.getInt("automatic_server_difficulty.hard.from");
+        asdHardTo = config.getInt("automatic_server_difficulty.hard.to");
 
-        group_xp_enable = config.getBoolean("group_xp.enable");
-        group_xp_enable_parties = config.getBoolean("group_ep_enable.enable_parties");
-        group_xp_range = (float)config.getDouble("group_xp.range");
-        group_xp_main = (float)config.getDouble("group_xp.main");
-        group_xp_others = (float)config.getDouble("group_xp.others");
+        groupXpEnable = config.getBoolean("group_xp.enable");
+        groupXpEnableParties = config.getBoolean("group_ep_enable.enable_parties");
+        groupXpRange = (float)config.getDouble("group_xp.range");
+        groupXpMain = (float)config.getDouble("group_xp.main");
+        groupXpOthers = (float)config.getDouble("group_xp.others");
 
-        starting_skill_points = config.getInt("starting_skill_points");
-        skill_points_level_interval = config.getInt("skill_points_level_interval");
-        skill_points_per_interval = config.getInt("skill_points_per_interval");
+        startingSkillPoints = config.getInt("starting_skill_points");
+        skillPointsLevelInterval = config.getInt("skill_points_level_interval");
+        skillPointsPerInterval = config.getInt("skill_points_per_interval");
 
-        parameters_file = config.getString("parameters_file", "default_parameters.yml");
+        parametersFile = config.getString("parameters_file", "default_parameters.yml");
 
-        parameters = new Parameters(parameters_file);
+        parameters = new Parameters(getParametersFile());
     }
 
     public static Settings getInstance(){
@@ -106,6 +105,149 @@ public class Settings {
         instance = null;
     }
 
+    public Parameters getParameters() {
+        return parameters;
+    }
+
+    public boolean isOpBypassPermission() {
+        return opBypassPermission;
+    }
+
+    public float getFirstLvlExp() {
+        return firstLvlExp;
+    }
+
+    public int getMaxLvl() {
+        return maxLvl;
+    }
+
+    public int getMaxStats() {
+        return maxStats;
+    }
+
+    public boolean isCanSwitchClass() {
+        return canSwitchClass;
+    }
+
+    public boolean isCanSwitchRace() {
+        return canSwitchRace;
+    }
+
+    public boolean isAllowDeductionPoints() {
+        return allowDeductionPoints;
+    }
+
+    public int getPointsPerLvl() {
+        return pointsPerLvl;
+    }
+
+    public int getStartingPoints() {
+        return startingPoints;
+    }
+
+    public boolean isAutoSave() {
+        return autoSave;
+    }
+
+    public int getSaveInterval() {
+        return saveInterval;
+    }
+
+    public boolean isAllowStatsReset() {
+        return allowStatsReset;
+    }
+
+    public boolean isAllowCompleteReset() {
+        return allowCompleteReset;
+    }
+
+    public boolean isDebug() {
+        return debug;
+    }
+
+    public int getManaRegenInterval() {
+        return manaRegenInterval;
+    }
+
+    public int getStartingSkillPoints() {
+        return startingSkillPoints;
+    }
+
+    public int getSkillPointsLevelInterval() {
+        return skillPointsLevelInterval;
+    }
+
+    public int getSkillPointsPerInterval() {
+        return skillPointsPerInterval;
+    }
+
+    public boolean isDisableMobNoTickDamage() {
+        return disableMobNoTickDamage;
+    }
+
+    public float getReduceBreedingSpawn() {
+        return reduceBreedingSpawn;
+    }
+
+    public boolean isHardCoreEnable() {
+        return hardCoreEnable;
+    }
+
+    public int getHardCoreMaxDeaths() {
+        return hardCoreMaxDeaths;
+    }
+
+    public boolean isAsdEnable() {
+        return asdEnable;
+    }
+
+    public int getAsdEasyFrom() {
+        return asdEasyFrom;
+    }
+
+    public int getAsdEasyTo() {
+        return asdEasyTo;
+    }
+
+    public int getAsdMediumFrom() {
+        return asdMediumFrom;
+    }
+
+    public int getAsdMediumTo() {
+        return asdMediumTo;
+    }
+
+    public int getAsdHardFrom() {
+        return asdHardFrom;
+    }
+
+    public int getAsdHardTo() {
+        return asdHardTo;
+    }
+
+    public boolean isGroupXpEnable() {
+        return groupXpEnable;
+    }
+
+    public boolean isGroupXpEnableParties() {
+        return groupXpEnableParties;
+    }
+
+    public float getGroupXpRange() {
+        return groupXpRange;
+    }
+
+    public float getGroupXpMain() {
+        return groupXpMain;
+    }
+
+    public float getGroupXpOthers() {
+        return groupXpOthers;
+    }
+
+    public String getParametersFile() {
+        return parametersFile;
+    }
 }
 
 

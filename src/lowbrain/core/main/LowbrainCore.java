@@ -2,20 +2,17 @@ package lowbrain.core.main;
 
 import java.util.*;
 
-import com.alessiodp.parties.Parties;
 import lowbrain.core.commun.Settings;
 import lowbrain.core.config.*;
 import lowbrain.core.events.ArmorEquipListener;
 import lowbrain.core.events.CoreListener;
-import lowbrain.core.rpg.LowbrainPlayer;
 import lowbrain.core.rpg.LowbrainSkill;
-import net.minecraft.server.v1_11_R1.*;
-// import net.minecraft.server.v1_10_R1.*;
+import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.v1_11_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -79,7 +76,7 @@ public class LowbrainCore extends JavaPlugin {
 			useArmorEquipEvent = Bukkit.getPluginManager().isPluginEnabled("ArmorEquipEvent");
 			debugInfo("ArmorEquipEvent is "+ (useArmorEquipEvent ? "enabled" : "disabled") +" !");
 
-			useParties = Settings.getInstance().group_xp_enable_parties && Bukkit.getPluginManager().isPluginEnabled("Parties");
+			useParties = Settings.getInstance().isGroupXpEnableParties() && Bukkit.getPluginManager().isPluginEnabled("Parties");
 			debugInfo("Parties is "+ (useParties ? "enabled" : "disabled") +" !");
 
 			if(!evaluateFunctions()){
@@ -97,13 +94,13 @@ public class LowbrainCore extends JavaPlugin {
 			this.getCommand("lbcore").setExecutor(new CommandHandler(this));
 			this.getLogger().info("[LowbrainCore] " + getDescription().getVersion() + " enabled!");
 
-			if(Settings.getInstance().auto_save) {
+			if(Settings.getInstance().isAutoSave()) {
 				Bukkit.getServer().getScheduler().runTaskTimer((Plugin) this, new Runnable() {
 					@Override
 					public void run() {
 						saveData();
 					}
-				}, 0, Settings.getInstance().save_interval * 20);
+				}, 0, Settings.getInstance().getSaveInterval() * 20);
 			}
 
 		} catch (Exception e){
@@ -153,7 +150,7 @@ public class LowbrainCore extends JavaPlugin {
 	 * @param msg
 	 */
 	public void debugInfo(Object msg){
-	    if(Settings.getInstance().debug){
+	    if(Settings.getInstance().isDebug()){
 	        this.getLogger().info("[Lowbrain Core] : " + msg);
         }
     }
@@ -163,7 +160,7 @@ public class LowbrainCore extends JavaPlugin {
 	 * @param msg
 	 */
 	public void debugWarning(Object msg){
-		if(Settings.getInstance().debug){
+		if(Settings.getInstance().isDebug()){
 			this.getLogger().warning("[DEBUG] : " + msg);
 		}
 	}
@@ -298,7 +295,7 @@ public class LowbrainCore extends JavaPlugin {
 					customStaff.setItemMeta(ESmeta);
 
 					ConfigurationSection attributes = Staffs.getInstance().getConfigurationSection(staffName + ".attributes");
-					net.minecraft.server.v1_11_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(customStaff);
+					net.minecraft.server.v1_12_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(customStaff);
 					NBTTagCompound compound = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
 					NBTTagList modifiers = new NBTTagList();
 

@@ -455,7 +455,7 @@ public class CommandHandler implements CommandExecutor{
 	 * @return
 	 */
     private boolean senderHasPermission(CommandSender sender, String permission){
-    	if(sender.isOp() && Settings.getInstance().op_bypass_permission){
+    	if(sender.isOp() && Settings.getInstance().isOpBypassPermission()){
     		return true;
 		}
 		if(sender instanceof  ConsoleCommandSender){

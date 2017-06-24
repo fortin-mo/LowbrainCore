@@ -21,6 +21,9 @@ hard_core:
 # disable mob no tick damage
 disable_mob_no_tick_damage: true
 
+# reduce the spawn of animal by breeding. default set to 50% chance of spawning
+reduce_breeding_spawn: 0.5
+
 # sets if ops bypass permissions
 op_bypass_permission: true
 

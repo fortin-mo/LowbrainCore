@@ -1,15 +1,16 @@
 package lowbrain.core.rpg;
 
+import lowbrain.core.commun.FunctionType;
 import lowbrain.core.commun.Helper;
 import lowbrain.core.config.Internationalization;
 import lowbrain.core.config.Skills;
 import lowbrain.core.events.CoreListener;
-import net.minecraft.server.v1_11_R1.EntityArrow;
+import net.minecraft.server.v1_12_R1.EntityArrow;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.v1_11_R1.entity.CraftArrow;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftArrow;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
@@ -46,7 +47,7 @@ public class LowbrainSkill {
     private String eventType;
     private HashMap<String,String> effects;
     private int angle;
-    private int functionType;
+    private FunctionType functionType;
     private String description;
 
     public String info(){
@@ -116,7 +117,7 @@ public class LowbrainSkill {
         this.description = sec.getString("description");
         this.enable = sec.getBoolean("enable");
         this.angle = sec.getInt("angle");
-        this.functionType = sec.getInt("effects_function_type",0);
+        this.functionType = FunctionType.get(sec.getInt("effects_function_type",-1));
         this.maxLevel = sec.getInt("max_level");
         this.baseCooldown = sec.getInt("base_cooldown");
         this.baseManaCost = (float)sec.getDouble("base_mana_cost",0);
@@ -483,7 +484,7 @@ public class LowbrainSkill {
         return angle;
     }
 
-    public int getFunctionType() {
+    public FunctionType getFunctionType() {
         return functionType;
     }
 

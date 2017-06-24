@@ -248,7 +248,7 @@ public class Helper {
      * @return
      */
     private static int getMaxStats(){
-        return Settings.getInstance().max_stats <= 0 ? 100 : Settings.getInstance().max_stats;
+        return Settings.getInstance().getMaxStats() <= 0 ? 100 : Settings.getInstance().getMaxStats();
     }
 
     /**
@@ -265,11 +265,21 @@ public class Helper {
      * compute slope
      * @param max maximum value
      * @param min minimum value
+     * @return slope using maxStats and default function type
+     */
+    public static float Slope(float max, float min, FunctionType functionType){
+        return Slope(max,min,getMaxStats(), functionType);
+    }
+
+    /**
+     * compute slope
+     * @param max maximum value
+     * @param min minimum value
      * @param y y value
      * @return slope using default function type
      */
     public static float Slope(float max, float min, float y){
-        return Slope(max,min,y,Settings.getInstance().parameters.function_type);
+        return Slope(max,min,y, Settings.getInstance().getParameters().getFunctionType());
     }
 
     /**
@@ -280,17 +290,18 @@ public class Helper {
      * @param functionType function type to use
      * @return slope
      */
-    public static float Slope(float max, float min, float y, int functionType){
+    public static float Slope(float max, float min, float y, FunctionType functionType){
         float slope = 0;
         switch (functionType){
-            case 1:
-                slope = (max - min)/(float)Math.pow(y,2);
-                break;
-            case 2:
-                slope = (max - min)/(float)Math.pow(y,0.5);
+            case LINEAR:
+                slope = (max - min)/y;
                 break;
             default:
-                slope = (max - min)/y;
+            case CUBIC:
+                slope = (max - min)/(float)Math.pow(y,2);
+                break;
+            case SQUARE:
+                slope = (max - min)/(float)Math.pow(y,0.5);
                 break;
         }
         return slope;
@@ -303,24 +314,37 @@ public class Helper {
      * @param x value
      * @return
      */
-    public static float ValueFromFunction(float max, float min, float x){
+    public static float valueFromFunction(float max, float min, float x){
+        return valueFromFunction(max, min, x, null);
+    }
+
+    public static float valueFromFunction(float max, float min, float x, FunctionType functionType){
         float result = 0;
-        switch (Settings.getInstance().parameters.function_type){
-            case 1:
-                result = Slope(max,min) * (float)Math.pow(x,2) + min;
-                break;
-            case 2:
-                result = Slope(max,min) * (float)Math.pow(x,0.5) + min;
+
+        FunctionType usedFT = functionType == null ? Settings.getInstance().getParameters().getFunctionType() : functionType;
+
+        switch (usedFT){
+            case LINEAR:
+                result = Slope(max,min,usedFT) * x + min;
                 break;
             default:
-                result = Slope(max,min) * x + min;
+            case CUBIC:
+                result = Slope(max,min,usedFT) * (float)Math.pow(x,2) + min;
+                break;
+            case SQUARE:
+                result = Slope(max,min,usedFT) * (float)Math.pow(x,0.5) + min;
                 break;
         }
         return result;
     }
 
-    public static float ValueFromFunction(float max, float min,HashMap<String,Float> variables, LowbrainPlayer p){
-        return ValueFromFunction(max,min,getXValue(variables,p));
+
+    public static float valueFromFunction(float max, float min, HashMap<String,Float> variables, LowbrainPlayer p){
+        return valueFromFunction(max,min,getXValue(variables,p));
+    }
+
+    public static float valueFromFunction(float max, float min, HashMap<String,Float> variables, LowbrainPlayer p, FunctionType functionType){
+        return valueFromFunction(max,min,getXValue(variables,p), functionType);
     }
 
     /**

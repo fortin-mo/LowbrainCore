@@ -170,13 +170,13 @@ public class LowbrainPlayer {
 			playerData.set("stats.defence", 0);
 			playerData.set("stats.agility",0);
 			playerData.set("stats.magic_resistance", 0);
-			playerData.set("stats.points", getSettings().starting_points);
+			playerData.set("stats.points", getSettings().getStartingPoints());
 			playerData.set("stats.experience", 0);
-			playerData.set("stats.next_lvl",getSettings().first_lvl_exp);
+			playerData.set("stats.next_lvl", getSettings().getFirstLvlExp());
 			playerData.set("stats.kills",0);
 			playerData.set("stats.deaths",0);
 			playerData.set("stats.current_mana",0);
-			playerData.set("stats.skill_points",getSettings().starting_skill_points);
+			playerData.set("stats.skill_points", getSettings().getStartingSkillPoints());
 			playerData.set("stats.current_skill","");
 			playerData.set("stats.reputation", 0);
 
@@ -290,7 +290,7 @@ public class LowbrainPlayer {
 	 * return 0 if equals, -1 if lower or not equals, +1 if higher
 	 * @param n name of the attribute
 	 * @param v value to compare
-     * @return
+     * @return 0 if equals, -1 if lower or not equals, +1 if higher
      */
 	public int compareAttributesByName(String n, Object v){
 		try {
@@ -640,18 +640,18 @@ public class LowbrainPlayer {
 	 * level up add one level... increment player points
 	 */
 	public void levelUP(){
-		if((getSettings().max_lvl < 0 || this.lvl <  getSettings().max_lvl)){
+		if((getSettings().getMaxLvl() < 0 || this.lvl < getSettings().getMaxLvl())){
 			this.lvl += 1;
 
 			addBonusAttributes(1);
 
-			this.addPoints(getSettings().points_per_lvl);
+			this.addPoints(getSettings().getPointsPerLvl());
 
-			if(this.lvl % getSettings().skill_points_level_interval == 0){
-				this.addSkillPoints(getSettings().skill_points_per_interval);
+			if(this.lvl % getSettings().getSkillPointsLevelInterval() == 0){
+				this.addSkillPoints(getSettings().getSkillPointsPerInterval());
 			}
 
-			double lvlExponential = getSettings().parameters.next_lvl_multiplier;
+			double lvlExponential = getSettings().getParameters().getNextLvlMultiplier();
 			this.nextLvl += this.nextLvl * lvlExponential;
 			setDisplayName();
 
@@ -668,7 +668,7 @@ public class LowbrainPlayer {
 	 * @param r race name
      */
 	public void reset(String c, String r){
-		if(getSettings().allow_stats_reset){
+		if(getSettings().isAllowStatsReset()){
 			setClass(c,true);
 			setRace(r, true);
 		}
@@ -679,7 +679,7 @@ public class LowbrainPlayer {
 	 * @param override by pass settings restriction
 	 */
 	public void resetAll(boolean override){
-		if(getSettings().allow_complete_reset || override){
+		if(getSettings().isAllowCompleteReset() || override){
 			// reset stats
 			strength = 0;
 			intelligence = 0;
@@ -694,9 +694,9 @@ public class LowbrainPlayer {
 			lowbrainRace = null;
 			raceName = "";
 			experience = 0;
-			points = getSettings().starting_points;
+			points = getSettings().getStartingPoints();
 			lvl = 1;
-			nextLvl = getSettings().first_lvl_exp;
+			nextLvl = getSettings().getFirstLvlExp();
 			kills = 0;
 			deaths = 0;
 			currentMana = 0;
@@ -779,7 +779,7 @@ public class LowbrainPlayer {
 	 */
 	public void setStrength(int strength) {
 		this.strength = strength;
-		if(getSettings().max_stats >=0 && this.strength > getSettings().max_stats)this.strength = getSettings().max_stats;
+		if(getSettings().getMaxStats() >=0 && this.strength > getSettings().getMaxStats())this.strength = getSettings().getMaxStats();
 		else if(this.strength < 0) this.strength = 0;
 		attributeHasChanged();
 	}
@@ -790,15 +790,15 @@ public class LowbrainPlayer {
 	 * @param usePoints
 	 */
 	public void addStrength(int nb, boolean usePoints,boolean callChange){
-		int maxStats = getSettings().max_stats;
+		int maxStats = getSettings().getMaxStats();
 		if(nb == 0){
 			return;
 		}
-		else if(!getSettings().allow_deduction_points && nb < 0){
+		else if(!getSettings().isAllowDeductionPoints() && nb < 0){
 			sendMessage(Internationalization.getInstance().getString("not_allowed_to_deduct_attributes_point"));
 			return;
 		}
-		else if (getSettings().allow_deduction_points && nb < 0 && this.strength == 0){
+		else if (getSettings().isAllowDeductionPoints() && nb < 0 && this.strength == 0){
 			sendMessage(Internationalization.getInstance().getString("cannot_deduct_anymore_point"));
 			return;
 		}
@@ -840,7 +840,7 @@ public class LowbrainPlayer {
 	 */
 	public void setIntelligence(int intelligence) {
 		this.intelligence = intelligence;
-		if(getSettings().max_stats >=0 && this.intelligence > getSettings().max_stats)this.intelligence = getSettings().max_stats;
+		if(getSettings().getMaxStats() >=0 && this.intelligence > getSettings().getMaxStats())this.intelligence = getSettings().getMaxStats();
 		else if(this.intelligence < 0) this.intelligence = 0;
 		attributeHasChanged();
 	}
@@ -851,15 +851,15 @@ public class LowbrainPlayer {
 	 * @param usePoints
 	 */
 	public void addIntelligence(int nb, boolean usePoints,boolean callChange){
-		int maxStats = getSettings().max_stats;
+		int maxStats = getSettings().getMaxStats();
 		if(nb == 0){
 			return;
 		}
-		else if(!getSettings().allow_deduction_points && nb < 0){
+		else if(!getSettings().isAllowDeductionPoints() && nb < 0){
 			sendMessage(Internationalization.getInstance().getString("not_allowed_to_deduct_attributes_point"));
 			return;
 		}
-		else if (getSettings().allow_deduction_points && nb < 0 && this.intelligence == 0){
+		else if (getSettings().isAllowDeductionPoints() && nb < 0 && this.intelligence == 0){
 			sendMessage(Internationalization.getInstance().getString("cannot_deduct_anymore_point"));
 			return;
 		}
@@ -902,7 +902,7 @@ public class LowbrainPlayer {
 	 */
 	public void setDexterity(int dexterity) {
 		this.dexterity = dexterity;
-		if(getSettings().max_stats >=0 && this.dexterity > getSettings().max_stats)this.dexterity = getSettings().max_stats;
+		if(getSettings().getMaxStats() >=0 && this.dexterity > getSettings().getMaxStats())this.dexterity = getSettings().getMaxStats();
 		else if(this.dexterity < 0) this.dexterity = 0;
 		attributeHasChanged();
 	}
@@ -913,15 +913,15 @@ public class LowbrainPlayer {
 	 * @param usePoints
 	 */
 	public void addDexterity(int nb, boolean usePoints,boolean callChange){
-		int maxStats = getSettings().max_stats;
+		int maxStats = getSettings().getMaxStats();
 		if(nb == 0){
 			return;
 		}
-		else if(!getSettings().allow_deduction_points && nb < 0){
+		else if(!getSettings().isAllowDeductionPoints() && nb < 0){
 			sendMessage(Internationalization.getInstance().getString("not_allowed_to_deduct_attributes_point"));
 			return;
 		}
-		else if (getSettings().allow_deduction_points && nb < 0 && this.dexterity == 0){
+		else if (getSettings().isAllowDeductionPoints() && nb < 0 && this.dexterity == 0){
 			sendMessage(Internationalization.getInstance().getString("cannot_deduct_anymore_point"));
 			return;
 		}
@@ -962,7 +962,7 @@ public class LowbrainPlayer {
 	 */
 	public void setVitality(int vitality) {
 		this.vitality = vitality;
-		if(getSettings().max_stats >=0 && this.vitality > getSettings().max_stats)this.vitality = getSettings().max_stats;
+		if(getSettings().getMaxStats() >=0 && this.vitality > getSettings().getMaxStats())this.vitality = getSettings().getMaxStats();
 		else if(this.vitality < 0) this.vitality = 0;
 		setPlayerMaxHealth();
 	}
@@ -973,15 +973,15 @@ public class LowbrainPlayer {
 	 * @param usePoints
 	 */
 	public void addVitality(int nb, boolean usePoints, boolean callChange){
-		int maxStats = getSettings().max_stats;
+		int maxStats = getSettings().getMaxStats();
 		if(nb == 0){
 			return;
 		}
-		else if(!getSettings().allow_deduction_points && nb < 0){
+		else if(!getSettings().isAllowDeductionPoints() && nb < 0){
 			sendMessage(Internationalization.getInstance().getString("not_allowed_to_deduct_attributes_point"));
 			return;
 		}
-		else if (getSettings().allow_deduction_points && nb < 0 && this.vitality == 0){
+		else if (getSettings().isAllowDeductionPoints() && nb < 0 && this.vitality == 0){
 			sendMessage(Internationalization.getInstance().getString("cannot_deduct_anymore_point"));
 			return;
 		}
@@ -1021,7 +1021,7 @@ public class LowbrainPlayer {
 	 */
 	public void setDefence(int defence) {
 		this.defence = defence;
-		if(getSettings().max_stats >=0 && this.defence > getSettings().max_stats)this.defence = getSettings().max_stats;
+		if(getSettings().getMaxStats() >=0 && this.defence > getSettings().getMaxStats())this.defence = getSettings().getMaxStats();
 		else if(this.defence < 0) this.defence = 0;
 		attributeHasChanged();
 	}
@@ -1032,16 +1032,16 @@ public class LowbrainPlayer {
 	 * @param usePoints
 	 */
 	public void addDefence(int nb, boolean usePoints,boolean callChange){
-		int maxStats = getSettings().max_stats;
+		int maxStats = getSettings().getMaxStats();
 
 		if(nb == 0){
 			return;
 		}
-		else if(!getSettings().allow_deduction_points && nb < 0){
+		else if(!getSettings().isAllowDeductionPoints() && nb < 0){
 			sendMessage(Internationalization.getInstance().getString("not_allowed_to_deduct_attributes_point"));
 			return;
 		}
-		else if (getSettings().allow_deduction_points && nb < 0 && this.defence == 0){
+		else if (getSettings().isAllowDeductionPoints() && nb < 0 && this.defence == 0){
 			sendMessage(Internationalization.getInstance().getString("cannot_deduct_anymore_point"));
 			return;
 		}
@@ -1081,7 +1081,7 @@ public class LowbrainPlayer {
      */
 	public void setMagicResistance(int magicResistance) {
 		this.magicResistance = magicResistance;
-		if(getSettings().max_stats >=0 && this.magicResistance > getSettings().max_stats)this.magicResistance = getSettings().max_stats;
+		if(getSettings().getMaxStats() >=0 && this.magicResistance > getSettings().getMaxStats())this.magicResistance = getSettings().getMaxStats();
 		else if(this.magicResistance < 0) this.magicResistance = 0;
 		attributeHasChanged();
 	}
@@ -1092,16 +1092,16 @@ public class LowbrainPlayer {
 	 * @param usePoints
      */
 	public void addMagicResistance(int nb, boolean usePoints,boolean callChange){
-		int maxStats = getSettings().max_stats;
+		int maxStats = getSettings().getMaxStats();
 
 		if(nb == 0){
 			return;
 		}
-		else if(!getSettings().allow_deduction_points && nb < 0){
+		else if(!getSettings().isAllowDeductionPoints() && nb < 0){
 			sendMessage(Internationalization.getInstance().getString("not_allowed_to_deduct_attributes_point"));
 			return;
 		}
-		else if (getSettings().allow_deduction_points && nb < 0 && this.magicResistance == 0){
+		else if (getSettings().isAllowDeductionPoints() && nb < 0 && this.magicResistance == 0){
 			sendMessage(Internationalization.getInstance().getString("cannot_deduct_anymore_point"));
 			return;
 		}
@@ -1141,7 +1141,7 @@ public class LowbrainPlayer {
      */
 	public void setAgility(int agility) {
 		this.agility = agility;
-		if(getSettings().max_stats >=0 && this.agility > getSettings().max_stats)this.agility = getSettings().max_stats;
+		if(getSettings().getMaxStats() >=0 && this.agility > getSettings().getMaxStats())this.agility = getSettings().getMaxStats();
 		else if(this.agility < 0) this.agility = 0;
 		attributeHasChanged();
 	}
@@ -1152,16 +1152,16 @@ public class LowbrainPlayer {
 	 * @param usePoints
 	 */
 	public void addAgility(int nb, boolean usePoints,boolean callChange){
-		int maxStats = getSettings().max_stats;
+		int maxStats = getSettings().getMaxStats();
 
 		if(nb == 0){
 			return;
 		}
-		else if(!getSettings().allow_deduction_points && nb < 0){
+		else if(!getSettings().isAllowDeductionPoints() && nb < 0){
 			sendMessage(Internationalization.getInstance().getString("not_allowed_to_deduct_attributes_point"));
 			return;
 		}
-		else if (getSettings().allow_deduction_points && nb < 0 && this.agility == 0){
+		else if (getSettings().isAllowDeductionPoints() && nb < 0 && this.agility == 0){
 			sendMessage(Internationalization.getInstance().getString("cannot_deduct_anymore_point"));
 			return;
 		}
@@ -1232,8 +1232,8 @@ public class LowbrainPlayer {
 	public void addLevel(int nbLvl, boolean ajust){
 		int oldLvl = this.lvl;
 		this.lvl += nbLvl;
-		int maxLvl = getSettings().max_lvl;
-		int nbPointsPerLevel = getSettings().points_per_lvl;
+		int maxLvl = getSettings().getMaxLvl();
+		int nbPointsPerLevel = getSettings().getPointsPerLvl();
 		
 		if(maxLvl > 0 && this.lvl > maxLvl)this.lvl= maxLvl;
 		else if (this.lvl <= 0) this.lvl = 1;
@@ -1266,7 +1266,7 @@ public class LowbrainPlayer {
      */
 	public void addDeaths(int deaths) {
 		this.deaths += deaths;
-		if(Settings.getInstance().hard_core_enable && this.deaths >= Settings.getInstance().hard_core_max_deaths){
+		if(Settings.getInstance().isHardCoreEnable() && this.deaths >= Settings.getInstance().getHardCoreMaxDeaths()){
 			this.sendMessage(Internationalization.getInstance().getString("player_dies_on_hardcore_mode"));
 			this.resetAll(true);
 		}
@@ -1303,14 +1303,14 @@ public class LowbrainPlayer {
 
 			this.raceName = n;
 			this.experience = 0;
-			this.nextLvl = getSettings().first_lvl_exp;
+			this.nextLvl = getSettings().getFirstLvlExp();
 			this.lvl = 1;
 			sendMessage(Internationalization.getInstance().getString("set_race_and_class") + " " + lowbrainRace.getName());
 			this.raceIsSet = true;
 			initializePowers();
 			start();
 		}
-		else if(getSettings().can_switch_race){
+		else if(getSettings().isCanSwitchRace()){
 			if(this.raceName == n){
 				sendMessage(Internationalization.getInstance().getString("set_race_and_class_same") + " " + lowbrainRace.getName());
 				return;
@@ -1367,7 +1367,7 @@ public class LowbrainPlayer {
 
 			this.className = n;
 			this.experience = 0;
-			this.nextLvl = getSettings().first_lvl_exp;
+			this.nextLvl = getSettings().getFirstLvlExp();
 			this.lvl = 1;
 			sendMessage(Internationalization.getInstance().getString("set_race_and_class") + " "  + lowbrainClass.getName());
 			this.classIsSet = true;
@@ -1375,7 +1375,7 @@ public class LowbrainPlayer {
 			initializePowers();
 			start();
 		}
-		else if(getSettings().can_switch_class){
+		else if(getSettings().isCanSwitchClass()){
 			if(this.className == n){
 				sendMessage(Internationalization.getInstance().getString("set_race_and_class_same") + " " + lowbrainClass.getName());
 				return;
@@ -1677,7 +1677,7 @@ public class LowbrainPlayer {
 
     /**
      * get the current amount of mana
-     * @return
+     * @return current mana
      */
 	public float getCurrentMana() {
 		return currentMana;
@@ -1685,7 +1685,7 @@ public class LowbrainPlayer {
 
     /**
      * get the number of deaths
-     * @return
+     * @return deaths
      */
 	public int getDeaths() {
 		return this.deaths;
@@ -1693,7 +1693,7 @@ public class LowbrainPlayer {
 
     /**
      * get agility attribute
-     * @return
+     * @return agility
      */
 	public int getAgility() {
 		return agility;
@@ -1701,7 +1701,7 @@ public class LowbrainPlayer {
 
     /**
      * get the number of kills
-     * @return
+     * @return kills
      */
 	public int getKills() {
 		return kills;
@@ -1709,7 +1709,7 @@ public class LowbrainPlayer {
 
     /**
      * get player luck from generic attribute
-     * @return
+     * @return luck
      */
 	public double getLuck(){
 		return this.getPlayer().getAttribute(Attribute.GENERIC_LUCK).getBaseValue();
@@ -1717,7 +1717,7 @@ public class LowbrainPlayer {
 
     /**
      * get player attack speed from generic attribute
-     * @return
+     * @return attack speed
      */
 	public double getAttackSpeed(){
 		return this.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_SPEED).getBaseValue();
@@ -1777,7 +1777,7 @@ public class LowbrainPlayer {
 
     /**
      * return the list of powers
-     * @return HashMap<String, LowbrainPowers> list of powers
+     * @return list of powers
      */
     public HashMap<String, LowbrainPower> getPowers() {
         return powers;
@@ -1795,7 +1795,7 @@ public class LowbrainPlayer {
      * set the player generic attribute of attack speed using his attributes
      */
 	private void setAttackSpeed(){
-		if(getSettings().parameters.playerAttributes.attack_speed_enable) {
+		if(getSettings().getParameters().getPlayerAttributes().getAttackSpeed().isEnabled()) {
 			this.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(this.getMultipliers().getPlayerAttackSpeed());
 		}
 	}
@@ -1804,7 +1804,7 @@ public class LowbrainPlayer {
      * set the player generic attribute of knockback resistance using his attributes
      */
 	private void setKnockBackResistance(){
-		if(getSettings().parameters.playerAttributes.knockback_resistance_enable) {
+		if(getSettings().getParameters().getPlayerAttributes().getKnockbackResistance().isEnabled()) {
 			this.getPlayer().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(this.getMultipliers().getPlayerKnockbackResistance());
 		}
 	}
@@ -1813,7 +1813,7 @@ public class LowbrainPlayer {
      * set the player generic attribute of movement speed using his attributes
      */
 	private void setMovementSpeed(){
-		if(getSettings().parameters.playerAttributes.movement_speed_enable){
+		if(getSettings().getParameters().getPlayerAttributes().getMovementSpeed().isEnabled()){
 			//this.getPlayer().getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)
 			this.getPlayer().setWalkSpeed(this.getMultipliers().getPlayerMovementSpeed());
 		}
@@ -1824,7 +1824,7 @@ public class LowbrainPlayer {
      * set the player generic attribute of luck using his attributes
      */
     private void setLuck(){
-        if(getSettings().parameters.playerAttributes.luck_enable){
+        if(getSettings().getParameters().getPlayerAttributes().getLuck().isEnabled()){
             this.getPlayer().getAttribute(Attribute.GENERIC_LUCK).setBaseValue(this.getMultipliers().getPlayerLuck());
         }
     }
@@ -1833,7 +1833,7 @@ public class LowbrainPlayer {
 	 * set player maximum vitality based on his attributes
 	 */
 	private void setPlayerMaxHealth(){
-		if(getSettings().parameters.playerAttributes.total_health_enable) {
+		if(getSettings().getParameters().getPlayerAttributes().getTotalHealth().isEnabled()) {
 			this.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(this.getMultipliers().getPlayerMaxHealth());
 		}
 	}
@@ -1842,12 +1842,9 @@ public class LowbrainPlayer {
 	 * reset player maxMana
 	 */
 	private void setMana() {
-		if(getSettings().parameters.playerAttributes.total_mana_enable) {
+		if(getSettings().getParameters().getPlayerAttributes().getTotalMana().isEnabled()) {
 			this.maxMana = this.getMultipliers().getPlayerMaxMana();
 		}
-		//this.maxMana = (float)Gradient(this.lowbrainRace.getMax_mana(),this.lowbrainRace.getBase_mana())
-		//		* this.intelligence * getSettings().parameters.attribute_total_mana_intelligence
-		//		+ this.lowbrainRace.getBase_mana();
 	}
 
 	/**
@@ -1900,7 +1897,7 @@ public class LowbrainPlayer {
 		if(currentMana == maxMana){
 			return;
 		}
-		if(getSettings().parameters.playerAttributes.mana_regen_enable){
+		if(getSettings().getParameters().getPlayerAttributes().getManaRegen().isEnabled()){
 			float regen = this.getMultipliers().getPlayerManaRegen();
 			this.currentMana += regen;
 			if(this.currentMana > maxMana)this.currentMana = maxMana;
@@ -1918,7 +1915,7 @@ public class LowbrainPlayer {
 				public void run() {
 					regenMana();
 				}
-			}, 0, getSettings().mana_regen_interval * 20);
+			}, 0, getSettings().getManaRegenInterval() * 20);
 			CoreListener.plugin.debugInfo("Start regen maxMana task !");
 		}
 	}
@@ -1935,7 +1932,7 @@ public class LowbrainPlayer {
 
     /**
      * return the instance of setting
-     * @return
+     * @return setting
      */
 	private Settings getSettings(){
 		return Settings.getInstance();
@@ -1946,43 +1943,6 @@ public class LowbrainPlayer {
      * @param nb increment by nb
      */
 	private void addBonusAttributes(int nb){
-		for (String attribute :
-				this.lowbrainClass.getBonusAttributes()) {
-			switch (attribute){
-				case "vitality":
-					addVitality(nb,false,false);
-					break;
-				case "strength":
-					addStrength(nb,false,false);
-					break;
-				case "intelligence":
-					addIntelligence(nb,false,false);
-					break;
-				case "dexterity":
-					addDexterity(nb,false,false);
-					break;
-				case "magic_resistance":
-					addMagicResistance(nb,false,false);
-					break;
-				case "defence":
-					addDefence(nb,false,false);
-					break;
-				case "agility":
-					addAgility(nb,false,false);
-					break;
-				case "all":
-					addVitality(nb,false,false);
-					addDefence(nb,false,false);
-					addMagicResistance(nb,false,false);
-					addDexterity(nb,false,false);
-					addIntelligence(nb,false,false);
-					addVitality(nb,false,false);
-					addStrength(nb,false,false);
-					addAgility(nb, false,false);
-					break;
-			}
-		}
-
 		for (String attribute :
 				this.lowbrainRace.getBonusAttributes()) {
 			switch (attribute){
@@ -2025,7 +1985,7 @@ public class LowbrainPlayer {
 
     /**
      * get multiplier class object
-     * @return
+     * @return multiplier object
      */
 	public Multipliers getMultipliers() {
 		return multipliers;

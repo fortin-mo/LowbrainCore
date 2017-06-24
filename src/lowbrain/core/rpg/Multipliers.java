@@ -1,9 +1,6 @@
 package lowbrain.core.rpg;
 
-import lowbrain.core.commun.Helper;
 import lowbrain.core.commun.Settings;
-
-import java.util.HashMap;
 
 /**
  * class containing the variables
@@ -23,6 +20,7 @@ public class Multipliers{
 
         // ON PLAYER ATTACK
 
+        setChanceOfMagicEffect();
         setBowArrowSpeed();
         setBowPrecision();
         setAttackByWeapon();
@@ -88,6 +86,7 @@ public class Multipliers{
     private float CriticalHitMultiplier;
     private float ChanceOfMissing;
     private float BackStabMultiplier;
+    private float ChanceOfMagicEffect;
 
     // ON PLAYER CONSUME POTION
 
@@ -130,768 +129,256 @@ public class Multipliers{
     private float DamagedByDefault;
     private float ChanceOfDodging;
 
-    private float getValue(Float max, Float min, HashMap<String,Float> variables, Float range, String function){
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(function)) {
-            result = Helper.ValueFromFunction(max, min,variables, p);
-        } else {
-            String[] st = function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        return result;
-    }
-
-    private float getValue(float max, float min, HashMap<String,Float> variables, float range){
-        return getValue(max,min,variables,range, null);
-    }
-
-    private float getValue(float max, float min, HashMap<String,Float> variables, String function){
-        return getValue(max,min,variables,null,function);
-    }
-
-
     // ON PLAYER ATTACK
 
+    public void setChanceOfMagicEffect() {
+        this.ChanceOfMagicEffect = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getChanceOfCreatingMagicAttack().compute(p);
+    }
     public void setChanceOfMissing() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerAttackEntity.chanceOfMissing.function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().parameters.onPlayerAttackEntity.chanceOfMissing.maximum, Settings.getInstance().parameters.onPlayerAttackEntity.chanceOfMissing.minimum,
-                    Settings.getInstance().parameters.onPlayerAttackEntity.chanceOfMissing.variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerAttackEntity.chanceOfMissing.function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-
-        this.ChanceOfMissing = result;
+        this.ChanceOfMissing = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getChanceOfMissing().compute(p);
     }
     public void setBowArrowSpeed() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerShootBow.speed_function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().parameters.onPlayerShootBow.speed_maximum, Settings.getInstance().parameters.onPlayerShootBow.speed_minimum,
-                    Settings.getInstance().parameters.onPlayerShootBow.speed_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerShootBow.speed_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-
-        this.BowArrowSpeed = result;
+        this.BowArrowSpeed = Settings.getInstance().getParameters().getOnPlayerShootBow().getSpeed().compute(p);
     }
     public void setBowPrecision() {
-        float result = 1F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerShootBow.precision_function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().parameters.onPlayerShootBow.precision_maximum, Settings.getInstance().parameters.onPlayerShootBow.precision_minimum,
-                    Settings.getInstance().parameters.onPlayerShootBow.precision_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerShootBow.precision_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-
-        this.BowPrecision = result;
+        this.BowPrecision = Settings.getInstance().getParameters().getOnPlayerShootBow().getPrecision().compute(p);
     }
     public void setAttackByWeapon() {
-
-        float max = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.weapon_maximum;
-        float min = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.weapon_minimum;
-
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.weapon_function)) {
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.weapon_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.weapon_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-
-        this.AttackByWeapon = result;
+        this.AttackByWeapon = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().weapon.compute(p);
     }
     public void setAttackByProjectile() {
-        float max = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.projectile_maximum;
-        float min = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.projectile_minimum;
-
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.projectile_function)) {
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.projectile_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.projectile_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-
-        this.AttackByProjectile = result;
+        this.AttackByProjectile = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().projectile.compute(p);
     }
     public void setAttackByMagic() {
-        float max = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.magic_maximum;
-        float min = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.magic_minimum;
-
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.magic_function)) {
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.magic_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.magic_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-
-        this.AttackByMagic = result;
+        this.AttackByMagic = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().magic.compute(p);
     }
     public void setCriticalHitChance() {
-        float max = Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.maximumChance;
-        float min = Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.minimumChance;
-
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.chanceFunction)) {
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.chanceVariables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.chanceFunction.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-
-        this.CriticalHitChance = result;
+        this.CriticalHitChance = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCriticalHit().chance.compute(p);
     }
     public void setCriticalHitMultiplier() {
-        float max = Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.maximumDamageMultiplier;
-        float min = Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.minimumDamageMultiplier;
-
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.damageMultiplierFunction)) {
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.damageMultiplierVariables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.damageMultiplierFunction.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-
-        this.CriticalHitMultiplier = result;
+        this.CriticalHitMultiplier = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCriticalHit().damage.compute(p);
     }
     public void setBackStabMultiplier() {
-        float result = 1F;
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerAttackEntity.backStab.function)){
-            float min = Settings.getInstance().parameters.onPlayerAttackEntity.backStab.minimum;
-            float max = Settings.getInstance().parameters.onPlayerAttackEntity.backStab.maximum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerAttackEntity.backStab.variables, p);
-        }
-        else{
-            String[] st = Settings.getInstance().parameters.onPlayerAttackEntity.backStab.function.split(",");
-            if(st.length > 1){
-                result = Helper.eval(Helper.FormatStringWithValues(st,p));
-            }
-            else{
-                result = Helper.eval(st[0]);
-            }
-        }
-
-        this.BackStabMultiplier = result;
+        this.BackStabMultiplier = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getBackStab().compute(p);
     }
 
 
     // ON PLAYER CONSUME POTION
 
     public void setConsumedPotionMultiplier(){
-
-        float max = Settings.getInstance().parameters.onPlayerConsumePotion.maximum;
-        float min = Settings.getInstance().parameters.onPlayerConsumePotion.minimum;
-
-        float result = 0F;
-        if(Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerConsumePotion.function)) {
-            result = Helper.ValueFromFunction(max,min,Settings.getInstance().parameters.onPlayerConsumePotion.variables,p);
-        }
-        else{
-            String[] st = Settings.getInstance().parameters.onPlayerConsumePotion.function.split(",");
-            if(st.length > 1){
-                result = Helper.eval(Helper.FormatStringWithValues(st,p));
-            }
-            else{
-                result = Helper.eval(st[0]);
-            }
-        }
-
-        this.ConsumedPotionMultiplier = result;
+        this.ConsumedPotionMultiplier = Settings.getInstance().getParameters().getOnPlayerConsumePotion().compute(p);
     }
 
     //PLAYER ATTRIBUTES
 
     public void setPlayerMaxHealth() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.playerAttributes.total_health_function)) {
-            result = Helper.ValueFromFunction(p.getLowbrainRace().getMax_health(), p.getLowbrainRace().getBase_health(), Settings.getInstance().parameters.playerAttributes.total_health_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.playerAttributes.total_health_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.PlayerMaxHealth = result;
+        float max = this.p.getLowbrainRace().getMax_health();
+        float min = this.p.getLowbrainRace().getBase_health();
+        this.PlayerMaxHealth = Settings.getInstance().getParameters().getPlayerAttributes().getTotalHealth().computeWith(p, max, min);
     }
     public void setPlayerMaxMana() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.playerAttributes.total_mana_function)) {
-            result = Helper.ValueFromFunction(p.getLowbrainRace().getMax_mana(), p.getLowbrainRace().getBase_mana(), Settings.getInstance().parameters.playerAttributes.total_mana_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.playerAttributes.total_mana_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.PlayerMaxMana = result;
+        float max = this.p.getLowbrainRace().getMax_mana();
+        float min = this.p.getLowbrainRace().getBase_mana();
+        this.PlayerMaxMana = Settings.getInstance().getParameters().getPlayerAttributes().getTotalMana().computeWith(p, max, min);
     }
     public void setPlayerManaRegen() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.playerAttributes.mana_regen_function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().parameters.playerAttributes.mana_regen_maximum,
-                    Settings.getInstance().parameters.playerAttributes.mana_regen_minimum,
-                    Settings.getInstance().parameters.playerAttributes.mana_regen_variables, p
-            );
-        } else {
-            String[] st = Settings.getInstance().parameters.playerAttributes.mana_regen_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.PlayerManaRegen = result;
+        this.PlayerManaRegen = Settings.getInstance().getParameters().getPlayerAttributes().getManaRegen().compute(p);
     }
     public void setPlayerAttackSpeed() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.playerAttributes.attack_speed_function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().parameters.playerAttributes.attack_speed_maximum,
-                    Settings.getInstance().parameters.playerAttributes.attack_speed_minimum,
-                    Settings.getInstance().parameters.playerAttributes.attack_speed_variables, p
-            );
-        } else {
-            String[] st = Settings.getInstance().parameters.playerAttributes.attack_speed_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.PlayerAttackSpeed = result;
+        this.PlayerAttackSpeed = Settings.getInstance().getParameters().getPlayerAttributes().getAttackSpeed().compute(p);
     }
     public void setPlayerMovementSpeed() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.playerAttributes.movement_speed_function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().parameters.playerAttributes.movement_speed_maximum, Settings.getInstance().parameters.playerAttributes.movement_speed_minimum,
-                    Settings.getInstance().parameters.playerAttributes.movement_speed_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.playerAttributes.movement_speed_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.PlayerMovementSpeed = result;
+        this.PlayerMovementSpeed = Settings.getInstance().getParameters().getPlayerAttributes().getMovementSpeed().compute(p);
     }
     public void setPlayerKnockbackResistance() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.playerAttributes.knockback_resistance_function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().parameters.playerAttributes.knockback_resistance_maximum, Settings.getInstance().parameters.playerAttributes.knockback_resistance_minimum,
-                    Settings.getInstance().parameters.playerAttributes.knockback_resistance_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.playerAttributes.knockback_resistance_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.PlayerKnockbackResistance = result;
+        this.PlayerKnockbackResistance = Settings.getInstance().getParameters().getPlayerAttributes().getKnockbackResistance().compute(p);
     }
     public void setPlayerLuck() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.playerAttributes.luck_function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().parameters.playerAttributes.luck_maximum, Settings.getInstance().parameters.playerAttributes.luck_minimum,
-                    Settings.getInstance().parameters.playerAttributes.luck_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.playerAttributes.luck_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.PlayerLuck = result;
+        this.PlayerLuck = Settings.getInstance().getParameters().getPlayerAttributes().getLuck().compute(p);
     }
     public void setPlayerDropPercentage() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerDies.function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().parameters.onPlayerDies.items_drops_maximum, Settings.getInstance().parameters.onPlayerDies.items_drops_minimum,
-                    Settings.getInstance().parameters.onPlayerDies.variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerDies.function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.PlayerDropPercentage = result;
+        this.PlayerDropPercentage = Settings.getInstance().getParameters().getOnPlayerDies().getItems_drops().compute(p);
     }
 
     //ON PLAYER GET DAMAGED
 
     public void setChanceOfDodging() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfDodging.function)) {
-            result = Helper.ValueFromFunction(Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfDodging.maximum, Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfDodging.minimum,
-                    Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfDodging.variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfDodging.function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-
-        this.ChanceOfDodging = result;
+        this.ChanceOfDodging = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getChanceOfDodging().compute(p);
     }
     public void setChanceOfRemovingPotionEffect() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfRemovingMagicEffect.function)) {
-            float minChance = Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfRemovingMagicEffect.minimum;
-            float maxChance = Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfRemovingMagicEffect.maximum;
-
-            result = Helper.ValueFromFunction(maxChance, minChance, Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfRemovingMagicEffect.variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfRemovingMagicEffect.function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.ChanceOfRemovingPotionEffect = result;
+        this.ChanceOfRemovingPotionEffect = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getChanceOfRemovingMagicEffect().compute(p);
     }
     public void setReducingPotionEffect() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.function)) {
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.minimum;
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.maximum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.ReducingPotionEffect = result;
+        this.ReducingPotionEffect = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getReducingBadPotionEffect().compute(p);
     }
     public void setDamagedByFire() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_function)) {
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_maximum;
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_minimum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.DamagedByFire = result;
+        this.DamagedByFire = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByFire().compute(p);
     }
     public void setDamagedByFireTick() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_tick_function)) {
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_tick_maximum;
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_tick_minimum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_tick_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_tick_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.DamagedByFireTick = result;
+        this.DamagedByFireTick = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByFireTick().compute(p);
     }
     public void setDamagedByPoison() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_poison_function)) {
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_poison_maximum;
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_poison_minimum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_poison_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_poison_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.DamagedByPoison = result;
+        this.DamagedByPoison = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByPoison().compute(p);
     }
     public void setDamagedByWither() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_wither_function)) {
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_wither_maximum;
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_wither_minimum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_wither_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_wither_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.DamagedByWither = result;
+        this.DamagedByWither = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByWither().compute(p);
     }
     public void setDamagedByContact() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_contact_function)) {
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_contact_maximum;
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_contact_minimum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_contact_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_contact_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.DamagedByContact = result;
+        this.DamagedByContact = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByContact().compute(p);
     }
     public void setDamagedByFlyIntoWall() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_fly_into_wall_function)) {
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_fly_into_wall_maximum;
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_fly_into_wall_minimum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_fly_into_wall_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_fly_into_wall_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.DamagedByFlyIntoWall = result;
+        this.DamagedByFlyIntoWall = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByFlyIntoWall().compute(p);
     }
     public void setDamagedByFall() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_fall_function)) {
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_fall_maximum;
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_fall_minimum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_fall_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_fall_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.DamagedByFall = result;
+        this.DamagedByFall = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByFall().compute(p);
     }
     public void setDamagedByWeapon() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_weapon_function)) {
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_weapon_maximum;
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_weapon_minimum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_weapon_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_weapon_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.DamagedByWeapon = result;
+        this.DamagedByWeapon = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByWeapon().compute(p);
     }
     public void setDamagedByArrow() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_arrow_function)) {
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_arrow_maximum;
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_arrow_minimum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_arrow_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_arrow_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.DamagedByArrow = result;
+        this.DamagedByArrow = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByArrow().compute(p);
     }
     public void setDamagedByProjectile() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_projectile_function)) {
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_projectile_maximum;
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_projectile_minimum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_projectile_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_projectile_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.DamagedByProjectile = result;
+        this.DamagedByProjectile = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByProjectile().compute(p);
     }
     public void setDamagedByMagic() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_magic_function)) {
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_magic_maximum;
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_magic_minimum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_magic_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_magic_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.DamagedByMagic = result;
+        this.DamagedByMagic = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByMagic().compute(p);
     }
     public void setDamagedBySuffocation() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_suffocation_function)) {
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_suffocation_maximum;
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_suffocation_minimum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_suffocation_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_suffocation_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.DamagedBySuffocation = result;
+        this.DamagedBySuffocation = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getBySuffocation().compute(p);
     }
     public void setDamagedByDrowning() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_drowning_function)) {
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_drowning_maximum;
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_drowning_minimum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_drowning_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_drowning_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.DamagedByDrowning = result;
+        this.DamagedByDrowning = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByDrowning().compute(p);
     }
     public void setDamagedByStarvation() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_starvation_function)) {
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_starvation_maximum;
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_starvation_minimum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_starvation_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_starvation_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.DamagedByStarvation = result;
+        this.DamagedByStarvation = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByStarvation().compute(p);
     }
     public void setDamagedByLightning() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_lightning_function)) {
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_lightning_maximum;
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_lightning_minimum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_lightning_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_lightning_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.DamagedByLightning = result;
+        this.DamagedByLightning = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByLightning().compute(p);
     }
     public void setDamagedByVoid() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_void_function)) {
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_void_maximum;
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_void_minimum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_void_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_void_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.DamagedByVoid = result;
+        this.DamagedByVoid = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByVoid().compute(p);
     }
     public void setDamagedByHotFloor() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_hot_floor_function)) {
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_hot_floor_maximum;
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_hot_floor_minimum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_hot_floor_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_hot_floor_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.DamagedByHotFloor = result;
+        this.DamagedByHotFloor = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByHotFloor().compute(p);
     }
     public void setDamagedByExplosion() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_explosion_function)) {
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_explosion_maximum;
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_explosion_minimum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_explosion_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_explosion_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.DamagedByExplosion = result;
+        this.DamagedByExplosion = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByExplosion().compute(p);
     }
     public void setDamagedByLava() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_lava_function)) {
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_lava_maximum;
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_lava_minimum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_lava_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_lava_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.DamagedByLava = result;
+        this.DamagedByLava = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByLava().compute(p);
     }
     public void setDamagedByDefault() {
-        float result = 0F;
-        if (Helper.StringIsNullOrEmpty(Settings.getInstance().parameters.onPlayerGetDamaged.by_default_function)) {
-            float max = Settings.getInstance().parameters.onPlayerGetDamaged.by_default_maximum;
-            float min = Settings.getInstance().parameters.onPlayerGetDamaged.by_default_minimum;
-
-            result = Helper.ValueFromFunction(max, min, Settings.getInstance().parameters.onPlayerGetDamaged.by_default_variables, p);
-        } else {
-            String[] st = Settings.getInstance().parameters.onPlayerGetDamaged.by_default_function.split(",");
-            if (st.length > 1) {
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
-            } else {
-                result = Helper.eval(st[0]);
-            }
-        }
-        this.DamagedByDefault = result;
+        this.DamagedByDefault = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByDefault().compute(p);
     }
 
+    public float getChanceOfMagicEffect() {
+        return Settings.getInstance().getParameters().getOnPlayerAttackEntity().getChanceOfCreatingMagicAttack().randomizeFromMultiplier(ChanceOfMagicEffect);
+    }
     public float getChanceOfMissing() {
-        return ChanceOfMissing;
+        return Settings.getInstance().getParameters().getOnPlayerAttackEntity().getChanceOfMissing().randomizeFromMultiplier(ChanceOfMissing);
     }
     public float getChanceOfDodging() {
-        return ChanceOfDodging;
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getChanceOfDodging().randomizeFromMultiplier(ChanceOfDodging);
     }
     public float getBowArrowSpeed() {
-        return BowArrowSpeed;
+        return Settings.getInstance().getParameters().getOnPlayerShootBow().getSpeed().randomizeFromMultiplier(BowArrowSpeed);
     }
     public float getBowPrecision() {
-        return BowPrecision;
+        return Settings.getInstance().getParameters().getOnPlayerShootBow().getPrecision().randomizeFromMultiplier(BowPrecision);
     }
     public float getAttackByWeapon() {
-        return AttackByWeapon;
+        return Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().weapon.randomizeFromMultiplier(AttackByWeapon);
     }
     public float getAttackByProjectile() {
-        return AttackByProjectile;
+        return Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().projectile.randomizeFromMultiplier(AttackByProjectile);
     }
     public float getAttackByMagic() {
-        return AttackByMagic;
+        return Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().magic.randomizeFromMultiplier(AttackByMagic);
     }
     public float getCriticalHitChance() {
-        return CriticalHitChance;
+        return Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCriticalHit().chance.randomizeFromMultiplier(CriticalHitChance);
     }
     public float getCriticalHitMultiplier() {
-        return CriticalHitMultiplier;
+        return Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCriticalHit().damage.randomizeFromMultiplier(CriticalHitMultiplier);
     }
     public float getBackStabMultiplier() {
-        return BackStabMultiplier;
+        return Settings.getInstance().getParameters().getOnPlayerAttackEntity().getBackStab().randomizeFromMultiplier(BackStabMultiplier);
     }
     public float getConsumedPotionMultiplier() {
-        return ConsumedPotionMultiplier;
+        return Settings.getInstance().getParameters().getOnPlayerConsumePotion().randomizeFromMultiplier(ConsumedPotionMultiplier);
     }
+    public float getPlayerDropPercentage() {
+        return Settings.getInstance().getParameters().getOnPlayerDies().getItems_drops().randomizeFromMultiplier(PlayerDropPercentage);
+    }
+    public float getChanceOfRemovingPotionEffect() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getChanceOfRemovingMagicEffect().randomizeFromMultiplier(ChanceOfRemovingPotionEffect);
+    }
+    public float getReducingPotionEffect() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getReducingBadPotionEffect().randomizeFromMultiplier(ReducingPotionEffect);
+    }
+    public float getDamagedByFire() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByFire().randomizeFromMultiplier(DamagedByFire);
+    }
+    public float getDamagedByFireTick() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByFireTick().randomizeFromMultiplier(DamagedByFireTick);
+    }
+    public float getDamagedByPoison() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByPoison().randomizeFromMultiplier(DamagedByPoison);
+    }
+    public float getDamagedByWither() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByWither().randomizeFromMultiplier(DamagedByWither);
+    }
+    public float getDamagedByContact() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByContact().randomizeFromMultiplier(DamagedByContact);
+    }
+    public float getDamagedByFlyIntoWall() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByFlyIntoWall().randomizeFromMultiplier(DamagedByFlyIntoWall);
+    }
+    public float getDamagedByFall() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByFall().randomizeFromMultiplier(DamagedByFall);
+    }
+    public float getDamagedByWeapon() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByWeapon().randomizeFromMultiplier(DamagedByWeapon);
+    }
+    public float getDamagedByArrow() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByArrow().randomizeFromMultiplier(DamagedByArrow);
+    }
+    public float getDamagedByProjectile() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByProjectile().randomizeFromMultiplier(DamagedByProjectile);
+    }
+    public float getDamagedByMagic() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByMagic().randomizeFromMultiplier(DamagedByMagic);
+    }
+    public float getDamagedBySuffocation() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getBySuffocation().randomizeFromMultiplier(DamagedBySuffocation);
+    }
+    public float getDamagedByDrowning() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByDrowning().randomizeFromMultiplier(DamagedByDrowning);
+    }
+    public float getDamagedByStarvation() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByStarvation().randomizeFromMultiplier(DamagedByStarvation);
+    }
+    public float getDamagedByLightning() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByLightning().randomizeFromMultiplier(DamagedByLightning);
+    }
+    public float getDamagedByVoid() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByVoid().randomizeFromMultiplier(DamagedByVoid);
+    }
+    public float getDamagedByHotFloor() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByHotFloor().randomizeFromMultiplier(DamagedByHotFloor);
+    }
+    public float getDamagedByExplosion() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByExplosion().randomizeFromMultiplier(DamagedByExplosion);
+    }
+    public float getDamagedByLava() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByLava().randomizeFromMultiplier(DamagedByLava);
+    }
+    public float getDamagedByDefault() {
+        return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByDefault().randomizeFromMultiplier(DamagedByDefault);
+    }
+
+    // these cannot be randomize as it wouldnt make sense
     public float getPlayerMaxHealth() {
         return PlayerMaxHealth;
     }
@@ -912,74 +399,5 @@ public class Multipliers{
     }
     public float getPlayerLuck() {
         return PlayerLuck;
-    }
-    public float getPlayerDropPercentage() {
-        return PlayerDropPercentage;
-    }
-    public float getChanceOfRemovingPotionEffect() {
-        return ChanceOfRemovingPotionEffect;
-    }
-    public float getReducingPotionEffect() {
-        return ReducingPotionEffect;
-    }
-    public float getDamagedByFire() {
-        return DamagedByFire;
-    }
-    public float getDamagedByFireTick() {
-        return DamagedByFireTick;
-    }
-    public float getDamagedByPoison() {
-        return DamagedByPoison;
-    }
-    public float getDamagedByWither() {
-        return DamagedByWither;
-    }
-    public float getDamagedByContact() {
-        return DamagedByContact;
-    }
-    public float getDamagedByFlyIntoWall() {
-        return DamagedByFlyIntoWall;
-    }
-    public float getDamagedByFall() {
-        return DamagedByFall;
-    }
-    public float getDamagedByWeapon() {
-        return DamagedByWeapon;
-    }
-    public float getDamagedByArrow() {
-        return DamagedByArrow;
-    }
-    public float getDamagedByProjectile() {
-        return DamagedByProjectile;
-    }
-    public float getDamagedByMagic() {
-        return DamagedByMagic;
-    }
-    public float getDamagedBySuffocation() {
-        return DamagedBySuffocation;
-    }
-    public float getDamagedByDrowning() {
-        return DamagedByDrowning;
-    }
-    public float getDamagedByStarvation() {
-        return DamagedByStarvation;
-    }
-    public float getDamagedByLightning() {
-        return DamagedByLightning;
-    }
-    public float getDamagedByVoid() {
-        return DamagedByVoid;
-    }
-    public float getDamagedByHotFloor() {
-        return DamagedByHotFloor;
-    }
-    public float getDamagedByExplosion() {
-        return DamagedByExplosion;
-    }
-    public float getDamagedByLava() {
-        return DamagedByLava;
-    }
-    public float getDamagedByDefault() {
-        return DamagedByDefault;
     }
 }

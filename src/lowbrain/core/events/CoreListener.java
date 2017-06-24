@@ -53,8 +53,18 @@ public class CoreListener implements Listener {
      */
     @EventHandler
     public void onCreatureSpawn(CreatureSpawnEvent e){
-        if(Settings.getInstance().disable_mob_no_tick_damage){
+        if(Settings.getInstance().isDisableMobNoTickDamage()){
             e.getEntity().setNoDamageTicks(0);
+        }
+
+        // animal spawned from breeding
+        if (e.getEntity() instanceof Animals && e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.BREEDING) {
+            float limit = 0.5F;
+
+            if (limit < Math.random()) {
+                // cancel spawning
+                e.setCancelled(true);
+            }
         }
     }
 
@@ -197,15 +207,15 @@ public class CoreListener implements Listener {
             LowbrainPlayer rp = plugin.getPlayerHandler().getList().get(p.getUniqueId());
             if(rp == null)return;
             plugin.debugInfo("************* On Player Exp Change ( naturally ) **************");
-            plugin.debugInfo("              Player gains : " + e.getAmount() * Settings.getInstance().parameters.natural_xp_gain_multiplier + " xp");
-            rp.addExp(e.getAmount() * Settings.getInstance().parameters.natural_xp_gain_multiplier);
+            plugin.debugInfo("              Player gains : " + e.getAmount() * Settings.getInstance().getParameters().getNaturalXpGainMultiplier() + " xp");
+            rp.addExp(e.getAmount() * Settings.getInstance().getParameters().getNaturalXpGainMultiplier());
             plugin.debugInfo("************* ------------------------ **************");
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerDies(PlayerDeathEvent e){
-        if(Settings.getInstance().parameters.onPlayerDies.items_drops_enable){
+        if(Settings.getInstance().getParameters().getOnPlayerDies().getItems_drops().isEnabled()){
             e.setKeepInventory(true);
         }
         else{
@@ -243,23 +253,23 @@ public class CoreListener implements Listener {
                 }
             }
 
-            if(rpKiller != null && Settings.getInstance().parameters.player_kills_player_exp_enable){
+            if(rpKiller != null && Settings.getInstance().getParameters().isPlayerKillsPlayerExpEnable()){
                 int diffLvl = Math.abs(rpKilled.getLvl() - rpKiller.getLvl());
                 rpKiller.addKills(1);
                 float xpGained = 0.0F;
                 if(diffLvl == 0){
-                    xpGained = Settings.getInstance().parameters.killer_base_exp * rpKiller.getLvl() * Settings.getInstance().parameters.killer_level_gain_multiplier;
+                    xpGained = Settings.getInstance().getParameters().getKillerBaseExp() * rpKiller.getLvl() * Settings.getInstance().getParameters().getLevelDifferenceMultiplier();
                 }else if(rpKilled.getLvl() < rpKiller.getLvl()){
-                    xpGained = Settings.getInstance().parameters.killer_base_exp / (diffLvl * Settings.getInstance().parameters.level_difference_multiplier) * rpKiller.getLvl() * Settings.getInstance().parameters.killer_level_gain_multiplier;
+                    xpGained = Settings.getInstance().getParameters().getKillerBaseExp() / (diffLvl * Settings.getInstance().getParameters().getLevelDifferenceMultiplier()) * rpKiller.getLvl() * Settings.getInstance().getParameters().getKillerLevelGainMultiplier();
                 }else{
-                    xpGained = Settings.getInstance().parameters.killer_base_exp * (diffLvl * Settings.getInstance().parameters.level_difference_multiplier) * rpKiller.getLvl() * Settings.getInstance().parameters.killer_level_gain_multiplier;
+                    xpGained = Settings.getInstance().getParameters().getKillerBaseExp() * (diffLvl * Settings.getInstance().getParameters().getLevelDifferenceMultiplier()) * rpKiller.getLvl() * Settings.getInstance().getParameters().getKillerLevelGainMultiplier();
                 }
                 rpKiller.addExp(xpGained);
                 plugin.debugInfo("              Killer gained : "+ xpGained+" xp!");
             }
 
-            if(Settings.getInstance().parameters.onPlayerDies.enable){
-                rpKilled.addExp(-(Settings.getInstance().parameters.onPlayerDies.xp_loss / 100 * rpKilled.getExperience()));
+            if(Settings.getInstance().getParameters().getOnPlayerDies().isEnable()){
+                rpKilled.addExp(-(Settings.getInstance().getParameters().getOnPlayerDies().getXp_loss() / 100 * rpKilled.getExperience()));
 
                 double dropPercentage = rpKilled.getMultipliers().getPlayerDropPercentage();
 
@@ -319,7 +329,7 @@ public class CoreListener implements Listener {
                         xp = killsCount / interval * section.getDouble("xp_bonus_multiplier");
                     }
 
-                    if(Settings.getInstance().group_xp_enable){
+                    if(Settings.getInstance().isGroupXpEnable()){
 
                         List<LowbrainPlayer> others = null;
 
@@ -330,8 +340,8 @@ public class CoreListener implements Listener {
                                 for (Player p :
                                         party.getOnlinePlayers()) {
                                     if (!p.equals(rpKiller.getPlayer())){
-                                        if(Settings.getInstance().group_xp_range == -1
-                                                || Helper.getDistanceBetweenTwoPlayers(rpKiller.getPlayer(),p) <= Settings.getInstance().group_xp_range){
+                                        if(Settings.getInstance().getGroupXpRange() == -1
+                                                || Helper.getDistanceBetweenTwoPlayers(rpKiller.getPlayer(),p) <= Settings.getInstance().getGroupXpRange()){
                                             LowbrainPlayer p2 = plugin.getPlayerHandler().getList().get(p.getUniqueId());
                                             if(p2 != null){
                                                 others.add(p2);
@@ -342,14 +352,14 @@ public class CoreListener implements Listener {
                             }
                         } 
                         else {
-                            others = Helper.getNearbyPlayers(rpKiller,Settings.getInstance().group_xp_range);
+                            others = Helper.getNearbyPlayers(rpKiller, Settings.getInstance().getGroupXpRange());
                         }
-                        double mainXP = others != null && others.size() > 0 ? Settings.getInstance().group_xp_main : 1;
+                        double mainXP = others != null && others.size() > 0 ? Settings.getInstance().getGroupXpMain() : 1;
                         rpKiller.addExp(xp * mainXP);
                         plugin.debugInfo("              Killer gained : " + ( xp * mainXP ) +" xp!");
 
                         if(others != null && others.size() > 0) {
-                            double othersXP = xp * Settings.getInstance().group_xp_others / others.size();
+                            double othersXP = xp * Settings.getInstance().getGroupXpOthers() / others.size();
                             plugin.debugInfo("              - In party");
                             for (LowbrainPlayer other : others) {
                                 other.addExp(othersXP);
@@ -457,114 +467,70 @@ public class CoreListener implements Listener {
         plugin.debugInfo("              Initial damage : " +e.getDamage());
 
         if(e.getCause().equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_explosion_enable){
-                multiplier = damagee.getMultipliers().getDamagedByExplosion();
-            }
+            multiplier = damagee.getMultipliers().getDamagedByExplosion();
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.CONTACT)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_contact_enable){
-                multiplier = damagee.getMultipliers().getDamagedByContact();
-            }
+            multiplier = damagee.getMultipliers().getDamagedByContact();
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.DRAGON_BREATH)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_enable){
-                multiplier = damagee.getMultipliers().getDamagedByFire();
-            }
+            multiplier = damagee.getMultipliers().getDamagedByFire();
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.DROWNING)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_drowning_enable){
-                multiplier = damagee.getMultipliers().getDamagedByDrowning();
-            }
+            multiplier = damagee.getMultipliers().getDamagedByDrowning();
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_explosion_enable){
-                multiplier = damagee.getMultipliers().getDamagedByExplosion();
-            }
+            multiplier = damagee.getMultipliers().getDamagedByExplosion();
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.FALL)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_fall_enable){
-                multiplier = damagee.getMultipliers().getDamagedByFall();
-            }
+            multiplier = damagee.getMultipliers().getDamagedByFall();
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.FALLING_BLOCK)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_weapon_enable){
-                multiplier = damagee.getMultipliers().getDamagedByWeapon();
-            }
+            multiplier = damagee.getMultipliers().getDamagedByWeapon();
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.FIRE)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_enable){
-                multiplier = damagee.getMultipliers().getDamagedByFire();
-            }
+            multiplier = damagee.getMultipliers().getDamagedByFire();
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.FIRE_TICK)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_fire_tick_enable){
-                multiplier = damagee.getMultipliers().getDamagedByFireTick();
-            }
+            multiplier = damagee.getMultipliers().getDamagedByFireTick();
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.FLY_INTO_WALL)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_fly_into_wall_enable){
-                multiplier = damagee.getMultipliers().getDamagedByFlyIntoWall();
-            }
+            multiplier = damagee.getMultipliers().getDamagedByFlyIntoWall();
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.HOT_FLOOR)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_hot_floor_enable){
-                multiplier = damagee.getMultipliers().getDamagedByHotFloor();
-            }
+            multiplier = damagee.getMultipliers().getDamagedByHotFloor();
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.LAVA)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_lava_enable){
-                multiplier = damagee.getMultipliers().getDamagedByLava();
-            }
+            multiplier = damagee.getMultipliers().getDamagedByLava();
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.LIGHTNING)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_lightning_enable){
-                multiplier = damagee.getMultipliers().getDamagedByLightning();
-            }
+            multiplier = damagee.getMultipliers().getDamagedByLightning();
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.MAGIC)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_magic_enable){
-                multiplier = damagee.getMultipliers().getDamagedByMagic();
-            }
+            multiplier = damagee.getMultipliers().getDamagedByMagic();
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.MELTING)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_magic_enable){
-                multiplier = damagee.getMultipliers().getDamagedByMagic();
-            }
+            multiplier = damagee.getMultipliers().getDamagedByMagic();
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.POISON)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_poison_enable){
-                multiplier = damagee.getMultipliers().getDamagedByPoison();
-            }
+            multiplier = damagee.getMultipliers().getDamagedByPoison();
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.STARVATION)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_starvation_enable){
-                multiplier = damagee.getMultipliers().getDamagedByStarvation();
-            }
+            multiplier = damagee.getMultipliers().getDamagedByStarvation();
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.SUFFOCATION)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_suffocation_enable){
-                multiplier = damagee.getMultipliers().getDamagedBySuffocation();
-            }
+            multiplier = damagee.getMultipliers().getDamagedBySuffocation();
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.THORNS)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_weapon_enable){
-                multiplier = damagee.getMultipliers().getDamagedByWeapon();
-            }
+            multiplier = damagee.getMultipliers().getDamagedByWeapon();
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.VOID)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_void_enable){
-                multiplier = damagee.getMultipliers().getDamagedByVoid();
-            }
+            multiplier = damagee.getMultipliers().getDamagedByVoid();
         }
         else if(e.getCause().equals(EntityDamageEvent.DamageCause.WITHER)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_wither_enable){
-                multiplier = damagee.getMultipliers().getDamagedByWither();
-            }
+            multiplier = damagee.getMultipliers().getDamagedByWither();
         }
         else{
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_default_enable){
-                multiplier = damagee.getMultipliers().getDamagedByDefault();
-            }
+            multiplier = damagee.getMultipliers().getDamagedByDefault();
         }
 
         plugin.debugInfo("              Defensive damage multiplier : " + multiplier);
@@ -579,16 +545,11 @@ public class CoreListener implements Listener {
      */
     @EventHandler
     public void onPlayerConsumePotion(PlayerItemConsumeEvent e){
-        if(e.getItem() != null && e.getItem().getType().equals(Material.POTION) && Settings.getInstance().parameters.onPlayerConsumePotion.enable){
+        if(e.getItem() != null && e.getItem().getType().equals(Material.POTION) && Settings.getInstance().getParameters().getOnPlayerConsumePotion().isEnabled()){
             LowbrainPlayer rp = plugin.getPlayerHandler().get(e.getPlayer().getUniqueId());
             if(rp != null && !rp.getPlayer().getActivePotionEffects().isEmpty()) {
 
-                float result = Helper.getRandomBetween(
-                        Settings.getInstance().parameters.onPlayerConsumePotion.minimum,
-                        Settings.getInstance().parameters.onPlayerConsumePotion.maximum,
-                        rp.getMultipliers().getConsumedPotionMultiplier(),
-                        Settings.getInstance().parameters.onPlayerConsumePotion.range
-                );
+                float result = rp.getMultipliers().getConsumedPotionMultiplier();
 
                 PotionEffect po = (PotionEffect) rp.getPlayer().getActivePotionEffects().toArray()[rp.getPlayer().getActivePotionEffects().size() -1];
 
@@ -610,49 +571,29 @@ public class CoreListener implements Listener {
      */
     @EventHandler
     public void onPlayerShootBow(EntityShootBowEvent e){
-        if(e.getEntity() instanceof Player && Settings.getInstance().parameters.onPlayerShootBow.enable){
+        if(e.getEntity() instanceof Player && Settings.getInstance().getParameters().getOnPlayerShootBow().isEnable()){
             //set new force
             Arrow ar = (Arrow) e.getProjectile();
             LowbrainPlayer rpPlayer = plugin.getPlayerHandler().get(e.getEntity().getUniqueId());
 
             plugin.debugInfo("************* On Player Consume Potion **************");
 
-            float speed = Helper.getRandomBetween(
-                    Settings.getInstance().parameters.onPlayerShootBow.speed_minimum,
-                    Settings.getInstance().parameters.onPlayerShootBow.speed_maximum,
-                    rpPlayer.getMultipliers().getBowArrowSpeed(),
-                    Settings.getInstance().parameters.onPlayerShootBow.speed_range
-            );
+            float speed = rpPlayer.getMultipliers().getBowArrowSpeed();
 
             plugin.debugInfo("              Arrow speed multiplier : " + speed);
             ar.setVelocity(ar.getVelocity().multiply(speed));
 
-            float precX = Helper.getRandomBetween(
-                    Settings.getInstance().parameters.onPlayerShootBow.precision_minimum,
-                    Settings.getInstance().parameters.onPlayerShootBow.precision_maximum,
-                    rpPlayer.getMultipliers().getBowPrecision(),
-                    Settings.getInstance().parameters.onPlayerShootBow.precision_range
-            );
+            float precX = rpPlayer.getMultipliers().getBowPrecision();
 
             int direction = Helper.randomInt(0,1) == 0 ? -1 : 1;
             precX = 1 + (1-precX)*direction;
 
-            float precY = Helper.getRandomBetween(
-                    Settings.getInstance().parameters.onPlayerShootBow.precision_minimum,
-                    Settings.getInstance().parameters.onPlayerShootBow.precision_maximum,
-                    rpPlayer.getMultipliers().getBowPrecision(),
-                    Settings.getInstance().parameters.onPlayerShootBow.precision_range
-            );
+            float precY = rpPlayer.getMultipliers().getBowPrecision();
 
             direction = Helper.randomInt(0,1) == 0 ? -1 : 1;
             precY = 1 + (1-precY)*direction;
 
-            float precZ = Helper.getRandomBetween(
-                    Settings.getInstance().parameters.onPlayerShootBow.precision_minimum,
-                    Settings.getInstance().parameters.onPlayerShootBow.precision_maximum,
-                    rpPlayer.getMultipliers().getBowPrecision(),
-                    Settings.getInstance().parameters.onPlayerShootBow.precision_range
-            );
+            float precZ = rpPlayer.getMultipliers().getBowPrecision();
 
             direction = Helper.randomInt(0,1) == 0 ? -1 : 1;
             precZ = 1 + (1-precZ)*direction;
@@ -700,8 +641,9 @@ public class CoreListener implements Listener {
         int rdm = Helper.randomInt(1,7);
         int duration = 0;
         int amplifier = 0;
-        float max = Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.maximum_duration;
-        float min = Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.minimum_duration;
+
+        float max = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().duration.getMax();
+        float min = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().duration.getMin();
 
         PotionEffect effect;
         PotionEffectType type = PotionEffectType.POISON;
@@ -710,56 +652,49 @@ public class CoreListener implements Listener {
             case 1:
                 type = PotionEffectType.BLINDNESS;
                 amplifier = 0;
-                valid = Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.blindness_enable;
+                valid = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().blindness.isEnabled();
                 break;
             case 2:
                 type = PotionEffectType.CONFUSION;
                 amplifier = 0;
-                valid = Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.confusion_enable;
+                valid = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().confusion.isEnabled();
                 break;
             case 3:
                 type = PotionEffectType.HARM;
-                max =  Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.minimum_duration;
-                min = Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.maximum_duration;
-                amplifier = (int)(Helper.ValueFromFunction(Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.harm_amplifier_maximum
-                        ,Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.harm_amplifier_minimum,
-                        Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.harm_amplifier_variables,p
-                        ));
-                valid = Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.harm_enable;
+                max =  Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().duration.getMin();
+                min = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().duration.getMax();
+                amplifier = (int) Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().harm.compute(p);
+                valid = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().harm.isEnabled();
                 break;
             case 4:
                 type = PotionEffectType.POISON;
-                amplifier = (int)(Helper.ValueFromFunction(Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.poison_amplifier_maximum
-                        ,Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.poison_amplifier_minimum,
-                        Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.poison_amplifier_variables,p));
-                valid = Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.poison_enable;
+                amplifier = (int) Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().poison.compute(p);
+                valid = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().poison.isEnabled();
                 break;
             case 5:
                 type = PotionEffectType.SLOW;
-                amplifier = (int)(Helper.ValueFromFunction(Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.slow_amplifier_maximum
-                        ,Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.slow_amplifier_minimum,
-                        Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.slow_amplifier_variables,p));
-                valid = Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.slow_enable;
+                amplifier = (int) Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().slow.compute(p);
+                valid = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().slow.isEnabled();
                 break;
             case 6:
                 type = PotionEffectType.WEAKNESS;
-                amplifier = (int)(Helper.ValueFromFunction(Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.weakness_amplifier_maximum
-                        ,Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.weakness_amplifier_minimum,
-                        Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.weakness_amplifier_variables,p));
-                valid = Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.weakness_enable;
+                amplifier = (int) Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().weakness.compute(p);
+                valid = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().weakness.isEnabled();
                 break;
             case 7:
                 type = PotionEffectType.WITHER;
-                amplifier = (int)(Helper.ValueFromFunction(Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.wither_amplifier_maximum
-                        ,Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.wither_amplifier_minimum,
-                        Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.wither_amplifier_variables,p));
-                valid = Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.wither_enable;
+                amplifier = (int) Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().wither.compute(p);
+                valid = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().wither.isEnabled();
                 break;
         }
 
         if(!valid) return null;
 
-        duration = (int)Math.ceil(Helper.ValueFromFunction(max,min,Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.duration_variables,p));
+        // with harm we need to change those values before computing
+        Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().duration.setMax(max);
+        Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().duration.setMin(min);
+
+        duration = (int)Math.ceil(Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().duration.computeWith(p, min, max));
 
         effect = new PotionEffect(type, duration * 20, amplifier, true,true);
         return effect;
@@ -801,13 +736,7 @@ public class CoreListener implements Listener {
 
         if(rp.getPlayer().getActivePotionEffects().isEmpty()) return;
 
-        float rdm = Helper.getRandomBetween(
-                Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.minimum,
-                Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.maximum,
-                rp.getMultipliers().getReducingPotionEffect(),
-                Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.range
-        );
-
+        float rdm = rp.getMultipliers().getReducingPotionEffect();
         PotionEffect po = (PotionEffect) rp.getPlayer().getActivePotionEffects().toArray()[rp.getPlayer().getActivePotionEffects().size() -1];
 
         int newDuration = (int)Math.ceil(po.getDuration() * rdm);
@@ -835,18 +764,18 @@ public class CoreListener implements Listener {
      */
     private void setServerDifficulty(){
 
-        if(!Settings.getInstance().asd_enable)return;
+        if(!Settings.getInstance().isAsdEnable())return;
 
         Difficulty diff = Difficulty.NORMAL;
         int averageLevel = plugin.getPlayerHandler().getAverageLevel();
 
-        if(averageLevel >= Settings.getInstance().asd_easy_from && averageLevel <= (Settings.getInstance().asd_easy_to != -1 ? Settings.getInstance().asd_easy_to : 9999999)){
+        if(averageLevel >= Settings.getInstance().getAsdEasyFrom() && averageLevel <= (Settings.getInstance().getAsdEasyTo() != -1 ? Settings.getInstance().getAsdEasyTo() : 9999999)){
             diff = Difficulty.EASY;
         }
-        else if(averageLevel >= Settings.getInstance().asd_medium_from && averageLevel <= (Settings.getInstance().asd_medium_to != -1 ? Settings.getInstance().asd_medium_to : 9999999)){
+        else if(averageLevel >= Settings.getInstance().getAsdMediumFrom() && averageLevel <= (Settings.getInstance().getAsdMediumTo() != -1 ? Settings.getInstance().getAsdMediumTo() : 9999999)){
             diff = Difficulty.NORMAL;
         }
-        else if(averageLevel >= Settings.getInstance().asd_hard_from && averageLevel <= (Settings.getInstance().asd_hard_to != -1 ? Settings.getInstance().asd_hard_to : 9999999)){
+        else if(averageLevel >= Settings.getInstance().getAsdHardFrom() && averageLevel <= (Settings.getInstance().getAsdHardTo() != -1 ? Settings.getInstance().getAsdHardTo() : 9999999)){
             diff = Difficulty.HARD;
         }
 
@@ -882,14 +811,14 @@ public class CoreListener implements Listener {
         }
 
         else if(e.getDamager() instanceof ThrownPotion){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_magic_enable){
+            if(Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByMagic().isEnabled()){
                 multiplier = damagee.getMultipliers().getDamagedByMagic();
                 damageSet = true;
             }
             plugin.debugInfo("              Damage from magic projectile reduced by : " + multiplier);
             float chanceOfRemovingEffect = -1F;
 
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfRemovingMagicEffect.enable){
+            if(Settings.getInstance().getParameters().getOnPlayerGetDamaged().getChanceOfRemovingMagicEffect().isEnabled()){
                 chanceOfRemovingEffect = damagee.getMultipliers().getChanceOfRemovingPotionEffect();
                 plugin.debugInfo("              Chance of removing effect : " + chanceOfRemovingEffect);
             }
@@ -898,13 +827,13 @@ public class CoreListener implements Listener {
                 removeBadPotionEffect(damagee.getPlayer());
                 plugin.debugInfo("              All effect removed");
             }
-            else if(Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.enable){
+            else if(Settings.getInstance().getParameters().getOnPlayerGetDamaged().getReducingBadPotionEffect().isEnabled()){
                 reducingBadPotionEffect(damagee);
             }
         }
 
         else if(e.getDamager() instanceof LivingEntity && !(e.getDamager() instanceof Creeper)){
-            if(Settings.getInstance().parameters.onPlayerGetDamaged.by_weapon_enable){
+            if(Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByWeapon().isEnabled()){
                 multiplier = damagee.getMultipliers().getDamagedByWeapon();
             }
         }
@@ -913,14 +842,14 @@ public class CoreListener implements Listener {
             Projectile projectile = (Projectile) e.getDamager();
 
             if(projectile.getShooter() instanceof Player && Helper.StringIsNullOrEmpty(projectile.getCustomName())){
-                if(Settings.getInstance().parameters.onPlayerGetDamaged.by_magic_enable){
+                if(Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByMagic().isEnabled()){
                     multiplier = damagee.getMultipliers().getDamagedByMagic();
                     damageSet = true;
                 }
                 plugin.debugInfo("              Damage from magic projectile reduced by : " + multiplier);
                 float chanceOfRemovingEffect = -1F;
 
-                if(Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfRemovingMagicEffect.enable){
+                if(Settings.getInstance().getParameters().getOnPlayerGetDamaged().getChanceOfRemovingMagicEffect().isEnabled()){
                     chanceOfRemovingEffect = damagee.getMultipliers().getChanceOfRemovingPotionEffect();
                     plugin.debugInfo("              Chance of removing effects : " + chanceOfRemovingEffect);
                 }
@@ -930,22 +859,22 @@ public class CoreListener implements Listener {
                     removeBadPotionEffect(damagee.getPlayer());
                     plugin.debugInfo("              All effects removed");
                 }
-                else if(Settings.getInstance().parameters.onPlayerGetDamaged.reducingBadPotionEffect.enable){
+                else if(Settings.getInstance().getParameters().getOnPlayerGetDamaged().getReducingBadPotionEffect().isEnabled()){
                     reducingBadPotionEffect(damagee);
                 }
 
                 e.setDamage(e.getDamage() * multiplier);
             }
-            else if(Settings.getInstance().parameters.onPlayerGetDamaged.by_projectile_enable){
+            else if(Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByProjectile().isEnabled()){
                 multiplier = damagee.getMultipliers().getDamagedByProjectile();
                 damageSet = true;
             }
 
         }
 
-        if(damagee != null && Settings.getInstance().parameters.onPlayerGetDamaged.chanceOfDodging.enable){
+        if(damagee != null && Settings.getInstance().getParameters().getOnPlayerGetDamaged().getChanceOfDodging().isEnabled()){
             float oldChance = missChance.floatValue();
-            float newChance = Settings.getInstance().parameters.onPlayerAttackEntity.chanceOfMissing.enable ?
+            float newChance = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getChanceOfMissing().isEnabled() ?
                     oldChance * damagee.getMultipliers().getChanceOfDodging() : damagee.getMultipliers().getChanceOfDodging();
             missChance.setValue(newChance);
         }
@@ -1102,10 +1031,9 @@ public class CoreListener implements Listener {
         }
 
         //APPLYING MAGIC EFFECT BY ATTACKER
-        if(damager != null && !magicAttack && Settings.getInstance().parameters.onPlayerAttackEntity.creatingMagicAttack.enable){
+        if(damager != null && !magicAttack && Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().enable){
             plugin.debugInfo("              From : " + damager.getPlayer().getName());
-            double chanceOfMagicEffect = Helper.ValueFromFunction(Settings.getInstance().parameters.onPlayerAttackEntity.chanceOfCreatingMagicAttack.maximum,
-                    Settings.getInstance().parameters.onPlayerAttackEntity.chanceOfCreatingMagicAttack.minimum,Settings.getInstance().parameters.onPlayerAttackEntity.chanceOfCreatingMagicAttack.variables,damager);
+            double chanceOfMagicEffect = damager.getMultipliers().getChanceOfMagicEffect();
             plugin.debugInfo("              Chance of performing magic attack : " + chanceOfMagicEffect);
             double rdm = Math.random();
             if(rdm < chanceOfMagicEffect){
@@ -1118,32 +1046,26 @@ public class CoreListener implements Listener {
         }
 
         //APPLYING DAMAGE CHANGE DEPENDING ON OFFENCIVE ATTRIBUTES
-        if(arrowAttack && damager != null && Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.projectile_enable){
-            e.setDamage(Helper.getRandomBetween(
-                    Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.projectile_minimum,
-                    Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.projectile_maximum,
-                    damager.getMultipliers().getAttackByProjectile(),
-                    Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.projectile_range,
-                    true
-            ) * e.getDamage());
+        if(arrowAttack && damager != null && Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().projectile.isEnabled()){
+            e.setDamage(
+                    Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().projectile.randomizeFromValue(
+                            damager.getMultipliers().getAttackByProjectile() * (float)e.getDamage()
+                    )
+            );
         }
-        else if(normalAttack && damager != null && Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.weapon_enable){
-            e.setDamage(Helper.getRandomBetween(
-                    Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.weapon_minimum,
-                    Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.weapon_maximum,
-                    damager.getMultipliers().getAttackByWeapon(),
-                    Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.weapon_range,
-                    true
-            ) * e.getDamage());
+        else if(normalAttack && damager != null && Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().weapon.isEnabled()){
+            e.setDamage(
+                    Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().weapon.randomizeFromValue(
+                            damager.getMultipliers().getAttackByWeapon() * (float)e.getDamage()
+                    )
+            );
         }
-        else if(magicAttack && damager != null && Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.magic_enable){
-            e.setDamage(Helper.getRandomBetween(
-                    Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.magic_minimum,
-                    Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.magic_maximum,
-                    damager.getMultipliers().getAttackByMagic(),
-                    Settings.getInstance().parameters.onPlayerAttackEntity.attackEntityBy.magic_range,
-                    true
-            ) * e.getDamage());
+        else if(magicAttack && damager != null && Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().magic.isEnabled()){
+            e.setDamage(
+                    Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().magic.randomizeFromValue(
+                            damager.getMultipliers().getAttackByMagic() * (float)e.getDamage()
+                    )
+            );
         }
 
         //applying skilled attack if necessary
@@ -1156,45 +1078,30 @@ public class CoreListener implements Listener {
 
         if(damager == null) return false;
 
-        if(Settings.getInstance().parameters.onPlayerAttackEntity.chanceOfMissing.enable) {
+        if(Settings.getInstance().getParameters().getOnPlayerAttackEntity().getChanceOfMissing().isEnabled()) {
             missChance.setValue(damager.getMultipliers().getChanceOfMissing());
         }
 
-        if(Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.enable){
+        if(Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCriticalHit().enable){
             double rdm = Math.random();
-            float chance = Helper.getRandomBetween(
-                    Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.minimumChance,
-                    Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.maximumChance,
-                    damager.getMultipliers().getCriticalHitChance(),
-                    Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.chanceRange
-            );
+            float chance = damager.getMultipliers().getCriticalHitChance();
             plugin.debugInfo("              Chance of performing a critical hit : " + chance);
             if(rdm < chance){
                 isCritical.setValue(true);
-                float criticalHitMultiplier = Helper.getRandomBetween(
-                        Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.minimumDamageMultiplier,
-                        Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.maximumDamageMultiplier,
-                        damager.getMultipliers().getCriticalHitMultiplier(),
-                        Settings.getInstance().parameters.onPlayerAttackEntity.criticalHit.damageMultiplierRange
-                );
+                float criticalHitMultiplier = damager.getMultipliers().getCriticalHitMultiplier();
                 plugin.debugInfo("              Critical hit multiplier : " + criticalHitMultiplier);
                 e.setDamage(e.getDamage() * criticalHitMultiplier);
             }
         }
 
-        if(Settings.getInstance().parameters.onPlayerAttackEntity.backStab.enable){
+        if(Settings.getInstance().getParameters().getOnPlayerAttackEntity().getBackStab().isEnabled()){
             Vector attackerDirection = e.getDamager().getLocation().getDirection();
             // Vector attackerDirection = damager.getPlayer().getLocation().getDirection();
             Vector victimDirection = e.getEntity().getLocation().getDirection();
             //determine if the dot product between the vectors is greater than 0
             if (attackerDirection.dot(victimDirection) > 0) {
                 //player was backstabbed.}
-                float bs = Helper.getRandomBetween(
-                        Settings.getInstance().parameters.onPlayerAttackEntity.backStab.minimum,
-                        Settings.getInstance().parameters.onPlayerAttackEntity.backStab.maximum,
-                        damager.getMultipliers().getBackStabMultiplier(),
-                        Settings.getInstance().parameters.onPlayerAttackEntity.backStab.range
-                );
+                float bs = damager.getMultipliers().getBackStabMultiplier();
                 e.setDamage(e.getDamage() * bs);
                 plugin.debugInfo("              Backstap multiplier : " + bs);
             }
