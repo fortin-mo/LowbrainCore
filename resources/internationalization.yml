@@ -1,68 +1,55 @@
-cannot_equit_armor_or_item: You can't equip or use this item !
-item_destroyed: Item destroyed !
-only_10_cast_left: Only 10 cast left !
-you_cannot_cast_this_spell: You can't cast this spell !
-level_up: LEVEL UP !!!! You are now lvl
-stats_reset: Your stats have been reset to zero !
-not_allowed_to_reset_stats: You are not allowed to completely reset your stats !
-not_allowed_to_deduct_attributes_point: You are not allowed to deduct attribute points !
-cannot_deduct_anymore_point: You cannot deduct any more points !
-strength_incremented_by: Strength incremented by
-intelligence_incremented_by: Intelligence incremented by
-magicresist_incremented_by: Magic Resistance incremented by
-dexterity_incremented_by: Dexterity incremented by
-vitality_incremented_by: vitality incremented by
-agility_incremented_by: Agility incremented by
-defence_incremented_by: Defence incremented by
-strength_set_to: Strength set to
-intelligence_set_to: Intelligence set to
-magicresist_set_to: Magic Resistance set to
-dexterity_set_to: Dexterity set to
-vitality_set_to: vitality set to
-agility_set_to: Agility set to
-defence_set_to: Defence set to
-not_enough_points: Not enought points !
-player_dies_on_hardcore_mode: No more chances ! Hard core mode !
-set_race_and_class: You are now a
-set_race_and_class_same: You are already a
-cant_switch_race: You cannot switch race !
-cant_switch_class: You cannot switch class !
-cannot_use_skill: You cannot use this skill yet ! You must upgrade it to level one first !
-no_such_skill: There is no such skill !
-skill_is_disabled: This skill is disabled !
-skill_fully_upgraded: This skill is already fully upgraded !
-skill_requirement_to_high: You do not meet the requirements to upgrade this skill ! ==>
-this_skills_require: This skill requires
-points_to_upgrade: points to upgrade !
-spell_in_cooldown: Spell in cooldown !
-seconds_left: seconds left !
-cant_cast_this_spell_on_others: You cannot cast this spell on others !
-player_out_of_range: The player is to far away ! Range ==>
-spell_requirements_to_high: You cannot cast this spell yet ! Requirements ===>
-insufficient_mana: Insufficient mana !
-cast_succesfull: Cast succeeded !
-cast_failed: Failed to cast
-skilled_attack_succesfull: Skilled attack succeeded !
-player_not_connected: This player is not connected !
-no_such_class: There is no such class !
-no_such_class_or_race: There is no such class or race !
-validate_complete_reset: You must validate your choice with yes! ==> /core completereset yes
-next_level_at: Next level achieved at
-stats_saved: Stats saved !
-current_skill: Current skill ==>
-no_current_skill: Current skill ==> none
-no_powers_available: You do not have any powers !
-all_stats_saved: All stats saved !
-config_file_reloaded: Configuration files reloaded !
-invalid_attribute: Invalid attribute !
-invalid_value: Invalid value !
-insufficient_permission: You do not have sufficient permission !
-number_higher_then_zero: Please use a number higher then 0!
-use_help: Invalid arguments !. Please use help command
-invalid_race: Wrong race ! ==> Use "/lbcore races" to show all races
-invalid_class: Wrong class ! ==> Use "/lbcore class" to show all classes
-you_will_reach_level: You will reach lvl
-in: in
+cannot_equit_armor_or_item: "You can't equip or use this item !"
+item_destroyed: "Item destroyed !"
+only_10_cast_left: "Only 10 cast left !"
+you_cannot_cast_this_spell: "You can't cast this spell !"
+level_up: "LEVEL UP !!!! You are now lvl {0}"
+stats_reset: "Your stats have been reset to zero !"
+not_allowed_to_reset_stats: "You are not allowed to completely reset your stats !"
+not_allowed_to_deduct_attributes_point: "You are not allowed to deduct attribute points !"
+cannot_deduct_anymore_point: "You cannot deduct any more points !"
+strength_incremented_by: "Strength incremented by"
+attribute_increment_by: "{0} incremented by {1}"
+attribute_set_to: "{0} set to {1}"
+not_enough_points: "Not enough points !"
+player_dies_on_hardcore_mode: "No more chances ! Hard core mode !"
+set_race_and_class: "You are now a {0}"
+set_race_and_class_same: "You are already a {0}"
+cant_switch_race: "You cannot switch race !"
+cant_switch_class: "You cannot switch class !"
+cannot_use_skill: "You cannot use this skill yet ! You must upgrade it to level one first !"
+no_such_skill: "There is no such skill !"
+skill_is_disabled: "This skill is disabled !"
+skill_fully_upgraded: "This skill is already fully upgraded !"
+skill_requirement_to_high: "You do not meet the requirements to upgrade this skill ! ==> {0}"
+skills_required_points: "This skill requires {0} points to upgrade !"
+spell_in_cooldown: "Spell in cooldown !"
+seconds_left: "{0} seconds left !"
+cant_cast_this_spell_on_others: "You cannot cast this spell on others !"
+player_out_of_range: "The player is to far away ! Range ==> {0}"
+spell_requirements_to_high: "You cannot cast this spell yet ! Requirements ===> {0}"
+insufficient_mana: "Insufficient mana !"
+cast_succesfull: "Cast succeeded !"
+cast_failed: "Failed to cast"
+skilled_attack_succesfull: "Skilled attack succeeded !"
+player_not_connected: "This player is not connected !"
+no_such_class: "There is no such class !"
+no_such_class_or_race: "There is no such class or race !"
+validate_complete_reset: "You must validate your choice with yes! ==> /core completereset yes"
+next_level_at: "Next level achieved at {0} xp"
+stats_saved: "Stats saved !"
+current_skill: "Current skill ==> {0}"
+no_current_skill: "Current skill ==> none"
+no_powers_available: "You do not have any powers !"
+all_stats_saved: "All stats saved !"
+config_file_reloaded: "Configuration files reloaded !"
+invalid_attribute: "Invalid attribute !"
+invalid_value: "Invalid value !"
+insufficient_permission: "You do not have sufficient permission !"
+number_higher_then_zero: "Please use a number higher then 0!"
+use_help: "Invalid arguments !. Please use help command"
+invalid_race: "Wrong race ! ==> Use \"/lbcore races\" to show all races"
+invalid_class: "Wrong class ! ==> Use \"/lbcore class\" to show all classes"
+you_will_reach_level: "You will reach lvl {0} in {1} xp"
 
 
 
