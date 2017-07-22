@@ -273,7 +273,7 @@ public class LowbrainSkill {
                 this.setLastExecuted(Calendar.getInstance());
                 p.setCurrentMana(p.getCurrentMana() - getBaseManaCost());
                 CoreListener.plugin.debugInfo(this.name);
-                p.sendMessage(Internationalization.getInstance().getString("skilled_attack_succesfull"));
+                p.sendMessage(Internationalization.format("skilled_attack_succesfull"));
             }
 
             return succeed;
@@ -352,7 +352,7 @@ public class LowbrainSkill {
             this.setLastExecuted(Calendar.getInstance());
             p.setCurrentMana(p.getCurrentMana() - getBaseManaCost());
             CoreListener.plugin.debugInfo(this.name);
-            p.sendMessage(Internationalization.getInstance().getString("skilled_attack_succesfull"));
+            p.sendMessage(Internationalization.format("skilled_attack_succesfull"));
 
             return true;
         }catch (Exception e){
@@ -370,7 +370,7 @@ public class LowbrainSkill {
 
             if(this.getLastExecuted().before(cooldownTime)){
                 if(p.getCurrentMana() < this.getManaCost()){
-                    p.sendMessage(Internationalization.getInstance().getString("insufficient_mana"), ChatColor.RED);
+                    p.sendMessage(Internationalization.format("insufficient_mana"), ChatColor.RED);
                     return false;
                 }
                 else {

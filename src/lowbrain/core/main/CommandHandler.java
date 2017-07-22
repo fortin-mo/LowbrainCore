@@ -34,10 +34,7 @@ public class CommandHandler implements CommandExecutor{
 					switch (args[0].toLowerCase()){
 						case "xp":
 							double xp = rp.getNextLvl() - rp.getExperience();
-							rp.sendMessage(Internationalization.getInstance().getString("you_will_reach_level") + " "
-									+ (rp.getLvl()+1)
-									+ " " + Internationalization.getInstance().getString("in") + " "
-									+ xp + " xp");
+							rp.sendMessage(Internationalization.format("you_will_reach_level", new Object[]{rp.getLvl()+1, xp}));
 							return true;
 						case "add":
 							int amount = 0;
@@ -49,11 +46,11 @@ public class CommandHandler implements CommandExecutor{
 									amount = Integer.parseInt(args[2]);
 								}
 								catch (Exception e){
-									rp.sendMessage(Internationalization.getInstance().getString("use_help"));
+									rp.sendMessage(Internationalization.format("use_help"));
 								}
 							}
 							if(amount <= 0){
-								rp.sendMessage(Internationalization.getInstance().getString("number_higher_then_zero"));
+								rp.sendMessage(Internationalization.format("number_higher_then_zero"));
 							}
 							switch (args[1].toLowerCase()){
 								case "defence":
@@ -85,7 +82,7 @@ public class CommandHandler implements CommandExecutor{
 									rp.addAgility(amount,true,true);
 									break;
 								default:
-									rp.sendMessage(Internationalization.getInstance().getString("invalid_attribute"));
+									rp.sendMessage(Internationalization.format("invalid_attribute"));
 							}
 							return true;
 						case "+defence":
@@ -124,11 +121,11 @@ public class CommandHandler implements CommandExecutor{
 									if(rp2 != null){
 										rp.sendMessage(rp2.toString());
 									}else{
-										rp.sendMessage(Internationalization.getInstance().getString("player_not_connected"));
+										rp.sendMessage(Internationalization.format("player_not_connected"));
 									}
 								}
 								else{
-									rp.sendMessage(Internationalization.getInstance().getString("player_not_connected"));
+									rp.sendMessage(Internationalization.format("player_not_connected"));
 								}
 							}
 							else{
@@ -166,7 +163,7 @@ public class CommandHandler implements CommandExecutor{
 									rp.setClass((String)Classes.getInstance().getKeys(false).toArray()[rdm],false);
 								}
 								else{
-									rp.sendMessage(Internationalization.getInstance().getString("invalid_class"));
+									rp.sendMessage(Internationalization.format("invalid_class"));
 								}
 							}
 							return true;
@@ -181,7 +178,7 @@ public class CommandHandler implements CommandExecutor{
 									rp.setRace((String)Races.getInstance().getKeys(false).toArray()[rdm],false);
 								}
 								else{
-									rp.sendMessage(Internationalization.getInstance().getString("invalid_race"));
+									rp.sendMessage(Internationalization.format("invalid_race"));
 								}
 							}
 							return true;
@@ -191,7 +188,7 @@ public class CommandHandler implements CommandExecutor{
 									rp.reset(args[1],null);
 								}
 								else{
-									rp.sendMessage(Internationalization.getInstance().getString("no_such_class"));
+									rp.sendMessage(Internationalization.format("no_such_class"));
 								}
 							}
 							else if(args.length == 3){
@@ -199,7 +196,7 @@ public class CommandHandler implements CommandExecutor{
 									rp.reset(args[1],args[2]);
 								}
 								else{
-									sender.sendMessage(ChatColor.RED + Internationalization.getInstance().getString("no_such_class_or_race"));
+									sender.sendMessage(ChatColor.RED + Internationalization.format("no_such_class_or_race"));
 								}
 							}
 							else{
@@ -211,16 +208,16 @@ public class CommandHandler implements CommandExecutor{
 								rp.resetAll(false);
 							}
 							else{
-								rp.sendMessage(Internationalization.getInstance().getString("validate_complete_reset"));
+								rp.sendMessage(Internationalization.format("validate_complete_reset"));
 							}
 							return true;
 						case "nextlvl":
-							rp.sendMessage(Internationalization.getInstance().getString("next_level_at") + " " + rp.getNextLvl() + " xp");
+							rp.sendMessage(Internationalization.format("next_level_at", rp.getNextLvl()));
 							return true;
 						case "save":
 							if(senderHasPermission(sender,"core.save")){
 								rp.saveData();
-								rp.sendMessage(Internationalization.getInstance().getString("stats_saved"));
+								rp.sendMessage(Internationalization.format("stats_saved"));
 							}
 							return true;
 						case "cast":
@@ -230,12 +227,12 @@ public class CommandHandler implements CommandExecutor{
 							else if(args.length == 3){
 								Player p = plugin.getServer().getPlayer(args[2]);
 								if(p == null){
-									rp.sendMessage(Internationalization.getInstance().getString("player_not_connected"));
+									rp.sendMessage(Internationalization.format("player_not_connected"));
 								}
 								else {
 									LowbrainPlayer to = LowbrainCore.getInstance().getPlayerHandler().getList().get(p.getUniqueId());
 									if(to == null){
-										rp.sendMessage(Internationalization.getInstance().getString("player_not_connected"));
+										rp.sendMessage(Internationalization.format("player_not_connected"));
 									}
 									else{
 										rp.castSpell(args[1],to);
@@ -284,10 +281,10 @@ public class CommandHandler implements CommandExecutor{
 							return true;
 						case "getskill":
 							if(rp.getCurrentSkill() != null){
-								rp.sendMessage(Internationalization.getInstance().getString("current_skill") + " " + rp.getCurrentSkill().getName());
+								rp.sendMessage(Internationalization.format("current_skill", rp.getCurrentSkill().getName()));
 							}
 							else{
-								rp.sendMessage(Internationalization.getInstance().getString("no_current_skill"));
+								rp.sendMessage(Internationalization.format("no_current_skill"));
 							}
 							return true;
 						case "upskill":
@@ -312,7 +309,7 @@ public class CommandHandler implements CommandExecutor{
 									rp.sendMessage(s.info(),ChatColor.LIGHT_PURPLE);
 								}
 								else{
-									rp.sendMessage(Internationalization.getInstance().getString("no_such_skill"),ChatColor.RED);
+									rp.sendMessage(Internationalization.format("no_such_skill"),ChatColor.RED);
 								}
 							}
 							return true;
@@ -323,7 +320,7 @@ public class CommandHandler implements CommandExecutor{
 									rp.sendMessage(s.toString(),ChatColor.LIGHT_PURPLE);
 								}
 								else{
-									rp.sendMessage(Internationalization.getInstance().getString("no_such_skill"),ChatColor.RED);
+									rp.sendMessage(Internationalization.format("no_such_skill"),ChatColor.RED);
 								}
 							}
 							return true;
@@ -333,7 +330,7 @@ public class CommandHandler implements CommandExecutor{
 									rp.getPowers().values()) {
 								pws += power.getName() + ", ";
 							}
-							rp.sendMessage(Helper.StringIsNullOrEmpty(pws) ? Internationalization.getInstance().getString("no_powers_available") : pws);
+							rp.sendMessage(Helper.StringIsNullOrEmpty(pws) ? Internationalization.format("no_powers_available") : pws);
 							return true;
 					}
 				}
@@ -342,13 +339,13 @@ public class CommandHandler implements CommandExecutor{
 					case "save-all":
 						if(senderHasPermission(sender,"core.save-all")) {
 							plugin.saveData();
-							sender.sendMessage(Internationalization.getInstance().getString("all_stats_saved"));
+							sender.sendMessage(Internationalization.format("all_stats_saved"));
 						}
 						return true;
 					case "reload":
 						if(senderHasPermission(sender,"core.reload")){
 							plugin.reloadConfig();
-							sender.sendMessage(Internationalization.getInstance().getString("config_file_reloaded"));
+							sender.sendMessage(Internationalization.format("config_file_reloaded"));
 						}
 						return true;
 					case "set":
@@ -360,17 +357,17 @@ public class CommandHandler implements CommandExecutor{
 							Player p = plugin.getServer().getPlayer(pName);
 							LowbrainPlayer rp = p != null ? LowbrainCore.getInstance().getPlayerHandler().getList().get(p.getUniqueId()) : null;
 							if(rp == null){
-								sender.sendMessage(Internationalization.getInstance().getString("player_not_connected"));
+								sender.sendMessage(Internationalization.format("player_not_connected"));
 							}
 							else{
 								int value = Helper.intTryParse(sValue,-1);
 								if(value < 0){
-									sender.sendMessage(Internationalization.getInstance().getString("invalid_value"));
+									sender.sendMessage(Internationalization.format("invalid_value"));
 								}
 								else{
 									switch (attribute){
 										default:
-											sender.sendMessage(Internationalization.getInstance().getString("invalid_attribute"));
+											sender.sendMessage(Internationalization.format("invalid_attribute"));
 											break;
 										case "intelligence":
 										case "intel":
@@ -464,7 +461,7 @@ public class CommandHandler implements CommandExecutor{
 		if(sender.hasPermission(permission)){
 			return true;
 		}
-		sender.sendMessage(ChatColor.RED + Internationalization.getInstance().getString("insufficient_permission"));
+		sender.sendMessage(ChatColor.RED + Internationalization.format("insufficient_permission"));
 		return false;
 	}
 }

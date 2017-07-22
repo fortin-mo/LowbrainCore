@@ -34,7 +34,7 @@ public class ArmorEquipListener implements Listener {
 
             String requirements =  rp.canEquipItemString(e.getNewArmorPiece());
             if(!Helper.StringIsNullOrEmpty(requirements)) {
-                rp.sendMessage(Internationalization.getInstance().getString("cannot_equit_armor_or_item") + requirements, ChatColor.RED);
+                rp.sendMessage(Internationalization.format("cannot_equit_armor_or_item", requirements), ChatColor.RED);
                 e.setCancelled(true);
             }
         }

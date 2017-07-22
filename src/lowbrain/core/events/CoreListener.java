@@ -31,6 +31,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -53,9 +54,8 @@ public class CoreListener implements Listener {
      */
     @EventHandler
     public void onCreatureSpawn(CreatureSpawnEvent e){
-        if(Settings.getInstance().isDisableMobNoTickDamage()){
+        if(Settings.getInstance().isDisableMobNoTickDamage())
             e.getEntity().setNoDamageTicks(0);
-        }
 
         // animal spawned from breeding
         if (e.getEntity() instanceof Animals && e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.BREEDING) {
@@ -91,7 +91,7 @@ public class CoreListener implements Listener {
         String requirements =  rp.canEquipItemString(e.getItem());
         if(!Helper.StringIsNullOrEmpty(requirements)) {
             e.setUseItemInHand(Event.Result.DENY);
-            rp.sendMessage(Internationalization.getInstance().getString("cannot_equit_armor_or_item") + requirements, ChatColor.RED);
+            rp.sendMessage(Internationalization.format("cannot_equit_armor_or_item", requirements), ChatColor.RED);
             e.setCancelled(true);
             return;
         }
@@ -104,93 +104,11 @@ public class CoreListener implements Listener {
                 if(n.startsWith("staff")){
 
                     ConfigurationSection staffSection = Staffs.getInstance().getConfigurationSection(n);
-                    if(staffSection != null){
-                        Boolean gravity = staffSection.getBoolean("gravity");
-                        double speed = staffSection.getDouble("speed");
-                        int maxDurability = staffSection.getInt("durability");
-                        int durability = maxDurability;
-                        int cooldown = staffSection.getInt("cooldown",0);
-                        String sDurability = "";
-                        String sLastUsed = "";
-                        Calendar lastUsed = Calendar.getInstance();
-                        lastUsed.add(Calendar.SECOND,-cooldown - 1);
 
-                        if(e.getItem().getItemMeta().hasLore()){
-                            
-                            int lastUsedIntex = iMeta.getLore().indexOf("last used : ");
-                            int durabilityIndex = iMeta.getLore().indexOf("durability : ");
-                            //sLastUsed = iMeta.getLore().get(e.getItem().getItemMeta().getLore().size() - 2); //before last lore
-                            //sDurability = iMeta.getLore().get(e.getItem().getItemMeta().getLore().size() - 1); //last lore
-                            sLastUsed = lastUsedIntex >= 0 ? iMeta.getLore().get(lastUsedIntex) : "";
-                            sDurability = durabilityIndex >= 0 ? iMeta.getLore().get(durabilityIndex) : "";
-                        }
+                    if (staffSection == null)
+                        return;
 
-                        //if has durability lore, get the durability
-                        if(!Helper.StringIsNullOrEmpty(sDurability)){
-                            String[] tmp = sDurability.split(" : ");
-                            durability = tmp.length > 1 ? Helper.intTryParse(tmp[1],durability) : durability;
-                        }
-                        //if has lastUsed lore, get the last used date
-                        if(!Helper.StringIsNullOrEmpty(sLastUsed)){
-                            String[] tmp = sLastUsed.split(" : ");
-                            lastUsed = tmp.length > 1 ? Helper.dateTryParse(tmp[1],lastUsed) : lastUsed;
-                        }
-
-                        lastUsed.add(Calendar.SECOND,cooldown);
-                        if(lastUsed.after(Calendar.getInstance())) return;
-
-                        durability -= 1;
-
-                        String effect = staffSection.getString("effect");
-                        switch (effect){
-                            case "fire_tick":
-                                Snowball fireTick = rp.getPlayer().launchProjectile(Snowball.class,rp.getPlayer().getLocation().getDirection().clone().multiply(speed));
-                                fireTick.setGravity(gravity);
-                                fireTick.setCustomName(n);
-                                fireTick.setShooter(rp.getPlayer());
-                                fireTick.setFireTicks(staffSection.getInt("effect_duration") * 20);
-                                rp.getPlayer().getWorld().playEffect(rp.getPlayer().getLocation(),Effect.BOW_FIRE,1,0);
-                                break;
-                            case "fire_ball":
-                                Fireball fireBall = rp.getPlayer().launchProjectile(Fireball.class,rp.getPlayer().getLocation().getDirection().clone().multiply(speed));
-                                fireBall.setCustomName(n);
-                                fireBall.setGravity(gravity);
-                                fireBall.setShooter(rp.getPlayer());
-                                rp.getPlayer().getWorld().playEffect(rp.getPlayer().getLocation(),Effect.BOW_FIRE,1,0);
-                                break;
-                            case "freezing_ball":
-                                Snowball freezingBall = rp.getPlayer().launchProjectile(Snowball.class,rp.getPlayer().getLocation().getDirection().clone().multiply(speed));
-                                freezingBall.setGravity(gravity);
-                                freezingBall.setCustomName(n);
-                                freezingBall.setShooter(rp.getPlayer());
-                                rp.getPlayer().getWorld().playEffect(rp.getPlayer().getLocation(),Effect.BOW_FIRE,1,0);
-                                break;
-                            case "teleport":
-                                EnderPearl enderPearl = rp.getPlayer().launchProjectile(EnderPearl.class,rp.getPlayer().getLocation().getDirection().clone().multiply(speed));
-                                enderPearl.setGravity(gravity);
-                                enderPearl.setCustomName(n);
-                                enderPearl.setShooter(rp.getPlayer());
-                                rp.getPlayer().getWorld().playEffect(rp.getPlayer().getLocation(),Effect.BOW_FIRE,1,0);
-                                break;
-                        }
-                        if(durability <= 0){
-                            rp.getPlayer().getInventory().remove(e.getItem());
-                            rp.getPlayer().updateInventory();
-                            rp.sendMessage(Internationalization.getInstance().getString("item_destroyed"),ChatColor.GRAY);
-                        }
-                        else{
-                            if(durability <= 10)rp.sendMessage(Internationalization.getInstance().getString("only_10_cast_left"));
-
-                            List<String> lores = iMeta.getLore();
-                            lores.remove(lores.size() - 1);
-                            lores.remove(lores.size() - 1);
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-                            lores.add("last_used : "  + sdf.format(Calendar.getInstance().getTime()));
-                            lores.add("durability : " + durability);
-                            iMeta.setLore(lores);
-                            e.getItem().setItemMeta(iMeta);
-                        }
-                    }
+                    onPlayerUseStaff(rp, staffSection, e.getItem());
                 }
             }
         }
@@ -205,7 +123,10 @@ public class CoreListener implements Listener {
         if(e.getAmount() > 0) {
             Player p = e.getPlayer();
             LowbrainPlayer rp = plugin.getPlayerHandler().getList().get(p.getUniqueId());
-            if(rp == null)return;
+
+            if(rp == null)
+                return;
+
             plugin.debugInfo("************* On Player Exp Change ( naturally ) **************");
             plugin.debugInfo("              Player gains : " + e.getAmount() * Settings.getInstance().getParameters().getNaturalXpGainMultiplier() + " xp");
             rp.addExp(e.getAmount() * Settings.getInstance().getParameters().getNaturalXpGainMultiplier());
@@ -215,12 +136,11 @@ public class CoreListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerDies(PlayerDeathEvent e){
-        if(Settings.getInstance().getParameters().getOnPlayerDies().getItems_drops().isEnabled()){
+        if(Settings.getInstance().getParameters().getOnPlayerDies().getItems_drops().isEnabled())
             e.setKeepInventory(true);
-        }
-        else{
+        else
             e.setKeepInventory(false);
-        }
+
     }
 
     /***
@@ -404,8 +324,8 @@ public class CoreListener implements Listener {
         MutableBoolean isCritical = new MutableBoolean(false);
         MutableFloat missChance = new MutableFloat(0F);
         boolean isMissed = false;
-        boolean o = applyOffensiveAttack(e,isCritical, missChance);
-        boolean d = applyDefensive(e, missChance);
+        boolean off = applyOffensiveAttack(e,isCritical, missChance);
+        boolean deff = applyDefensive(e, missChance);
 
         double rdm = Math.random();
 
@@ -415,18 +335,20 @@ public class CoreListener implements Listener {
             e.setDamage(0);
         }
 
-        if(o){
+        if(off){
             //CREATING DAMAGE HOLOGRAM
             if(plugin.useHolographicDisplays){
                 NumberFormat formatter = new DecimalFormat("#0.00");
                 Location loc = e.getEntity().getLocation().add(0,2,0);
                 Hologram holoDamage = HologramsAPI.createHologram(plugin,loc);
                 ChatColor color = isCritical.booleanValue() ? ChatColor.DARK_RED : ChatColor.RED;
-                if(isMissed) {
+
+                if(isMissed)
                     holoDamage.appendTextLine(color + "miss");
-                } else {
+                else
                     holoDamage.appendTextLine(color + formatter.format(e.getFinalDamage()));
-                }
+
+
                 int directionX = Helper.randomInt(0,1) == 0 ? -1 : 1;
                 int directionZ = Helper.randomInt(0,1) == 0 ? -1 : 1;
 
@@ -455,82 +377,90 @@ public class CoreListener implements Listener {
     @EventHandler
     public void onPlayerDamaged(EntityDamageEvent e){
 
-        if(!(e.getEntity() instanceof Player))return;
-        if(e.getDamage() <= 0 ) return;
+        if(!(e.getEntity() instanceof Player))
+            return;
+
+        if(e.getDamage() <= 0 )
+            return;
+
         LowbrainPlayer damagee = plugin.getPlayerHandler().get(e.getEntity().getUniqueId());
 
-        if(damagee == null) return;
+        if(damagee == null)
+            return;
+
         float multiplier = 1;
 
         plugin.debugInfo("************* On Player get Damaged **************");
         plugin.debugInfo("              Damage caused by : " +e.getCause().name());
         plugin.debugInfo("              Initial damage : " +e.getDamage());
 
-        if(e.getCause().equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION)){
-            multiplier = damagee.getMultipliers().getDamagedByExplosion();
-        }
-        else if(e.getCause().equals(EntityDamageEvent.DamageCause.CONTACT)){
-            multiplier = damagee.getMultipliers().getDamagedByContact();
-        }
-        else if(e.getCause().equals(EntityDamageEvent.DamageCause.DRAGON_BREATH)){
-            multiplier = damagee.getMultipliers().getDamagedByFire();
-        }
-        else if(e.getCause().equals(EntityDamageEvent.DamageCause.DROWNING)){
-            multiplier = damagee.getMultipliers().getDamagedByDrowning();
-        }
-        else if(e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)){
-            multiplier = damagee.getMultipliers().getDamagedByExplosion();
-        }
-        else if(e.getCause().equals(EntityDamageEvent.DamageCause.FALL)){
-            multiplier = damagee.getMultipliers().getDamagedByFall();
-        }
-        else if(e.getCause().equals(EntityDamageEvent.DamageCause.FALLING_BLOCK)){
-            multiplier = damagee.getMultipliers().getDamagedByWeapon();
-        }
-        else if(e.getCause().equals(EntityDamageEvent.DamageCause.FIRE)){
-            multiplier = damagee.getMultipliers().getDamagedByFire();
-        }
-        else if(e.getCause().equals(EntityDamageEvent.DamageCause.FIRE_TICK)){
-            multiplier = damagee.getMultipliers().getDamagedByFireTick();
-        }
-        else if(e.getCause().equals(EntityDamageEvent.DamageCause.FLY_INTO_WALL)){
-            multiplier = damagee.getMultipliers().getDamagedByFlyIntoWall();
-        }
-        else if(e.getCause().equals(EntityDamageEvent.DamageCause.HOT_FLOOR)){
-            multiplier = damagee.getMultipliers().getDamagedByHotFloor();
-        }
-        else if(e.getCause().equals(EntityDamageEvent.DamageCause.LAVA)){
-            multiplier = damagee.getMultipliers().getDamagedByLava();
-        }
-        else if(e.getCause().equals(EntityDamageEvent.DamageCause.LIGHTNING)){
-            multiplier = damagee.getMultipliers().getDamagedByLightning();
-        }
-        else if(e.getCause().equals(EntityDamageEvent.DamageCause.MAGIC)){
-            multiplier = damagee.getMultipliers().getDamagedByMagic();
-        }
-        else if(e.getCause().equals(EntityDamageEvent.DamageCause.MELTING)){
-            multiplier = damagee.getMultipliers().getDamagedByMagic();
-        }
-        else if(e.getCause().equals(EntityDamageEvent.DamageCause.POISON)){
-            multiplier = damagee.getMultipliers().getDamagedByPoison();
-        }
-        else if(e.getCause().equals(EntityDamageEvent.DamageCause.STARVATION)){
-            multiplier = damagee.getMultipliers().getDamagedByStarvation();
-        }
-        else if(e.getCause().equals(EntityDamageEvent.DamageCause.SUFFOCATION)){
-            multiplier = damagee.getMultipliers().getDamagedBySuffocation();
-        }
-        else if(e.getCause().equals(EntityDamageEvent.DamageCause.THORNS)){
-            multiplier = damagee.getMultipliers().getDamagedByWeapon();
-        }
-        else if(e.getCause().equals(EntityDamageEvent.DamageCause.VOID)){
-            multiplier = damagee.getMultipliers().getDamagedByVoid();
-        }
-        else if(e.getCause().equals(EntityDamageEvent.DamageCause.WITHER)){
-            multiplier = damagee.getMultipliers().getDamagedByWither();
-        }
-        else{
-            multiplier = damagee.getMultipliers().getDamagedByDefault();
+        switch (e.getCause()){
+            case BLOCK_EXPLOSION:
+                multiplier = damagee.getMultipliers().getDamagedByExplosion();
+                break;
+            case CONTACT:
+                multiplier = damagee.getMultipliers().getDamagedByContact();
+                break;
+            case DRAGON_BREATH:
+                multiplier = damagee.getMultipliers().getDamagedByFire();
+                break;
+            case DROWNING:
+                multiplier = damagee.getMultipliers().getDamagedByDrowning();
+                break;
+            case ENTITY_EXPLOSION:
+                multiplier = damagee.getMultipliers().getDamagedByExplosion();
+                break;
+            case FALL:
+                multiplier = damagee.getMultipliers().getDamagedByFall();
+                break;
+            case FALLING_BLOCK:
+                multiplier = damagee.getMultipliers().getDamagedByWeapon();
+                break;
+            case FIRE:
+                multiplier = damagee.getMultipliers().getDamagedByFire();
+                break;
+            case FIRE_TICK:
+                multiplier = damagee.getMultipliers().getDamagedByFireTick();
+                break;
+            case FLY_INTO_WALL:
+                multiplier = damagee.getMultipliers().getDamagedByFlyIntoWall();
+                break;
+            case HOT_FLOOR:
+                multiplier = damagee.getMultipliers().getDamagedByHotFloor();
+                break;
+            case LAVA:
+                multiplier = damagee.getMultipliers().getDamagedByLava();
+                break;
+            case LIGHTNING:
+                multiplier = damagee.getMultipliers().getDamagedByLightning();
+                break;
+            case MAGIC:
+                multiplier = damagee.getMultipliers().getDamagedByMagic();
+                break;
+            case MELTING:
+                multiplier = damagee.getMultipliers().getDamagedByMagic();
+                break;
+            case POISON:
+                multiplier = damagee.getMultipliers().getDamagedByPoison();
+                break;
+            case STARVATION:
+                multiplier = damagee.getMultipliers().getDamagedByStarvation();
+                break;
+            case SUFFOCATION:
+                multiplier = damagee.getMultipliers().getDamagedBySuffocation();
+                break;
+            case THORNS:
+                multiplier = damagee.getMultipliers().getDamagedByWeapon();
+                break;
+            case VOID:
+                multiplier = damagee.getMultipliers().getDamagedByVoid();
+                break;
+            case WITHER:
+                multiplier = damagee.getMultipliers().getDamagedByWither();
+                break;
+            default:
+                multiplier = damagee.getMultipliers().getDamagedByDefault();
+                break;
         }
 
         plugin.debugInfo("              Defensive damage multiplier : " + multiplier);
@@ -635,8 +565,9 @@ public class CoreListener implements Listener {
     /**
      * create damaging effect depending on player attributes
      * @param p
-     * @return
+     * @return potion effect
      */
+    @Nullable
     private PotionEffect createMagicAttack(LowbrainPlayer p){
         int rdm = Helper.randomInt(1,7);
         int duration = 0;
@@ -796,9 +727,13 @@ public class CoreListener implements Listener {
      * @return true if multiplier was applied
      */
     private boolean applyDefensive(EntityDamageByEntityEvent e, MutableFloat missChance){
-        if( !(e.getEntity() instanceof Player)) return false;
+        if( !(e.getEntity() instanceof Player))
+            return false;
+
         LowbrainPlayer damagee = plugin.getPlayerHandler().getList().get(e.getEntity().getUniqueId());
-        if(damagee == null) return false;
+
+        if(damagee == null)
+            return false;
 
         plugin.debugInfo("------------- Applying Defense ---------------");
 
@@ -879,7 +814,8 @@ public class CoreListener implements Listener {
             missChance.setValue(newChance);
         }
 
-        if(!damageSet) return damageSet;
+        if(!damageSet)
+            return damageSet;
 
 
 
@@ -901,129 +837,77 @@ public class CoreListener implements Listener {
     private boolean applyOffensiveAttack(EntityDamageByEntityEvent e, MutableBoolean isCritical, MutableFloat missChance){
 
         plugin.debugInfo("------------- Applying Offensive Attack ------------------");
-        LowbrainPlayer damager = null;
+        EventSource eventSource = EventSource.getFromAttack(e);
 
-        boolean magicAttack = false;
-        boolean arrowAttack = false;
-        boolean normalAttack = false;
         float absorbDamage = 0F;
 
         double oldDamage = e.getDamage();
 
-        //DEFINING CAUSE OF DAMAGE
-        if (e.getDamager() instanceof Player) {
-            damager = plugin.getPlayerHandler().getList().get(e.getDamager().getUniqueId());
-            plugin.debugInfo("              ---- Attacked by another player : " + damager.getPlayer().getName());
-            normalAttack  = true;
-            magicAttack = false;
-            arrowAttack = false;
-        } else if (e.getDamager() instanceof Arrow) {
-            Arrow ar = (Arrow) e.getDamager();
+        if (eventSource == null || eventSource.damager == null)
+            return false;
 
-            if (ar.getShooter() instanceof Player) {
-                damager = plugin.getPlayerHandler().getList().get(((Player)((Arrow) e.getDamager()).getShooter()).getUniqueId());
+        if (eventSource.skill != null) {
+            for (Map.Entry<String, String> effect :
+                    eventSource.skill.getEffects().entrySet()) {
+
+                PotionEffect po = null;
+
+                switch (effect.getKey()){
+                    case "poison":
+                        po = new PotionEffect(PotionEffectType.WITHER,(int)(eventSource.skill.getEffectValue(effect.getValue()) *20),eventSource.skill.getCurrentLevel(),true,true);
+                        break;
+                    case "fire_tick":
+                        e.getEntity().setFireTicks((int)(eventSource.skill.getEffectValue(effect.getValue()) * 20));
+                        break;
+                    case "freeze":
+                        po = new PotionEffect(PotionEffectType.SLOW,(int)(eventSource.skill.getEffectValue(effect.getValue()) *20),eventSource.skill.getCurrentLevel(),true,true);
+                        break;
+                    case "absorb":
+                        absorbDamage = eventSource.skill.getEffectValue(effect.getValue());
+                        break;
+                    case "knockback":
+                        e.getEntity().setVelocity(((LivingEntity) e.getEntity()).getEyeLocation().getDirection().multiply(-1 * eventSource.skill.getEffectValue(effect.getValue())));
+                        break;
+                    case "lightning":
+                        e.getEntity().getWorld().strikeLightningEffect(e.getEntity().getLocation());
+                        break;
+                    case "damage":
+                        ((LivingEntity) e.getEntity()).damage(eventSource.skill.getEffectValue(effect.getValue()));
+                        break;
+                }
+                if(po != null){
+                    po.apply((LivingEntity)e.getEntity());
+                }
+
+                plugin.debugInfo("              skilled attack effect : " + effect.getKey());
             }
-            plugin.debugInfo("              ---- Attacked by arrow");
-            arrowAttack = true;
-            normalAttack = false;
-            magicAttack = false;
-        } else if (e.getDamager() instanceof ThrownPotion) {
-            ThrownPotion pot = (ThrownPotion) e.getDamager();
-            if (pot.getShooter() instanceof Player) {
-                damager = plugin.getPlayerHandler().getList().get(((Player)((ThrownPotion) e.getDamager()).getShooter()).getUniqueId());
-            }
-            plugin.debugInfo("              ---- Attacked by potion");
-            magicAttack = true;
-            normalAttack = false;
-            arrowAttack = false;
         }
 
-        //CUSTOM PROJECTILE (SKILLS AND STAFFS)
-        if(e.getDamager() instanceof  Projectile && e.getEntity() instanceof LivingEntity){
+        if (eventSource.source == EventSourceEnum.MAGIC_PROJECTILE && eventSource.staffSection != null) {
+            double baseDamage = eventSource.staffSection.getDouble("base_damage",-1);
+            String effect = eventSource.staffSection.getString("effect","");
+            int effectDuration = eventSource.staffSection.getInt("effect_duration",3);
+            plugin.debugInfo("              ---- Attacked by magic projectile : " + effect);
 
-            Projectile projectile = (Projectile) e.getDamager();
-
-            if(projectile.getShooter() instanceof Player && damager == null){
-                damager = plugin.getPlayerHandler().getList().get(((Player) projectile.getShooter()).getUniqueId());
+            if(baseDamage >= 0) {
+                e.setDamage(baseDamage);
+                oldDamage = baseDamage;
             }
 
-            if(damager != null && !Helper.StringIsNullOrEmpty(projectile.getCustomName())){
-
-                if(damager.getSkills().containsKey(projectile.getCustomName())){
-                    LowbrainSkill skill = damager.getSkills().get(projectile.getCustomName());
-
-                    plugin.debugInfo("              ---- getting skilled attack effect");
-
-                    for (Map.Entry<String, String> effect :
-                            skill.getEffects().entrySet()) {
-
-                        PotionEffect po = null;
-
-                        switch (effect.getKey()){
-                            case "poison":
-                                po = new PotionEffect(PotionEffectType.WITHER,(int)(skill.getEffectValue(effect.getValue()) *20),skill.getCurrentLevel(),true,true);
-                                break;
-                            case "fire_tick":
-                                e.getEntity().setFireTicks((int)(skill.getEffectValue(effect.getValue()) * 20));
-                                break;
-                            case "freeze":
-                                po = new PotionEffect(PotionEffectType.SLOW,(int)(skill.getEffectValue(effect.getValue()) *20),skill.getCurrentLevel(),true,true);
-                                break;
-                            case "absorb":
-                                absorbDamage = skill.getEffectValue(effect.getValue());
-                                break;
-                            case "knockback":
-                                e.getEntity().setVelocity(((LivingEntity) e.getEntity()).getEyeLocation().getDirection().multiply(-1 * skill.getEffectValue(effect.getValue())));
-                                break;
-                            case "lightning":
-                                e.getEntity().getWorld().strikeLightningEffect(e.getEntity().getLocation());
-                                break;
-                            case "damage":
-                                ((LivingEntity) e.getEntity()).damage(skill.getEffectValue(effect.getValue()));
-                                break;
-                        }
-                        if(po != null){
-                            po.apply((LivingEntity)e.getEntity());
-                        }
-
-                        plugin.debugInfo("              skilled attack effect : " + effect.getKey());
-                    }
-                }
-                else{
-                    ConfigurationSection staffSection = Staffs.getInstance().getConfigurationSection(projectile.getCustomName());
-                    if(staffSection != null){
-
-                        double baseDamage = staffSection.getDouble("base_damage",-1);
-                        String effect = staffSection.getString("effect","");
-                        int effectDuration = staffSection.getInt("effect_duration",3);
-                        plugin.debugInfo("              ---- Attacked by magic projectile : " + effect);
-
-                        if(baseDamage >= 0) {
-                            e.setDamage(baseDamage);
-                            oldDamage = baseDamage;
-                            magicAttack = true;
-                            arrowAttack = false;
-                            normalAttack = false;
-                        }
-
-                        switch (effect){
-                            case "freezing_ball":
-                                PotionEffect po = new PotionEffect(PotionEffectType.SLOW,effectDuration*20,3,true,true);
-                                po.apply((LivingEntity)e.getEntity());
-                                break;
-                            case "fire_tick":
-                                e.getEntity().setFireTicks(effectDuration * 20);
-                                break;
-                        }
-                    }
-                }
-
+            switch (effect){
+                case "freezing_ball":
+                    PotionEffect po = new PotionEffect(PotionEffectType.SLOW,effectDuration*20,3,true,true);
+                    po.apply((LivingEntity)e.getEntity());
+                    break;
+                case "fire_tick":
+                    e.getEntity().setFireTicks(effectDuration * 20);
+                    break;
             }
         }
 
         //CHECK IF PLAYER CAN USE THE ITEM IN HAND
-        if(damager != null && damager.getPlayer().getInventory().getItemInMainHand() != null){
-            if(!damager.canEquipItem(damager.getPlayer().getInventory().getItemInMainHand())){
+        if(eventSource.damager.getPlayer().getInventory().getItemInMainHand() != null){
+            if(!eventSource.damager.canEquipItem(eventSource.damager.getPlayer().getInventory().getItemInMainHand())){
                 e.setCancelled(true);
                 plugin.debugInfo("              ---- Player can't use this item !");
                 return false;
@@ -1031,13 +915,16 @@ public class CoreListener implements Listener {
         }
 
         //APPLYING MAGIC EFFECT BY ATTACKER
-        if(damager != null && !magicAttack && Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().enable){
-            plugin.debugInfo("              From : " + damager.getPlayer().getName());
-            double chanceOfMagicEffect = damager.getMultipliers().getChanceOfMagicEffect();
+        if(eventSource.source != EventSourceEnum.MAGIC_PROJECTILE
+                && eventSource.source != EventSourceEnum.MAGIC
+                && Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().enable){
+
+            plugin.debugInfo("              From : " + eventSource.damager.getPlayer().getName());
+            double chanceOfMagicEffect = eventSource.damager.getMultipliers().getChanceOfMagicEffect();
             plugin.debugInfo("              Chance of performing magic attack : " + chanceOfMagicEffect);
             double rdm = Math.random();
             if(rdm < chanceOfMagicEffect){
-                PotionEffect effect = createMagicAttack(damager);
+                PotionEffect effect = createMagicAttack(eventSource.damager);
                 if(e.getEntity() instanceof LivingEntity && effect != null){
                     ((LivingEntity) e.getEntity()).addPotionEffect(effect);
                     plugin.debugInfo("              Magic effect added : " + effect.getType().getName() + ", " + effect.getDuration()/20 + ", " + effect.getAmplifier());
@@ -1046,49 +933,51 @@ public class CoreListener implements Listener {
         }
 
         //APPLYING DAMAGE CHANGE DEPENDING ON OFFENCIVE ATTRIBUTES
-        if(arrowAttack && damager != null && Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().projectile.isEnabled()){
+        if(eventSource.source == EventSourceEnum.ARROW && Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().projectile.isEnabled()){
             e.setDamage(
                     Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().projectile.randomizeFromValue(
-                            damager.getMultipliers().getAttackByProjectile() * (float)e.getDamage()
+                            eventSource.damager.getMultipliers().getAttackByProjectile() * (float)e.getDamage()
                     )
             );
         }
-        else if(normalAttack && damager != null && Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().weapon.isEnabled()){
+
+        else if(eventSource.source == EventSourceEnum.NORMAL && Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().weapon.isEnabled()){
             e.setDamage(
                     Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().weapon.randomizeFromValue(
-                            damager.getMultipliers().getAttackByWeapon() * (float)e.getDamage()
+                            eventSource.damager.getMultipliers().getAttackByWeapon() * (float)e.getDamage()
                     )
             );
         }
-        else if(magicAttack && damager != null && Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().magic.isEnabled()){
+
+        else if((eventSource.source == EventSourceEnum.MAGIC
+                || eventSource.source == EventSourceEnum.MAGIC_PROJECTILE)
+                && Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().magic.isEnabled()){
             e.setDamage(
                     Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().magic.randomizeFromValue(
-                            damager.getMultipliers().getAttackByMagic() * (float)e.getDamage()
+                            eventSource.damager.getMultipliers().getAttackByMagic() * (float)e.getDamage()
                     )
             );
         }
 
         //applying skilled attack if necessary
-        if(normalAttack && damager != null && damager.getCurrentSkill() != null
-                && (damager.getCurrentSkill().getEventType().equals("attack_entity") || damager.getCurrentSkill().getEventType().equals("both"))
+        if(eventSource.source == EventSourceEnum.NORMAL && eventSource.damager.getCurrentSkill() != null
+                && (eventSource.damager.getCurrentSkill().getEventType().equals("attack_entity") || eventSource.damager.getCurrentSkill().getEventType().equals("both"))
                 && e.getEntity() instanceof LivingEntity
-                && damager.getCurrentSkill().executeWeaponAttackSkill(damager,(LivingEntity) e.getEntity(),e.getFinalDamage())){
+                && eventSource.damager.getCurrentSkill().executeWeaponAttackSkill(eventSource.damager,(LivingEntity) e.getEntity(),e.getFinalDamage())){
 
         }
 
-        if(damager == null) return false;
-
         if(Settings.getInstance().getParameters().getOnPlayerAttackEntity().getChanceOfMissing().isEnabled()) {
-            missChance.setValue(damager.getMultipliers().getChanceOfMissing());
+            missChance.setValue(eventSource.damager.getMultipliers().getChanceOfMissing());
         }
 
         if(Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCriticalHit().enable){
             double rdm = Math.random();
-            float chance = damager.getMultipliers().getCriticalHitChance();
+            float chance = eventSource.damager.getMultipliers().getCriticalHitChance();
             plugin.debugInfo("              Chance of performing a critical hit : " + chance);
             if(rdm < chance){
                 isCritical.setValue(true);
-                float criticalHitMultiplier = damager.getMultipliers().getCriticalHitMultiplier();
+                float criticalHitMultiplier = eventSource.damager.getMultipliers().getCriticalHitMultiplier();
                 plugin.debugInfo("              Critical hit multiplier : " + criticalHitMultiplier);
                 e.setDamage(e.getDamage() * criticalHitMultiplier);
             }
@@ -1101,14 +990,14 @@ public class CoreListener implements Listener {
             //determine if the dot product between the vectors is greater than 0
             if (attackerDirection.dot(victimDirection) > 0) {
                 //player was backstabbed.}
-                float bs = damager.getMultipliers().getBackStabMultiplier();
+                float bs = eventSource.damager.getMultipliers().getBackStabMultiplier();
                 e.setDamage(e.getDamage() * bs);
                 plugin.debugInfo("              Backstap multiplier : " + bs);
             }
         }
 
         if(absorbDamage > 0){
-            damager.getPlayer().setHealth(damager.getPlayer().getHealth() + absorbDamage);
+            eventSource.damager.getPlayer().setHealth(eventSource.damager.getPlayer().getHealth() + absorbDamage);
         }
 
         plugin.debugInfo("              Initial damage : " + oldDamage);
@@ -1119,4 +1008,96 @@ public class CoreListener implements Listener {
         return true;
     }
 
+    private void onPlayerUseStaff(LowbrainPlayer rp, ConfigurationSection staffSection, ItemStack item) {
+        if (item == null || item.getItemMeta() == null)
+            return;
+
+        ItemMeta iMeta = item.getItemMeta();
+        Boolean gravity = staffSection.getBoolean("gravity");
+        double speed = staffSection.getDouble("speed");
+        int maxDurability = staffSection.getInt("durability");
+        int durability = maxDurability;
+        int cooldown = staffSection.getInt("cooldown",0);
+        String sDurability = "";
+        String sLastUsed = "";
+        Calendar lastUsed = Calendar.getInstance();
+        lastUsed.add(Calendar.SECOND,-cooldown - 1);
+        String n = iMeta.getDisplayName().substring(2);
+
+        if(iMeta.hasLore()){
+
+            int lastUsedIntex = iMeta.getLore().indexOf("last used : ");
+            int durabilityIndex = iMeta.getLore().indexOf("durability : ");
+            //sLastUsed = iMeta.getLore().get(e.getItem().getItemMeta().getLore().size() - 2); //before last lore
+            //sDurability = iMeta.getLore().get(e.getItem().getItemMeta().getLore().size() - 1); //last lore
+            sLastUsed = lastUsedIntex >= 0 ? iMeta.getLore().get(lastUsedIntex) : "";
+            sDurability = durabilityIndex >= 0 ? iMeta.getLore().get(durabilityIndex) : "";
+        }
+
+        //if has durability lore, get the durability
+        if(!Helper.StringIsNullOrEmpty(sDurability)){
+            String[] tmp = sDurability.split(" : ");
+            durability = tmp.length > 1 ? Helper.intTryParse(tmp[1],durability) : durability;
+        }
+        //if has lastUsed lore, get the last used date
+        if(!Helper.StringIsNullOrEmpty(sLastUsed)){
+            String[] tmp = sLastUsed.split(" : ");
+            lastUsed = tmp.length > 1 ? Helper.dateTryParse(tmp[1],lastUsed) : lastUsed;
+        }
+
+        lastUsed.add(Calendar.SECOND,cooldown);
+        if(lastUsed.after(Calendar.getInstance())) return;
+
+        durability -= 1;
+
+        String effect = staffSection.getString("effect");
+        switch (effect){
+            case "fire_tick":
+                Snowball fireTick = rp.getPlayer().launchProjectile(Snowball.class,rp.getPlayer().getLocation().getDirection().clone().multiply(speed));
+                fireTick.setGravity(gravity);
+                fireTick.setCustomName(n);
+                fireTick.setShooter(rp.getPlayer());
+                fireTick.setFireTicks(staffSection.getInt("effect_duration") * 20);
+                rp.getPlayer().getWorld().playEffect(rp.getPlayer().getLocation(),Effect.BOW_FIRE,1,0);
+                break;
+            case "fire_ball":
+                Fireball fireBall = rp.getPlayer().launchProjectile(Fireball.class,rp.getPlayer().getLocation().getDirection().clone().multiply(speed));
+                fireBall.setCustomName(n);
+                fireBall.setGravity(gravity);
+                fireBall.setShooter(rp.getPlayer());
+                rp.getPlayer().getWorld().playEffect(rp.getPlayer().getLocation(),Effect.BOW_FIRE,1,0);
+                break;
+            case "freezing_ball":
+                Snowball freezingBall = rp.getPlayer().launchProjectile(Snowball.class,rp.getPlayer().getLocation().getDirection().clone().multiply(speed));
+                freezingBall.setGravity(gravity);
+                freezingBall.setCustomName(n);
+                freezingBall.setShooter(rp.getPlayer());
+                rp.getPlayer().getWorld().playEffect(rp.getPlayer().getLocation(),Effect.BOW_FIRE,1,0);
+                break;
+            case "teleport":
+                EnderPearl enderPearl = rp.getPlayer().launchProjectile(EnderPearl.class,rp.getPlayer().getLocation().getDirection().clone().multiply(speed));
+                enderPearl.setGravity(gravity);
+                enderPearl.setCustomName(n);
+                enderPearl.setShooter(rp.getPlayer());
+                rp.getPlayer().getWorld().playEffect(rp.getPlayer().getLocation(),Effect.BOW_FIRE,1,0);
+                break;
+        }
+        if(durability <= 0){
+            rp.getPlayer().getInventory().remove(item);
+            rp.getPlayer().updateInventory();
+            rp.sendMessage(Internationalization.format("item_destroyed"),ChatColor.GRAY);
+        }
+        else{
+            if(durability <= 10)rp.sendMessage(Internationalization.format("only_10_cast_left"));
+
+            List<String> lores = iMeta.getLore();
+            lores.remove(lores.size() - 1);
+            lores.remove(lores.size() - 1);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+            lores.add("last_used : "  + sdf.format(Calendar.getInstance().getTime()));
+            lores.add("durability : " + durability);
+            iMeta.setLore(lores);
+            item.setItemMeta(iMeta);
+        }
+    }
 }

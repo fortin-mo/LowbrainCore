@@ -253,14 +253,13 @@ public class LowbrainPower {
 
             if(this.lastCast.after(cooldowntime)){
                 int rest = (int)((lastCast.getTimeInMillis() - cooldowntime.getTimeInMillis()) / 1000);
-                from.sendMessage(Internationalization.getInstance().getString("spell_in_cooldown") + ""
-                        + rest + " "
-                        + Internationalization.getInstance().getString("seconds_left"),ChatColor.RED);
+                from.sendMessage(Internationalization.format("spell_in_cooldown") + " "
+                        + Internationalization.format("seconds_left", rest),ChatColor.RED);
                 return false;
             }
 
             if(to != null && this.getCastRange() == 0){
-                from.sendMessage(Internationalization.getInstance().getString("cant_cast_this_spell_on_others"),ChatColor.RED);
+                from.sendMessage(Internationalization.format("cant_cast_this_spell_on_others"),ChatColor.RED);
                 return false;
             }
             if(to != null && this.getCastRange() > 0){
@@ -271,7 +270,7 @@ public class LowbrainPower {
                 double distance = Math.sqrt(x*x + y*y + z*z);
 
                 if(this.getCastRange() < distance){
-                    from.sendMessage(Internationalization.getInstance().getString("player_out_of_range") + " " + this.getCastRange() + "/" + distance,ChatColor.RED);
+                    from.sendMessage(Internationalization.format("player_out_of_range", this.getCastRange() + "/" + distance),ChatColor.RED);
                     return false;
                 }
             }
@@ -279,12 +278,12 @@ public class LowbrainPower {
             String msg = from.meetRequirementsString(this.requirements);
 
             if(!Helper.StringIsNullOrEmpty(msg)){
-                from.sendMessage(Internationalization.getInstance().getString("spell_requirements_to_high") + " " + msg,ChatColor.RED);
+                from.sendMessage(Internationalization.format("spell_requirements_to_high", msg),ChatColor.RED);
                 return false;
             }
 
             if(from.getCurrentMana() < this.getMana()){
-                from.sendMessage(Internationalization.getInstance().getString("insufficient_mana") + " " + this.getMana() + "/" + from.getCurrentMana(),ChatColor.RED);
+                from.sendMessage(Internationalization.format("insufficient_mana") + " " + this.getMana() + "/" + from.getCurrentMana(),ChatColor.RED);
                 return false;
             }
 
@@ -294,10 +293,10 @@ public class LowbrainPower {
             from.setCurrentMana(from.getCurrentMana() - this.getMana());
             this.lastCast = Calendar.getInstance();
             CoreListener.plugin.debugInfo(from.getPlayer().getName() + " cast " + this.getName());
-            from.sendMessage(Internationalization.getInstance().getString("cast_succesfull"));
+            from.sendMessage(Internationalization.format("cast_succesfull"));
             return true;
         }catch (Exception e){
-            from.sendMessage(Internationalization.getInstance().getString("cast_failed") + " " + this.name, ChatColor.RED);
+            from.sendMessage(Internationalization.format("cast_failed", this.name), ChatColor.RED);
         }
         return false;
     }
