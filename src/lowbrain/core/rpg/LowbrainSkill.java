@@ -5,12 +5,9 @@ import lowbrain.core.commun.Helper;
 import lowbrain.core.config.Internationalization;
 import lowbrain.core.config.Skills;
 import lowbrain.core.events.CoreListener;
-import net.minecraft.server.v1_12_R1.EntityArrow;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftArrow;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
@@ -220,7 +217,7 @@ public class LowbrainSkill {
                         applyEffectToArrow(marrow);
                         marrow.setShooter(p.getPlayer());
                         marrow.setBounce(false);
-                        ((CraftArrow)marrow).getHandle().fromPlayer = EntityArrow.PickupStatus.DISALLOWED;
+                        marrow.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
                     }
                     succeed = true;
                     break;
@@ -229,15 +226,10 @@ public class LowbrainSkill {
                         int counts = 1;
                         @Override
                         public void run() {
-                            if (counts > currentLevel) {
+                            if (counts > currentLevel)
                                 cancel();
-                            }
-                            Arrow arrow = p.getPlayer().launchProjectile(Arrow.class,p.getPlayer().getLocation().getDirection().clone().normalize().multiply(ar.getVelocity().length()));
-                            applyEffectToArrow(arrow);
-                            arrow.setShooter(p.getPlayer());
-                            arrow.setBounce(false);
-                            ((CraftArrow)arrow).getHandle().fromPlayer = EntityArrow.PickupStatus.DISALLOWED;
-                            p.getPlayer().getWorld().playEffect(p.getPlayer().getLocation(), Effect.BOW_FIRE, 1, 0);
+
+                            launchArrow(ar, p);
                             counts++;
                         }
                     }.runTaskTimer(CoreListener.plugin, 4L, 4L);
@@ -248,15 +240,10 @@ public class LowbrainSkill {
                         int counts = 1;
                         @Override
                         public void run() {
-                            if (counts > currentLevel) {
+                            if (counts > currentLevel)
                                 cancel();
-                            }
-                            Arrow arrow = p.getPlayer().launchProjectile(Arrow.class,p.getPlayer().getLocation().getDirection().clone().normalize().multiply(ar.getVelocity().length()));
-                            applyEffectToArrow(arrow);
-                            arrow.setShooter(p.getPlayer());
-                            arrow.setBounce(false);
-                            ((CraftArrow)arrow).getHandle().fromPlayer = EntityArrow.PickupStatus.DISALLOWED;
-                            p.getPlayer().getWorld().playEffect(p.getPlayer().getLocation(), Effect.BOW_FIRE, 1, 0);
+
+                            launchArrow(ar, p);
                             counts++;
                         }
                     }.runTaskTimer(CoreListener.plugin, 2L, 2L);
@@ -280,6 +267,15 @@ public class LowbrainSkill {
         }catch (Exception e){
             return false;
         }
+    }
+
+    private void launchArrow(Arrow ar, LowbrainPlayer p) {
+        Arrow arrow = p.getPlayer().launchProjectile(Arrow.class,p.getPlayer().getLocation().getDirection().clone().normalize().multiply(ar.getVelocity().length()));
+        applyEffectToArrow(arrow);
+        arrow.setShooter(p.getPlayer());
+        arrow.setBounce(false);
+        arrow.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+        p.getPlayer().getWorld().playEffect(p.getPlayer().getLocation(), Effect.BOW_FIRE, 1, 0);
     }
 
     private void applyEffectToArrow(Arrow arrow){

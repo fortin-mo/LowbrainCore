@@ -1,15 +1,14 @@
 
-# dont touch these, they are use to notice admin of config changes
+# don't touch these, they are use to notice admin of config changes
 versions:
- classes: 1.1
- config: 2.5
+ classes: 1.0
+ config: 1.0
  itemsrequirements: 1.0
  mobsxp: 1.0
- powers: 2.1
- races: 1.1
- skills: 2.0
- staffs: 1.0
- internationalization: 1.1
+ powers: 1.0
+ races: 1.0
+ skills: 1.0
+ internationalization: 1.0
  parameters: 1.0
 
 # set an hardcore mod
@@ -37,7 +36,7 @@ max_lvl: 100
 # if set to an infinite value (<0), default value of 100 will be used when needed in mathematics
 max_stats: 100
 
-# allow player to deduct atributes. for exemple : /core add strength -1
+# allow player to deduct attributes. for example : /core add strength -1
 allow_deduction_points: false
 
 # allow player to switch class. it will apply attributes changes accordingly

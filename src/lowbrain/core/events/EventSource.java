@@ -1,19 +1,12 @@
 package lowbrain.core.events;
 
 import lowbrain.core.commun.Helper;
-import lowbrain.core.config.Staffs;
 import lowbrain.core.main.LowbrainCore;
 import lowbrain.core.rpg.LowbrainPlayer;
 import lowbrain.core.rpg.LowbrainSkill;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
-import java.util.Map;
 
 public class EventSource {
     public LowbrainPlayer damager;
@@ -86,8 +79,8 @@ public class EventSource {
                     LowbrainCore.getInstance().debugInfo("              ---- getting skilled attack effect");
                 }
 
-                else {
-                    staffSection = Staffs.getInstance().getConfigurationSection(projectile.getCustomName());
+                else if (LowbrainCore.getInstance().useLowbrainItems) {
+                    staffSection = lowbrain.items.main.Main.getInstance().getStaffConfig().getConfigurationSection(projectile.getCustomName());
                     if (staffSection != null) {
                         source = EventSourceEnum.MAGIC_PROJECTILE;
                     }

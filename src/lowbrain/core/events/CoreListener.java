@@ -8,7 +8,6 @@ import lowbrain.core.commun.Helper;
 import lowbrain.core.commun.Settings;
 import lowbrain.core.config.Internationalization;
 import lowbrain.core.config.MobsXP;
-import lowbrain.core.config.Staffs;
 import lowbrain.core.main.LowbrainCore;
 import lowbrain.core.rpg.LowbrainPlayer;
 import lowbrain.core.rpg.LowbrainSkill;
@@ -101,9 +100,9 @@ public class CoreListener implements Listener {
             if(e.getItem().getItemMeta() != null && !Helper.StringIsNullOrEmpty(e.getItem().getItemMeta().getDisplayName())){
                 ItemMeta iMeta = e.getItem().getItemMeta();
                 String n = iMeta.getDisplayName().substring(2);
-                if(n.startsWith("staff")){
+                if(n.startsWith("staff") && plugin.useLowbrainItems){
 
-                    ConfigurationSection staffSection = Staffs.getInstance().getConfigurationSection(n);
+                    ConfigurationSection staffSection = lowbrain.items.main.Main.getInstance().getStaffConfig().getConfigurationSection(n);
 
                     if (staffSection == null)
                         return;
@@ -1012,16 +1011,14 @@ public class CoreListener implements Listener {
         if (item == null || item.getItemMeta() == null)
             return;
 
+        lowbrain.items.main.Staff staff = new lowbrain.items.main.Staff(staffSection);
+
         ItemMeta iMeta = item.getItemMeta();
-        Boolean gravity = staffSection.getBoolean("gravity");
-        double speed = staffSection.getDouble("speed");
-        int maxDurability = staffSection.getInt("durability");
-        int durability = maxDurability;
-        int cooldown = staffSection.getInt("cooldown",0);
+        int durability = staff.getDurability();
         String sDurability = "";
         String sLastUsed = "";
         Calendar lastUsed = Calendar.getInstance();
-        lastUsed.add(Calendar.SECOND,-cooldown - 1);
+        lastUsed.add(Calendar.SECOND,-staff.getCooldown() - 1);
         String n = iMeta.getDisplayName().substring(2);
 
         if(iMeta.hasLore()){
@@ -1045,38 +1042,37 @@ public class CoreListener implements Listener {
             lastUsed = tmp.length > 1 ? Helper.dateTryParse(tmp[1],lastUsed) : lastUsed;
         }
 
-        lastUsed.add(Calendar.SECOND,cooldown);
+        lastUsed.add(Calendar.SECOND, staff.getCooldown());
         if(lastUsed.after(Calendar.getInstance())) return;
 
         durability -= 1;
 
-        String effect = staffSection.getString("effect");
-        switch (effect){
+        switch (staff.getEffect()){
             case "fire_tick":
-                Snowball fireTick = rp.getPlayer().launchProjectile(Snowball.class,rp.getPlayer().getLocation().getDirection().clone().multiply(speed));
-                fireTick.setGravity(gravity);
+                Snowball fireTick = rp.getPlayer().launchProjectile(Snowball.class,rp.getPlayer().getLocation().getDirection().clone().multiply(staff.getSpeed()));
+                fireTick.setGravity(staff.isGravity());
                 fireTick.setCustomName(n);
                 fireTick.setShooter(rp.getPlayer());
-                fireTick.setFireTicks(staffSection.getInt("effect_duration") * 20);
+                fireTick.setFireTicks(staff.getEffectDuration() * 20);
                 rp.getPlayer().getWorld().playEffect(rp.getPlayer().getLocation(),Effect.BOW_FIRE,1,0);
                 break;
             case "fire_ball":
-                Fireball fireBall = rp.getPlayer().launchProjectile(Fireball.class,rp.getPlayer().getLocation().getDirection().clone().multiply(speed));
+                Fireball fireBall = rp.getPlayer().launchProjectile(Fireball.class,rp.getPlayer().getLocation().getDirection().clone().multiply(staff.getSpeed()));
                 fireBall.setCustomName(n);
-                fireBall.setGravity(gravity);
+                fireBall.setGravity(staff.isGravity());
                 fireBall.setShooter(rp.getPlayer());
                 rp.getPlayer().getWorld().playEffect(rp.getPlayer().getLocation(),Effect.BOW_FIRE,1,0);
                 break;
             case "freezing_ball":
-                Snowball freezingBall = rp.getPlayer().launchProjectile(Snowball.class,rp.getPlayer().getLocation().getDirection().clone().multiply(speed));
-                freezingBall.setGravity(gravity);
+                Snowball freezingBall = rp.getPlayer().launchProjectile(Snowball.class,rp.getPlayer().getLocation().getDirection().clone().multiply(staff.getSpeed()));
+                freezingBall.setGravity(staff.isGravity());
                 freezingBall.setCustomName(n);
                 freezingBall.setShooter(rp.getPlayer());
                 rp.getPlayer().getWorld().playEffect(rp.getPlayer().getLocation(),Effect.BOW_FIRE,1,0);
                 break;
             case "teleport":
-                EnderPearl enderPearl = rp.getPlayer().launchProjectile(EnderPearl.class,rp.getPlayer().getLocation().getDirection().clone().multiply(speed));
-                enderPearl.setGravity(gravity);
+                EnderPearl enderPearl = rp.getPlayer().launchProjectile(EnderPearl.class,rp.getPlayer().getLocation().getDirection().clone().multiply(staff.getSpeed()));
+                enderPearl.setGravity(staff.isGravity());
                 enderPearl.setCustomName(n);
                 enderPearl.setShooter(rp.getPlayer());
                 rp.getPlayer().getWorld().playEffect(rp.getPlayer().getLocation(),Effect.BOW_FIRE,1,0);
