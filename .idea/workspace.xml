@@ -5,52 +5,7 @@
     <bookmark url="file://$PROJECT_DIR$/resources/staffs.yml" line="6" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a78d8515-e588-4e56-ac33-4f32766633d5" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/lowbrain/core/events/ArmorEquipListener.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LowbrainMCRPG.iml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/events/ArmorEquipEvent.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/events/ArmorListener.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/events/ArmorType.java" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Ressources/classes.yml" afterPath="$PROJECT_DIR$/resources/classes.yml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Ressources/config.yml" afterPath="$PROJECT_DIR$/resources/config.yml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Ressources/configOld.yml" afterPath="$PROJECT_DIR$/resources/configOld.yml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Ressources/customitems.yml" afterPath="$PROJECT_DIR$/resources/customitems.yml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Ressources/itemsrequirements.yml" afterPath="$PROJECT_DIR$/resources/itemsrequirements.yml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Ressources/mobsxp.yml" afterPath="$PROJECT_DIR$/resources/mobsxp.yml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Ressources/powers.yml" afterPath="$PROJECT_DIR$/resources/powers.yml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Ressources/powersOld.yml" afterPath="$PROJECT_DIR$/resources/powersOld.yml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Ressources/races.yml" afterPath="$PROJECT_DIR$/resources/races.yml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Ressources/skills.yml" afterPath="$PROJECT_DIR$/resources/skills.yml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Ressources/staffs.yml" afterPath="$PROJECT_DIR$/resources/staffs.yml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/lowbrainmcrpg.properties" afterPath="$PROJECT_DIR$/lowbraincore.properties" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/lowbrainmcrpg.xml" afterPath="$PROJECT_DIR$/lowbraincore.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/module_lowbrainmcrpg.xml" afterPath="$PROJECT_DIR$/module_lowbraincore.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/commun/Helper.java" afterPath="$PROJECT_DIR$/src/lowbrain/core/commun/Helper.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/commun/Settings.java" afterPath="$PROJECT_DIR$/src/lowbrain/core/commun/Settings.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/Classes.java" afterPath="$PROJECT_DIR$/src/lowbrain/core/config/Classes.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/Config.java" afterPath="$PROJECT_DIR$/src/lowbrain/core/config/Config.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/CustomItems.java" afterPath="$PROJECT_DIR$/src/lowbrain/core/config/CustomItems.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/ItemsRequirements.java" afterPath="$PROJECT_DIR$/src/lowbrain/core/config/ItemsRequirements.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/MobsXP.java" afterPath="$PROJECT_DIR$/src/lowbrain/core/config/MobsXP.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/Powers.java" afterPath="$PROJECT_DIR$/src/lowbrain/core/config/Powers.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/Races.java" afterPath="$PROJECT_DIR$/src/lowbrain/core/config/Races.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/Skills.java" afterPath="$PROJECT_DIR$/src/lowbrain/core/config/Skills.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/Staffs.java" afterPath="$PROJECT_DIR$/src/lowbrain/core/config/Staffs.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/config/absConfig.java" afterPath="$PROJECT_DIR$/src/lowbrain/core/config/AbstractConfig.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/events/PlayerListener.java" afterPath="$PROJECT_DIR$/src/lowbrain/core/events/CoreListener.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/main/Main.java" afterPath="$PROJECT_DIR$/src/lowbrain/core/main/LowbrainCore.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/main/RPGCommand.java" afterPath="$PROJECT_DIR$/src/lowbrain/core/main/CommandHandler.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGClass.java" afterPath="$PROJECT_DIR$/src/lowbrain/core/rpg/LowbrainClass.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPlayer.java" afterPath="$PROJECT_DIR$/src/lowbrain/core/rpg/LowbrainPlayer.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGPower.java" afterPath="$PROJECT_DIR$/src/lowbrain/core/rpg/LowbrainPower.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGRace.java" afterPath="$PROJECT_DIR$/src/lowbrain/core/rpg/LowbrainRace.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/lowbrain/mcrpg/rpg/RPGSkill.java" afterPath="$PROJECT_DIR$/src/lowbrain/core/rpg/LowbrainSkill.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/LowbrainMCRPG.jar" afterPath="$PROJECT_DIR$/target/LowbrainMCRPG.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.xml" afterPath="$PROJECT_DIR$/build.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plugin.yml" afterPath="$PROJECT_DIR$/plugin.yml" />
-    </list>
+    <list default="true" id="a78d8515-e588-4e56-ac33-4f32766633d5" name="Default" comment="" />
     <ignored path="LowbrainMCRPG.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/bin/" />
@@ -73,8 +28,8 @@
       <file leaf-file-name="CoreListener.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/lowbrain/core/events/CoreListener.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="298" column="69" selection-start-line="298" selection-start-column="69" selection-end-line="298" selection-end-column="69" />
+            <state relative-caret-position="2380">
+              <caret line="298" column="69" lean-forward="false" selection-start-line="298" selection-start-column="69" selection-end-line="298" selection-end-column="69" />
               <folding>
                 <element signature="docComment;method#onPlayerTeleport#0;class#CoreListener#0" expanded="false" />
                 <element signature="method#onPlayerTeleport#0;class#CoreListener#0" expanded="false" />
@@ -87,9 +42,10 @@
       <file leaf-file-name="LowbrainCore.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/lowbrain/core/main/LowbrainCore.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="25" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
+            <state relative-caret-position="288">
+              <caret line="30" column="13" lean-forward="false" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
               <folding>
+                <element signature="imports" expanded="true" />
                 <element signature="docComment;class#LowbrainCore#0" expanded="false" />
                 <element signature="docComment;method#onEnable#0;class#LowbrainCore#0" expanded="false" />
                 <element signature="method#onEnable#0;class#LowbrainCore#0" expanded="false" />
@@ -114,23 +70,17 @@
       <file leaf-file-name="LowbrainPlayer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/lowbrain/core/rpg/LowbrainPlayer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="381" column="47" selection-start-line="381" selection-start-column="47" selection-end-line="381" selection-end-column="47" />
+            <state relative-caret-position="3791">
+              <caret line="375" column="39" lean-forward="false" selection-start-line="375" selection-start-column="39" selection-end-line="375" selection-end-column="39" />
               <folding>
                 <element signature="docComment;method#LowbrainPlayer#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#LowbrainPlayer#0;class#LowbrainPlayer#0" expanded="false" />
-                <element signature="docComment;method#initialiseScoreBoard#0;class#LowbrainPlayer#0" expanded="false" />
-                <element signature="method#initialiseScoreBoard#0;class#LowbrainPlayer#0" expanded="false" />
-                <element signature="e#2220#2298#0" expanded="false" />
                 <element signature="docComment;method#toggleScoreboard#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#toggleScoreboard#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="docComment;method#toggleScoreboard#1;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#toggleScoreboard#1;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="docComment;method#refreshScoreBoard#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#refreshScoreBoard#0;class#LowbrainPlayer#0" expanded="false" />
-                <element signature="docComment;method#InitialisePlayer#0;class#LowbrainPlayer#0" expanded="false" />
-                <element signature="method#InitialisePlayer#0;class#LowbrainPlayer#0" expanded="false" />
-                <element signature="e#8753#8860#0" expanded="false" />
                 <element signature="docComment;method#compareAttributesByName#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#compareAttributesByName#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="docComment;method#validateEquippedArmor#0;class#LowbrainPlayer#0" expanded="false" />
@@ -156,7 +106,7 @@
                 <element signature="method#reset#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="docComment;method#resetAll#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#resetAll#0;class#LowbrainPlayer#0" expanded="false" />
-                <element signature="e#19645#19751#0" expanded="false" />
+                <element signature="method#sendMessage#3;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="docComment;method#addExp#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#addExp#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="docComment;method#setExperience#0;class#LowbrainPlayer#0" expanded="false" />
@@ -172,10 +122,6 @@
                 <element signature="method#setDexterity#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="docComment;method#addDexterity#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#addDexterity#0;class#LowbrainPlayer#0" expanded="false" />
-                <element signature="docComment;method#setHealth#0;class#LowbrainPlayer#0" expanded="false" />
-                <element signature="method#setHealth#0;class#LowbrainPlayer#0" expanded="false" />
-                <element signature="docComment;method#addHealth#0;class#LowbrainPlayer#0" expanded="false" />
-                <element signature="method#addHealth#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="docComment;method#setDefence#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#setDefence#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="docComment;method#addDefence#0;class#LowbrainPlayer#0" expanded="false" />
@@ -211,7 +157,6 @@
                 <element signature="method#addSkillPoints#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="docComment;method#upgradeSkill#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#upgradeSkill#0;class#LowbrainPlayer#0" expanded="false" />
-                <element signature="e#39374#39477#0" expanded="false" />
                 <element signature="docComment;method#toString#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#toString#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#getLowbrainClass#0;class#LowbrainPlayer#0" expanded="false" />
@@ -219,19 +164,16 @@
                 <element signature="docComment;method#getNextLvl#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#getKnockBackResistance#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#getMovementSpeed#0;class#LowbrainPlayer#0" expanded="false" />
-                <element signature="e#43091#43196#0" expanded="false" />
                 <element signature="method#setAttackSpeed#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#setKnockBackResistance#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#setMovementSpeed#0;class#LowbrainPlayer#0" expanded="false" />
+                <element signature="method#setLuck#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="docComment;method#setPlayerMaxHealth#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#setPlayerMaxHealth#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="docComment;method#setMana#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#setMana#0;class#LowbrainPlayer#0" expanded="false" />
-                <element signature="e#44449#44547#0" expanded="false" />
                 <element signature="docComment;method#setDisplayName#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#setDisplayName#0;class#LowbrainPlayer#0" expanded="false" />
-                <element signature="method#setLuck#0;class#LowbrainPlayer#0" expanded="false" />
-                <element signature="e#45180#45285#0" expanded="false" />
                 <element signature="docComment;method#attributeHasChanged#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#attributeHasChanged#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="docComment;method#regenMana#0;class#LowbrainPlayer#0" expanded="false" />
@@ -240,7 +182,6 @@
                 <element signature="method#startManaRegenTask#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="docComment;method#stopManaRegenTask#0;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#stopManaRegenTask#0;class#LowbrainPlayer#0" expanded="false" />
-                <element signature="method#sendMessage#3;class#LowbrainPlayer#0" expanded="false" />
                 <element signature="method#addBonusAttributes#0;class#LowbrainPlayer#0" expanded="false" />
               </folding>
             </state>
@@ -321,6 +262,12 @@
       </list>
     </option>
   </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -350,15 +297,8 @@
       </profile-state>
     </entry>
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
-    <OptionsSetting value="true" id="Add" />
-    <OptionsSetting value="true" id="Remove" />
-    <OptionsSetting value="true" id="Checkout" />
-    <OptionsSetting value="true" id="Update" />
-    <OptionsSetting value="true" id="Status" />
-    <OptionsSetting value="true" id="Edit" />
+  <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
-    <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -376,13 +316,16 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="LowbrainCore" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LowbrainCore" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -394,15 +337,46 @@
               <option name="myItemId" value="LowbrainCore" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LowbrainCore" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LowbrainCore" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ArmorEquipEvent" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
@@ -411,6 +385,8 @@
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="GenerateAntBuildDialog.backupFiles" value="true" />
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="lowbrainmcrpg" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -425,14 +401,27 @@
       <recent name="C:\Users\Moofy\Documents\GitHub\LowbrainMCRPG" />
     </key>
   </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
   <component name="RunManager">
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
       <module name="" />
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
       <option name="PROGRAM_PARAMETERS" />
+      <predefined_log_file id="idea.log" enabled="true" />
       <method />
     </configuration>
-    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
+    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android App">
       <module name="" />
       <option name="DEPLOY" value="true" />
       <option name="ARTIFACT_NAME" value="" />
@@ -442,7 +431,7 @@
       <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
       <option name="PREFERRED_AVD" value="" />
       <option name="CLEAR_LOGCAT" value="false" />
-      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
       <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
       <option name="FORCE_STOP_RUNNING_APP" value="true" />
       <option name="DEBUGGER_TYPE" value="Java" />
@@ -450,14 +439,15 @@
       <option name="PREFERRED_AVD" value="" />
       <Java />
       <Profilers>
+        <option name="ENABLE_ADVANCED_PROFILING" value="true" />
+        <option name="GAPID_ENABLED" value="false" />
         <option name="GAPID_DISABLE_PCS" value="false" />
+        <option name="SUPPORT_LIB_ENABLED" value="true" />
+        <option name="INSTRUMENTATION_ENABLED" value="true" />
       </Profilers>
       <option name="DEEP_LINK" value="" />
       <option name="ACTIVITY_CLASS" value="" />
-      <method>
-        <option name="Make" enabled="true" />
-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-      </method>
+      <method />
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
       <module name="" />
@@ -478,7 +468,11 @@
       <option name="PREFERRED_AVD" value="" />
       <Java />
       <Profilers>
+        <option name="ENABLE_ADVANCED_PROFILING" value="true" />
+        <option name="GAPID_ENABLED" value="false" />
         <option name="GAPID_DISABLE_PCS" value="false" />
+        <option name="SUPPORT_LIB_ENABLED" value="true" />
+        <option name="INSTRUMENTATION_ENABLED" value="true" />
       </Profilers>
       <method>
         <option name="Make" enabled="true" />
@@ -508,6 +502,136 @@
       <envs />
       <method />
     </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="ArquillianTestNG" factoryName="">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Cold Fusion runner description" factoryName="Cold Fusion" custom_browser="" web_path="">
+      <method />
+    </configuration>
+    <configuration default="true" type="CucumberJavaRunConfigurationType" factoryName="Cucumber java">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="myFilePath" />
+      <option name="GLUE" />
+      <option name="myNameFilter" />
+      <option name="myGeneratedName" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="FlashRunConfigurationType" factoryName="Flash App">
+      <option name="BCName" value="" />
+      <option name="IOSSimulatorSdkPath" value="" />
+      <option name="adlOptions" value="" />
+      <option name="airProgramParameters" value="" />
+      <option name="appDescriptorForEmulator" value="Android" />
+      <option name="debugTransport" value="USB" />
+      <option name="debuggerSdkRaw" value="BC SDK" />
+      <option name="emulator" value="NexusOne" />
+      <option name="emulatorAdlOptions" value="" />
+      <option name="fastPackaging" value="true" />
+      <option name="fullScreenHeight" value="0" />
+      <option name="fullScreenWidth" value="0" />
+      <option name="launchUrl" value="false" />
+      <option name="launcherParameters">
+        <LauncherParameters>
+          <option name="browser" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
+          <option name="launcherType" value="OSDefault" />
+          <option name="newPlayerInstance" value="false" />
+          <option name="playerPath" value="FlashPlayerDebugger.exe" />
+        </LauncherParameters>
+      </option>
+      <option name="mobileRunTarget" value="Emulator" />
+      <option name="moduleName" value="" />
+      <option name="overriddenMainClass" value="" />
+      <option name="overriddenOutputFileName" value="" />
+      <option name="overrideMainClass" value="false" />
+      <option name="runTrusted" value="true" />
+      <option name="screenDpi" value="0" />
+      <option name="screenHeight" value="0" />
+      <option name="screenWidth" value="0" />
+      <option name="url" value="http://" />
+      <option name="usbDebugPort" value="7936" />
+      <method />
+    </configuration>
+    <configuration default="true" type="FlexUnitRunConfigurationType" factoryName="FlexUnit" appDescriptorForEmulator="Android" class_name="" emulatorAdlOptions="" method_name="" package_name="" scope="Class">
+      <option name="BCName" value="" />
+      <option name="launcherParameters">
+        <LauncherParameters>
+          <option name="browser" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
+          <option name="launcherType" value="OSDefault" />
+          <option name="newPlayerInstance" value="false" />
+          <option name="playerPath" value="FlashPlayerDebugger.exe" />
+        </LauncherParameters>
+      </option>
+      <option name="moduleName" value="" />
+      <option name="trusted" value="true" />
+      <method />
+    </configuration>
     <configuration default="true" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -524,6 +648,14 @@
       </ExternalSystemSettings>
       <method />
     </configuration>
+    <configuration default="true" type="GrailsRunConfigurationType" factoryName="Grails">
+      <setting name="vmparams" value="" />
+      <setting name="cmdLine" value="run-app" />
+      <setting name="passParentEnv" value="true" />
+      <setting name="launchBrowser" value="true" />
+      <setting name="launchBrowserUrl" value="" />
+      <method />
+    </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -536,27 +668,6 @@
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <envs />
-      <patterns />
-      <method />
-    </configuration>
-    <configuration default="true" type="JUnitTestDiscovery" factoryName="JUnit Test Discovery" changeList="All">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
       <option name="TEST_SEARCH_SCOPE">
@@ -585,6 +696,22 @@
       <option name="PASS_PARENT_ENVS" value="true" />
       <module name="" />
       <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerJest" factoryName="Jest">
+      <node-interpreter value="project" />
+      <working-dir value="" />
+      <envs />
+      <scope-kind value="ALL" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
       <method />
     </configuration>
     <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
@@ -620,6 +747,12 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
+    <configuration default="true" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -648,33 +781,48 @@
       <listeners />
       <method />
     </configuration>
-    <configuration default="true" type="TestNGTestDiscovery" factoryName="TestNG Test Discovery" changeList="All">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="SUITE_NAME" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="GROUP_NAME" />
-      <option name="TEST_OBJECT" value="CLASS" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" />
-      <option name="OUTPUT_DIRECTORY" />
-      <option name="ANNOTATION_TYPE" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <option name="USE_DEFAULT_REPORTERS" value="false" />
-      <option name="PROPERTIES_FILE" />
-      <envs />
-      <properties />
-      <listeners />
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
       <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run" />
+      <scripts />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="osgi.bnd.run" factoryName="Run Launcher">
+      <method />
+    </configuration>
+    <configuration default="true" type="osgi.bnd.run" factoryName="Test Launcher (JUnit)">
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
+      <module name="" />
+      <option name="DEPLOY" value="true" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="DEBUGGER_TYPE" value="Java" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <Java />
+      <Profilers>
+        <option name="GAPID_DISABLE_PCS" value="false" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <method>
+        <option name="Make" enabled="true" />
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
     </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
@@ -690,37 +838,45 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1468535475729</updated>
+      <workItem from="1498163003398" duration="43000" />
     </task>
     <servers />
   </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="43000" />
+  </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3319239" sideWeight="0.49583334" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.64270616" sideWeight="0.50208336" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.171875" sideWeight="0.89534885" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38583508" sideWeight="0.49791667" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1234375" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17275575" sideWeight="0.10465116" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3319239" sideWeight="0.49583334" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38583508" sideWeight="0.49791667" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -748,6 +904,9 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17275575" sideWeight="0.10465116" order="4" side_tool="true" content_ui="tabs" />
     </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="processedProjectFiles" value="true" />
   </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
@@ -788,7 +947,7 @@
     <entry file="file://$PROJECT_DIR$/src/lowbrain/core/config/Powers.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="527">
-          <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+          <caret line="34" column="5" lean-forward="false" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
           <folding>
             <element signature="e#880#881#0" expanded="false" />
             <element signature="e#911#912#0" expanded="false" />
@@ -799,7 +958,7 @@
     <entry file="file://$PROJECT_DIR$/src/lowbrain/core/config/Classes.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="527">
-          <caret line="37" column="5" selection-start-line="37" selection-start-column="5" selection-end-line="37" selection-end-column="5" />
+          <caret line="37" column="5" lean-forward="false" selection-start-line="37" selection-start-column="5" selection-end-line="37" selection-end-column="5" />
           <folding>
             <element signature="e#883#884#0" expanded="false" />
             <element signature="e#914#915#0" expanded="false" />
@@ -807,17 +966,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/configuration/MemorySection.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4182">
-          <caret line="342" column="24" selection-start-line="342" selection-start-column="24" selection-end-line="342" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/configuration/MemorySection.class" />
     <entry file="file://$PROJECT_DIR$/src/lowbrain/core/config/Races.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="527">
-          <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+          <caret line="34" column="5" lean-forward="false" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
           <folding>
             <element signature="e#877#878#0" expanded="false" />
             <element signature="e#908#909#0" expanded="false" />
@@ -826,94 +979,38 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/commun/DamageCause.java" />
-    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/event/entity/EntityEvent.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="11" column="22" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/event/entity/EntityEvent.class" />
     <entry file="file://$PROJECT_DIR$/src/lowbrain/core/config/AbstractConfig.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
-          <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
-          <folding>
-            <element signature="e#399#400#0" expanded="false" />
-            <element signature="e#473#474#0" expanded="false" />
-          </folding>
+          <caret line="17" column="5" lean-forward="false" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/entity/Entity.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="71" column="9" selection-start-line="71" selection-start-column="9" selection-end-line="71" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/event/entity/EntityDamageEvent.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="125" column="55" selection-start-line="125" selection-start-column="55" selection-end-line="125" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/event/entity/EntityDamageByEntityEvent.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/entity/Entity.class" />
+    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/event/entity/EntityDamageEvent.class" />
+    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/event/entity/EntityDamageByEntityEvent.class" />
     <entry file="file://$PROJECT_DIR$/resources/races.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="867">
-          <caret line="51" column="14" selection-start-line="51" selection-start-column="14" selection-end-line="51" selection-end-column="14" />
+          <caret line="51" column="14" lean-forward="false" selection-start-line="51" selection-start-column="14" selection-end-line="51" selection-end-column="14" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/lowbrain/core/config/Staffs.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
-          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/configOld.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="21" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="21" />
-          <folding>
-            <element signature="e#1408#1550#0" expanded="false" />
-            <element signature="e#1428#1431#0" expanded="false" />
-            <element signature="e#1441#1444#0" expanded="false" />
-            <element signature="e#1459#1462#0" expanded="false" />
-            <element signature="e#1483#1486#0" expanded="false" />
-            <element signature="e#1496#1499#0" expanded="false" />
-            <element signature="e#1509#1512#0" expanded="false" />
-            <element signature="e#1521#1524#0" expanded="false" />
-            <element signature="e#1534#1537#0" expanded="false" />
-            <element signature="e#1547#1550#0" expanded="false" />
-            <element signature="e#1567#1569#0" expanded="false" />
-            <element signature="e#1619#1622#0" expanded="false" />
-            <element signature="e#1704#1707#0" expanded="false" />
-            <element signature="e#1805#1810#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/powersOld.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="38" column="13" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/configOld.yml" />
+    <entry file="file://$PROJECT_DIR$/resources/powersOld.yml" />
     <entry file="file://$PROJECT_DIR$/src/lowbrain/core/config/Config.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="510">
-          <caret line="33" column="5" selection-start-line="33" selection-start-column="5" selection-end-line="33" selection-end-column="5" />
+          <caret line="33" column="5" lean-forward="false" selection-start-line="33" selection-start-column="5" selection-end-line="33" selection-end-column="5" />
           <folding>
             <element signature="e#879#880#0" expanded="true" />
             <element signature="e#910#911#0" expanded="true" />
@@ -921,78 +1018,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_92/src.zip!/java/lang/StrictMath.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-111">
-          <caret line="369" column="26" selection-start-line="369" selection-start-column="26" selection-end-line="369" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_92/src.zip!/java/lang/Math.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="422" column="28" selection-start-line="422" selection-start-column="28" selection-end-line="422" selection-end-column="28" />
-          <folding>
-            <element signature="e#16338#16339#0" expanded="false" />
-            <element signature="e#16420#16421#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/entity/LivingEntity.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1207">
-          <caret line="88" column="32" selection-start-line="88" selection-start-column="32" selection-end-line="88" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_92/src.zip!/java/lang/StrictMath.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_92/src.zip!/java/lang/Math.java" />
+    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/entity/LivingEntity.class" />
     <entry file="file://$PROJECT_DIR$/src/lowbrain/core/rpg/LowbrainClass.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="689">
-          <caret line="57" column="21" selection-start-line="57" selection-start-column="21" selection-end-line="57" selection-end-column="21" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#LowbrainClass#0;class#LowbrainClass#0" expanded="false" />
-            <element signature="docComment;method#SetPowers#0;class#LowbrainClass#0" expanded="false" />
-          </folding>
+          <caret line="57" column="21" lean-forward="false" selection-start-line="57" selection-start-column="21" selection-end-line="57" selection-end-column="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/lowbrain/core/rpg/LowbrainRace.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="376">
-          <caret line="98" column="0" selection-start-line="98" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="docComment;class#LowbrainRace#0" expanded="false" />
-            <element signature="method#Initialize#0;class#LowbrainRace#0" expanded="false" />
-            <element signature="docComment;method#SetPowers#0;class#LowbrainRace#0" expanded="false" />
-          </folding>
+          <caret line="98" column="0" lean-forward="false" selection-start-line="98" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/lowbrain/core/config/CustomItems.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
-          <folding>
-            <element signature="e#895#896#0" expanded="false" />
-            <element signature="e#926#927#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/customitems.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="613">
-          <caret line="667" column="0" selection-start-line="667" selection-start-column="0" selection-end-line="667" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lowbrain/core/config/CustomItems.java" />
+    <entry file="file://$PROJECT_DIR$/resources/customitems.yml" />
     <entry file="file://$PROJECT_DIR$/src/lowbrain/core/config/Skills.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="527">
-          <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+          <caret line="34" column="5" lean-forward="false" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
           <folding>
             <element signature="e#880#881#0" expanded="false" />
             <element signature="e#911#912#0" expanded="false" />
@@ -1003,14 +1051,14 @@
     <entry file="file://$PROJECT_DIR$/resources/mobsxp.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="348">
-          <caret line="113" column="24" selection-start-line="113" selection-start-column="24" selection-end-line="113" selection-end-column="24" />
+          <caret line="113" column="24" lean-forward="false" selection-start-line="113" selection-start-column="24" selection-end-line="113" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/lowbrain/core/config/MobsXP.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="527">
-          <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+          <caret line="34" column="5" lean-forward="false" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
           <folding>
             <element signature="e#880#881#0" expanded="true" />
             <element signature="e#911#912#0" expanded="true" />
@@ -1018,17 +1066,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/command/CommandSender.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/command/CommandSender.class" />
     <entry file="file://$PROJECT_DIR$/src/lowbrain/core/config/ItemsRequirements.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
-          <caret line="27" column="18" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
+          <caret line="27" column="18" lean-forward="false" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
           <folding />
         </state>
       </provider>
@@ -1036,14 +1078,14 @@
     <entry file="file://$PROJECT_DIR$/resources/itemsrequirements.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="824">
-          <caret line="239" column="0" selection-start-line="239" selection-start-column="0" selection-end-line="239" selection-end-column="0" />
+          <caret line="239" column="0" lean-forward="false" selection-start-line="239" selection-start-column="0" selection-end-line="239" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/staffs.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="603">
-          <caret line="135" column="0" selection-start-line="135" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
+          <caret line="135" column="0" lean-forward="false" selection-start-line="135" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
           <folding>
             <element signature="e#778#782#0" expanded="false" />
             <element signature="e#811#813#0" expanded="false" />
@@ -1135,33 +1177,10 @@
     <entry file="file://$PROJECT_DIR$/src/lowbrain/core/commun/Settings.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
-          <caret line="30" column="25" selection-start-line="30" selection-start-column="25" selection-end-line="30" selection-end-column="25" />
+          <caret line="30" column="25" lean-forward="false" selection-start-line="30" selection-start-column="25" selection-end-line="30" selection-end-column="25" />
           <folding>
             <element signature="docComment;class#Settings#0" expanded="false" />
             <element signature="method#getInstance#0;class#Settings#0" expanded="false" />
-            <element signature="class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#MathSettings#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#onPlayerAttackEntity#0;class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#chanceOfCreatingMagicAttack#0;class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#chanceOfCreatingMagicAttack#0;class#chanceOfCreatingMagicAttack#0;class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#creatingMagicAttack#0;class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#creatingMagicAttack#0;class#creatingMagicAttack#0;class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#attackEntityBy#0;class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#attackEntityBy#0;class#attackEntityBy#0;class#onPlayerAttackEntity#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#onPlayerConsumePotion#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#onPlayerConsumePotion#0;class#onPlayerConsumePotion#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#onPlayerGetDamaged#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#onPlayerGetDamaged#0;class#onPlayerGetDamaged#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#chanceOfRemovingMagicEffect#0;class#onPlayerGetDamaged#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#chanceOfRemovingMagicEffect#0;class#chanceOfRemovingMagicEffect#0;class#onPlayerGetDamaged#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#reducingBadPotionEffect#0;class#onPlayerGetDamaged#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#reducingBadPotionEffect#0;class#reducingBadPotionEffect#0;class#onPlayerGetDamaged#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#playerAttributes#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#playerAttributes#0;class#playerAttributes#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#onPlayerShootBow#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="method#onPlayerShootBow#0;class#onPlayerShootBow#0;class#MathSettings#0;class#Settings#0" expanded="false" />
-            <element signature="class#onPlayerDies#0;class#MathSettings#0;class#Settings#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1169,61 +1188,33 @@
     <entry file="file://$PROJECT_DIR$/resources/classes.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
-          <caret line="26" column="9" selection-start-line="26" selection-start-column="9" selection-end-line="26" selection-end-column="9" />
+          <caret line="26" column="9" lean-forward="false" selection-start-line="26" selection-start-column="9" selection-end-line="26" selection-end-column="9" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_92/src.zip!/java/util/Map.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="395" column="10" selection-start-line="395" selection-start-column="10" selection-end-line="395" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/potion/PotionEffect.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="41" column="11" selection-start-line="41" selection-start-column="11" selection-end-line="41" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_92/src.zip!/java/util/Map.java" />
+    <entry file="jar://$PROJECT_DIR$/spigot-1.10.2.jar!/org/bukkit/potion/PotionEffect.class" />
     <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/events/ArmorType.java" />
     <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/events/ArmorEquipEvent.java" />
     <entry file="file://$PROJECT_DIR$/src/lowbrain/mcrpg/events/ArmorListener.java" />
     <entry file="file://$PROJECT_DIR$/resources/config.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1249">
-          <caret line="425" column="0" selection-start-line="425" selection-start-column="0" selection-end-line="425" selection-end-column="0" />
-          <folding>
-            <element signature="e#1428#1431#0" expanded="false" />
-            <element signature="e#1441#1444#0" expanded="false" />
-            <element signature="e#1459#1462#0" expanded="false" />
-            <element signature="e#1483#1486#0" expanded="false" />
-            <element signature="e#1496#1499#0" expanded="false" />
-            <element signature="e#1509#1512#0" expanded="false" />
-            <element signature="e#1521#1524#0" expanded="false" />
-            <element signature="e#1547#1550#0" expanded="false" />
-            <element signature="e#1574#1578#0" expanded="false" />
-            <element signature="e#1594#1596#0" expanded="false" />
-            <element signature="e#1646#1649#0" expanded="false" />
-            <element signature="e#1731#1734#0" expanded="false" />
-            <element signature="e#1832#1837#0" expanded="false" />
-          </folding>
+          <caret line="425" column="0" lean-forward="false" selection-start-line="425" selection-start-column="0" selection-end-line="425" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lowbraincore.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
-          <caret line="1" column="9" selection-start-line="1" selection-start-column="9" selection-end-line="1" selection-end-column="9" />
-          <folding />
+          <caret line="1" column="9" lean-forward="false" selection-start-line="1" selection-start-column="9" selection-end-line="1" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/build.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
-          <caret line="10" column="10" selection-start-line="10" selection-start-column="10" selection-end-line="10" selection-end-column="10" />
+          <caret line="10" column="10" lean-forward="false" selection-start-line="10" selection-start-column="10" selection-end-line="10" selection-end-column="10" />
           <folding />
         </state>
       </provider>
@@ -1231,147 +1222,28 @@
     <entry file="file://$PROJECT_DIR$/plugin.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
-          <caret line="6" column="11" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
-          <folding />
+          <caret line="6" column="11" lean-forward="false" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/lowbrain/core/rpg/LowbrainPower.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="731">
-          <caret line="217" column="63" selection-start-line="217" selection-start-column="63" selection-end-line="217" selection-end-column="63" />
-          <folding>
-            <element signature="docComment;class#LowbrainPower#0" expanded="false" />
-            <element signature="method#LowbrainPower#0;class#LowbrainPower#0" expanded="false" />
-            <element signature="method#getCastDuration#0;class#LowbrainPower#0" expanded="false" />
-            <element signature="method#getCastAmplifier#0;class#LowbrainPower#0" expanded="false" />
-            <element signature="method#setPotionEffectType#0;class#LowbrainPower#0" expanded="false" />
-            <element signature="method#getCooldown#0;class#LowbrainPower#0" expanded="false" />
-            <element signature="method#Cast#0;class#LowbrainPower#0" expanded="false" />
-          </folding>
+          <caret line="217" column="63" lean-forward="false" selection-start-line="217" selection-start-column="63" selection-end-line="217" selection-end-column="63" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/skills.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
-          <caret line="110" column="12" selection-start-line="110" selection-start-column="12" selection-end-line="110" selection-end-column="12" />
-          <folding>
-            <element signature="e#3838#3842#0" expanded="false" />
-            <element signature="e#3856#3865#0" expanded="false" />
-            <element signature="e#3948#3950#0" expanded="false" />
-            <element signature="e#3968#3970#0" expanded="false" />
-            <element signature="e#4159#4161#0" expanded="false" />
-            <element signature="e#4209#4248#0" expanded="false" />
-            <element signature="e#4250#4315#0" expanded="false" />
-            <element signature="e#4278#4280#0" expanded="false" />
-            <element signature="e#4294#4296#0" expanded="false" />
-            <element signature="e#4313#4315#0" expanded="false" />
-            <element signature="e#4336#4339#0" expanded="false" />
-            <element signature="e#4341#4864#0" expanded="false" />
-            <element signature="e#4364#4368#0" expanded="false" />
-            <element signature="e#4382#4391#0" expanded="false" />
-            <element signature="e#4474#4476#0" expanded="false" />
-            <element signature="e#4684#4686#0" expanded="false" />
-            <element signature="e#4734#4773#0" expanded="false" />
-            <element signature="e#4775#4840#0" expanded="false" />
-            <element signature="e#4803#4805#0" expanded="false" />
-            <element signature="e#4819#4821#0" expanded="false" />
-            <element signature="e#4838#4840#0" expanded="false" />
-            <element signature="e#4842#4864#0" expanded="false" />
-            <element signature="e#4861#4864#0" expanded="false" />
-            <element signature="e#4866#5389#0" expanded="false" />
-            <element signature="e#4887#4891#0" expanded="false" />
-            <element signature="e#4905#4918#0" expanded="false" />
-            <element signature="e#5001#5003#0" expanded="false" />
-            <element signature="e#5021#5023#0" expanded="false" />
-            <element signature="e#5212#5214#0" expanded="false" />
-            <element signature="e#5262#5295#0" expanded="false" />
-            <element signature="e#5297#5362#0" expanded="false" />
-            <element signature="e#5325#5327#0" expanded="false" />
-            <element signature="e#5341#5343#0" expanded="false" />
-            <element signature="e#5360#5362#0" expanded="false" />
-            <element signature="e#5364#5389#0" expanded="false" />
-            <element signature="e#5386#5389#0" expanded="false" />
-            <element signature="e#5391#5909#0" expanded="false" />
-            <element signature="e#5414#5418#0" expanded="false" />
-            <element signature="e#5432#5445#0" expanded="false" />
-            <element signature="e#5528#5530#0" expanded="false" />
-            <element signature="e#5548#5550#0" expanded="false" />
-            <element signature="e#5739#5741#0" expanded="false" />
-            <element signature="e#5789#5818#0" expanded="false" />
-            <element signature="e#5820#5885#0" expanded="false" />
-            <element signature="e#5848#5850#0" expanded="false" />
-            <element signature="e#5864#5866#0" expanded="false" />
-            <element signature="e#5883#5885#0" expanded="false" />
-            <element signature="e#5887#5909#0" expanded="false" />
-            <element signature="e#5906#5909#0" expanded="false" />
-            <element signature="e#5911#6428#0" expanded="false" />
-            <element signature="e#5934#5938#0" expanded="false" />
-            <element signature="e#5952#5965#0" expanded="false" />
-            <element signature="e#6048#6050#0" expanded="false" />
-            <element signature="e#6258#6260#0" expanded="false" />
-            <element signature="e#6308#6337#0" expanded="false" />
-            <element signature="e#6339#6404#0" expanded="false" />
-            <element signature="e#6367#6369#0" expanded="false" />
-            <element signature="e#6383#6385#0" expanded="false" />
-            <element signature="e#6402#6404#0" expanded="false" />
-            <element signature="e#6406#6428#0" expanded="false" />
-            <element signature="e#6425#6428#0" expanded="false" />
-            <element signature="e#6450#6454#0" expanded="false" />
-            <element signature="e#6468#6481#0" expanded="false" />
-            <element signature="e#6564#6566#0" expanded="false" />
-            <element signature="e#6584#6586#0" expanded="false" />
-            <element signature="e#6775#6777#0" expanded="false" />
-            <element signature="e#6825#6892#0" expanded="false" />
-            <element signature="e#6894#6958#0" expanded="false" />
-            <element signature="e#6922#6924#0" expanded="false" />
-            <element signature="e#6937#6939#0" expanded="false" />
-            <element signature="e#6956#6958#0" expanded="false" />
-            <element signature="e#7003#7504#0" expanded="false" />
-            <element signature="e#7020#7024#0" expanded="false" />
-            <element signature="e#7038#7042#0" expanded="false" />
-            <element signature="e#7125#7127#0" expanded="false" />
-            <element signature="e#7145#7147#0" expanded="false" />
-            <element signature="e#7336#7338#0" expanded="false" />
-            <element signature="e#7386#7412#0" expanded="false" />
-            <element signature="e#7414#7479#0" expanded="false" />
-            <element signature="e#7442#7444#0" expanded="false" />
-            <element signature="e#7461#7463#0" expanded="false" />
-            <element signature="e#7477#7479#0" expanded="false" />
-            <element signature="e#7481#7504#0" expanded="false" />
-            <element signature="e#7500#7504#0" expanded="false" />
-            <element signature="e#7533#7537#0" expanded="false" />
-            <element signature="e#7551#7564#0" expanded="false" />
-            <element signature="e#7647#7649#0" expanded="false" />
-            <element signature="e#7667#7669#0" expanded="false" />
-            <element signature="e#7858#7860#0" expanded="false" />
-            <element signature="e#7908#8000#0" expanded="false" />
-            <element signature="e#8002#8066#0" expanded="false" />
-            <element signature="e#8030#8032#0" expanded="false" />
-            <element signature="e#8045#8047#0" expanded="false" />
-            <element signature="e#8064#8066#0" expanded="false" />
-            <element signature="e#8102#8105#0" expanded="false" />
-            <element signature="e#8122#8720#0" expanded="false" />
-            <element signature="e#8147#8151#0" expanded="false" />
-            <element signature="e#8165#8174#0" expanded="false" />
-            <element signature="e#8257#8259#0" expanded="false" />
-            <element signature="e#8277#8279#0" expanded="false" />
-            <element signature="e#8468#8470#0" expanded="false" />
-            <element signature="e#8518#8602#0" expanded="false" />
-            <element signature="e#8604#8668#0" expanded="false" />
-            <element signature="e#8632#8634#0" expanded="false" />
-            <element signature="e#8647#8649#0" expanded="false" />
-            <element signature="e#8666#8668#0" expanded="false" />
-            <element signature="e#8670#8720#0" expanded="false" />
-          </folding>
+          <caret line="110" column="12" lean-forward="false" selection-start-line="110" selection-start-column="12" selection-end-line="110" selection-end-column="12" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/lowbrain/core/rpg/LowbrainSkill.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="190">
-          <caret line="284" column="93" selection-start-line="284" selection-start-column="93" selection-end-line="284" selection-end-column="93" />
+          <caret line="284" column="93" lean-forward="false" selection-start-line="284" selection-start-column="93" selection-end-line="284" selection-end-column="93" />
           <folding>
             <element signature="docComment;class#LowbrainSkill#0" expanded="false" />
             <element signature="method#info#0;class#LowbrainSkill#0" expanded="false" />
@@ -1396,199 +1268,14 @@
     <entry file="file://$PROJECT_DIR$/resources/powers.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
-          <caret line="26" column="6" selection-start-line="26" selection-start-column="6" selection-end-line="26" selection-end-column="6" />
-          <folding>
-            <element signature="e#1072#1115#0" expanded="false" />
-            <element signature="e#1113#1115#0" expanded="false" />
-            <element signature="e#1129#1131#0" expanded="false" />
-            <element signature="e#1381#1454#0" expanded="false" />
-            <element signature="e#1403#1405#0" expanded="false" />
-            <element signature="e#1418#1420#0" expanded="false" />
-            <element signature="e#1424#1454#0" expanded="false" />
-            <element signature="e#1455#1852#0" expanded="false" />
-            <element signature="e#1479#1481#0" expanded="false" />
-            <element signature="e#1495#1497#0" expanded="false" />
-            <element signature="e#1499#1543#0" expanded="false" />
-            <element signature="e#1522#1524#0" expanded="false" />
-            <element signature="e#1541#1543#0" expanded="false" />
-            <element signature="e#1545#1852#0" expanded="false" />
-            <element signature="e#1588#1590#0" expanded="false" />
-            <element signature="e#1653#1776#0" expanded="false" />
-            <element signature="e#1746#1776#0" expanded="false" />
-            <element signature="e#1779#1852#0" expanded="false" />
-            <element signature="e#1801#1803#0" expanded="false" />
-            <element signature="e#1816#1818#0" expanded="false" />
-            <element signature="e#1822#1852#0" expanded="false" />
-            <element signature="e#1853#2253#0" expanded="false" />
-            <element signature="e#1872#1874#0" expanded="false" />
-            <element signature="e#1876#1920#0" expanded="false" />
-            <element signature="e#1899#1901#0" expanded="false" />
-            <element signature="e#1918#1920#0" expanded="false" />
-            <element signature="e#1934#1936#0" expanded="false" />
-            <element signature="e#1938#2253#0" expanded="false" />
-            <element signature="e#1981#1983#0" expanded="false" />
-            <element signature="e#2046#2177#0" expanded="false" />
-            <element signature="e#2147#2177#0" expanded="false" />
-            <element signature="e#2180#2253#0" expanded="false" />
-            <element signature="e#2202#2204#0" expanded="false" />
-            <element signature="e#2217#2219#0" expanded="false" />
-            <element signature="e#2223#2253#0" expanded="false" />
-            <element signature="e#2254#2650#0" expanded="false" />
-            <element signature="e#2281#2325#0" expanded="false" />
-            <element signature="e#2304#2306#0" expanded="false" />
-            <element signature="e#2323#2325#0" expanded="false" />
-            <element signature="e#2339#2341#0" expanded="false" />
-            <element signature="e#2343#2650#0" expanded="false" />
-            <element signature="e#2386#2388#0" expanded="false" />
-            <element signature="e#2451#2574#0" expanded="false" />
-            <element signature="e#2544#2574#0" expanded="false" />
-            <element signature="e#2577#2650#0" expanded="false" />
-            <element signature="e#2599#2601#0" expanded="false" />
-            <element signature="e#2614#2616#0" expanded="false" />
-            <element signature="e#2620#2650#0" expanded="false" />
-            <element signature="e#2651#3045#0" expanded="false" />
-            <element signature="e#2672#2674#0" expanded="false" />
-            <element signature="e#2676#2720#0" expanded="false" />
-            <element signature="e#2699#2701#0" expanded="false" />
-            <element signature="e#2718#2720#0" expanded="false" />
-            <element signature="e#2734#2736#0" expanded="false" />
-            <element signature="e#2738#3045#0" expanded="false" />
-            <element signature="e#2781#2783#0" expanded="false" />
-            <element signature="e#2846#2969#0" expanded="false" />
-            <element signature="e#2939#2969#0" expanded="false" />
-            <element signature="e#2972#3045#0" expanded="false" />
-            <element signature="e#2994#2996#0" expanded="false" />
-            <element signature="e#3009#3011#0" expanded="false" />
-            <element signature="e#3015#3045#0" expanded="false" />
-            <element signature="e#3046#3413#0" expanded="false" />
-            <element signature="e#3070#3113#0" expanded="false" />
-            <element signature="e#3111#3113#0" expanded="false" />
-            <element signature="e#3131#3413#0" expanded="false" />
-            <element signature="e#3139#3236#0" expanded="false" />
-            <element signature="e#3174#3176#0" expanded="false" />
-            <element signature="e#3239#3337#0" expanded="false" />
-            <element signature="e#3307#3337#0" expanded="false" />
-            <element signature="e#3340#3413#0" expanded="false" />
-            <element signature="e#3362#3364#0" expanded="false" />
-            <element signature="e#3377#3379#0" expanded="false" />
-            <element signature="e#3383#3413#0" expanded="false" />
-            <element signature="e#3414#3801#0" expanded="false" />
-            <element signature="e#3436#3468#0" expanded="false" />
-            <element signature="e#3466#3468#0" expanded="false" />
-            <element signature="e#3482#3484#0" expanded="false" />
-            <element signature="e#3486#3801#0" expanded="false" />
-            <element signature="e#3529#3531#0" expanded="false" />
-            <element signature="e#3594#3725#0" expanded="false" />
-            <element signature="e#3695#3725#0" expanded="false" />
-            <element signature="e#3728#3801#0" expanded="false" />
-            <element signature="e#3750#3752#0" expanded="false" />
-            <element signature="e#3765#3767#0" expanded="false" />
-            <element signature="e#3771#3801#0" expanded="false" />
-            <element signature="e#3802#4190#0" expanded="false" />
-            <element signature="e#3819#3821#0" expanded="false" />
-            <element signature="e#3823#3867#0" expanded="false" />
-            <element signature="e#3846#3848#0" expanded="false" />
-            <element signature="e#3865#3867#0" expanded="false" />
-            <element signature="e#3881#3883#0" expanded="false" />
-            <element signature="e#3885#4190#0" expanded="false" />
-            <element signature="e#3928#3930#0" expanded="false" />
-            <element signature="e#3993#4114#0" expanded="false" />
-            <element signature="e#4084#4114#0" expanded="false" />
-            <element signature="e#4117#4190#0" expanded="false" />
-            <element signature="e#4139#4141#0" expanded="false" />
-            <element signature="e#4154#4156#0" expanded="false" />
-            <element signature="e#4160#4190#0" expanded="false" />
-            <element signature="e#4191#4632#0" expanded="false" />
-            <element signature="e#4208#4252#0" expanded="false" />
-            <element signature="e#4231#4233#0" expanded="false" />
-            <element signature="e#4250#4252#0" expanded="false" />
-            <element signature="e#4266#4268#0" expanded="false" />
-            <element signature="e#4270#4632#0" expanded="false" />
-            <element signature="e#4313#4315#0" expanded="false" />
-            <element signature="e#4378#4556#0" expanded="false" />
-            <element signature="e#4526#4556#0" expanded="false" />
-            <element signature="e#4559#4632#0" expanded="false" />
-            <element signature="e#4581#4583#0" expanded="false" />
-            <element signature="e#4596#4598#0" expanded="false" />
-            <element signature="e#4602#4632#0" expanded="false" />
-            <element signature="e#4633#4995#0" expanded="false" />
-            <element signature="e#4647#4649#0" expanded="false" />
-            <element signature="e#4651#4695#0" expanded="false" />
-            <element signature="e#4674#4676#0" expanded="false" />
-            <element signature="e#4693#4695#0" expanded="false" />
-            <element signature="e#4709#4711#0" expanded="false" />
-            <element signature="e#4713#4995#0" expanded="false" />
-            <element signature="e#4721#4818#0" expanded="false" />
-            <element signature="e#4756#4758#0" expanded="false" />
-            <element signature="e#4788#4818#0" expanded="false" />
-            <element signature="e#4821#4919#0" expanded="false" />
-            <element signature="e#4889#4919#0" expanded="false" />
-            <element signature="e#4922#4995#0" expanded="false" />
-            <element signature="e#4944#4946#0" expanded="false" />
-            <element signature="e#4959#4961#0" expanded="false" />
-            <element signature="e#4965#4995#0" expanded="false" />
-            <element signature="e#4996#5398#0" expanded="false" />
-            <element signature="e#5017#5019#0" expanded="false" />
-            <element signature="e#5021#5064#0" expanded="false" />
-            <element signature="e#5062#5064#0" expanded="false" />
-            <element signature="e#5078#5080#0" expanded="false" />
-            <element signature="e#5125#5127#0" expanded="false" />
-            <element signature="e#5191#5322#0" expanded="false" />
-            <element signature="e#5325#5398#0" expanded="false" />
-            <element signature="e#5347#5349#0" expanded="false" />
-            <element signature="e#5362#5364#0" expanded="false" />
-            <element signature="e#5368#5398#0" expanded="false" />
-            <element signature="e#5399#5796#0" expanded="false" />
-            <element signature="e#5420#5422#0" expanded="false" />
-            <element signature="e#5424#5467#0" expanded="false" />
-            <element signature="e#5465#5467#0" expanded="false" />
-            <element signature="e#5481#5483#0" expanded="false" />
-            <element signature="e#5485#5796#0" expanded="false" />
-            <element signature="e#5528#5530#0" expanded="false" />
-            <element signature="e#5593#5720#0" expanded="false" />
-            <element signature="e#5690#5720#0" expanded="false" />
-            <element signature="e#5723#5796#0" expanded="false" />
-            <element signature="e#5745#5747#0" expanded="false" />
-            <element signature="e#5760#5762#0" expanded="false" />
-            <element signature="e#5766#5796#0" expanded="false" />
-            <element signature="e#5797#6199#0" expanded="false" />
-            <element signature="e#5816#5818#0" expanded="false" />
-            <element signature="e#5820#5864#0" expanded="false" />
-            <element signature="e#5843#5845#0" expanded="false" />
-            <element signature="e#5862#5864#0" expanded="false" />
-            <element signature="e#5878#5880#0" expanded="false" />
-            <element signature="e#5882#6199#0" expanded="false" />
-            <element signature="e#5925#5927#0" expanded="false" />
-            <element signature="e#5990#6123#0" expanded="false" />
-            <element signature="e#6093#6123#0" expanded="false" />
-            <element signature="e#6126#6199#0" expanded="false" />
-            <element signature="e#6148#6150#0" expanded="false" />
-            <element signature="e#6163#6165#0" expanded="false" />
-            <element signature="e#6169#6199#0" expanded="false" />
-            <element signature="e#6200#6646#0" expanded="false" />
-            <element signature="e#6222#6265#0" expanded="false" />
-            <element signature="e#6263#6265#0" expanded="false" />
-            <element signature="e#6279#6281#0" expanded="false" />
-            <element signature="e#6283#6646#0" expanded="false" />
-            <element signature="e#6291#6391#0" expanded="false" />
-            <element signature="e#6326#6330#0" expanded="false" />
-            <element signature="e#6343#6345#0" expanded="false" />
-            <element signature="e#6361#6391#0" expanded="false" />
-            <element signature="e#6394#6570#0" expanded="false" />
-            <element signature="e#6508#6510#0" expanded="false" />
-            <element signature="e#6540#6570#0" expanded="false" />
-            <element signature="e#6573#6646#0" expanded="false" />
-            <element signature="e#6595#6597#0" expanded="false" />
-            <element signature="e#6610#6612#0" expanded="false" />
-            <element signature="e#6616#6646#0" expanded="false" />
-          </folding>
+          <caret line="26" column="6" lean-forward="false" selection-start-line="26" selection-start-column="6" selection-end-line="26" selection-end-column="6" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/lowbrain/core/main/CommandHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3985">
-          <caret line="351" column="89" selection-start-line="351" selection-start-column="89" selection-end-line="351" selection-end-column="89" />
+          <caret line="351" column="89" lean-forward="false" selection-start-line="351" selection-start-column="89" selection-end-line="351" selection-end-column="89" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1598,7 +1285,7 @@
     <entry file="file://$PROJECT_DIR$/src/lowbrain/core/events/ArmorEquipListener.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
-          <caret line="26" column="17" selection-start-line="26" selection-start-column="17" selection-end-line="26" selection-end-column="17" />
+          <caret line="26" column="17" lean-forward="false" selection-start-line="26" selection-start-column="17" selection-end-line="26" selection-end-column="17" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="docComment;method#onPlayerEquipArmor#0;class#ArmorEquipListener#0" expanded="false" />
@@ -1609,17 +1296,10 @@
     <entry file="file://$PROJECT_DIR$/src/lowbrain/core/commun/Helper.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="149">
-          <caret line="285" column="17" selection-start-line="285" selection-start-column="17" selection-end-line="285" selection-end-column="17" />
+          <caret line="285" column="17" lean-forward="false" selection-start-line="285" selection-start-column="17" selection-end-line="285" selection-end-column="17" />
           <folding>
             <element signature="docComment;class#Helper#0" expanded="false" />
             <element signature="method#eval#0;class#Helper#0" expanded="false" />
-            <element signature="class#367:3452" expanded="false" />
-            <element signature="method#eat#0;class#367:3452" expanded="false" />
-            <element signature="method#parse#0;class#367:3452" expanded="false" />
-            <element signature="e#1025#1036#0" expanded="false" />
-            <element signature="method#parseExpression#0;class#367:3452" expanded="false" />
-            <element signature="method#parseTerm#0;class#367:3452" expanded="false" />
-            <element signature="method#parseFactor#0;class#367:3452" expanded="false" />
             <element signature="method#FormatStringWithValues#0;class#Helper#0" expanded="false" />
             <element signature="docComment;method#StringIsNullOrEmpty#0;class#Helper#0" expanded="false" />
             <element signature="docComment;method#randomFloat#0;class#Helper#0" expanded="false" />
@@ -1645,51 +1325,14 @@
             <element signature="method#ValueFromFunction#1;class#Helper#0" expanded="false" />
             <element signature="docComment;method#getNearbyPlayers#0;class#Helper#0" expanded="false" />
             <element signature="method#getNearbyPlayers#0;class#Helper#0" expanded="false" />
-            <element signature="e#8795#8811#0" expanded="true" />
-            <element signature="method#getBowArrowSpeed#0;class#Helper#0" expanded="false" />
-            <element signature="method#getBowPrecision#0;class#Helper#0" expanded="false" />
-            <element signature="method#getAttackByWeapon#0;class#Helper#0" expanded="false" />
-            <element signature="method#getAttackByProjectile#0;class#Helper#0" expanded="false" />
-            <element signature="method#getAttackByMagic#0;class#Helper#0" expanded="false" />
-            <element signature="method#getConsumedPotionMultiplier#0;class#Helper#0" expanded="false" />
-            <element signature="method#getPlayerMaxHealth#0;class#Helper#0" expanded="false" />
-            <element signature="method#getPlayerMaxMana#0;class#Helper#0" expanded="false" />
-            <element signature="method#getPlayerManaRegen#0;class#Helper#0" expanded="false" />
-            <element signature="method#getPlayerAttackSpeed#0;class#Helper#0" expanded="false" />
-            <element signature="method#getPlayerMovementSpeed#0;class#Helper#0" expanded="false" />
-            <element signature="method#getPlayerKnockbackResistance#0;class#Helper#0" expanded="false" />
-            <element signature="method#getPlayerLuck#0;class#Helper#0" expanded="false" />
-            <element signature="method#getPlayerDropPercentage#0;class#Helper#0" expanded="false" />
-            <element signature="method#getChangeOfRemovingPotionEffect#0;class#Helper#0" expanded="false" />
-            <element signature="method#getReducingPotionEffect#0;class#Helper#0" expanded="false" />
-            <element signature="method#getDamagedByFire#0;class#Helper#0" expanded="false" />
-            <element signature="method#getDamagedByFireTick#0;class#Helper#0" expanded="false" />
-            <element signature="method#getDamagedByPoison#0;class#Helper#0" expanded="false" />
-            <element signature="method#getDamagedByWither#0;class#Helper#0" expanded="false" />
-            <element signature="method#getDamagedByContact#0;class#Helper#0" expanded="false" />
-            <element signature="method#getDamagedByFlyIntoWall#0;class#Helper#0" expanded="false" />
-            <element signature="method#getDamagedByFall#0;class#Helper#0" expanded="false" />
-            <element signature="method#getDamagedByWeapon#0;class#Helper#0" expanded="false" />
-            <element signature="method#getDamagedByArrow#0;class#Helper#0" expanded="false" />
-            <element signature="method#getDamagedByProjectile#0;class#Helper#0" expanded="false" />
-            <element signature="method#getDamagedByMagic#0;class#Helper#0" expanded="false" />
-            <element signature="method#getDamagedBySuffocation#0;class#Helper#0" expanded="false" />
-            <element signature="method#getDamagedByDrowning#0;class#Helper#0" expanded="false" />
-            <element signature="method#getDamagedByStarvation#0;class#Helper#0" expanded="false" />
-            <element signature="method#getDamagedByLightning#0;class#Helper#0" expanded="false" />
-            <element signature="method#getDamagedByVoid#0;class#Helper#0" expanded="false" />
-            <element signature="method#getDamagedByHotFloor#0;class#Helper#0" expanded="false" />
-            <element signature="method#getDamagedByExplosion#0;class#Helper#0" expanded="false" />
-            <element signature="method#getDamagedByLava#0;class#Helper#0" expanded="false" />
-            <element signature="method#getDamagedByDefault#0;class#Helper#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/lowbrain/core/events/CoreListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="298" column="69" selection-start-line="298" selection-start-column="69" selection-end-line="298" selection-end-column="69" />
+        <state relative-caret-position="2380">
+          <caret line="298" column="69" lean-forward="false" selection-start-line="298" selection-start-column="69" selection-end-line="298" selection-end-column="69" />
           <folding>
             <element signature="docComment;method#onPlayerTeleport#0;class#CoreListener#0" expanded="false" />
             <element signature="method#onPlayerTeleport#0;class#CoreListener#0" expanded="false" />
@@ -1700,23 +1343,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/lowbrain/core/rpg/LowbrainPlayer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="381" column="47" selection-start-line="381" selection-start-column="47" selection-end-line="381" selection-end-column="47" />
+        <state relative-caret-position="3791">
+          <caret line="375" column="39" lean-forward="false" selection-start-line="375" selection-start-column="39" selection-end-line="375" selection-end-column="39" />
           <folding>
             <element signature="docComment;method#LowbrainPlayer#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#LowbrainPlayer#0;class#LowbrainPlayer#0" expanded="false" />
-            <element signature="docComment;method#initialiseScoreBoard#0;class#LowbrainPlayer#0" expanded="false" />
-            <element signature="method#initialiseScoreBoard#0;class#LowbrainPlayer#0" expanded="false" />
-            <element signature="e#2220#2298#0" expanded="false" />
             <element signature="docComment;method#toggleScoreboard#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#toggleScoreboard#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="docComment;method#toggleScoreboard#1;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#toggleScoreboard#1;class#LowbrainPlayer#0" expanded="false" />
             <element signature="docComment;method#refreshScoreBoard#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#refreshScoreBoard#0;class#LowbrainPlayer#0" expanded="false" />
-            <element signature="docComment;method#InitialisePlayer#0;class#LowbrainPlayer#0" expanded="false" />
-            <element signature="method#InitialisePlayer#0;class#LowbrainPlayer#0" expanded="false" />
-            <element signature="e#8753#8860#0" expanded="false" />
             <element signature="docComment;method#compareAttributesByName#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#compareAttributesByName#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="docComment;method#validateEquippedArmor#0;class#LowbrainPlayer#0" expanded="false" />
@@ -1742,7 +1379,7 @@
             <element signature="method#reset#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="docComment;method#resetAll#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#resetAll#0;class#LowbrainPlayer#0" expanded="false" />
-            <element signature="e#19645#19751#0" expanded="false" />
+            <element signature="method#sendMessage#3;class#LowbrainPlayer#0" expanded="false" />
             <element signature="docComment;method#addExp#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#addExp#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="docComment;method#setExperience#0;class#LowbrainPlayer#0" expanded="false" />
@@ -1758,10 +1395,6 @@
             <element signature="method#setDexterity#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="docComment;method#addDexterity#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#addDexterity#0;class#LowbrainPlayer#0" expanded="false" />
-            <element signature="docComment;method#setHealth#0;class#LowbrainPlayer#0" expanded="false" />
-            <element signature="method#setHealth#0;class#LowbrainPlayer#0" expanded="false" />
-            <element signature="docComment;method#addHealth#0;class#LowbrainPlayer#0" expanded="false" />
-            <element signature="method#addHealth#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="docComment;method#setDefence#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#setDefence#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="docComment;method#addDefence#0;class#LowbrainPlayer#0" expanded="false" />
@@ -1797,7 +1430,6 @@
             <element signature="method#addSkillPoints#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="docComment;method#upgradeSkill#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#upgradeSkill#0;class#LowbrainPlayer#0" expanded="false" />
-            <element signature="e#39374#39477#0" expanded="false" />
             <element signature="docComment;method#toString#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#toString#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#getLowbrainClass#0;class#LowbrainPlayer#0" expanded="false" />
@@ -1805,19 +1437,16 @@
             <element signature="docComment;method#getNextLvl#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#getKnockBackResistance#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#getMovementSpeed#0;class#LowbrainPlayer#0" expanded="false" />
-            <element signature="e#43091#43196#0" expanded="false" />
             <element signature="method#setAttackSpeed#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#setKnockBackResistance#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#setMovementSpeed#0;class#LowbrainPlayer#0" expanded="false" />
+            <element signature="method#setLuck#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="docComment;method#setPlayerMaxHealth#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#setPlayerMaxHealth#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="docComment;method#setMana#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#setMana#0;class#LowbrainPlayer#0" expanded="false" />
-            <element signature="e#44449#44547#0" expanded="false" />
             <element signature="docComment;method#setDisplayName#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#setDisplayName#0;class#LowbrainPlayer#0" expanded="false" />
-            <element signature="method#setLuck#0;class#LowbrainPlayer#0" expanded="false" />
-            <element signature="e#45180#45285#0" expanded="false" />
             <element signature="docComment;method#attributeHasChanged#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#attributeHasChanged#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="docComment;method#regenMana#0;class#LowbrainPlayer#0" expanded="false" />
@@ -1826,25 +1455,18 @@
             <element signature="method#startManaRegenTask#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="docComment;method#stopManaRegenTask#0;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#stopManaRegenTask#0;class#LowbrainPlayer#0" expanded="false" />
-            <element signature="method#sendMessage#3;class#LowbrainPlayer#0" expanded="false" />
             <element signature="method#addBonusAttributes#0;class#LowbrainPlayer#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/module_lowbraincore.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/module_lowbraincore.xml" />
     <entry file="file://$PROJECT_DIR$/src/lowbrain/core/main/LowbrainCore.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="25" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
+        <state relative-caret-position="288">
+          <caret line="30" column="13" lean-forward="false" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
           <folding>
+            <element signature="imports" expanded="true" />
             <element signature="docComment;class#LowbrainCore#0" expanded="false" />
             <element signature="docComment;method#onEnable#0;class#LowbrainCore#0" expanded="false" />
             <element signature="method#onEnable#0;class#LowbrainCore#0" expanded="false" />
@@ -1906,7 +1528,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>1.8.0.92</last-edited>
+          <last-edited>1.8</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

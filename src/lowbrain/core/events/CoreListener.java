@@ -882,7 +882,7 @@ public class CoreListener implements Listener {
             }
         }
 
-        if (eventSource.source == EventSourceEnum.MAGIC_PROJECTILE && eventSource.staffSection != null) {
+        if (eventSource.source == EventSource.Source.MAGIC_PROJECTILE && eventSource.staffSection != null) {
             double baseDamage = eventSource.staffSection.getDouble("base_damage",-1);
             String effect = eventSource.staffSection.getString("effect","");
             int effectDuration = eventSource.staffSection.getInt("effect_duration",3);
@@ -914,8 +914,8 @@ public class CoreListener implements Listener {
         }
 
         //APPLYING MAGIC EFFECT BY ATTACKER
-        if(eventSource.source != EventSourceEnum.MAGIC_PROJECTILE
-                && eventSource.source != EventSourceEnum.MAGIC
+        if(eventSource.source != EventSource.Source.MAGIC_PROJECTILE
+                && eventSource.source != EventSource.Source.MAGIC
                 && Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().enable){
 
             plugin.debugInfo("              From : " + eventSource.damager.getPlayer().getName());
@@ -932,7 +932,7 @@ public class CoreListener implements Listener {
         }
 
         //APPLYING DAMAGE CHANGE DEPENDING ON OFFENCIVE ATTRIBUTES
-        if(eventSource.source == EventSourceEnum.ARROW && Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().projectile.isEnabled()){
+        if(eventSource.source == EventSource.Source.ARROW && Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().projectile.isEnabled()){
             e.setDamage(
                     Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().projectile.randomizeFromValue(
                             eventSource.damager.getMultipliers().getAttackByProjectile() * (float)e.getDamage()
@@ -940,7 +940,7 @@ public class CoreListener implements Listener {
             );
         }
 
-        else if(eventSource.source == EventSourceEnum.NORMAL && Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().weapon.isEnabled()){
+        else if(eventSource.source == EventSource.Source.NORMAL && Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().weapon.isEnabled()){
             e.setDamage(
                     Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().weapon.randomizeFromValue(
                             eventSource.damager.getMultipliers().getAttackByWeapon() * (float)e.getDamage()
@@ -948,8 +948,8 @@ public class CoreListener implements Listener {
             );
         }
 
-        else if((eventSource.source == EventSourceEnum.MAGIC
-                || eventSource.source == EventSourceEnum.MAGIC_PROJECTILE)
+        else if((eventSource.source == EventSource.Source.MAGIC
+                || eventSource.source == EventSource.Source.MAGIC_PROJECTILE)
                 && Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().magic.isEnabled()){
             e.setDamage(
                     Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().magic.randomizeFromValue(
@@ -959,7 +959,7 @@ public class CoreListener implements Listener {
         }
 
         //applying skilled attack if necessary
-        if(eventSource.source == EventSourceEnum.NORMAL && eventSource.damager.getCurrentSkill() != null
+        if(eventSource.source == EventSource.Source.NORMAL && eventSource.damager.getCurrentSkill() != null
                 && (eventSource.damager.getCurrentSkill().getEventType().equals("attack_entity") || eventSource.damager.getCurrentSkill().getEventType().equals("both"))
                 && e.getEntity() instanceof LivingEntity
                 && eventSource.damager.getCurrentSkill().executeWeaponAttackSkill(eventSource.damager,(LivingEntity) e.getEntity(),e.getFinalDamage())){

@@ -7,15 +7,16 @@ import lowbrain.core.rpg.LowbrainSkill;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.jetbrains.annotations.Contract;
 
 public class EventSource {
     public LowbrainPlayer damager;
     public LowbrainPlayer damagee;
-    public EventSourceEnum source;
+    public Source source;
     public LowbrainSkill skill;
     public ConfigurationSection staffSection;
 
-    public EventSource(LowbrainPlayer damager, LowbrainPlayer damagee, EventSourceEnum source, LowbrainSkill skill, ConfigurationSection staffSection) {
+    public EventSource(LowbrainPlayer damager, LowbrainPlayer damagee, Source source, LowbrainSkill skill, ConfigurationSection staffSection) {
         this.damager = damager;
         this.damagee = damagee;
         this.source = source;
@@ -23,13 +24,14 @@ public class EventSource {
         this.staffSection = staffSection;
     }
 
+    @Contract("null -> null")
     public static EventSource getFromAttack(EntityDamageByEntityEvent e) {
         if (e == null)
             return null;
 
         LowbrainPlayer damager = null;
         LowbrainPlayer damagee = null;
-        EventSourceEnum source = null;
+        Source source = null;
         LowbrainSkill skill = null;
         ConfigurationSection staffSection = null;
 
@@ -40,7 +42,7 @@ public class EventSource {
         if (e.getDamager() instanceof Player) {
             damager = LowbrainCore.getInstance().getPlayerHandler().getList().get(e.getDamager().getUniqueId());
             LowbrainCore.getInstance().debugInfo("              ---- Attacked by another player : " + damager.getPlayer().getName());
-            source = EventSourceEnum.NORMAL;
+            source = Source.NORMAL;
         }
 
         else if (e.getDamager() instanceof Arrow) {
@@ -50,7 +52,7 @@ public class EventSource {
                 damager = LowbrainCore.getInstance().getPlayerHandler().getList().get(((Player)((Arrow) e.getDamager()).getShooter()).getUniqueId());
             }
             LowbrainCore.getInstance().debugInfo("              ---- Attacked by arrow");
-            source = EventSourceEnum.ARROW;
+            source = Source.ARROW;
         }
 
         else if (e.getDamager() instanceof ThrownPotion) {
@@ -59,7 +61,7 @@ public class EventSource {
                 damager = LowbrainCore.getInstance().getPlayerHandler().getList().get(((Player)((ThrownPotion) e.getDamager()).getShooter()).getUniqueId());
             }
             LowbrainCore.getInstance().debugInfo("              ---- Attacked by potion");
-            source = EventSourceEnum.MAGIC;
+            source = Source.MAGIC;
         }
 
         //CUSTOM PROJECTILE (SKILLS AND STAFFS)
@@ -82,7 +84,7 @@ public class EventSource {
                 else if (LowbrainCore.getInstance().useLowbrainItems) {
                     staffSection = lowbrain.items.main.Main.getInstance().getStaffConfig().getConfigurationSection(projectile.getCustomName());
                     if (staffSection != null) {
-                        source = EventSourceEnum.MAGIC_PROJECTILE;
+                        source = Source.MAGIC_PROJECTILE;
                     }
                 }
 
@@ -90,5 +92,12 @@ public class EventSource {
         }
 
         return new EventSource(damager, damagee, source, skill, staffSection);
+    }
+
+    public enum Source {
+        ARROW,
+        MAGIC,
+        NORMAL,
+        MAGIC_PROJECTILE
     }
 }
