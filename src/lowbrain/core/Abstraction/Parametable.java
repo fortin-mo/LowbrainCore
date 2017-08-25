@@ -1,5 +1,7 @@
-package lowbrain.core.commun;
+package lowbrain.core.Abstraction;
 
+import lowbrain.core.commun.FunctionType;
+import lowbrain.core.commun.RangeType;
 import lowbrain.core.main.LowbrainCore;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Contract;
@@ -9,7 +11,7 @@ import java.util.HashMap;
 /**
  * Created by Mooffy on 2017-06-23.
  */
-public abstract class AbstractParams {
+public abstract class Parametable {
     protected Float max = 1F;
     protected Float min = 1F;
     protected String function;
@@ -19,12 +21,12 @@ public abstract class AbstractParams {
     protected FunctionType functionType = null;
     protected HashMap<String, Float> variables = new HashMap<>();
 
-    AbstractParams() {
-        LowbrainCore.getInstance().debugWarning("A Multiplier was created using default constructor !");
+    protected Parametable() {
+        LowbrainCore.getInstance().warn("A Multiplier was created using default constructor !");
     }
 
     @Contract("null -> fail")
-    AbstractParams(ConfigurationSection config) {
+    protected Parametable(ConfigurationSection config) {
         if(config == null) throw new NullPointerException("Cannot construct Multiplier with null config !");
         setEnabled(config.getBoolean("enable"));
         setRange((float)config.getDouble("range"));

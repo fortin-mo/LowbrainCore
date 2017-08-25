@@ -26,7 +26,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LowbrainPlayer extends Playable {
+/**
+ * represents the extended version of the bukkit player
+ */
+public class LowbrainPlayer extends Attributable {
 
 	private float nextLvl = 0;
 	private String className = "";
@@ -46,13 +49,13 @@ public class LowbrainPlayer extends Playable {
 	private String currentSkill;
 	private Multipliers multipliers;
 
-	private Scoreboard scoreboard;
+	private StatsBoard statsBoard;
 
 	//========================================================= CONSTRUCTOR====================================
 	/**
-	 * contruct player with bukkit.Player
-	 * will retrive the player's information using his uuid in
-     * the forder ../data/uuid.yml
+	 * construct player with bukkit.Player
+	 * will retrieve the player's information using his uuid in
+     * the fodder ../data/uuid.yml
 	 * @param p Bukkit.Player
 	 */
 	public LowbrainPlayer(Player p){
@@ -61,76 +64,11 @@ public class LowbrainPlayer extends Playable {
 	}
 
 	/**
-	 * initialize individual player scoreboard for stats
-     */
-	private void initializeScoreBoard(){
-			if(scoreboard != null) return; // already initialize
-			scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-
-			Objective objectiveInfo = scoreboard.registerNewObjective("Info", "dummy");
-			objectiveInfo.setDisplayName("Info");
-			if(showStats){
-				objectiveInfo.setDisplaySlot(DisplaySlot.SIDEBAR);
-			}
-			else objectiveInfo.setDisplaySlot(DisplaySlot.PLAYER_LIST);
-
-			this.getPlayer().setScoreboard(scoreboard);
-	}
-
-	/**
-	 * hide or show scoreboard stats
-	 * @param show
-     */
-	public void toggleScoreboard(boolean show){
-		if(scoreboard == null) return;
-		this.showStats = show;
-		Objective info = scoreboard.getObjective("Info");
-		if(showStats){
-			info.setDisplaySlot(DisplaySlot.SIDEBAR);
-		}
-		else info.setDisplaySlot(DisplaySlot.PLAYER_LIST);
-	}
-
-	/**
-	 * hide or show (toggle) scoreboard stats
-     */
-	public void toggleScoreboard(){
-		if(scoreboard == null) return;
-		this.showStats = !this.showStats;
-		Objective info = scoreboard.getObjective("Info");
-		if(showStats){
-			info.setDisplaySlot(DisplaySlot.SIDEBAR);
-		}
-		else info.setDisplaySlot(DisplaySlot.PLAYER_LIST);
-	}
-
-	/**
-	 * refresh individual player scoreboard stats
-     */
-	private void refreshScoreBoard(){
-		if(scoreboard != null){
-			Objective info = scoreboard.getObjective("Info");
-			info.getScore(ChatColor.GREEN + "CURRENT MANA: ").setScore((int)this.currentMana);
-			info.getScore(ChatColor.GREEN + "MANA %: ").setScore((int)(this.currentMana / this.maxMana * 100));
-			info.getScore(ChatColor.GREEN + "LEVEL: ").setScore(this.lvl);
-			info.getScore(ChatColor.GREEN + "XP: ").setScore((int)this.experience);
-			info.getScore(ChatColor.GREEN + "NEXT LEVEL IN: ").setScore((int)(this.nextLvl - this.experience));
-			info.getScore(ChatColor.GREEN + "POINTS: ").setScore(this.points);
-			info.getScore(ChatColor.GREEN + "SKILL POINTS: ").setScore(this.skillPoints);
-			info.getScore(ChatColor.GREEN + "KILLS: ").setScore(this.kills);
-
-			Objective level = scoreboard.getObjective("Level");
-			//level.getScore(this.getPlayer()).setScore(this.lvl);
-		}
-	}
-
-	/**
 	 * read player config yml to initialize current player
 	 */
 	private void initializePlayer(){
-		if(CoreListener.plugin == null){
+		if(CoreListener.plugin == null)
 			return;
-		}
 
 		File userdata = new File(CoreListener.plugin.getDataFolder(), File.separator + "PlayerDB");
         File f = new File(userdata, File.separator + player.getUniqueId() + ".yml");
@@ -263,7 +201,9 @@ public class LowbrainPlayer extends Playable {
 
 	private void start(){
 		if(classIsSet && raceIsSet && this.lowbrainClass != null && this.lowbrainRace != null){
-			initializeScoreBoard();
+			if (statsBoard == null)
+			    statsBoard = new StatsBoard(this);
+
 			validateEquippedArmor();
 			onAttributeChange();
 			setDisplayName();
@@ -386,41 +326,45 @@ public class LowbrainPlayer extends Playable {
 	}
 
 	/**
-	 * can this player wear a specific set of armor
-	 * @param item
-	 * @return
+	 * check if a player can wear a specific set of armor
+	 * @param item item being equipped
+	 * @return true if can equip
      */
 	public boolean canEquipItem(ItemStack item){
-		if(item == null) return true;
+		if(item == null)
+		    return true;
 
 		String name = "";
 
-		if(item.getItemMeta() != null && item.getItemMeta().getDisplayName() != null){//custom items
+        //custom items
+		if(item.getItemMeta() != null && item.getItemMeta().getDisplayName() != null)
 			name = ChatColor.stripColor(item.getItemMeta().getDisplayName());
-		}else{//vanilla items
-			name = item.getType().name().toLowerCase();
-		}
+        //vanilla items
+		else
+			name = item.getType().name();
 
 		LowbrainCore.ItemRequirements i = LowbrainCore.getInstance().getItemsRequirements().get(name);
-		if(i == null) return true;
+		if(i == null)
+		    return true;
 		return meetRequirements(i.getRequirements());
 	}
 
 	/**
-	 * can this player wear a specific set of armor
-	 * @param item
-	 * @return a string with the requirements that failed... empty if they all passed
+	 * check if a player can wear a specific set of armor
+	 * @param item item being equipped
+	 * @return string with the requirements that failed... empty if they all passed
 	 */
 	public String canEquipItemString(ItemStack item){
 		String msg = "";
 		if(item == null) return msg;
 		String name = "";
 
-		if(item.getItemMeta().getDisplayName() != null){//custom items
+        //custom items
+		if(item.getItemMeta().getDisplayName() != null)
 			name = ChatColor.stripColor(item.getItemMeta().getDisplayName());
-		}else{//vanilla items
-			name = item.getType().name().toLowerCase();
-		}
+		//vanilla items
+		else
+			name = item.getType().name();
 
 		LowbrainCore.ItemRequirements i = LowbrainCore.getInstance().getItemsRequirements().get(name);
 		if(i == null)return msg;
@@ -429,7 +373,7 @@ public class LowbrainPlayer extends Playable {
 
 	/**
 	 * check if a player passes a list of requirements
-	 * @param requirements
+	 * @param requirements list of requirements
 	 * @return true if passes, false if not
 	 */
 	public boolean meetRequirements(Map<String,Integer> requirements){
@@ -437,16 +381,16 @@ public class LowbrainPlayer extends Playable {
 		for(Map.Entry<String, Integer> r : requirements.entrySet()) {
 			String n = r.getKey().toLowerCase();
 			int v = r.getValue();
-			if(this.compareAttributesByName(n,v) < 0){
+			if(this.compareAttributesByName(n,v) < 0)
 				return false;
-			}
+
 		}
 		return true;
 	}
 
 	/**
 	 * check if a player passes a list of requirements
-	 * @param requirements
+	 * @param requirements list of requirements
 	 * @return a string of failed requirements, empty string if passes
 	 */
 	public String meetRequirementsString(Map<String,Integer> requirements){
@@ -465,7 +409,7 @@ public class LowbrainPlayer extends Playable {
 	/**
 	 * cast a spell
 	 * @param name name of the spell
-	 * @param to rpgPlayer you wish to cast the spell to.. if null will cast to self
+	 * @param to LowbrainPlayer to cast the spell to.. if null will cast to himself
      * @return true if the cast has succeeded
      */
 	public boolean castSpell(String name, LowbrainPlayer to){
@@ -478,7 +422,7 @@ public class LowbrainPlayer extends Playable {
 		}
 
 		if(powa.Cast(this,to == null ? this : to)){
-			refreshScoreBoard();
+			statsBoard.refresh();
 			return true;
 		}
 		return false;
@@ -653,69 +597,68 @@ public class LowbrainPlayer extends Playable {
 		}
 	}
 
-    public void sendMessage(String msg){
-        sendMessage(msg,ChatColor.GREEN,"");
-    }
-
-    public void sendMessage(String msg, ChatColor color){
-        sendMessage(msg, color,"");
-    }
-
-    public void sendMessage(String msg, String prefix){
-        sendMessage(msg,ChatColor.GREEN, prefix);
-    }
-
-    public void sendMessage(String msg, ChatColor color, String prefix){
-        this.getPlayer().sendMessage(prefix + color + msg);
-    }
-
 	//=================================================== END OF USEFULL =====================================
 
 	//=====================================================  ADD AND SETTER METHODS =================================
 
-	/**
-	 * add experience to current player
-	 * @param exp
-	 */
-	public void addExp(double exp){
-		this.experience += exp;
-		refreshScoreBoard();
-		if(this.experience >= nextLvl){
-			this.levelUP();
-		}
-		else if (this.experience < 0 ){
-			this.experience = 0;
-		}
-	}
+    /**
+     * add experience to current player
+     * @param exp experience
+     */
+    public void addExperience(double exp) {
+	    this.addExperience((float)exp);
+    }
 
 	/**
-	 * set current player experience
-	 * @param experience
+	 * add experience to current player
+	 * @param exp experience
 	 */
-	public void setExperience(float experience) {
-		this.experience = experience;
+	public void addExperience(float exp){
+		this.experience += exp;
+		statsBoard.refresh();
+
+		if(this.experience >= nextLvl)
+			this.levelUP();
+		else if (this.experience < 0 )
+			this.experience = 0;
+
 	}
+
+	public void setLvl(int lvl) {
+	    this.setLvl(lvl, false);
+    }
 
 	/**
 	 * set player level. will not add points
 	 * @param lvl
 	 */
 	public void setLvl(int lvl, boolean ajust) {
-		addLevel(lvl-this.lvl, ajust);
+		addLvl(lvl-this.lvl, ajust);
 	}
+
+    /**
+     * add level without adjusting points and bonus attributes
+     * @param n lvl to add
+     */
+	public void addLvl(int n) {
+	    this.addLvl(n, false);
+    }
 	
 	/**
 	 * add lvl to current player. will add points as well
-	 * @param nbLvl
+	 * @param nbLvl lvl to add
+     * @param ajust  adjust points or not
 	 */
-	public void addLevel(int nbLvl, boolean ajust){
+	public void addLvl(int nbLvl, boolean ajust){
 		int oldLvl = this.lvl;
 		this.lvl += nbLvl;
 		int maxLvl = getSettings().getMaxLvl();
 		int nbPointsPerLevel = getSettings().getPointsPerLvl();
 		
-		if(maxLvl > 0 && this.lvl > maxLvl)this.lvl= maxLvl;
-		else if (this.lvl <= 0) this.lvl = 1;
+		if(maxLvl > 0 && this.lvl > maxLvl)
+		    this.lvl= maxLvl;
+		else if (this.lvl <= 0)
+		    this.lvl = 1;
 		
 		int dif = this.lvl - oldLvl;
 		this.setDisplayName();
@@ -741,7 +684,7 @@ public class LowbrainPlayer extends Playable {
 
 	/**
 	 * set player current mana
-	 * @param currentMana
+	 * @param currentMana set mana
      */
 	public void setCurrentMana(float currentMana) {
 		this.currentMana = currentMana;
@@ -939,367 +882,13 @@ public class LowbrainPlayer extends Playable {
 
 	}
 
-	public void addReputation(int n) {
-	    this.reputation += n;
-	    onAttributeChange();
-    }
-
-    public void setReputation(int n) {
-	    this.reputation = n;
-        onAttributeChange();
-    }
-
-    /**
-     * add agility to the player
-     * @param nb
-     * @param usePoints
-     */
-    public void addAgility(int nb, boolean usePoints,boolean callChange){
-        int maxStats = getSettings().getMaxStats();
-
-        if(nb == 0){
-            return;
-        }
-        else if(!getSettings().isAllowDeductionPoints() && nb < 0){
-            sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
-            return;
-        }
-        else if (getSettings().isAllowDeductionPoints() && nb < 0 && this.agility == 0){
-            sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
-            return;
-        }
-        else if(usePoints && this.points >= nb){
-            int oldAgility = this.agility;
-            this.agility += nb;
-            if(maxStats >= 0 && this.agility > maxStats){
-                this.agility = maxStats;
-            }
-            else if (this.agility < 0) this.agility = 0;
-
-            double dif = this.agility - oldAgility;
-            this.points -= dif;
-            if(callChange) onAttributeChange();
-            sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"agility", dif}));
-        }
-        else if(!usePoints){
-            this.agility += nb;
-            if(maxStats >= 0 && this.agility > maxStats){
-                this.agility = maxStats;
-                sendMessage(Internationalization.format("attribute_set_to", new Object[]{"agility", getSettings().getMaxStats()}));
-            }else{
-                sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"agility", nb}));
-            }
-            if(callChange) onAttributeChange();
-        }
-        else{
-            sendMessage(Internationalization.format("not_enough_points"),ChatColor.RED);
-            return;
-        }
-    }
-
-	/**
-	 * add strength to current player
-	 * @param nb
-	 * @param usePoints
-	 */
-	public void addStrength(int nb, boolean usePoints, boolean callChange){
-		int maxStats = Settings.getInstance().getMaxStats();
-		if(nb == 0){
-			return;
-		}
-		else if(!Settings.getInstance().isAllowDeductionPoints() && nb < 0){
-			sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
-			return;
-		}
-		else if (Settings.getInstance().isAllowDeductionPoints() && nb < 0 && this.strength == 0){
-			sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
-			return;
-		}
-		else if(usePoints && this.points >= nb){
-			int oldStrength = this.strength;
-			this.strength += nb;
-			if(maxStats >= 0 && this.strength > maxStats){
-				this.strength = maxStats;
-			}
-			else if(this.strength < 0){
-				this.strength = 0;
-			}
-
-			int dif = this.strength - oldStrength;
-
-			this.points -= dif;
-			if(callChange) onAttributeChange();
-            sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"strength", dif}));
-		}
-		else if(!usePoints){
-			this.strength += nb;
-			if(maxStats >= 0 && this.strength > maxStats){
-				this.strength = maxStats;
-                sendMessage(Internationalization.format("attribute_set_to", new Object[]{"strength", getSettings().getMaxStats()}));
-			}else {
-				sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"strength", nb}));
-			}
-			if(callChange) onAttributeChange();
-		}
-		else{
-			sendMessage(Internationalization.format("not_enough_points"),ChatColor.RED);
-			return;
-		}
-	}
-
-	/**
-	 * add intelligence to current player
-	 * @param nb
-	 * @param usePoints
-	 */
-	public void addIntelligence(int nb, boolean usePoints, boolean callChange){
-		int maxStats = Settings.getInstance().getMaxStats();
-		if(nb == 0){
-			return;
-		}
-		else if(!Settings.getInstance().isAllowDeductionPoints() && nb < 0){
-			sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
-			return;
-		}
-		else if (Settings.getInstance().isAllowDeductionPoints() && nb < 0 && this.intelligence == 0){
-			sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
-			return;
-		}
-		else if(usePoints && this.points >= nb){
-			int oldIntelligence = this.intelligence;
-			this.intelligence += nb;
-			if(maxStats >= 0 && this.intelligence > maxStats){
-				this.intelligence = maxStats;
-			}
-			else if(this.intelligence < 0){
-				this.intelligence = 0;
-			}
-			int dif = this.intelligence - oldIntelligence;
-
-			this.points -= dif;
-			if(callChange) onAttributeChange();
-            sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"intelligence", dif}));
-
-		}
-		else if(!usePoints){
-			this.intelligence += nb;
-			if(maxStats >= 0 && this.intelligence > maxStats){
-				this.intelligence = maxStats;
-                sendMessage(Internationalization.format("attribute_set_to", new Object[]{"intelligence", getSettings().getMaxStats()}));
-			}
-			else{
-                sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"intelligence", nb}));
-			}
-			if(callChange) onAttributeChange();
-		}
-		else{
-			sendMessage(Internationalization.format("not_enough_points"),ChatColor.RED);
-			return;
-		}
-	}
-
-	/**
-	 * add dexterity to current player
-	 * @param nb
-	 * @param usePoints
-	 */
-	public void addDexterity(int nb, boolean usePoints, boolean callChange){
-		int maxStats = Settings.getInstance().getMaxStats();
-		if(nb == 0){
-			return;
-		}
-		else if(!Settings.getInstance().isAllowDeductionPoints() && nb < 0){
-			sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
-			return;
-		}
-		else if (Settings.getInstance().isAllowDeductionPoints() && nb < 0 && this.dexterity == 0){
-			sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
-			return;
-		}
-		else if(usePoints && this.points >= nb){
-			int oldDexterity = this.dexterity;
-			this.dexterity += nb;
-			if(maxStats >= 0 && this.dexterity > maxStats){
-				this.dexterity = maxStats;
-			}
-			else if(this.dexterity < 0 ){
-				this.dexterity = 0;
-			}
-			int dif = this.dexterity - oldDexterity;
-
-			this.points -= dif;
-			if(callChange) onAttributeChange();
-            sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"dexterity", nb}));
-		}
-		else if(!usePoints){
-			this.dexterity += nb;
-			if(maxStats >= 0 && this.dexterity > maxStats){
-				this.dexterity = maxStats;
-                sendMessage(Internationalization.format("attribute_set_to", new Object[]{"dexterity", getSettings().getMaxStats()}));
-			}else {
-                sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"dexterity", nb}));
-			}
-			if(callChange) onAttributeChange();
-		}
-		else{
-			sendMessage(Internationalization.format("not_enough_points"),ChatColor.RED);
-			return;
-		}
-	}
-
-	/**
-	 * add vitality to current player
-	 * @param nb
-	 * @param usePoints
-	 */
-	public void addVitality(int nb, boolean usePoints, boolean callChange){
-		int maxStats = Settings.getInstance().getMaxStats();
-		if(nb == 0){
-			return;
-		}
-		else if(!Settings.getInstance().isAllowDeductionPoints() && nb < 0){
-			sendMessage(Internationalization.format("cannot_deduct_anymore_point", null));
-			return;
-		}
-		else if (Settings.getInstance().isAllowDeductionPoints() && nb < 0 && this.vitality == 0){
-			sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
-			return;
-		}
-		else if(usePoints && this.points >= nb){
-			int oldHealth = this.vitality;
-			this.vitality += nb;
-			if(maxStats >= 0 && this.vitality > maxStats){
-				this.vitality = maxStats;
-			}
-			else if (this.vitality < 0 )this.vitality = 0;
-
-			int dif = this.vitality - oldHealth;
-
-			this.points -= dif;
-			if(callChange) onAttributeChange();
-            sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"vitality", dif}));
-		}
-		else if(!usePoints){
-			this.vitality += nb;
-			if(maxStats >= 0 && this.vitality > maxStats){
-				this.vitality = maxStats;
-                sendMessage(Internationalization.format("attribute_set_to", new Object[]{"vitality", getSettings().getMaxStats()}));
-			}else{
-                sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"vitality", nb}));
-			}
-			if(callChange) onAttributeChange();
-		}
-		else{
-			sendMessage(Internationalization.format("not_enough_points"),ChatColor.RED);
-			return;
-		}
-	}
-
-	/**
-	 * add defence to current player
-	 * @param nb
-	 * @param usePoints
-	 */
-	public void addDefence(int nb, boolean usePoints, boolean callChange){
-		int maxStats = Settings.getInstance().getMaxStats();
-
-		if(nb == 0){
-			return;
-		}
-		else if(!Settings.getInstance().isAllowDeductionPoints() && nb < 0){
-			sendMessage(Internationalization.format("cannot_deduct_anymore_point", null));
-			return;
-		}
-		else if (Settings.getInstance().isAllowDeductionPoints() && nb < 0 && this.defence == 0){
-			sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
-			return;
-		}
-		else if(usePoints && this.points >= nb){
-			int oldDefence = this.defence;
-			this.defence += nb;
-			if(maxStats >= 0 && this.defence > maxStats){
-				this.defence = maxStats;
-			}
-			else if (this.defence < 0 ) this.defence = 0;
-
-			int dif = this.defence - oldDefence;
-
-			this.points -= dif;
-			if(callChange) onAttributeChange();
-            sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"defence", dif}));
-		}
-		else if(!usePoints){
-			this.defence += nb;
-			if(maxStats >= 0 && this.defence > maxStats){
-				this.defence = maxStats;
-                sendMessage(Internationalization.format("attribute_set_to", new Object[]{"defence", getSettings().getMaxStats()}));
-			}else{
-                sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"defence", nb}));
-			}
-			if(callChange) onAttributeChange();
-		}
-		else{
-			sendMessage(Internationalization.format("not_enough_points"),ChatColor.RED);
-			return;
-		}
-	}
-
-	/**
-	 * add magic resistance to current player
-	 * @param nb
-	 * @param usePoints
-	 */
-	public void addMagicResistance(int nb, boolean usePoints, boolean callChange){
-		int maxStats = Settings.getInstance().getMaxStats();
-
-		if(nb == 0){
-			return;
-		}
-		else if(!Settings.getInstance().isAllowDeductionPoints() && nb < 0){
-			sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
-			return;
-		}
-		else if (Settings.getInstance().isAllowDeductionPoints() && nb < 0 && this.magicResistance == 0){
-			sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
-			return;
-		}
-		else if(usePoints && this.points >= nb){
-			int oldMagicResistance = this.defence;
-			this.magicResistance += nb;
-			if(maxStats >= 0 && this.defence > maxStats){
-				this.magicResistance = maxStats;
-			}
-			else if (this.magicResistance < 0)this.magicResistance = 0;
-
-			int dif = this.magicResistance - oldMagicResistance;
-			if(callChange) onAttributeChange();
-			this.points -= dif;
-
-            sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"magic resistance", dif}));
-		}
-		else if(!usePoints){
-			this.magicResistance += nb;
-			if(maxStats >= 0 && this.magicResistance > maxStats){
-				this.magicResistance = maxStats;
-                sendMessage(Internationalization.format("attribute_set_to", new Object[]{"magic resistance", getSettings().getMaxStats()}));
-			} else{
-                sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"magic resistance", nb}));
-			}
-			if(callChange) onAttributeChange();
-		}
-		else{
-			sendMessage(Internationalization.format("not_enough_points"),ChatColor.RED);
-			return;
-		}
-	}
-
 	//=============================================== END OF ADD AND SETTER ===============================
 
 	//================================================ GETTER ==============================================
 
 	/**
 	 * return formatted player's information as string
-	 * @return
+	 * @return player's information
      */
 	public String toString(){
 		if(classIsSet && raceIsSet) {
@@ -1341,16 +930,16 @@ public class LowbrainPlayer extends Playable {
 	}
 
     /**
-     * get the player LowbrainRace object
-     * @return
+     * get the player LowbrainRace reference
+     * @return this.lowbrainRace
      */
 	public LowbrainRace getLowbrainRace() {
 		return lowbrainRace;
 	}
 
     /**
-     * get the player LowbrainClass object
-     * @return
+     * get the player LowbrainClass refenrece
+     * @return this.lowbrainClass
      */
 	public LowbrainClass getLowbrainClass(){ return lowbrainClass; }
 
@@ -1363,28 +952,19 @@ public class LowbrainPlayer extends Playable {
 	}
 
     /**
-     * get if the player has set his race
-     * @return
+     * check if the player has set his race
+     * @return true if set
      */
-	public boolean isRaceIsSet() {
+	public boolean isRaceSet() {
 		return raceIsSet;
 	}
 
 	/**
-	 * return experience needed for next level
+	 * return experience needed to achieve next level
 	 * @return
 	 */
 	public float getNextLvl(){
 		return this.nextLvl;
-	}
-
-
-    /**
-     * get intelligence attribute
-     * @return intelligence
-     */
-	public int getIntelligence() {
-		return intelligence;
 	}
 
     /**
@@ -1396,10 +976,10 @@ public class LowbrainPlayer extends Playable {
 	}
 
     /**
-     * get if the player has sets his class
+     * check if the player has sets his class
      * @return class is set
      */
-	public boolean isClassIsSet() {
+	public boolean isClassSet() {
 		return classIsSet;
 	}
 
@@ -1542,9 +1122,9 @@ public class LowbrainPlayer extends Playable {
 	 * reset player maxMana
 	 */
 	private void setMana() {
-		if(getSettings().getParameters().getPlayerAttributes().getTotalMana().isEnabled()) {
+		if(getSettings().getParameters().getPlayerAttributes().getTotalMana().isEnabled())
 			this.maxMana = this.getMultipliers().getPlayerMaxMana();
-		}
+
 	}
 
 	/**
@@ -1572,14 +1152,17 @@ public class LowbrainPlayer extends Playable {
 	 * regenerate player maxMana based on player intelligence
      */
 	private void regenMana(){
-		if(currentMana == maxMana){
+		if(currentMana == maxMana)
 			return;
-		}
+
 		if(getSettings().getParameters().getPlayerAttributes().getManaRegen().isEnabled()){
 			float regen = this.getMultipliers().getPlayerManaRegen();
 			this.currentMana += regen;
-			if(this.currentMana > maxMana)this.currentMana = maxMana;
-			refreshScoreBoard();
+
+			if(this.currentMana > maxMana)
+			    this.currentMana = maxMana;
+
+			statsBoard.refresh();
 		}
 	}
 
@@ -1673,12 +1256,12 @@ public class LowbrainPlayer extends Playable {
 
     protected void onAttributeChange(){
         if(classIsSet && raceIsSet) {
-            if(multipliers == null){
+
+            if(multipliers == null)
                 multipliers = new Multipliers(this);
-            }
-            else {
+            else
                 multipliers.update();
-            }
+
 
             setPlayerMaxHealth();
             setLuck();
@@ -1686,8 +1269,20 @@ public class LowbrainPlayer extends Playable {
             setKnockBackResistance();
             setAttackSpeed();
             setMovementSpeed();
-            refreshScoreBoard();
+            statsBoard.refresh();
         }
+    }
+
+    public boolean isShowStats() {
+        return showStats;
+    }
+
+    public void setShowStats(boolean showStats) {
+        this.showStats = showStats;
+    }
+
+    public StatsBoard getStatsBoard() {
+        return this.statsBoard;
     }
 }
 

@@ -71,20 +71,20 @@ public class LowbrainCore extends JavaPlugin {
 			validateConfigVersion();
 
 			useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
-			debugInfo("HologramDisplays is "+(useHolographicDisplays ? "enabled" : "disabled")+" !");
+			log("HologramDisplays is "+(useHolographicDisplays ? "enabled" : "disabled")+" !");
 
 			useArmorEquipEvent = Bukkit.getPluginManager().isPluginEnabled("ArmorEquipEvent");
-			debugInfo("ArmorEquipEvent is "+ (useArmorEquipEvent ? "enabled" : "disabled") +" !");
+            log("ArmorEquipEvent is "+ (useArmorEquipEvent ? "enabled" : "disabled") +" !");
 
 			useParties = Settings.getInstance().isGroupXpEnableParties() && Bukkit.getPluginManager().isPluginEnabled("Parties");
-			debugInfo("Parties is "+ (useParties ? "enabled" : "disabled") +" !");
+            log("Parties is "+ (useParties ? "enabled" : "disabled") +" !");
 
 			useLowbrainItems = Bukkit.getPluginManager().isPluginEnabled("LowbrainItems");
-            debugInfo("LowbrainItems is "+ (useLowbrainItems ? "enabled" : "disabled") +" !");
+            log("LowbrainItems is "+ (useLowbrainItems ? "enabled" : "disabled") +" !");
 
 			if(!evaluateFunctions()){
-				this.getLogger().info("[ERROR] functions in config file and not correctly formated !!!");
-				this.getLogger().info("[ERROR] LowbrainCore.jar cannot load !");
+				this.warn("[ERROR] functions in config file are not correctly formatted !!!");
+				this.warn("[ERROR] LowbrainCore cannot load !");
 				this.onDisable();
 				return;
 			}
@@ -95,7 +95,7 @@ public class LowbrainCore extends JavaPlugin {
 				getServer().getPluginManager().registerEvents(new ArmorEquipListener(this), this);
 			}
 			this.getCommand("lbcore").setExecutor(new CommandHandler(this));
-			this.getLogger().info("[LowbrainCore] " + getDescription().getVersion() + " enabled!");
+			log(getDescription().getVersion() + " enabled!");
 
 			if(Settings.getInstance().isAutoSave()) {
 				Bukkit.getServer().getScheduler().runTaskTimer((Plugin) this, new Runnable() {
@@ -147,22 +147,38 @@ public class LowbrainCore extends JavaPlugin {
 	}
 
 	/**
-	 * log message
-	 * @param msg
+	 * log debug message
+	 * @param msg message
 	 */
-	public void debugInfo(Object msg){
+	public void debugInfo(Object msg) {
 	    if(Settings.getInstance().isDebug())
-	        this.getLogger().info("[Lowbrain Core] : " + msg);
+	        this.getLogger().info("[LowbrainCore] [DEBUG]: " + msg);
     }
 
 	/**
-	 * log message has waning
-	 * @param msg
+	 * log debug message has waning
+	 * @param msg message
 	 */
-	public void debugWarning(Object msg){
+	public void debugWarning(Object msg) {
 		if(Settings.getInstance().isDebug())
-			this.getLogger().warning("[DEBUG] : " + msg);
+			this.getLogger().warning("[LowbrainCore] [DEBUG]: " + msg);
 	}
+
+    /**
+     * log warn messages
+     * @param msg message
+     */
+	public void warn(Object msg) {
+	    this.getLogger().warning("[LowbrainCore]" + msg);
+    }
+
+    /**
+     * log message
+     * @param msg
+     */
+    public void log(Object msg) {
+        this.getLogger().info("[LowbrainCore]" + msg);
+    }
 
 	/**
 	 * reload config
@@ -186,18 +202,15 @@ public class LowbrainCore extends JavaPlugin {
     private boolean evaluateFunctions(){
     	List<String> functions = new ArrayList<String>();
 
-		recursiveConfigFunctionSearch(Config.getInstance(),functions);
-		for (String key: Powers.getInstance().getKeys(false)
-			 ) {
-			recursiveConfigFunctionSearch(Powers.getInstance().getConfigurationSection(key),functions);
-		}
+		functionsLookup(Config.getInstance(),functions);
+
+		for (String key: Powers.getInstance().getKeys(false))
+			functionsLookup(Powers.getInstance().getConfigurationSection(key),functions);
 
 		boolean succeed = true;
 		try{
-			for (String funct :
-					functions) {
-				Helper.eval(Helper.FormatStringWithValues(funct.split(","),null));
-			}
+			for (String func: functions)
+				Helper.eval(Helper.FormatStringWithValues(func.split(","),null));
 		}
 		catch(Exception e){
 			succeed = false;
@@ -210,21 +223,20 @@ public class LowbrainCore extends JavaPlugin {
 	 * go through all the section in the config file and check for function
 	 * this way, if a function does not compute correctly (not well formated)
 	 * it will be displayed in the console so the admin can modify it
-	 * @param start
-	 * @param functions
+	 * @param start first configuration section to recurse into
+	 * @param functions list of found function
 	 */
-	private void recursiveConfigFunctionSearch(ConfigurationSection start, List<String> functions){
+	private void functionsLookup(ConfigurationSection start, List<String> functions){
 		if(start == null){
-			this.debugInfo("Could not find settings !");
+			this.warn("Could not find settings !");
 			return;
 		}
 		for (String key: start.getKeys(false)) {
-			if(key.equals("function") && !Helper.StringIsNullOrEmpty(start.getString(key))){
+			if(key.equals("function") && !Helper.StringIsNullOrEmpty(start.getString(key)))
 				functions.add(start.getString(key));
-			}
-			else if(start.getConfigurationSection(key) != null){
-				recursiveConfigFunctionSearch(start.getConfigurationSection(key),functions);
-			}
+			else if(start.getConfigurationSection(key) != null)
+				functionsLookup(start.getConfigurationSection(key),functions);
+
 		}
 	}
 
@@ -233,11 +245,10 @@ public class LowbrainCore extends JavaPlugin {
 	 */
 	private void loadSkills(){
 		this.skills = new HashMap<>();
-		for (String skillName :
-				Skills.getInstance().getKeys(false)) {
-			if(Skills.getInstance().getBoolean(skillName + ".enable")){
+		for (String skillName: Skills.getInstance().getKeys(false)) {
+			if(Skills.getInstance().getBoolean(skillName + ".enable"))
 				this.skills.put(skillName,new LowbrainSkill(skillName));
-			}
+
 		}
 	}
 
@@ -251,9 +262,9 @@ public class LowbrainCore extends JavaPlugin {
 
 			ConfigurationSection sec = ItemsRequirements.getInstance().getConfigurationSection(n);
 
-			for (String r: sec.getKeys(false)) {
+			for (String r: sec.getKeys(false))
 				i.getRequirements().put(r,sec.getInt(r));
-			}
+
 			this.itemsRequirements.put(n,i);
 		}
 	}
@@ -264,63 +275,80 @@ public class LowbrainCore extends JavaPlugin {
 	private void validateConfigVersion(){
 		ConfigurationSection versions = Config.getInstance().getConfigurationSection("versions");
 
-		if(versions == null)return;
+		if(versions == null)
+		    return;
 
 		boolean valid = true;
 
 		if(!versions.getString("config","").equals(CONFIG_V)){
-			this.getLogger().warning("config.yml is outdated");
+			this.warn("config.yml is outdated");
 			valid = false;
 		}
 		if(!versions.getString("classes","").equals(CLASSES_V)){
-			this.getLogger().warning("classes.yml is outdated");
+            this.warn("classes.yml is outdated");
 			valid = false;
 		}
 		if(!versions.getString("itemsrequirements","").equals(ITEMS_REQUIREMENTS_V)){
-			this.getLogger().warning("itemsrequirements.yml is outdated");
+            this.warn("itemsrequirements.yml is outdated");
 			valid = false;
 		}
 		if(!versions.getString("mobsxp","").equals(MOBS_XP_V)){
-			this.getLogger().warning("mobsxp.yml is outdated");
+            this.warn("mobsxp.yml is outdated");
 			valid = false;
 		}
 		if(!versions.getString("powers","").equals(POWERS_V)){
-			this.getLogger().warning("powers.yml is outdated");
+            this.warn("powers.yml is outdated");
 			valid = false;
 		}
 		if(!versions.getString("races","").equals(RACES_V)){
-			this.getLogger().warning("races.yml is outdated");
+            this.warn("races.yml is outdated");
 			valid = false;
 		}
 		if(!versions.getString("skills","").equals(SKILLS_V)){
-			this.getLogger().warning("skills.yml is outdated");
+            this.warn("skills.yml is outdated");
 			valid = false;
 		}
 		if(!versions.getString("parameters","").equals(PARAMETERS_V)){
-			this.getLogger().warning("parameters files are outdated");
+            this.warn("parameters files are outdated");
 			valid = false;
 		}
 
 		if(!valid){
-			this.getLogger().warning("Your config files are outdated");
-			this.getLogger().warning("To update : Make a copy of your current .yml files in the plugin directory");
-			this.getLogger().warning("Then delete all of them and reload your server.");
+            this.warn("Your config files are outdated");
+            this.warn("To update : Make a copy of your current .yml files in the plugin directory");
+            this.warn("Then delete all of them and reload your server.");
 		}
 
 	}
 
+    /**
+     * get the list of loaded item requirements
+     * @return item requirements
+     */
 	public HashMap<String, ItemRequirements> getItemsRequirements() {
 		return itemsRequirements;
 	}
 
+    /**
+     * get the list of loaded skills
+     * @return skills
+     */
 	public HashMap<String, LowbrainSkill> getSkills() {
 		return skills;
 	}
 
+    /**
+     * get PlayerHandler instance
+     * @return playerHandler
+     */
 	public PlayerHandler getPlayerHandler() {
 		return playerHandler;
 	}
 
+    /**
+     * get the lowbrain namespaced key
+     * @return namespaceKey
+     */
     public NamespacedKey getNamespacedKey() {
         return namespacedKey;
     }

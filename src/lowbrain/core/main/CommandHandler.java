@@ -26,423 +26,517 @@ public class CommandHandler implements CommandExecutor{
 	 */
 	@Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] args) {
-		if (cmd.getName().equalsIgnoreCase("lbcore")) {
-			if(args.length > 0){
-				if(sender instanceof Player){
-					LowbrainPlayer rp = LowbrainCore.getInstance().getPlayerHandler().getList().get(((Player) sender).getUniqueId());
-					if(rp == null)return false;
-					switch (args[0].toLowerCase()){
-						case "xp":
-							double xp = rp.getNextLvl() - rp.getExperience();
-							rp.sendMessage(Internationalization.format("you_will_reach_level", new Object[]{rp.getLvl()+1, xp}));
-							return true;
-						case "add":
-							int amount = 0;
-							if(args.length == 2){
-								amount = 1;
-							}
-							else if(args.length == 3){
-								try {
-									amount = Integer.parseInt(args[2]);
-								}
-								catch (Exception e){
-									rp.sendMessage(Internationalization.format("use_help"));
-								}
-							}
-							if(amount <= 0){
-								rp.sendMessage(Internationalization.format("number_higher_then_zero"));
-							}
-							switch (args[1].toLowerCase()){
-								case "defence":
-								case "def":
-									rp.addDefence(amount,true,true);
-									break;
-								case "vitality":
-								case "vit":
-									rp.addVitality(amount,true,true);
-									break;
-								case "dexterity":
-								case "dext":
-									rp.addDexterity(amount,true,true);
-									break;
-								case "strength":
-								case "str":
-									rp.addStrength(amount,true,true);
-									break;
-								case "intelligence":
-								case "int":
-									rp.addIntelligence(amount,true,true);
-									break;
-								case "magicresistance":
-								case "mr":
-									rp.addMagicResistance(amount,true,true);
-									break;
-								case "agility":
-								case "agi":
-									rp.addAgility(amount,true,true);
-									break;
-								default:
-									rp.sendMessage(Internationalization.format("invalid_attribute"));
-							}
-							return true;
-						case "+defence":
-						case "+def":
-							rp.addDefence(1,true,true);
-							return true;
-						case "+strength":
-						case "+str":
-							rp.addStrength(1,true,true);
-							return true;
-						case "+intelligence":
-						case "+int":
-							rp.addIntelligence(1,true,true);
-							return true;
-						case "+vitality":
-						case "+vit":
-							rp.addVitality(1,true,true);
-							return true;
-						case "+magicresistance":
-						case "+mr":
-							rp.addMagicResistance(1,true,true);
-							return true;
-						case "+dexterity":
-						case "+dext":
-							rp.addDexterity(1,true,true);
-							return true;
-						case "+agility":
-						case "+agi":
-							rp.addAgility(1,true,true);
-							return true;
-						case "stats":
-							if(args.length == 2 && senderHasPermission(sender,"core.stats-others")){
-								Player p = plugin.getServer().getPlayer(args[1]);
-								if(p != null){
-									LowbrainPlayer rp2 = LowbrainCore.getInstance().getPlayerHandler().getList().get(p.getUniqueId());
-									if(rp2 != null){
-										rp.sendMessage(rp2.toString());
-									}else{
-										rp.sendMessage(Internationalization.format("player_not_connected"));
-									}
-								}
-								else{
-									rp.sendMessage(Internationalization.format("player_not_connected"));
-								}
-							}
-							else{
-								rp.sendMessage(rp.toString());
-							}
-							return true;
-						case "classes":
-							String cls = "";
-							for (String s :
-									Classes.getInstance().getKeys(false)) {
-								LowbrainClass rc = new LowbrainClass(s);
-								cls += "-----------------------------" + "\n";
-								cls += rc.toString() + "\n";
-							}
-							sender.sendMessage(ChatColor.GREEN +cls);
-							return true;
-						case "races":
-							String rcs = "";
-							for (String s :
-									Races.getInstance().getKeys(false)) {
-								LowbrainRace rr = new LowbrainRace(s);
-								rcs += "-----------------------------" + "\n";
-								rcs += rr.toString() + "\n";
-							}
-							sender.sendMessage(ChatColor.GREEN +rcs);
-							return true;
-						case "setclass":
-							if(args.length == 2){
-								if(Classes.getInstance().getKeys(false).contains(args[1])){
-									rp.setClass(args[1], false);
-								}
-								else if(args[1].equalsIgnoreCase("rdm") || args[1].equalsIgnoreCase("random")){
-									int max = Classes.getInstance().getKeys(false).size() - 1;
-									int rdm = Helper.randomInt(0,max);
-									rp.setClass((String)Classes.getInstance().getKeys(false).toArray()[rdm],false);
-								}
-								else{
-									rp.sendMessage(Internationalization.format("invalid_class"));
-								}
-							}
-							return true;
-						case "setrace":
-							if(args.length == 2){
-								if(Races.getInstance().getKeys(false).contains(args[1])){
-									rp.setRace(args[1], false);
-								}
-								else if(args[1].equalsIgnoreCase("rdm") || args[1].equalsIgnoreCase("random")){
-									int max = Races.getInstance().getKeys(false).size() - 1;
-									int rdm = Helper.randomInt(0,max);
-									rp.setRace((String)Races.getInstance().getKeys(false).toArray()[rdm],false);
-								}
-								else{
-									rp.sendMessage(Internationalization.format("invalid_race"));
-								}
-							}
-							return true;
-						case "reset":
-							if(args.length == 2){
-								if(Classes.getInstance().getKeys(false).contains(args[1])){
-									rp.reset(args[1],null);
-								}
-								else{
-									rp.sendMessage(Internationalization.format("no_such_class"));
-								}
-							}
-							else if(args.length == 3){
-								if(Classes.getInstance().getKeys(false).contains(args[1]) && Classes.getInstance().getKeys(false).contains(args[2])){
-									rp.reset(args[1],args[2]);
-								}
-								else{
-									sender.sendMessage(ChatColor.RED + Internationalization.format("no_such_class_or_race"));
-								}
-							}
-							else{
-								rp.reset(rp.getClassName(),rp.getRaceName());
-							}
-							return true;
-						case "completereset":
-							if(args.length == 2 && args[1].toLowerCase().equals("yes")){
-								rp.resetAll(false);
-							}
-							else{
-								rp.sendMessage(Internationalization.format("validate_complete_reset"));
-							}
-							return true;
-						case "nextlvl":
-							rp.sendMessage(Internationalization.format("next_level_at", rp.getNextLvl()));
-							return true;
-						case "save":
-							if(senderHasPermission(sender,"core.save")){
-								rp.saveData();
-								rp.sendMessage(Internationalization.format("stats_saved"));
-							}
-							return true;
-						case "cast":
-							if(args.length == 2){
-								rp.castSpell(args[1],null);
-							}
-							else if(args.length == 3){
-								Player p = plugin.getServer().getPlayer(args[2]);
-								if(p == null){
-									rp.sendMessage(Internationalization.format("player_not_connected"));
-								}
-								else {
-									LowbrainPlayer to = LowbrainCore.getInstance().getPlayerHandler().getList().get(p.getUniqueId());
-									if(to == null){
-										rp.sendMessage(Internationalization.format("player_not_connected"));
-									}
-									else{
-										rp.castSpell(args[1],to);
-									}
-								}
-							}
-							return true;
-						case "togglestats":
-							if(args.length == 1){
-								rp.toggleScoreboard();
-							}
-							else if(args.length == 2){
-								switch (args[2].toLowerCase()){
-									case "true":
-									case "1":
-										rp.toggleScoreboard(true);
-										break;
-									case "false":
-									case "0":
-										rp.toggleScoreboard(false);
-										break;
-								}
-							}
-							return true;
-						case "mobkills":
-							String msg = "";
-							if(args.length == 1){
-								for(Map.Entry<String, Integer> s : rp.getMobKills().entrySet()) {
-									String n = s.getKey();
-									int v = s.getValue();
-									msg += n + " : " + v + "\n";
-								}
-								rp.sendMessage(msg);
-							}
-							else if(args.length == 2){
-								if(rp.getMobKills().containsKey(args[1].toLowerCase()));
-								msg = args[1] + " : " + rp.getMobKills().get(args[1].toLowerCase());
-								rp.sendMessage(msg);
-							}
-							return true;
-						case "setskill":
-							if(args.length == 2){
-								rp.setCurrentSkill(args[1].toLowerCase());
-							}
-							else return false;
-							return true;
-						case "getskill":
-							if(rp.getCurrentSkill() != null){
-								rp.sendMessage(Internationalization.format("current_skill", rp.getCurrentSkill().getName()));
-							}
-							else{
-								rp.sendMessage(Internationalization.format("no_current_skill"));
-							}
-							return true;
-						case "upskill":
-							if(args.length == 2){
-								rp.upgradeSkill(args[1].toLowerCase());
-							}
-							else return false;
-							return true;
-						case "skills":
-							String sk = "";
-							for(Map.Entry<String, LowbrainSkill> s : rp.getSkills().entrySet()) {
-								String n = s.getValue().getName();
-								int v = s.getValue().getCurrentLevel();
-								sk += n + " : " + v + "\n";
-							}
-							rp.sendMessage(sk);
-							return true;
-						case "myskill":
-							if(args.length == 2){
-								LowbrainSkill s = rp.getSkills().get(args[1]);
-								if(s != null){
-									rp.sendMessage(s.info(),ChatColor.LIGHT_PURPLE);
-								}
-								else{
-									rp.sendMessage(Internationalization.format("no_such_skill"),ChatColor.RED);
-								}
-							}
-							return true;
-						case "skill":
-							if(args.length == 2){
-								LowbrainSkill s = rp.getSkills().get(args[1]);
-								if(s != null){
-									rp.sendMessage(s.toString(),ChatColor.LIGHT_PURPLE);
-								}
-								else{
-									rp.sendMessage(Internationalization.format("no_such_skill"),ChatColor.RED);
-								}
-							}
-							return true;
-						case "mypowers":
-							String pws = "";
-							for (LowbrainPower power :
-									rp.getPowers().values()) {
-								pws += power.getName() + ", ";
-							}
-							rp.sendMessage(Helper.StringIsNullOrEmpty(pws) ? Internationalization.format("no_powers_available") : pws);
-							return true;
-					}
-				}
+        if (!cmd.getName().equalsIgnoreCase("lbcore"))
+            return false;
 
-				switch (args[0].toLowerCase()){
-					case "save-all":
-						if(senderHasPermission(sender,"core.save-all")) {
-							plugin.saveData();
-							sender.sendMessage(Internationalization.format("all_stats_saved"));
-						}
-						return true;
-					case "reload":
-						if(senderHasPermission(sender,"core.reload")){
-							plugin.reloadConfig();
-							sender.sendMessage(Internationalization.format("config_file_reloaded"));
-						}
-						return true;
-					case "set":
-						if(args.length == 4 && senderHasPermission(sender,"core.setattributes-others")){
-							String pName = args[1];
-							String attribute = args[2].toLowerCase();
-							String sValue = args[3];
+        if (args.length <= 0)
+            return false;
 
-							Player p = plugin.getServer().getPlayer(pName);
-							LowbrainPlayer rp = p != null ? LowbrainCore.getInstance().getPlayerHandler().getList().get(p.getUniqueId()) : null;
-							if(rp == null){
-								sender.sendMessage(Internationalization.format("player_not_connected"));
-							}
-							else{
-								int value = Helper.intTryParse(sValue,-1);
-								if(value < 0){
-									sender.sendMessage(Internationalization.format("invalid_value"));
-								}
-								else{
-									switch (attribute){
-										default:
-											sender.sendMessage(Internationalization.format("invalid_attribute"));
-											break;
-										case "intelligence":
-										case "intel":
-										case "int":
-											rp.setIntelligence(value);
-											break;
-										case "dexterity":
-										case "dext":
-											rp.setDexterity(value);
-											break;
-										case "level":
-										case "lvl":
-											rp.setLvl(value,true);
-											break;
-										case "agility":
-										case "agi":
-											rp.setAgility(value);
-											break;
-										case "health":
-										case "hp":
-											rp.setVitality(value);
-											break;
-										case "strength":
-										case "str":
-											rp.setStrength(value);
-											break;
-										case "defence":
-										case "def":
-											rp.setDefence(value);
-											break;
-										case "magicresistance":
-										case "mr":
-										case "magicresist":
-										case "magic_resistance":
-											rp.setMagicResistance(value);
-											break;
-										case "kills":
-										case "kill":
-											rp.setKills(value);
-											break;
-										case "deaths":
-										case "death":
-											rp.setDeaths(value);
-											break;
-										case "experience":
-										case "xp":
-										case "exp":
-											rp.setExperience(value);
-											break;
-										case "points":
-										case "point":
-										case "pts":
-											rp.setPoints(value);
-											break;
-										case "skillpoints":
-										case "skillpoint":
-										case "skp":
-											rp.setSkillPoints(value);
-											break;
-									}
-									sender.sendMessage("Done !");
-								}
-							}
-						}
-						else{
-							return false;
-						}
-						return true;
-				}
-			}
-			else{
-				return false;
-			}
-		}
-		return false;
+        if(sender instanceof Player){
+            LowbrainPlayer rp = LowbrainCore.getInstance().getPlayerHandler().getList().get(((Player) sender).getUniqueId());
+
+            if(rp == null)
+                return false;
+
+            switch (args[0].toLowerCase()){
+                case "xp":
+                    return onXp(rp, args);
+                case "add":
+                    return onAdd(rp, args);
+                case "+":
+                    return onAdd(rp, args);
+                case "+defence":
+                case "+def":
+                    rp.addDefence(1,true,true);
+                    return true;
+                case "+strength":
+                case "+str":
+                    rp.addStrength(1,true,true);
+                    return true;
+                case "+intelligence":
+                case "+int":
+                    rp.addIntelligence(1,true,true);
+                    return true;
+                case "+vitality":
+                case "+vit":
+                    rp.addVitality(1,true,true);
+                    return true;
+                case "+magicresistance":
+                case "+mr":
+                    rp.addMagicResistance(1,true,true);
+                    return true;
+                case "+dexterity":
+                case "+dext":
+                    rp.addDexterity(1,true,true);
+                    return true;
+                case "+agility":
+                case "+agi":
+                    rp.addAgility(1,true,true);
+                    return true;
+                case "stats":
+                    return onStats(rp, args, sender);
+                case "classes":
+                    return onClasses(rp, args);
+                case "races":
+                    return onRaces(rp, args);
+                case "setclass":
+                    return onSetClass(rp, args);
+                case "setrace":
+                    return onSetRace(rp, args);
+                case "reset":
+                    return onReset(rp, args);
+                case "completereset":
+                    return onCompleteReset(rp, args);
+                case "nextlvl":
+                    rp.sendMessage(Internationalization.format("next_level_at", rp.getNextLvl()));
+                    return true;
+                case "save":
+                    if(senderHasPermission(sender,"core.save")){
+                        rp.saveData();
+                        rp.sendMessage(Internationalization.format("stats_saved"));
+                    }
+                    return true;
+                case "cast":
+                   return onCast(rp, args);
+                case "togglestats":
+                    return onToggleStats(rp, args);
+                case "showstats":
+                    return onShowStats(rp);
+                case "hidestats":
+                    return onHideStats(rp);
+                case "mobkills":
+                    return onMobKills(rp, args);
+                case "setskill":
+                    if (args.length != 2)
+                        return false;
+                    rp.setCurrentSkill(args[1].toLowerCase());
+                    return true;
+                case "getskill":
+                    if(rp.getCurrentSkill() != null)
+                        rp.sendMessage(Internationalization.format("current_skill", rp.getCurrentSkill().getName()));
+                    else
+                        rp.sendMessage(Internationalization.format("no_current_skill"));
+
+                    return true;
+                case "upskill":
+                    if (args.length != 2)
+                        return false;
+                    rp.upgradeSkill(args[1].toLowerCase());
+                    return true;
+                case "skills":
+                    return onSkills(rp, args);
+                case "myskill":
+                    return onMySkill(rp, args);
+                case "skill":
+                    return onSkill(rp, args);
+                case "mypowers":
+                    return onMyPowers(rp, args);
+            }
+        }
+
+        switch (args[0].toLowerCase()){
+            case "save-all":
+                return onSaveAll(sender, args);
+            case "reload":
+                return onReload(sender, args);
+            case "set":
+                return onSet(sender, args);
+        }
+        return false;
+    }
+
+    private boolean onSet(CommandSender sender, String[] args){
+	    if (args.length != 4)
+	        return false;
+
+        if(!senderHasPermission(sender,"core.setattributes-others"))
+            return true;
+
+        String pName = args[1];
+        String attribute = args[2].toLowerCase();
+        String sValue = args[3];
+
+        Player p = plugin.getServer().getPlayer(pName);
+        LowbrainPlayer rp = p != null ? LowbrainCore.getInstance().getPlayerHandler().getList().get(p.getUniqueId()) : null;
+
+        if(rp == null){
+            sender.sendMessage(Internationalization.format("player_not_connected"));
+            return true;
+        }
+
+        int value = Helper.intTryParse(sValue,-1);
+        if(value < 0){
+            sender.sendMessage(Internationalization.format("invalid_value"));
+            return true;
+        }
+
+        switch (attribute){
+            default:
+                sender.sendMessage(Internationalization.format("invalid_attribute"));
+                break;
+            case "intelligence":
+            case "intel":
+            case "int":
+                rp.setIntelligence(value);
+                break;
+            case "dexterity":
+            case "dext":
+                rp.setDexterity(value);
+                break;
+            case "level":
+            case "lvl":
+                rp.setLvl(value,true);
+                break;
+            case "agility":
+            case "agi":
+                rp.setAgility(value);
+                break;
+            case "health":
+            case "hp":
+                rp.setVitality(value);
+                break;
+            case "strength":
+            case "str":
+                rp.setStrength(value);
+                break;
+            case "defence":
+            case "def":
+                rp.setDefence(value);
+                break;
+            case "magicresistance":
+            case "mr":
+            case "magicresist":
+            case "magic_resistance":
+                rp.setMagicResistance(value);
+                break;
+            case "kills":
+            case "kill":
+                rp.setKills(value);
+                break;
+            case "deaths":
+            case "death":
+                rp.setDeaths(value);
+                break;
+            case "experience":
+            case "xp":
+            case "exp":
+                rp.setExperience(value);
+                break;
+            case "points":
+            case "point":
+            case "pts":
+                rp.setPoints(value);
+                break;
+            case "skillpoints":
+            case "skillpoint":
+            case "skp":
+                rp.setSkillPoints(value);
+                break;
+        }
+        sender.sendMessage("Done !");
+
+        return true;
+    }
+
+    private boolean onReload (CommandSender sender, String[] args){
+        if(senderHasPermission(sender,"core.reload")){
+            plugin.reloadConfig();
+            sender.sendMessage(Internationalization.format("config_file_reloaded"));
+        }
+        return true;
+    }
+
+    private boolean onSaveAll(CommandSender sender, String[] args){
+        if(senderHasPermission(sender,"core.save-all")) {
+            plugin.saveData();
+            sender.sendMessage(Internationalization.format("all_stats_saved"));
+        }
+        return true;
+    }
+
+    //private boolean onMinus(LowbrainPlayer rp, String[] args){}
+
+    private boolean onSetRace(LowbrainPlayer rp, String[] args){
+        if (args.length != 2)
+            return false;
+
+        if (Races.getInstance().getKeys(false).contains(args[1])) {
+            rp.setRace(args[1], false);
+        } else if (args[1].equalsIgnoreCase("rdm") || args[1].equalsIgnoreCase("random")) {
+            int max = Races.getInstance().getKeys(false).size() - 1;
+            int rdm = Helper.randomInt(0,max);
+            rp.setRace((String)Races.getInstance().getKeys(false).toArray()[rdm],false);
+        } else {
+            rp.sendMessage(Internationalization.format("invalid_race"));
+        }
+
+        return true;
+    }
+
+    private boolean onSetClass(LowbrainPlayer rp, String[] args){
+        if (args.length != 2)
+            return false;
+
+        if (Classes.getInstance().getKeys(false).contains(args[1])) {
+            rp.setClass(args[1], false);
+        } else if (args[1].equalsIgnoreCase("rdm") || args[1].equalsIgnoreCase("random")) {
+            int max = Classes.getInstance().getKeys(false).size() - 1;
+            int rdm = Helper.randomInt(0,max);
+            rp.setClass((String)Classes.getInstance().getKeys(false).toArray()[rdm],false);
+        } else {
+            rp.sendMessage(Internationalization.format("invalid_class"));
+        }
+        return true;
+    }
+
+    private boolean onXp(LowbrainPlayer rp, String[] args){
+        double xp = rp.getNextLvl() - rp.getExperience();
+        rp.sendMessage(Internationalization.format("you_will_reach_level", new Object[]{rp.getLvl()+1, xp}));
+        return true;
+    }
+
+    private boolean onStats(LowbrainPlayer rp, String[] args, CommandSender sender){
+        if(args.length == 2 && senderHasPermission(sender,"core.stats-others")){
+            Player p = plugin.getServer().getPlayer(args[1]);
+            if(p != null){
+                LowbrainPlayer rp2 = LowbrainCore.getInstance().getPlayerHandler().getList().get(p.getUniqueId());
+                if(rp2 != null){
+                    rp.sendMessage(rp2.toString());
+                }else{
+                    rp.sendMessage(Internationalization.format("player_not_connected"));
+                }
+            }
+            else{
+                rp.sendMessage(Internationalization.format("player_not_connected"));
+            }
+        }
+        else{
+            rp.sendMessage(rp.toString());
+        }
+        return true;
+    }
+
+    private boolean onReset(LowbrainPlayer rp, String[] args){
+        if(args.length == 2){
+            if(Classes.getInstance().getKeys(false).contains(args[1]))
+                rp.reset(args[1],null);
+            else
+                rp.sendMessage(Internationalization.format("no_such_class"));
+
+        } else if(args.length == 3){
+            if(Classes.getInstance().getKeys(false).contains(args[1]) && Classes.getInstance().getKeys(false).contains(args[2]))
+                rp.reset(args[1],args[2]);
+            else
+                rp.sendMessage(ChatColor.RED + Internationalization.format("no_such_class_or_race"));
+
+        } else{
+            rp.reset(rp.getClassName(),rp.getRaceName());
+        }
+        return true;
+    }
+
+    private boolean onCompleteReset(LowbrainPlayer rp, String[] args){
+        if(args.length == 2 && args[1].toLowerCase().equals("yes"))
+            rp.resetAll(false);
+
+        else
+            rp.sendMessage(Internationalization.format("validate_complete_reset"));
+
+        return true;
+    }
+
+    private boolean onSkill(LowbrainPlayer rp, String[] args){
+        if(args.length != 2)
+            return false;
+
+        LowbrainSkill s = rp.getSkills().get(args[1]);
+        if(s != null)
+            rp.sendMessage(s.toString(),ChatColor.LIGHT_PURPLE);
+
+        else
+            rp.sendMessage(Internationalization.format("no_such_skill"),ChatColor.RED);
+
+        return true;
+    }
+
+    private boolean onSkills(LowbrainPlayer rp, String[] args){
+        String sk = "";
+        for(Map.Entry<String, LowbrainSkill> s : rp.getSkills().entrySet()) {
+            String n = s.getValue().getName();
+            int v = s.getValue().getCurrentLevel();
+            sk += n + " : " + v + "\n";
+        }
+        rp.sendMessage(sk);
+        return true;
+    }
+
+    private boolean onCast(LowbrainPlayer rp, String[] args){
+        if(args.length == 2){
+            rp.castSpell(args[1],null);
+        } else if(args.length == 3){
+            Player p = plugin.getServer().getPlayer(args[2]);
+            if(p == null){
+                rp.sendMessage(Internationalization.format("player_not_connected"));
+            }
+            else {
+                LowbrainPlayer to = LowbrainCore.getInstance().getPlayerHandler().getList().get(p.getUniqueId());
+                if(to == null)
+                    rp.sendMessage(Internationalization.format("player_not_connected"));
+                else
+                    rp.castSpell(args[1],to);
+
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean onMyPowers(LowbrainPlayer rp, String[] args){
+        String pws = "";
+        for (LowbrainPower power :
+                rp.getPowers().values()) {
+            pws += power.getName() + ", ";
+        }
+        rp.sendMessage(Helper.StringIsNullOrEmpty(pws) ? Internationalization.format("no_powers_available") : pws);
+        return true;
+    }
+
+    private boolean onMySkill(LowbrainPlayer rp, String[] args){
+        if (args.length != 2)
+            return false;
+
+        LowbrainSkill s = rp.getSkills().get(args[1]);
+        if(s != null)
+            rp.sendMessage(s.info(),ChatColor.LIGHT_PURPLE);
+        else
+            rp.sendMessage(Internationalization.format("no_such_skill"),ChatColor.RED);
+
+        return true;
+    }
+
+    private boolean onAdd(LowbrainPlayer rp, String[] args){
+        int amount = 0;
+
+        if(args.length == 2){
+            amount = 1;
+        } else if(args.length == 3){
+            try {
+                amount = Integer.parseInt(args[2]);
+            }
+            catch (Exception e){
+                rp.sendMessage(Internationalization.format("use_help"));
+            }
+        }
+        if(amount <= 0)
+            rp.sendMessage(Internationalization.format("number_higher_then_zero"));
+
+        switch (args[1].toLowerCase()){
+            case "defence":
+            case "def":
+                rp.addDefence(amount,true,true);
+                break;
+            case "vitality":
+            case "vit":
+                rp.addVitality(amount,true,true);
+                break;
+            case "dexterity":
+            case "dext":
+                rp.addDexterity(amount,true,true);
+                break;
+            case "strength":
+            case "str":
+                rp.addStrength(amount,true,true);
+                break;
+            case "intelligence":
+            case "int":
+                rp.addIntelligence(amount,true,true);
+                break;
+            case "magicresistance":
+            case "mr":
+                rp.addMagicResistance(amount,true,true);
+                break;
+            case "agility":
+            case "agi":
+                rp.addAgility(amount,true,true);
+                break;
+            default:
+                rp.sendMessage(Internationalization.format("invalid_attribute"));
+        }
+        return true;
+    }
+
+    private boolean onMobKills(LowbrainPlayer rp, String[] args) {
+        String msg = "";
+        if (args.length == 1) {
+            for(Map.Entry<String, Integer> s : rp.getMobKills().entrySet()) {
+                String n = s.getKey();
+                int v = s.getValue();
+                msg += n + " : " + v + "\n";
+            }
+            rp.sendMessage(msg);
+        } else if (args.length == 2) {
+            if(rp.getMobKills().containsKey(args[1].toLowerCase()));
+            msg = args[1] + " : " + rp.getMobKills().get(args[1].toLowerCase());
+            rp.sendMessage(msg);
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean onHideStats(LowbrainPlayer rp) {
+        rp.getStatsBoard().hide();
+        return true;
+    }
+
+    private boolean onShowStats(LowbrainPlayer rp) {
+        rp.getStatsBoard().show();
+        return true;
+    }
+
+    private boolean onToggleStats(LowbrainPlayer rp, String[] args) {
+        if (args.length == 1) {
+            rp.getStatsBoard().toggle();
+        } else if(args.length == 2){
+            switch (args[2].toLowerCase()){
+                case "true":
+                case "1":
+                    rp.getStatsBoard().show();
+                    break;
+                case "false":
+                case "0":
+                    rp.getStatsBoard().hide();
+                    break;
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean onClasses(LowbrainPlayer rp, String[] args) {
+        String cls = "";
+        for (String s :
+                Classes.getInstance().getKeys(false)) {
+            LowbrainClass rc = new LowbrainClass(s);
+            cls += "-----------------------------" + "\n";
+            cls += rc.toString() + "\n";
+        }
+        rp.sendMessage(ChatColor.GREEN +cls);
+        return true;
+    }
+
+    private boolean onRaces(LowbrainPlayer rp, String[] args) {
+        String rcs = "";
+        for (String s :
+                Races.getInstance().getKeys(false)) {
+            LowbrainRace rr = new LowbrainRace(s);
+            rcs += "-----------------------------" + "\n";
+            rcs += rr.toString() + "\n";
+        }
+        rp.sendMessage(ChatColor.GREEN +rcs);
+        return true;
     }
 
 	/**

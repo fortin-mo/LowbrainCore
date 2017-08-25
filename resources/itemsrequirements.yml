@@ -1,192 +1,192 @@
-# use lowercase
+# use real name case (generally uppercase)
 # for vanilla item, use material name such as diamond_sword, diamond_chestplate, etc. Dont forget the underscore
 # for custom item, use item name such as diamond_sword_plus, emerald_sword
 # possible requirements : level, intelligence, dexterity, agility, strength, defence, magic_resistance, vitality, race (race name), class (class name), kills, deaths,
 
 #armor
-gold_chestplate:
+GOLD_CHESTPLATE:
  level: 5
  strength: 15
-gold_leggings:
+GOLD_LEGGINGS:
  level: 3
  strength: 10
-gold_boots:
+GOLD_BOOTS:
  level: 3
  strength: 10
-gold_helmet:
+GOLD_HELMET:
  level: 3
  strength: 10
 
-gold_chestplate_plus:
+GOLD_CHESTPLATE_PLUS:
  level: 10
  strength: 30
-gold_leggings_plus:
+GOLD_LEGGINGS_PLUS:
  level: 5
  strength: 20
-gold_boots_plus:
+GOLD_BOOTS_PLUS:
  level: 5
  strength: 20
-gold_helmet_plus:
+GOLD_HELMET_PLUS:
  level: 5
  strength: 20
 
-iron_chestplate:
+IRON_CHESTPLATE:
  level: 10
  strength: 20
-iron_leggings:
+IRON_LEGGINGS:
  level: 5
  strength: 15
-iron_boots:
+IRON_BOOTS:
  level: 5
  strength: 15
-iron_helmet:
+IRON_HELMET:
  level: 5
  strength: 10
 
-iron_chestplate_plus:
+IRON_CHESTPLATE_PLUS:
  level: 15
  strength: 30
-iron_leggings_plus:
+IRON_LEGGINGS_PLUS:
  level: 10
  strength: 30
-iron_boots_plus:
+IRON_BOOTS_PLUS:
  level: 10
  strength: 30
-iron_helmet_plus:
+IRON_HELMET_PLUS:
  level: 10
  strength: 20
 
-diamond_chestplate:
+DIAMOND_CHESTPLATE:
  level: 25
  strength: 50
-diamond_leggings:
+DIAMOND_LEGGINGS:
  level: 20
  strength: 40
-diamond_boots:
+DIAMOND_BOOTS:
  level: 20
  strength: 40
-diamond_helmet:
+DIAMOND_HELMET:
  level: 20
  strength: 40
 
-diamond_chestplate_plus:
+DIAMOND_CHESTPLATE_PLUS:
  level: 30
  strength: 60
-diamond_leggings_plus:
+DIAMOND_LEGGINGS_PLUS:
  level: 25
  strength: 50
-diamond_boots_plus:
+DIAMOND_BOOTS_PLUS:
  level: 25
  strength: 50
-diamond_helmet_plus:
+DIAMOND_HELMET_PLUS:
  level: 25
  strength: 50
 
-emerald_chestplate:
+EMERALD_CHESTPLATE:
  level: 35
  strength: 60
-emerald_leggings:
+EMERALD_LEGGINGS:
  level: 30
  strength: 60
-emerald_boots:
+EMERALD_BOOTS:
  level: 30
  strength: 60
-emerald_helmet:
+EMERALD_HELMET:
  level: 30
  strength: 60
 
-emerald_chestplate_plus:
+EMERALD_CHESTPLATE_PLUS:
  level: 45
  strength: 70
-emerald_leggings_plus:
+EMERALD_LEGGINGS_PLUS:
  level: 40
  strength: 70
-emerald_boots_plus:
+EMERALD_BOOTS_PLUS:
  level: 40
  strength: 70
-emerald_helmet_plus:
+EMERALD_HELMET_PLUS:
  level: 40
  strength: 70
 
-feather_helmet:
+FEATHER_HELMET:
  level: 15
  agility: 15
  intelligence: 30
-feather_chestplate:
+FEATHER_CHESTPLATE:
  level: 20
  agility: 20
  intelligence: 40
-feather_boots:
+FEATHER_BOOTS:
  level: 15
  agility: 15
  intelligence: 30
-feather_leggings:
+FEATHER_LEGGINGS:
  level: 15
  agility: 15
  intelligence: 30
 
-shield:
+SHIELD:
  level: 5
  strength: 20
-iron_shield:
+IRON_SHIELD:
  level: 20
  strength: 40
-diamond_shield:
+DIAMOND_SHIELD:
   level: 40
   strength: 60
-emerald_shield:
+EMERALD_SHIELD:
  level: 60
  strength: 75
 
 
 #weapons
 
-iron_sword:
+IRON_SWORD:
  level: 5
  strength: 20
-iron_katana:
+IRON_KATANA:
  level: 10
  strength: 30
-iron_axe:
+IRON_AXE:
  level: 5
  strength: 25
 
-diamond_katana:
+DIAMOND_KATANA:
  level: 20
  strength: 40
-diamond_axe:
+DIAMOND_AXE:
  level: 15
  strength: 35
-diamond_sword:
+DIAMOND_SWORD:
  level: 15
  strength: 30
 
-emerald_sword:
+EMERALD_SWORD:
  level: 25
  strength: 50
-emerald_axe:
+EMERALD_AXE:
  level: 30
  strength: 60
-emerald_katana:
+EMERALD_KATANA:
  level: 30
  strength: 60
 
-excalibur:
+EXCALIBUR:
  level: 75
  strength: 100
  dexterity: 100
 
-the_butcher:
+THE_BUTCHER:
  level: 85
  strength: 100
 
-legolas_bow:
+LEGOLAS_BOW:
  level: 70
  strength: 60
  agility: 60
  dexterity: 100
 
-op:
+OP:
  level: 100
  strength: 100
  agility: 100
@@ -195,48 +195,48 @@ op:
  defence: 100
  intelligence: 100
 
-bow:
+BOW:
  level: 1
  strength: 5
  dexterity: 20
-compound_bow:
+COMPOUND_BOW:
  level: 10
  strength: 25
  dexterity: 40
-fire_compound_bow:
+FIRE_COMPOUND_BOW:
  level: 20
  strength: 35
  dexterity: 55
-diamond_compound_bow:
+DIAMOND_COMPOUND_BOW:
  level: 30
  strength: 40
  dexterity: 60
-diamond_fire_compound_bow:
+DIAMOND_FIRE_COMPOUND_BOW:
  level: 40
  strength: 50
  dexterity: 80
 
-staff_teleport:
+STAFF_TELEPORT:
  level:  20
  intelligence: 20
-staff_teleport_plus:
+STAFF_TELEPORT_PLUS:
  level: 40
  intelligence: 20
-staff_fire:
+STAFF_FIRE:
  level: 10
  intelligence: 30
-staff_fire_plus:
+STAFF_FIRE_PLUS:
  level: 20
  intelligence: 45
-staff_fireball:
+STAFF_FIREBALL:
  level: 50
  intelligence: 75
-staff_fireball_plus:
+STAFF_FIREBALL_PLUS:
  level: 60
  intelligence: 90
-staff_freezing:
+STAFF_FREEZING:
  level: 5
  intelligence: 20
-staff_freezing_plus:
+STAFF_FREEZING_PLUS:
  level: 15
  intelligence: 40

@@ -138,7 +138,7 @@ public class PlayerHandler {
      * @return
      */
     public int getAverageLevel(){
-        return this.getAverageLevel();
+        return this.averageLevel;
     }
 
     /**
@@ -154,6 +154,9 @@ public class PlayerHandler {
         }
 
         avg = avg / getList().size();
+
+        if (avg.intValue() <= 0)
+            avg = 1D;
 
         this.averageLevel = avg.intValue();
 

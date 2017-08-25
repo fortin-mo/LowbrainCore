@@ -4,19 +4,19 @@
 
 # cast
 # duration:
-#   fonction: set a function if you want, ex: 0.5 * (0.75 * {0} + 0.25 * {1}) + 0, intelligence, dexterity
+#   function: set a function if you want, ex: 0.5 * (0.75 * {0} + 0.25 * {1}) + 0, intelligence, dexterity
 #   maximum: maximum duration at top level in second
 #   minimum: minimum duration at low level in second
-#   range: gennerate a range
-#   intelligence: the amount by wich intelligence is multipled by
-#   dexterity: the amount by wich dexterity is multipled by
-# amplifier:
-#   fonction: set a function if you want, ex: 0.5 * (0.75 * {0} + 0.25 * {1}) + 0, intelligence, dexterity
-#   maximum: maximum amplifier at top level
-#   minimum: minimum amplifier at low level
 #   range: generate a range
 #   intelligence: the amount by wich intelligence is multiplied by
 #   dexterity: the amount by wich dexterity is multiplied by
+# amplifier:
+#   function: set a function if you want, ex: 0.5 * (0.75 * {0} + 0.25 * {1}) + 0, intelligence, dexterity
+#   maximum: maximum amplifier at top level
+#   minimum: minimum amplifier at low level
+#   range: generate a range
+#   intelligence: the amount by which intelligence is multiplied by
+#   dexterity: the amount by which dexterity is multiplied by
 
 healing:
  mana: 7

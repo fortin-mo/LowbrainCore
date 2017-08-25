@@ -35,15 +35,15 @@ public class Parameters {
 
         if (path == null) {
             path = getDefaultParameters();
-            plugin.debugWarning("parameters_file wasn't set in config.yml");
-            plugin.debugWarning(getDefaultParameters() + " will be use as default");
+            plugin.warn("parameters_file wasn't set in config.yml");
+            plugin.warn(getDefaultParameters() + " will be use as default");
         }
 
         File file = new File(plugin.getDataFolder(), path);
 
         if (!file.exists() && path != getDefaultParameters()) {
-            plugin.debugWarning("parameters_file : cannot find " + path);
-            plugin.debugWarning(getDefaultParameters() + " will be use as default");
+            plugin.warn("parameters_file : cannot find " + path);
+            plugin.warn(getDefaultParameters() + " will be use as default");
             path = getDefaultParameters();
             file = new File(plugin.getDataFolder(), path);
         }
@@ -77,6 +77,7 @@ public class Parameters {
         onPlayerDies = new OnPlayerDies(config.getConfigurationSection("on_player_dies"));
     }
 
+    @Contract(pure = true)
     public static String getDefaultParameters() {
         return DEFAULT_PARAMETERS;
     }
@@ -440,8 +441,10 @@ public class Parameters {
 
         @Contract("null -> fail")
         public OnPlayerShootBow(ConfigurationSection section){
-            if(section == null) throw new NullPointerException("ConfigurationSection for onPlayerShootBow cannot be null");
+            if(section == null)
+                throw new NullPointerException("ConfigurationSection for onPlayerShootBow cannot be null");
 
+            enable = section.getBoolean("enable", true);
             speed = new Multiplier(section.getConfigurationSection("speed"));
             precision = new Multiplier(section.getConfigurationSection("precision"));
         }
@@ -460,7 +463,6 @@ public class Parameters {
     }
 
     public class OnPlayerDies{
-
         private float xp_loss;
         private Multiplier items_drops;
         private boolean enable;

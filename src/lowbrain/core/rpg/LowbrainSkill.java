@@ -5,6 +5,7 @@ import lowbrain.core.commun.Helper;
 import lowbrain.core.config.Internationalization;
 import lowbrain.core.config.Skills;
 import lowbrain.core.events.CoreListener;
+import lowbrain.core.main.LowbrainCore;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.configuration.ConfigurationSection;
@@ -20,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Moofy on 08/08/2016.
+ * represents a single lowbrain skill
  */
 public class LowbrainSkill {
 
@@ -107,6 +108,7 @@ public class LowbrainSkill {
     private void initialize(){
         ConfigurationSection sec = Skills.getInstance().getConfigurationSection(this.name);
         if(sec == null) {
+            LowbrainCore.getInstance().warn("Could not find configuration section for skill => " + this.name);
             enable = false;
             return;
         }
@@ -133,20 +135,18 @@ public class LowbrainSkill {
         this.effects = new HashMap<>();
 
         ConfigurationSection requirementsSection = sec.getConfigurationSection("base_requirements");
-        if(requirementsSection != null){
-            for (String key :
-                    requirementsSection.getKeys(false)) {
+
+        if(requirementsSection != null)
+            for (String key : requirementsSection.getKeys(false))
                 this.baseRequirements.put(key,requirementsSection.getInt(key));
-            }
-        }
+
+
 
         ConfigurationSection effectsSection = sec.getConfigurationSection("effects");
-        if(effectsSection != null){
-            for (String key :
-                    effectsSection.getKeys(false)) {
+
+        if(effectsSection != null)
+            for (String key : effectsSection.getKeys(false))
                 this.effects.put(key,effectsSection.getString(key));
-            }
-        }
 
     }
 
@@ -198,9 +198,11 @@ public class LowbrainSkill {
         try {
             boolean succeed = false;
 
-            if(p == null || ar == null ) return succeed;
+            if(p == null || ar == null )
+                return succeed;
 
-            if(!canExecute(p))return succeed;
+            if(!canExecute(p))
+                return succeed;
 
             switch (this.name) {
                 case "spread":
@@ -303,9 +305,11 @@ public class LowbrainSkill {
     public boolean executeWeaponAttackSkill(LowbrainPlayer p, LivingEntity to, double damage){
 
         try {
-            if(p == null || to == null) return false;
+            if(p == null || to == null)
+                return false;
 
-            if(!canExecute(p))return false;
+            if(!canExecute(p))
+                return false;
 
             for (Map.Entry<String, String> effect :
                     this.getEffects().entrySet()) {
@@ -340,9 +344,10 @@ public class LowbrainSkill {
                         to.damage(getEffectValue(effect.getValue()));
                         break;
                 }
-                if(po != null){
+
+                if(po != null)
                     po.apply(to);
-                }
+
             }
 
             this.setLastExecuted(Calendar.getInstance());
@@ -359,7 +364,8 @@ public class LowbrainSkill {
     public boolean canExecute(LowbrainPlayer p){
         if(p.getPlayer().isSneaking()){
 
-            if(currentLevel == 0)return false;
+            if(currentLevel == 0)
+                return false;
 
             Calendar cooldownTime = Calendar.getInstance();
             cooldownTime.add(Calendar.SECOND,-getCoolDown());
@@ -368,8 +374,7 @@ public class LowbrainSkill {
                 if(p.getCurrentMana() < this.getManaCost()){
                     p.sendMessage(Internationalization.format("insufficient_mana"), ChatColor.RED);
                     return false;
-                }
-                else {
+                } else {
                     return true;
                 }
             }

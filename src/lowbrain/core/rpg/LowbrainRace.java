@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Moofy on 19/07/2016.
+ * represents a single lowbrain race
  */
 public class LowbrainRace {
     private int strength = 0;
@@ -44,6 +44,7 @@ public class LowbrainRace {
      */
     public void Initialize(){
         FileConfiguration config = Races.getInstance();
+
         tag = config.getString(name+".tag","");
         vitality = config.getInt(name+".vitality",0);
         strength = config.getInt(name+".strength",0);
@@ -68,7 +69,8 @@ public class LowbrainRace {
      */
     private void SetPowers(){
         this.powers = Races.getInstance().getStringList(name+".powers");
-        if(this.powers == null) this.powers = new ArrayList<String>();
+        if(this.powers == null)
+            this.powers = new ArrayList<String>();
     }
 
     /**
@@ -107,7 +109,7 @@ public class LowbrainRace {
 
     /**
      * get the strength attribute
-     * @return
+     * @return strength
      */
     public int getStrength() {
         return strength;
@@ -115,7 +117,7 @@ public class LowbrainRace {
 
     /**
      * get the intelligence attribute
-     * @return
+     * @return intelligence
      */
     public int getIntelligence() {
         return intelligence;
@@ -123,7 +125,7 @@ public class LowbrainRace {
 
     /**
      * get the dexterity attribute
-     * @return
+     * @return dexterity
      */
     public int getDexterity() {
         return dexterity;
@@ -131,7 +133,7 @@ public class LowbrainRace {
 
     /**
      * get the vitality attribute
-     * @return
+     * @return vitality
      */
     public int getVitality() {
         return vitality;
@@ -139,7 +141,7 @@ public class LowbrainRace {
 
     /**
      * get the defence attribute
-     * @return
+     * @return defence
      */
     public int getDefence() {
         return defence;
@@ -147,23 +149,23 @@ public class LowbrainRace {
 
     /**
      * get the name of the race
-     * @return
+     * @return name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * get the magic resitance attribute
-     * @return
+     * get the magic resistance attribute
+     * @return magic resistance
      */
     public int getMagicResistance() {
         return magicResistance;
     }
 
     /**
-     * get the list of bonus attirbutes as strings
-     * @return
+     * get the list of bonus attributes as strings
+     * @return bonus attributes
      */
     public List<String> getBonusAttributes() {
         return bonusAttributes;
@@ -171,7 +173,7 @@ public class LowbrainRace {
 
     /**
      * get agility attribute
-     * @return
+     * @return agility
      */
     public int getAgility() {
         return agility;
@@ -179,7 +181,7 @@ public class LowbrainRace {
 
     /**
      * get the list of availables powers as strings
-     * @return
+     * @return powers
      */
     public List<String> getPowers() {
         return powers;
@@ -187,7 +189,7 @@ public class LowbrainRace {
 
     /**
      * get the race tag
-     * @return
+     * @return tag
      */
     public String getTag() {
         return tag;
@@ -195,7 +197,7 @@ public class LowbrainRace {
 
     /**
      * get the race max vitality
-     * @return
+     * @return max health
      */
     public float getMax_health() {
         return max_health;
@@ -203,7 +205,7 @@ public class LowbrainRace {
 
     /**
      * get the race base vitality / minimum
-     * @return
+     * @return base health
      */
     public float getBase_health() {
         return base_health;
@@ -211,7 +213,7 @@ public class LowbrainRace {
 
     /**
      * get the race max mana
-     * @return
+     * @return max mana
      */
     public float getMax_mana() {
         return max_mana;
@@ -219,7 +221,7 @@ public class LowbrainRace {
 
     /**
      * get the race base mana / minimum
-     * @return
+     * @return base mana
      */
     public float getBase_mana() {
         return base_mana;

@@ -7,9 +7,59 @@ import lowbrain.core.commun.Settings;
  * to maximize performance, multipliers are computed when the players joins
  * they are update only if the player's attributes change
  */
-public class Multipliers{
+public class Multipliers {
 
     LowbrainPlayer p;
+
+    // ON PLAYER ATTACK
+    private float BowArrowSpeed;
+    private float BowPrecision;
+    private float AttackByWeapon;
+    private float AttackByProjectile;
+    private float AttackByMagic;
+    private float CriticalHitChance;
+    private float CriticalHitMultiplier;
+    private float ChanceOfMissing;
+    private float BackStabMultiplier;
+    private float ChanceOfMagicEffect;
+
+    // ON PLAYER CONSUME POTION
+    private float ConsumedPotionMultiplier;
+
+    //PLAYER ATTRIBUTES
+    private float PlayerMaxHealth;
+    private float PlayerMaxMana;
+    private float PlayerManaRegen;
+    private float PlayerAttackSpeed;
+    private float PlayerMovementSpeed;
+    private float PlayerKnockbackResistance;
+    private float PlayerLuck;
+    private float PlayerDropPercentage;
+
+    //ON PLAYER GET DAMAGED
+    private float ChanceOfRemovingPotionEffect;
+    private float ReducingPotionEffect;
+    private float DamagedByFire;
+    private float DamagedByFireTick;
+    private float DamagedByPoison;
+    private float DamagedByWither;
+    private float DamagedByContact;
+    private float DamagedByFlyIntoWall;
+    private float DamagedByFall;
+    private float DamagedByWeapon;
+    private float DamagedByArrow;
+    private float DamagedByProjectile;
+    private float DamagedByMagic;
+    private float DamagedBySuffocation;
+    private float DamagedByDrowning;
+    private float DamagedByStarvation;
+    private float DamagedByLightning;
+    private float DamagedByVoid;
+    private float DamagedByHotFloor;
+    private float DamagedByExplosion;
+    private float DamagedByLava;
+    private float DamagedByDefault;
+    private float ChanceOfDodging;
 
     public Multipliers(LowbrainPlayer p){
         this.p = p;
@@ -77,60 +127,6 @@ public class Multipliers{
 
     // ON PLAYER ATTACK
 
-    private float BowArrowSpeed;
-    private float BowPrecision;
-    private float AttackByWeapon;
-    private float AttackByProjectile;
-    private float AttackByMagic;
-    private float CriticalHitChance;
-    private float CriticalHitMultiplier;
-    private float ChanceOfMissing;
-    private float BackStabMultiplier;
-    private float ChanceOfMagicEffect;
-
-    // ON PLAYER CONSUME POTION
-
-    private float ConsumedPotionMultiplier;
-
-    //PLAYER ATTRIBUTES
-
-    private float PlayerMaxHealth;
-    private float PlayerMaxMana;
-    private float PlayerManaRegen;
-    private float PlayerAttackSpeed;
-    private float PlayerMovementSpeed;
-    private float PlayerKnockbackResistance;
-    private float PlayerLuck;
-    private float PlayerDropPercentage;
-
-    //ON PLAYER GET DAMAGED
-
-    private float ChanceOfRemovingPotionEffect;
-    private float ReducingPotionEffect;
-    private float DamagedByFire;
-    private float DamagedByFireTick;
-    private float DamagedByPoison;
-    private float DamagedByWither;
-    private float DamagedByContact;
-    private float DamagedByFlyIntoWall;
-    private float DamagedByFall;
-    private float DamagedByWeapon;
-    private float DamagedByArrow;
-    private float DamagedByProjectile;
-    private float DamagedByMagic;
-    private float DamagedBySuffocation;
-    private float DamagedByDrowning;
-    private float DamagedByStarvation;
-    private float DamagedByLightning;
-    private float DamagedByVoid;
-    private float DamagedByHotFloor;
-    private float DamagedByExplosion;
-    private float DamagedByLava;
-    private float DamagedByDefault;
-    private float ChanceOfDodging;
-
-    // ON PLAYER ATTACK
-
     public void setChanceOfMagicEffect() {
         this.ChanceOfMagicEffect = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getChanceOfCreatingMagicAttack().compute(p);
     }
@@ -171,104 +167,104 @@ public class Multipliers{
 
     //PLAYER ATTRIBUTES
 
-    public void setPlayerMaxHealth() {
+    private void setPlayerMaxHealth() {
         float max = this.p.getLowbrainRace().getMax_health();
         float min = this.p.getLowbrainRace().getBase_health();
         this.PlayerMaxHealth = Settings.getInstance().getParameters().getPlayerAttributes().getTotalHealth().computeWith(p, max, min);
     }
-    public void setPlayerMaxMana() {
+    private void setPlayerMaxMana() {
         float max = this.p.getLowbrainRace().getMax_mana();
         float min = this.p.getLowbrainRace().getBase_mana();
         this.PlayerMaxMana = Settings.getInstance().getParameters().getPlayerAttributes().getTotalMana().computeWith(p, max, min);
     }
-    public void setPlayerManaRegen() {
+    private void setPlayerManaRegen() {
         this.PlayerManaRegen = Settings.getInstance().getParameters().getPlayerAttributes().getManaRegen().compute(p);
     }
-    public void setPlayerAttackSpeed() {
+    private void setPlayerAttackSpeed() {
         this.PlayerAttackSpeed = Settings.getInstance().getParameters().getPlayerAttributes().getAttackSpeed().compute(p);
     }
-    public void setPlayerMovementSpeed() {
+    private void setPlayerMovementSpeed() {
         this.PlayerMovementSpeed = Settings.getInstance().getParameters().getPlayerAttributes().getMovementSpeed().compute(p);
     }
-    public void setPlayerKnockbackResistance() {
+    private void setPlayerKnockbackResistance() {
         this.PlayerKnockbackResistance = Settings.getInstance().getParameters().getPlayerAttributes().getKnockbackResistance().compute(p);
     }
-    public void setPlayerLuck() {
+    private void setPlayerLuck() {
         this.PlayerLuck = Settings.getInstance().getParameters().getPlayerAttributes().getLuck().compute(p);
     }
-    public void setPlayerDropPercentage() {
+    private void setPlayerDropPercentage() {
         this.PlayerDropPercentage = Settings.getInstance().getParameters().getOnPlayerDies().getItems_drops().compute(p);
     }
 
     //ON PLAYER GET DAMAGED
 
-    public void setChanceOfDodging() {
+    private void setChanceOfDodging() {
         this.ChanceOfDodging = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getChanceOfDodging().compute(p);
     }
-    public void setChanceOfRemovingPotionEffect() {
+    private void setChanceOfRemovingPotionEffect() {
         this.ChanceOfRemovingPotionEffect = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getChanceOfRemovingMagicEffect().compute(p);
     }
-    public void setReducingPotionEffect() {
+    private void setReducingPotionEffect() {
         this.ReducingPotionEffect = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getReducingBadPotionEffect().compute(p);
     }
-    public void setDamagedByFire() {
+    private void setDamagedByFire() {
         this.DamagedByFire = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByFire().compute(p);
     }
-    public void setDamagedByFireTick() {
+    private void setDamagedByFireTick() {
         this.DamagedByFireTick = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByFireTick().compute(p);
     }
-    public void setDamagedByPoison() {
+    private void setDamagedByPoison() {
         this.DamagedByPoison = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByPoison().compute(p);
     }
-    public void setDamagedByWither() {
+    private void setDamagedByWither() {
         this.DamagedByWither = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByWither().compute(p);
     }
-    public void setDamagedByContact() {
+    private void setDamagedByContact() {
         this.DamagedByContact = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByContact().compute(p);
     }
-    public void setDamagedByFlyIntoWall() {
+    private void setDamagedByFlyIntoWall() {
         this.DamagedByFlyIntoWall = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByFlyIntoWall().compute(p);
     }
-    public void setDamagedByFall() {
+    private void setDamagedByFall() {
         this.DamagedByFall = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByFall().compute(p);
     }
-    public void setDamagedByWeapon() {
+    private void setDamagedByWeapon() {
         this.DamagedByWeapon = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByWeapon().compute(p);
     }
-    public void setDamagedByArrow() {
+    private void setDamagedByArrow() {
         this.DamagedByArrow = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByArrow().compute(p);
     }
-    public void setDamagedByProjectile() {
+    private void setDamagedByProjectile() {
         this.DamagedByProjectile = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByProjectile().compute(p);
     }
-    public void setDamagedByMagic() {
+    private void setDamagedByMagic() {
         this.DamagedByMagic = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByMagic().compute(p);
     }
-    public void setDamagedBySuffocation() {
+    private void setDamagedBySuffocation() {
         this.DamagedBySuffocation = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getBySuffocation().compute(p);
     }
-    public void setDamagedByDrowning() {
+    private void setDamagedByDrowning() {
         this.DamagedByDrowning = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByDrowning().compute(p);
     }
-    public void setDamagedByStarvation() {
+    private void setDamagedByStarvation() {
         this.DamagedByStarvation = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByStarvation().compute(p);
     }
-    public void setDamagedByLightning() {
+    private void setDamagedByLightning() {
         this.DamagedByLightning = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByLightning().compute(p);
     }
-    public void setDamagedByVoid() {
+    private void setDamagedByVoid() {
         this.DamagedByVoid = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByVoid().compute(p);
     }
-    public void setDamagedByHotFloor() {
+    private void setDamagedByHotFloor() {
         this.DamagedByHotFloor = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByHotFloor().compute(p);
     }
-    public void setDamagedByExplosion() {
+    private void setDamagedByExplosion() {
         this.DamagedByExplosion = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByExplosion().compute(p);
     }
-    public void setDamagedByLava() {
+    private void setDamagedByLava() {
         this.DamagedByLava = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByLava().compute(p);
     }
-    public void setDamagedByDefault() {
+    private void setDamagedByDefault() {
         this.DamagedByDefault = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByDefault().compute(p);
     }
 

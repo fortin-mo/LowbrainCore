@@ -1,6 +1,7 @@
 package lowbrain.core.rpg;
 
 import lowbrain.core.commun.Helper;
+import lowbrain.core.commun.Multiplier;
 import lowbrain.core.config.Internationalization;
 import lowbrain.core.config.Powers;
 import lowbrain.core.events.CoreListener;
@@ -9,94 +10,63 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.Contract;
 
 import java.util.Calendar;
 import java.util.HashMap;
 
 /**
- * Created by moo on 2016-07-21.
+ * represents a single lowbrain power / spell
  */
 public class LowbrainPower {
     private float mana;
     private String name;
+
+    private Multiplier duration;
+    private Multiplier amplifier;
+    private Multiplier cooldown;
     private float castRange;
-    private float maximumDuration;
-    private float minimumDuration;
-    private float maximumAmplifier;
-    private float minimumAmplifier;
-    private float durationRange;
-    private float amplifierRange;
-    private String amplifierFunction;
-    private String durationFunction;
     private PotionEffectType potionEffectType;
     private Calendar lastCast;
-    private int minimumCooldown;
-    private int maximumCooldown;
-    private HashMap<String,Float> cooldownVariables;
-    private HashMap<String,Float> amplifierVariables;
-    private HashMap<String,Float> durationVariables;
     private HashMap<String,Integer> requirements;
-
 
     /**
      * construct the power object using the name
      * will retrieve information from power.yml
-     * @param name
+     * @param name power's name
      */
     public LowbrainPower(String name){
+        FileConfiguration config = Powers.getInstance();
+
         this.name = name;
         this.requirements = new HashMap<>();
-        this.cooldownVariables = new HashMap<>();
-        this.amplifierVariables = new HashMap<>();
-        this.durationVariables = new HashMap<>();
-        FileConfiguration config = Powers.getInstance();
+        this.lastCast = Calendar.getInstance();
         this.mana = (float)config.getDouble(this.name + ".mana",0);
         this.castRange = (float)config.getDouble(this.name + ".cast_range",0);
-        this.amplifierRange = (float)config.getDouble(this.name + ".cast.amplifier.range",0);
-        this.amplifierFunction = config.getString(this.name + ".cast.amplifier.function","");
-        this.lastCast = Calendar.getInstance();
 
-        ConfigurationSection requirementsSection = config.getConfigurationSection(this.name + ".requirements");
-        if(requirementsSection != null){
-            for (String key :
-                    requirementsSection.getKeys(false)) {
-                this.requirements.put(key,requirementsSection.getInt(key));
-            }
-        }
+        ConfigurationSection castSection = config.getConfigurationSection(this.name + ".cast");
+        ConfigurationSection amplifierSection;
+        ConfigurationSection durationSection;
+        ConfigurationSection cooldownSection;
 
-        this.maximumDuration = (float)config.getDouble(this.name + ".cast.duration.maximum",0);
-        this.minimumDuration = (float)config.getDouble(this.name + ".cast.duration.minimum",0);
-        this.durationRange = (float)config.getDouble(this.name + ".cast.duration.range",0);
-        this.durationFunction = config.getString(this.name + ".cast.duration.function","");
-        ConfigurationSection durationVar = config.getConfigurationSection(this.name + ".cast.duration.variables");
-        if(durationVar != null){
-            for (String key :
-                    durationVar.getKeys(false)) {
-                this.durationVariables.put(key,(float)durationVar.getDouble(key));
-            }
-        }
+        if (castSection == null)
+            throw new Error("Could not find cast configuration section for power => " + this.name);
 
-        this.maximumAmplifier = (float)config.getDouble(this.name + ".cast.amplifier.maximum",0);
-        this.minimumAmplifier = (float)config.getDouble(this.name + ".cast.amplifier.minimum",0);
-        ConfigurationSection var = config.getConfigurationSection(this.name + ".cast.amplifier.variables");
-        if(var != null){
-            for (String key :
-                    var.getKeys(false)) {
-                this.amplifierVariables.put(key,(float)var.getDouble(key));
-            }
-        }
+        amplifierSection = castSection.getConfigurationSection("amplifier");
+        durationSection = castSection.getConfigurationSection("duration");
+        cooldownSection = castSection.getConfigurationSection("cooldown");
 
-        maximumCooldown = config.getInt(this.name + ".cast.cooldown.maximum");
-        minimumCooldown = config.getInt(this.name + ".cast.cooldown.minimum");
-        ConfigurationSection influ = config.getConfigurationSection(this.name + ".cast.cooldown.variables");
-        if(influ != null){
-            for (String key :
-                    influ.getKeys(false)) {
-                this.cooldownVariables.put(key,(float)influ.getDouble(key));
-            }
-        }
+        if (amplifierSection == null || durationSection == null || cooldownSection == null)
+            throw new Error("Could not find one of duration, amplifier or cooldown configuration section for power => " + this.name);
 
-        this.setPotionEffectType();
+        amplifier = new Multiplier(amplifierSection);
+        cooldown = new Multiplier(cooldownSection);
+        duration = new Multiplier(durationSection);
+
+        this.potionEffectType = LowbrainPower.getPotionEffectTypeFromName(this.name);
+
+        if (this.potionEffectType == null)
+            throw new Error("Could not find (or is invalid) potion effect type for power => " + this.name);
     }
 
     /**
@@ -109,7 +79,7 @@ public class LowbrainPower {
 
     /**
      * return the name of the spell
-     * @return
+     * @return name
      */
     public String getName() {
         return name;
@@ -117,7 +87,7 @@ public class LowbrainPower {
 
     /**
      * return the cast range of the spell
-     * @return
+     * @return cast range
      */
     public float getCastRange() {
         return castRange;
@@ -129,27 +99,7 @@ public class LowbrainPower {
      * @return cast duration value
      */
     private int getCastDuration(LowbrainPlayer from){
-        float result = 0F;
-        if(Helper.StringIsNullOrEmpty(durationFunction)) {
-            result =  Helper.valueFromFunction(maximumDuration, minimumDuration, durationVariables,from);
-        }
-        else{
-            String[] st = durationFunction.split(",");
-            if(st.length > 1){
-                result = Helper.eval(Helper.FormatStringWithValues(st,from));
-            }
-            else{
-                result = Helper.eval(st[0]);
-            }
-        }
-        
-        if(durationRange > 0){
-            result = Helper.randomFloat(result - durationRange,result + durationRange);
-            if(result < minimumDuration)result = minimumDuration;
-            else if(result > maximumDuration) result = maximumDuration;
-        }
-        
-        return (int)(result * 20);
+        return (int)duration.randomize(duration.compute(from));
     }
 
     /**
@@ -158,84 +108,72 @@ public class LowbrainPower {
      * @return cast amplifier value
      */
     private int getCastAmplifier(LowbrainPlayer from){
-        float result = 0F;
-        if(Helper.StringIsNullOrEmpty(amplifierFunction)) {
-            result = Helper.valueFromFunction(maximumAmplifier, minimumAmplifier, amplifierVariables,from);
-        }
-        else{
-            String[] st = amplifierFunction.split(",");
-            if(st.length > 1){
-                result = Helper.eval(Helper.FormatStringWithValues(st,from));
-            }
-            else{
-                result = Helper.eval(st[0]);
-            }
-        }
-
-        if(amplifierRange > 0){
-            result = Helper.randomFloat(result- amplifierRange,result+ amplifierRange);
-            result = result > maximumAmplifier ? maximumAmplifier : result < minimumAmplifier ? minimumAmplifier : result;
-        }
-        return (int)(result);
+        return (int)amplifier.randomize(amplifier.compute(from));
     }
 
-    /**
-     * set the potion effect type using the name
-     */
-    private void setPotionEffectType(){
-        switch (this.name){
+    public PotionEffectType getPotionEffectType() {
+        return potionEffectType;
+    }
+
+    @Contract(pure = true)
+    public static PotionEffectType getPotionEffectTypeFromName(String name) {
+        PotionEffectType pet = null;
+
+        switch (name){
             case"healing":
-                this.potionEffectType = PotionEffectType.HEAL;
+                pet = PotionEffectType.HEAL;
                 break;
             case"fire_resistance":
-                this.potionEffectType = PotionEffectType.FIRE_RESISTANCE;
+                pet = PotionEffectType.FIRE_RESISTANCE;
                 break;
             case"resistance":
-                this.potionEffectType = PotionEffectType.DAMAGE_RESISTANCE;
+                pet = PotionEffectType.DAMAGE_RESISTANCE;
                 break;
             case"water_breathing":
-                this.potionEffectType = PotionEffectType.WATER_BREATHING;
+                pet = PotionEffectType.WATER_BREATHING;
                 break;
             case"invisibility":
-                this.potionEffectType = PotionEffectType.INVISIBILITY;
+                pet = PotionEffectType.INVISIBILITY;
                 break;
             case"regeneration":
-                this.potionEffectType = PotionEffectType.REGENERATION;
+                pet = PotionEffectType.REGENERATION;
                 break;
             case"jump_boost":
-                this.potionEffectType = PotionEffectType.JUMP;
+                pet = PotionEffectType.JUMP;
                 break;
             case"strength":
-                this.potionEffectType = PotionEffectType.INCREASE_DAMAGE;
+                pet = PotionEffectType.INCREASE_DAMAGE;
                 break;
             case"haste":
-                this.potionEffectType = PotionEffectType.FAST_DIGGING;
+                pet = PotionEffectType.FAST_DIGGING;
                 break;
             case"speed":
-                this.potionEffectType = PotionEffectType.SPEED;
+                pet = PotionEffectType.SPEED;
                 break;
             case"night_vision":
-                this.potionEffectType = PotionEffectType.NIGHT_VISION;
+                pet = PotionEffectType.NIGHT_VISION;
                 break;
             case"health_boost":
-                this.potionEffectType = PotionEffectType.HEALTH_BOOST;
+                pet = PotionEffectType.HEALTH_BOOST;
                 break;
             case"absorption":
-                this.potionEffectType = PotionEffectType.ABSORPTION;
+                pet = PotionEffectType.ABSORPTION;
                 break;
             case"saturation":
-                this.potionEffectType = PotionEffectType.SATURATION;
+                pet = PotionEffectType.SATURATION;
                 break;
         }
+
+        return pet;
     }
 
     /**
      * compute the cooldown depending on player attributes
-     * @param p LowbrainPlayer
+     * @param from LowbrainPlayer
      * @return cooldown value
      */
-    private int getCooldown(LowbrainPlayer p){
-        return (int)Helper.valueFromFunction(maximumCooldown, minimumCooldown, cooldownVariables,p);
+    private int getCooldown(LowbrainPlayer from){
+        return (int)cooldown.randomize(cooldown.compute(from));
     }
 
     /**
@@ -246,7 +184,8 @@ public class LowbrainPower {
      */
     public boolean Cast(LowbrainPlayer from, LowbrainPlayer to){
         try{
-            if(from == null || to == null)return false;
+            if(from == null || to == null)
+                return false;
 
             Calendar cooldowntime = Calendar.getInstance();
             cooldowntime.add(Calendar.SECOND,-getCooldown(from));

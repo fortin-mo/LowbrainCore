@@ -32,6 +32,8 @@ commands:
                   /lbcore togglestats <false or true> - hide or show stats slbcoreboard
                   /lbcore togglestats <0 or 1> - hide or show stats slbcoreboard
                   /lbcore togglestats - toggle stats slbcoreboard
+                  /lbcore showstats - toggle on stats slbcoreboard
+                  /lbcore hidestats - toggle off stats slbcoreboard
 
                   /lbcore mobkills <name> - show how many time you killed this mob
                   /lbcore mobkills - show the number of kills you got for each mob

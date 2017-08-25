@@ -4,13 +4,13 @@ import com.alessiodp.parties.Parties;
 import com.alessiodp.parties.objects.Party;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import lowbrain.core.Abstraction.Playable;
 import lowbrain.core.commun.Helper;
 import lowbrain.core.commun.Settings;
 import lowbrain.core.config.Internationalization;
 import lowbrain.core.config.MobsXP;
 import lowbrain.core.main.LowbrainCore;
 import lowbrain.core.rpg.LowbrainPlayer;
-import lowbrain.core.rpg.LowbrainSkill;
 import org.apache.commons.lang.mutable.MutableBoolean;
 import org.apache.commons.lang.mutable.MutableFloat;
 import org.bukkit.*;
@@ -37,7 +37,9 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-
+/**
+ * core event listener for LowbrainCore plugin
+ */
 public class CoreListener implements Listener {
 
 	public static LowbrainCore plugin;
@@ -49,7 +51,7 @@ public class CoreListener implements Listener {
     /**
      * called when create spawn in the world
      * we only set no tick damage if needed
-     * @param e
+     * @param e CreatureSpawnEvent
      */
     @EventHandler
     public void onCreatureSpawn(CreatureSpawnEvent e){
@@ -70,7 +72,7 @@ public class CoreListener implements Listener {
     /***
      * Called when player teleport
      * remove damage when teleporting with enderpearl
-     * @param e
+     * @param e PlayerTeleportEvent
      */
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent e){
@@ -80,6 +82,10 @@ public class CoreListener implements Listener {
         }
     }
 
+    /**
+     * called whenever a player interacts with the environments
+     * @param e PlayerInteractEvent
+     */
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e){
         LowbrainPlayer rp = plugin.getPlayerHandler().getList().get(e.getPlayer().getUniqueId());
@@ -99,8 +105,11 @@ public class CoreListener implements Listener {
 
             if(e.getItem().getItemMeta() != null && !Helper.StringIsNullOrEmpty(e.getItem().getItemMeta().getDisplayName())){
                 ItemMeta iMeta = e.getItem().getItemMeta();
-                String n = iMeta.getDisplayName().substring(2);
-                if(n.startsWith("staff") && plugin.useLowbrainItems){
+
+                //String n = iMeta.getDisplayName().substring(2);
+                String n = ChatColor.stripColor(iMeta.getDisplayName());
+
+                if(n.startsWith("STAFF") && plugin.useLowbrainItems){
 
                     ConfigurationSection staffSection = lowbrain.items.main.Main.getInstance().getStaffConfig().getConfigurationSection(n);
 
@@ -115,7 +124,7 @@ public class CoreListener implements Listener {
 
     /**
      * called when a player experience changes naturally
-     * @param e
+     * @param e PlayerExpChangeEvent
      */
     @EventHandler
     public void onPlayerExpChange(PlayerExpChangeEvent e){
@@ -128,11 +137,15 @@ public class CoreListener implements Listener {
 
             plugin.debugInfo("************* On Player Exp Change ( naturally ) **************");
             plugin.debugInfo("              Player gains : " + e.getAmount() * Settings.getInstance().getParameters().getNaturalXpGainMultiplier() + " xp");
-            rp.addExp(e.getAmount() * Settings.getInstance().getParameters().getNaturalXpGainMultiplier());
+            rp.addExperience(e.getAmount() * Settings.getInstance().getParameters().getNaturalXpGainMultiplier());
             plugin.debugInfo("************* ------------------------ **************");
         }
     }
 
+    /**
+     * called when a player dies
+     * @param e PlayerDeathEvent
+     */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerDies(PlayerDeathEvent e){
         if(Settings.getInstance().getParameters().getOnPlayerDies().getItems_drops().isEnabled())
@@ -144,7 +157,7 @@ public class CoreListener implements Listener {
 
     /***
      * called when either a player or a mob dies
-     * @param e
+     * @param e EntityDeathEvent
      */
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e){
@@ -183,12 +196,12 @@ public class CoreListener implements Listener {
                 }else{
                     xpGained = Settings.getInstance().getParameters().getKillerBaseExp() * (diffLvl * Settings.getInstance().getParameters().getLevelDifferenceMultiplier()) * rpKiller.getLvl() * Settings.getInstance().getParameters().getKillerLevelGainMultiplier();
                 }
-                rpKiller.addExp(xpGained);
+                rpKiller.addExperience(xpGained);
                 plugin.debugInfo("              Killer gained : "+ xpGained+" xp!");
             }
 
             if(Settings.getInstance().getParameters().getOnPlayerDies().isEnable()){
-                rpKilled.addExp(-(Settings.getInstance().getParameters().getOnPlayerDies().getXp_loss() / 100 * rpKilled.getExperience()));
+                rpKilled.addExperience(-(Settings.getInstance().getParameters().getOnPlayerDies().getXp_loss() / 100 * rpKilled.getExperience()));
 
                 double dropPercentage = rpKilled.getMultipliers().getPlayerDropPercentage();
 
@@ -274,20 +287,20 @@ public class CoreListener implements Listener {
                             others = Helper.getNearbyPlayers(rpKiller, Settings.getInstance().getGroupXpRange());
                         }
                         double mainXP = others != null && others.size() > 0 ? Settings.getInstance().getGroupXpMain() : 1;
-                        rpKiller.addExp(xp * mainXP);
+                        rpKiller.addExperience(xp * mainXP);
                         plugin.debugInfo("              Killer gained : " + ( xp * mainXP ) +" xp!");
 
                         if(others != null && others.size() > 0) {
                             double othersXP = xp * Settings.getInstance().getGroupXpOthers() / others.size();
                             plugin.debugInfo("              - In party");
                             for (LowbrainPlayer other : others) {
-                                other.addExp(othersXP);
+                                other.addExperience(othersXP);
                                 plugin.debugInfo("                      " + other.getPlayer().getName() + " gained " + othersXP + " xp!");
                             }
                         }
                     }
                     else{
-                        rpKiller.addExp(xp);
+                        rpKiller.addExperience(xp);
                         plugin.debugInfo("              Killer gained : " + ( xp ) +" xp!");;
                     }
                 }
@@ -320,11 +333,12 @@ public class CoreListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerAttack(EntityDamageByEntityEvent e) {
         plugin.debugInfo("************* On Player Attack (EntityDamageByEntityEvent) **************");
+
         MutableBoolean isCritical = new MutableBoolean(false);
         MutableFloat missChance = new MutableFloat(0F);
         boolean isMissed = false;
-        boolean off = applyOffensiveAttack(e,isCritical, missChance);
-        boolean deff = applyDefensive(e, missChance);
+        boolean offense = applyOffensiveAttack(e,isCritical, missChance);
+        boolean deffence = applyDefensive(e, missChance);
 
         double rdm = Math.random();
 
@@ -334,7 +348,7 @@ public class CoreListener implements Listener {
             e.setDamage(0);
         }
 
-        if(off){
+        if(offense){
             //CREATING DAMAGE HOLOGRAM
             if(plugin.useHolographicDisplays){
                 NumberFormat formatter = new DecimalFormat("#0.00");
@@ -371,7 +385,7 @@ public class CoreListener implements Listener {
 
     /**
      * Called when a player get damaged
-     * @param e
+     * @param e EntityDamageEvent
      */
     @EventHandler
     public void onPlayerDamaged(EntityDamageEvent e){
@@ -470,11 +484,14 @@ public class CoreListener implements Listener {
 
     /**
      * When a player consume a potion
-     * @param e
+     * @param e PlayerItemConsumeEvent
      */
     @EventHandler
     public void onPlayerConsumePotion(PlayerItemConsumeEvent e){
-        if(e.getItem() != null && e.getItem().getType().equals(Material.POTION) && Settings.getInstance().getParameters().getOnPlayerConsumePotion().isEnabled()){
+        if(e.getItem() != null
+                && e.getItem().getType().equals(Material.POTION)
+                && Settings.getInstance().getParameters().getOnPlayerConsumePotion().isEnabled()){
+
             LowbrainPlayer rp = plugin.getPlayerHandler().get(e.getPlayer().getUniqueId());
             if(rp != null && !rp.getPlayer().getActivePotionEffects().isEmpty()) {
 
@@ -496,52 +513,54 @@ public class CoreListener implements Listener {
 
     /**
      * called when a player shoots with a  bow
-     * @param e
+     * @param e EntityShootBowEvent
      */
     @EventHandler
     public void onPlayerShootBow(EntityShootBowEvent e){
-        if(e.getEntity() instanceof Player && Settings.getInstance().getParameters().getOnPlayerShootBow().isEnable()){
-            //set new force
-            Arrow ar = (Arrow) e.getProjectile();
-            LowbrainPlayer rpPlayer = plugin.getPlayerHandler().get(e.getEntity().getUniqueId());
 
-            plugin.debugInfo("************* On Player Consume Potion **************");
+        if (!(e.getEntity() instanceof Player) && !Settings.getInstance().getParameters().getOnPlayerShootBow().isEnable())
+            return;
 
-            float speed = rpPlayer.getMultipliers().getBowArrowSpeed();
+        //set new force
+        Arrow ar = (Arrow) e.getProjectile();
+        LowbrainPlayer rpPlayer = plugin.getPlayerHandler().get(e.getEntity().getUniqueId());
 
-            plugin.debugInfo("              Arrow speed multiplier : " + speed);
-            ar.setVelocity(ar.getVelocity().multiply(speed));
+        plugin.debugInfo("************* On Player Consume Potion **************");
 
-            float precX = rpPlayer.getMultipliers().getBowPrecision();
+        float speed = rpPlayer.getMultipliers().getBowArrowSpeed();
 
-            int direction = Helper.randomInt(0,1) == 0 ? -1 : 1;
-            precX = 1 + (1-precX)*direction;
+        plugin.debugInfo("              Arrow speed multiplier : " + speed);
+        ar.setVelocity(ar.getVelocity().multiply(speed));
 
-            float precY = rpPlayer.getMultipliers().getBowPrecision();
+        float precX = rpPlayer.getMultipliers().getBowPrecision();
 
-            direction = Helper.randomInt(0,1) == 0 ? -1 : 1;
-            precY = 1 + (1-precY)*direction;
+        int direction = Helper.randomInt(0,1) == 0 ? -1 : 1;
+        precX = 1 + (1-precX)*direction;
 
-            float precZ = rpPlayer.getMultipliers().getBowPrecision();
+        float precY = rpPlayer.getMultipliers().getBowPrecision();
 
-            direction = Helper.randomInt(0,1) == 0 ? -1 : 1;
-            precZ = 1 + (1-precZ)*direction;
+        direction = Helper.randomInt(0,1) == 0 ? -1 : 1;
+        precY = 1 + (1-precY)*direction;
 
-            plugin.debugInfo("              Arrow precision multiplier : " + precX);
-            ar.setVelocity(new Vector(ar.getVelocity().getX() * precX, ar.getVelocity().getY() * precY, ar.getVelocity().getZ() * precZ));
+        float precZ = rpPlayer.getMultipliers().getBowPrecision();
 
-            if(rpPlayer.getCurrentSkill() != null
-                    && (rpPlayer.getCurrentSkill().getEventType().equals("bow_shoot") || rpPlayer.getCurrentSkill().getEventType().equals("both"))
-                    && rpPlayer.getCurrentSkill().executeBowSkill(rpPlayer,ar,speed) ){
+        direction = Helper.randomInt(0,1) == 0 ? -1 : 1;
+        precZ = 1 + (1-precZ)*direction;
 
-            }
-            plugin.debugInfo("************* ------------------------ **************");
+        plugin.debugInfo("              Arrow precision multiplier : " + precX);
+        ar.setVelocity(new Vector(ar.getVelocity().getX() * precX, ar.getVelocity().getY() * precY, ar.getVelocity().getZ() * precZ));
+
+        if(rpPlayer.getCurrentSkill() != null
+                && (rpPlayer.getCurrentSkill().getEventType().equals("bow_shoot") || rpPlayer.getCurrentSkill().getEventType().equals("both"))
+                && rpPlayer.getCurrentSkill().executeBowSkill(rpPlayer,ar,speed) ){
+
         }
+        plugin.debugInfo("************* ------------------------ **************");
     }
 
     /**
      * called when a player join the server
-     * @param e
+     * @param e PlayerJoinEvent
      */
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
@@ -551,7 +570,7 @@ public class CoreListener implements Listener {
 
     /**
      * called when a player quit the server
-     * @param e
+     * @param e PlayerQuitEvent
      */
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e){
@@ -563,7 +582,7 @@ public class CoreListener implements Listener {
 
     /**
      * create damaging effect depending on player attributes
-     * @param p
+     * @param p LowbrainPlayer
      * @return potion effect
      */
     @Nullable
@@ -618,7 +637,8 @@ public class CoreListener implements Listener {
                 break;
         }
 
-        if(!valid) return null;
+        if(!valid)
+            return null;
 
         // with harm we need to change those values before computing
         Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().duration.setMax(max);
@@ -632,39 +652,40 @@ public class CoreListener implements Listener {
 
     /**
      * remove bad potion effect from player
-     * @param p
+     * @param p Bukkit Player
      */
     private void removeBadPotionEffect(Player p){
-        if(p.hasPotionEffect(PotionEffectType.BLINDNESS)){
+        if(p.hasPotionEffect(PotionEffectType.BLINDNESS))
             p.removePotionEffect(PotionEffectType.BLINDNESS);
-        }
-        if(p.hasPotionEffect(PotionEffectType.CONFUSION)){
+
+        if(p.hasPotionEffect(PotionEffectType.CONFUSION))
             p.removePotionEffect(PotionEffectType.CONFUSION);
-        }
-        if(p.hasPotionEffect(PotionEffectType.HARM)){
+
+        if(p.hasPotionEffect(PotionEffectType.HARM))
             p.removePotionEffect(PotionEffectType.HARM);
-        }
-        if(p.hasPotionEffect(PotionEffectType.POISON)){
+
+        if(p.hasPotionEffect(PotionEffectType.POISON))
             p.removePotionEffect(PotionEffectType.POISON);
-        }
-        if(p.hasPotionEffect(PotionEffectType.SLOW)){
+
+        if(p.hasPotionEffect(PotionEffectType.SLOW))
             p.removePotionEffect(PotionEffectType.SLOW);
-        }
-        if(p.hasPotionEffect(PotionEffectType.WEAKNESS)){
+
+        if(p.hasPotionEffect(PotionEffectType.WEAKNESS))
             p.removePotionEffect(PotionEffectType.WEAKNESS);
-        }
-        if(p.hasPotionEffect(PotionEffectType.WITHER)){
+
+        if(p.hasPotionEffect(PotionEffectType.WITHER))
             p.removePotionEffect(PotionEffectType.WITHER);
-        }
+
     }
 
     /**
      * reducing player potion effect depending on attributes
-     * @param rp
+     * @param rp LowbrainPlayer
      */
     private void reducingBadPotionEffect(LowbrainPlayer rp){
 
-        if(rp.getPlayer().getActivePotionEffects().isEmpty()) return;
+        if(rp.getPlayer().getActivePotionEffects().isEmpty())
+            return;
 
         float rdm = rp.getMultipliers().getReducingPotionEffect();
         PotionEffect po = (PotionEffect) rp.getPlayer().getActivePotionEffects().toArray()[rp.getPlayer().getActivePotionEffects().size() -1];
@@ -694,26 +715,29 @@ public class CoreListener implements Listener {
      */
     private void setServerDifficulty(){
 
-        if(!Settings.getInstance().isAsdEnable())return;
+        if(!Settings.getInstance().isAsdEnable())
+            return;
 
         Difficulty diff = Difficulty.NORMAL;
         int averageLevel = plugin.getPlayerHandler().getAverageLevel();
 
-        if(averageLevel >= Settings.getInstance().getAsdEasyFrom() && averageLevel <= (Settings.getInstance().getAsdEasyTo() != -1 ? Settings.getInstance().getAsdEasyTo() : 9999999)){
+        if(averageLevel >= Settings.getInstance().getAsdEasyFrom()
+                && averageLevel <= (Settings.getInstance().getAsdEasyTo() != -1 ? Settings.getInstance().getAsdEasyTo() : 9999999)){
             diff = Difficulty.EASY;
         }
-        else if(averageLevel >= Settings.getInstance().getAsdMediumFrom() && averageLevel <= (Settings.getInstance().getAsdMediumTo() != -1 ? Settings.getInstance().getAsdMediumTo() : 9999999)){
+        else if(averageLevel >= Settings.getInstance().getAsdMediumFrom()
+                && averageLevel <= (Settings.getInstance().getAsdMediumTo() != -1 ? Settings.getInstance().getAsdMediumTo() : 9999999)){
             diff = Difficulty.NORMAL;
         }
-        else if(averageLevel >= Settings.getInstance().getAsdHardFrom() && averageLevel <= (Settings.getInstance().getAsdHardTo() != -1 ? Settings.getInstance().getAsdHardTo() : 9999999)){
+        else if(averageLevel >= Settings.getInstance().getAsdHardFrom()
+                && averageLevel <= (Settings.getInstance().getAsdHardTo() != -1 ? Settings.getInstance().getAsdHardTo() : 9999999)){
             diff = Difficulty.HARD;
         }
 
 
-        for (World world :
-                this.plugin.getServer().getWorlds()) {
+        for (World world : this.plugin.getServer().getWorlds())
             world.setDifficulty(diff);
-        }
+
         plugin.debugInfo("************* Server Difficulty Reset **************");
         this.plugin.debugInfo("         Set to : " + diff.name());
         plugin.debugInfo("************* ------------------------ **************");
@@ -739,12 +763,12 @@ public class CoreListener implements Listener {
         double multiplier = 1;
         boolean damageSet = false;
 
-        if(e.getDamager() instanceof Arrow){
+        if(e.getDamager() instanceof Arrow) {
             multiplier = damagee.getMultipliers().getDamagedByArrow();
             damageSet = true;
         }
 
-        else if(e.getDamager() instanceof ThrownPotion){
+        else if(e.getDamager() instanceof ThrownPotion) {
             if(Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByMagic().isEnabled()){
                 multiplier = damagee.getMultipliers().getDamagedByMagic();
                 damageSet = true;
@@ -1007,6 +1031,12 @@ public class CoreListener implements Listener {
         return true;
     }
 
+    /**
+     * handles effects / interactions of a playing using a staff
+     * @param rp LowbrainPlayer
+     * @param staffSection configurationSection of the staff
+     * @param item ItemStack (the staff itself)
+     */
     private void onPlayerUseStaff(LowbrainPlayer rp, ConfigurationSection staffSection, ItemStack item) {
         if (item == null || item.getItemMeta() == null)
             return;
@@ -1022,7 +1052,6 @@ public class CoreListener implements Listener {
         String n = iMeta.getDisplayName().substring(2);
 
         if(iMeta.hasLore()){
-
             int lastUsedIntex = iMeta.getLore().indexOf("last used : ");
             int durabilityIndex = iMeta.getLore().indexOf("durability : ");
             //sLastUsed = iMeta.getLore().get(e.getItem().getItemMeta().getLore().size() - 2); //before last lore

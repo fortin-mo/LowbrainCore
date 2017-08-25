@@ -5,6 +5,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.*;
 
+/**
+ * represents a single lowbrain class
+ */
 public class LowbrainClass {
 
 	private int strength = 0;
@@ -21,7 +24,7 @@ public class LowbrainClass {
 
 	/**
 	 * Create class object using the name
-	 * @param name
+	 * @param name name of the class
 	 */
 	public LowbrainClass(String name){
 		this.name = name;
@@ -43,12 +46,12 @@ public class LowbrainClass {
 		agility = config.getInt(name+".agility",0);
 		bonusAttributes = config.getStringList(name+".bonus_attributes");
 		if(bonusAttributes == null)bonusAttributes = new ArrayList<String>();
-		SetPowers();
+		initPowers();
 	}
 
 	/**
 	 * Create a formated string with all the informations of the specific class
-	 * @return
+	 * @return class's information
 	 */
 	public String toString() {
 		String s = "Name : " + name + "\n";
@@ -78,7 +81,7 @@ public class LowbrainClass {
 
 	/**
 	 * return strength attribute
-	 * @return
+	 * @return strength
 	 */
 	public int getStrength() {
 		return strength;
@@ -86,7 +89,7 @@ public class LowbrainClass {
 
 	/**
 	 * return intelligence attribute
-	 * @return
+	 * @return intelligence
 	 */
 	public int getIntelligence() {
 		return intelligence;
@@ -94,7 +97,7 @@ public class LowbrainClass {
 
 	/**
 	 * return dexterity attribute
-	 * @return
+	 * @return dexterity
 	 */
 	public int getDexterity() {
 		return dexterity;
@@ -102,7 +105,7 @@ public class LowbrainClass {
 
 	/**
 	 * return vitality attribute
-	 * @return
+	 * @return vitality
 	 */
 	public int getVitality() {
 		return vitality;
@@ -110,7 +113,7 @@ public class LowbrainClass {
 
 	/**
 	 * return defence attribute
-	 * @return
+	 * @return defence
 	 */
 	public int getDefence() {
 		return defence;
@@ -118,7 +121,7 @@ public class LowbrainClass {
 
 	/**
 	 * return the name of the class
-	 * @return
+	 * @return name
 	 */
 	public String getName() {
 		return name;
@@ -126,7 +129,7 @@ public class LowbrainClass {
 
 	/**
 	 * return the magic resitance attribute
-	 * @return
+	 * @return magicResistance
 	 */
 	public int getMagicResistance() {
 		return magicResistance;
@@ -134,7 +137,7 @@ public class LowbrainClass {
 
 	/**
 	 * return a list of bonus attributes as string
-	 * @return
+	 * @return bonusAttributes
 	 */
 	public List<String> getBonusAttributes() {
 		return bonusAttributes;
@@ -142,7 +145,7 @@ public class LowbrainClass {
 
 	/**
 	 * return agility attribute
-	 * @return
+	 * @return agility
 	 */
 	public int getAgility() {
 		return agility;
@@ -150,7 +153,7 @@ public class LowbrainClass {
 
 	/**
 	 * return a list of available powers as string
-	 * @return
+	 * @return powers
 	 */
 	public List<String> getPowers() {
 		return powers;
@@ -159,14 +162,16 @@ public class LowbrainClass {
 	/**
 	 * set the list of powers available for a particular class
      */
-	private void SetPowers(){
+	private void initPowers(){
 		this.powers = Classes.getInstance().getStringList(name+".powers");
-		if(this.powers == null) this.powers = new ArrayList<String>();
+
+		if(this.powers == null)
+		    this.powers = new ArrayList<String>();
 	}
 
 	/**
 	 * return the class tag
-	 * @return
+	 * @return tag
 	 */
 	public String getTag() {
 		return tag;

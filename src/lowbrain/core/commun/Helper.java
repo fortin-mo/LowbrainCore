@@ -4,6 +4,7 @@ import lowbrain.core.main.LowbrainCore;
 import lowbrain.core.rpg.LowbrainPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.Contract;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -105,13 +106,13 @@ public class Helper {
      * reformat string with values from player attributes
      * @param st string
      * @param p LowbrainPlayer
-     * @return
+     * @return formatted string
      */
     public static String FormatStringWithValues(String[] st, LowbrainPlayer p){
         if(st.length > 1 && p != null){
-            for (int i = 1; i < st.length; i++) {
+            for (int i = 1; i < st.length; i++)
                 st[i] = Integer.toString(p.getAttribute(st[i].trim().toLowerCase(),1));
-            }
+
         }
         else {
             return st[0];
@@ -123,18 +124,19 @@ public class Helper {
 
     /***
      * check if string is null or empty
-     * @param s
-     * @return
+     * @param s string
+     * @return is null or empty ?
      */
+    @Contract("null -> true")
     public static boolean StringIsNullOrEmpty(String s){
         return s == null || s.trim().length() == 0;
     }
 
     /**
      * generate a random float [min,max]
-     * @param max max
-     * @param min min
-     * @return
+     * @param max max value
+     * @param min min value
+     * @return random float
      */
     public static float randomFloat(float min, float max){
         float range = (max - min);
@@ -143,9 +145,9 @@ public class Helper {
 
     /**
      * generate a int float [min,max]
-     * @param max max
-     * @param min min
-     * @return
+     * @param max max value
+     * @param min min value
+     * @return random integer
      */
     public static int randomInt(int min, int max){
         int range = (max - min) + 1;
@@ -156,7 +158,7 @@ public class Helper {
      * parse string to int
      * @param s string
      * @param d default value
-     * @return
+     * @return parsed string
      */
     public static int intTryParse(String s, Integer d){
         try {
@@ -170,7 +172,7 @@ public class Helper {
      * parse string to double with default value
      * @param s string
      * @param d default value
-     * @return
+     * @return parsed string
      */
     public static double doubleTryParse(String s, Double d){
         try {
@@ -184,7 +186,7 @@ public class Helper {
      * parse string to float with default value
      * @param s string
      * @param d default value
-     * @return
+     * @return parsed string
      */
     public static float floatTryParse(String s, Float d){
         try {
@@ -195,10 +197,10 @@ public class Helper {
     }
 
     /***
-     * parse string to date
-     * @param s
-     * @param c
-     * @return
+     * parse string to date (calendar)
+     * @param s date as string
+     * @param c default calendar date in case of failure
+     * @return Calendar
      */
     public static Calendar dateTryParse(String s, Calendar c){
         try {
@@ -214,9 +216,9 @@ public class Helper {
 
     /***
      * rotate vector on the xy plan
-     * @param dir
-     * @param angleD
-     * @return
+     * @param dir direction's vector
+     * @param angleD angle
+     * @return rotated vector
      */
     public static Vector rotateYAxis(Vector dir, double angleD) {
         double angleR = Math.toRadians(angleD);
@@ -229,9 +231,9 @@ public class Helper {
 
     /***
      * gets the X value ( y = ax + b ) depending on attributes influence and player attributes
-     * @param variables
-     * @param p
-     * @return
+     * @param variables list of variables and their contribution
+     * @param p LowbrainPlayer
+     * @return x value from attributes
      */
     public static float getXValue(HashMap<String,Float> variables, LowbrainPlayer p){
         float x = 0;
@@ -245,7 +247,7 @@ public class Helper {
 
     /***
      * return max stats. if max stats <= 0 return 100
-     * @return
+     * @return max stats
      */
     private static int getMaxStats(){
         return Settings.getInstance().getMaxStats() <= 0 ? 100 : Settings.getInstance().getMaxStats();
@@ -265,6 +267,7 @@ public class Helper {
      * compute slope
      * @param max maximum value
      * @param min minimum value
+     * @param functionType function type
      * @return slope using maxStats and default function type
      */
     public static float Slope(float max, float min, FunctionType functionType){
@@ -312,7 +315,7 @@ public class Helper {
      * @param max max
      * @param min min
      * @param x value
-     * @return
+     * @return value
      */
     public static float valueFromFunction(float max, float min, float x){
         return valueFromFunction(max, min, x, null);
@@ -404,26 +407,25 @@ public class Helper {
 
     public static float getRandomBetween(float min, float max, float value, float range, boolean outBound) {
         range = +range;
-        if (range == 0) {
-            return value;
-        }
 
-        if (min > value) min = value;
-        if (max < value) max = value;
+        if (range == 0)
+            return value;
+
+        if (min > value)
+            min = value;
+        if (max < value)
+            max = value;
 
         float random = Helper.randomFloat(value - range, value + range);
 
-        if (outBound) {
+        if (outBound)
             return random;
-        }
 
-        if (random > max) {
+        if (random > max)
             return max;
-        }
 
-        if (random < min) {
+        if (random < min)
             return min;
-        }
 
         return random;
     }
