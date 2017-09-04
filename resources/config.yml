@@ -11,17 +11,21 @@ versions:
  internationalization: 1.0
  parameters: 1.0
 
+# additional implemented feature
+additional_gameplay:
+  # disable mob no tick damage
+  disable_mob_no_tick_damage: true
+  # reduce the spawn of animal by breeding. default set to 50% chance of spawning
+  # setting this bellow 0 will remove any spawning form breeding
+  # settings this above 1 will in a way disable the functionality
+  reduce_spawn_from_breeding: 0.5
+
+
 # set an hardcore mod
 # if a player dies more than the defined max deaths, all stats will be reset
 hard_core:
  enable: false
  max_deaths: 1
-
-# disable mob no tick damage
-disable_mob_no_tick_damage: true
-
-# reduce the spawn of animal by breeding. default set to 50% chance of spawning
-reduce_breeding_spawn: 0.5
 
 # sets if ops bypass permissions
 op_bypass_permission: true
@@ -37,7 +41,7 @@ max_lvl: 100
 max_stats: 100
 
 # allow player to deduct attributes. for example : /core add strength -1
-allow_deduction_points: false
+allow_point_deduction: false
 
 # allow player to switch class. it will apply attributes changes accordingly
 can_switch_class: false
@@ -48,7 +52,7 @@ can_switch_race: false
 # allow player to reset stats. it will reset to default race and class. player will keep is level and gained points
 allow_stats_reset: false
 
-# allow player to reset stats complitetely. will remove class and race. will also reset points and gained level
+# allow player to reset stats completely. will remove class and race. will also reset points and gained level
 allow_complete_reset: true
 
 # number of points a player gains on each level up
@@ -57,13 +61,13 @@ points_per_lvl: 2
 # number of points a player gets a start
 starting_points: 3
 
-# number of skillpoints a player gets a start
+# number of skill points a player gets a start
 starting_skill_points: 0
 
-# the interval at wich players gain skillpoints
+# the interval at which players gain skill points
 skill_points_level_interval: 5
 
-# the number of skillpoints gained at each interval
+# the number of skill points gained at each interval
 skill_points_per_interval: 1
 
  # enable auto saving
@@ -73,10 +77,10 @@ auto_save: true
 save_interval: 360
 
 # debug mode. show stuff in console
-debug: true
+debug: false
 
 # interval between each mana regen for all connected players.
-# if you change this value, you must rebalance mana regeneration mathematics.
+# if you change this value, you must rebalanced mana regeneration mathematics.
 mana_regen_interval: 5
 
 # set the server difficulty depending on average player level
@@ -98,7 +102,7 @@ group_xp:
  # enable Parties(plugin) group ex share (Parties must be installed)
  enable_parties: true
  # the amount of experience the player who killed the entity gets (%)
- main: 0.666
+ main: 0.667
  # the rest is distributed equaly between other players
  others: 0.333
  # range in blocks

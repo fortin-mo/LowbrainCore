@@ -183,11 +183,11 @@ public abstract class Attributable extends Playable {
         if(nb == 0){
             return;
         }
-        else if(!Settings.getInstance().isAllowDeductionPoints() && nb < 0){
+        else if(!Settings.getInstance().isAllowPointDeduction() && nb < 0){
             sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
             return;
         }
-        else if (Settings.getInstance().isAllowDeductionPoints() && nb < 0 && this.agility == 0){
+        else if (Settings.getInstance().isAllowPointDeduction() && nb < 0 && this.agility == 0){
             sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
             return;
         }
@@ -230,11 +230,11 @@ public abstract class Attributable extends Playable {
         if(nb == 0){
             return;
         }
-        else if(!Settings.getInstance().isAllowDeductionPoints() && nb < 0){
+        else if(!Settings.getInstance().isAllowPointDeduction() && nb < 0){
             sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
             return;
         }
-        else if (Settings.getInstance().isAllowDeductionPoints() && nb < 0 && this.strength == 0){
+        else if (Settings.getInstance().isAllowPointDeduction() && nb < 0 && this.strength == 0){
             sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
             return;
         }
@@ -280,11 +280,11 @@ public abstract class Attributable extends Playable {
         if(nb == 0){
             return;
         }
-        else if(!Settings.getInstance().isAllowDeductionPoints() && nb < 0){
+        else if(!Settings.getInstance().isAllowPointDeduction() && nb < 0){
             sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
             return;
         }
-        else if (Settings.getInstance().isAllowDeductionPoints() && nb < 0 && this.intelligence == 0){
+        else if (Settings.getInstance().isAllowPointDeduction() && nb < 0 && this.intelligence == 0){
             sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
             return;
         }
@@ -331,11 +331,11 @@ public abstract class Attributable extends Playable {
         if(nb == 0){
             return;
         }
-        else if(!Settings.getInstance().isAllowDeductionPoints() && nb < 0){
+        else if(!Settings.getInstance().isAllowPointDeduction() && nb < 0){
             sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
             return;
         }
-        else if (Settings.getInstance().isAllowDeductionPoints() && nb < 0 && this.dexterity == 0){
+        else if (Settings.getInstance().isAllowPointDeduction() && nb < 0 && this.dexterity == 0){
             sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
             return;
         }
@@ -380,11 +380,11 @@ public abstract class Attributable extends Playable {
         if(nb == 0){
             return;
         }
-        else if(!Settings.getInstance().isAllowDeductionPoints() && nb < 0){
+        else if(!Settings.getInstance().isAllowPointDeduction() && nb < 0){
             sendMessage(Internationalization.format("cannot_deduct_anymore_point", null));
             return;
         }
-        else if (Settings.getInstance().isAllowDeductionPoints() && nb < 0 && this.vitality == 0){
+        else if (Settings.getInstance().isAllowPointDeduction() && nb < 0 && this.vitality == 0){
             sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
             return;
         }
@@ -429,11 +429,11 @@ public abstract class Attributable extends Playable {
         if(nb == 0){
             return;
         }
-        else if(!Settings.getInstance().isAllowDeductionPoints() && nb < 0){
+        else if(!Settings.getInstance().isAllowPointDeduction() && nb < 0){
             sendMessage(Internationalization.format("cannot_deduct_anymore_point", null));
             return;
         }
-        else if (Settings.getInstance().isAllowDeductionPoints() && nb < 0 && this.defence == 0){
+        else if (Settings.getInstance().isAllowPointDeduction() && nb < 0 && this.defence == 0){
             sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
             return;
         }
@@ -478,11 +478,11 @@ public abstract class Attributable extends Playable {
         if(nb == 0){
             return;
         }
-        else if(!Settings.getInstance().isAllowDeductionPoints() && nb < 0){
+        else if(!Settings.getInstance().isAllowPointDeduction() && nb < 0){
             sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
             return;
         }
-        else if (Settings.getInstance().isAllowDeductionPoints() && nb < 0 && this.magicResistance == 0){
+        else if (Settings.getInstance().isAllowPointDeduction() && nb < 0 && this.magicResistance == 0){
             sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
             return;
         }

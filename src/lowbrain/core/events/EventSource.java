@@ -4,6 +4,7 @@ import lowbrain.core.commun.Helper;
 import lowbrain.core.main.LowbrainCore;
 import lowbrain.core.rpg.LowbrainPlayer;
 import lowbrain.core.rpg.LowbrainSkill;
+import lowbrain.items.main.LowbrainItems;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -35,10 +36,6 @@ public class EventSource {
         LowbrainSkill skill = null;
         ConfigurationSection staffSection = null;
 
-        /* if (e.getEntity() instanceof Player) {
-            damagee = LowbrainCore.getInstance().getPlayerHandler().getList().get(e.getEntity().getUniqueId());
-        } */
-
         if (e.getDamager() instanceof Player) {
             damager = LowbrainCore.getInstance().getPlayerHandler().getList().get(e.getDamager().getUniqueId());
             LowbrainCore.getInstance().debugInfo("              ---- Attacked by another player : " + damager.getPlayer().getName());
@@ -48,18 +45,23 @@ public class EventSource {
         else if (e.getDamager() instanceof Arrow) {
             Arrow ar = (Arrow) e.getDamager();
 
-            if (ar.getShooter() instanceof Player) {
-                damager = LowbrainCore.getInstance().getPlayerHandler().getList().get(((Player)((Arrow) e.getDamager()).getShooter()).getUniqueId());
-            }
+            if (ar.getShooter() instanceof Player)
+                damager = LowbrainCore.getInstance()
+                        .getPlayerHandler().getList()
+                        .get(((Player)((Arrow) e.getDamager()).getShooter()).getUniqueId());
+
             LowbrainCore.getInstance().debugInfo("              ---- Attacked by arrow");
             source = Source.ARROW;
         }
 
         else if (e.getDamager() instanceof ThrownPotion) {
             ThrownPotion pot = (ThrownPotion) e.getDamager();
-            if (pot.getShooter() instanceof Player) {
-                damager = LowbrainCore.getInstance().getPlayerHandler().getList().get(((Player)((ThrownPotion) e.getDamager()).getShooter()).getUniqueId());
-            }
+
+            if (pot.getShooter() instanceof Player)
+                damager = LowbrainCore.getInstance()
+                        .getPlayerHandler().getList()
+                        .get(((Player)((ThrownPotion) e.getDamager()).getShooter()).getUniqueId());
+
             LowbrainCore.getInstance().debugInfo("              ---- Attacked by potion");
             source = Source.MAGIC;
         }
@@ -69,28 +71,21 @@ public class EventSource {
 
             Projectile projectile = (Projectile) e.getDamager();
 
-            if(projectile.getShooter() instanceof Player && damager == null){
+            if(projectile.getShooter() instanceof Player && damager == null)
                 damager = LowbrainCore.getInstance().getPlayerHandler().getList().get(((Player) projectile.getShooter()).getUniqueId());
-            }
+
 
             if(damager != null && !Helper.StringIsNullOrEmpty(projectile.getCustomName())){
-
                 if(damager.getSkills().containsKey(projectile.getCustomName())){
                     skill = damager.getSkills().get(projectile.getCustomName());
-
                     LowbrainCore.getInstance().debugInfo("              ---- getting skilled attack effect");
-                }
-
-                else if (LowbrainCore.getInstance().useLowbrainItems) {
-                    staffSection = lowbrain.items.main.Main.getInstance().getStaffConfig().getConfigurationSection(projectile.getCustomName());
-                    if (staffSection != null) {
+                } else if (LowbrainCore.getInstance().useLowbrainItems) {
+                    staffSection = LowbrainItems.getInstance().getStaffConfig().getConfigurationSection(projectile.getCustomName());
+                    if (staffSection != null)
                         source = Source.MAGIC_PROJECTILE;
-                    }
                 }
-
             }
         }
-
         return new EventSource(damager, damagee, source, skill, staffSection);
     }
 

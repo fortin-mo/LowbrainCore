@@ -33,19 +33,55 @@
 # for information on function type look at the top of the page
 function_type: 1
 
- # level multiplier. next level = (current level * multiplier) + current level
+# level multiplier. next level = (current level * multiplier) + current level
 next_lvl_multiplier: 1.1
 
- # multiplier by which natural occurring experience(mob kill, mining, farming, etc) is multiply
+# multiplier by which natural occurring experience(mob kill, mining, farming, etc) is multiply
 natural_xp_gain_multiplier: 1.0
 
-reputation:
+# define player courage statistics
+courage:
+ # enable or disable this functionality
+ enable: true
+ # initial value for each player
  initial: 0
- on_mob_kills: 1
+ # define gain of courage for each type of mobs... Default for default value
+ on_mob_kills:
+  default: 2
+  # bat: 1
+  # wither: 10
+ # define gain of courage on death
+ on_death: -2
+ on_player_kill: # currently not customizable
+
+# define player reputation statistics
+reputation:
+ # enable or disable this functionality
+ enable: true
+ # initial value for each player
+ initial: 0
+ # define gain of reputation for each type of mobs... Default for default value
+ on_mob_kills:
+  default: 1
+  # bat: 1
+  # wither: 10
+ # define gain of reputation on death
  on_death: -1
- on_player_kill:
-  with_bad_rep: 2
-  with_good_rep: -2
+ on_player_kill: # currently not customizable
+ # define status based on reputation
+ # you can implement infinite numbers of status, you just need to list them as follow
+ # each status as an interval ('from' to 'to), use -inf for -negative infinite and +inf for positive infinite
+ # reputation status can be used for item requirements
+ status:
+  civil:
+   from: -10
+   to: 10
+  savior:
+   from: 11
+   to: +inf
+  deamon:
+   from: -11
+   to: -inf
 
 # mathematics to when player kills another player
 on_player_kills_player:
@@ -108,6 +144,20 @@ on_player_attack_entity:
   harm:
    enable: true
    maximum: 3
+   minimum: 0
+   variables:
+    intelligence: 1.0
+  # maximum and minimum have no effect on blindness effect
+  blindness:
+   enable: true
+   maximum: 4
+   minimum: 0
+   variables:
+    intelligence: 1.0
+  # maximum and minimum have no effect on confusion effect
+  confusion:
+   enable: true
+   maximum: 4
    minimum: 0
    variables:
     intelligence: 1.0
@@ -178,9 +228,9 @@ on_player_attack_entity:
   variables:
    agility: 1
 
-# enable backstack damage booster
- # by default backstack multiply damage by 1.15 but you can still modify it
- backstack:
+ # enable backstab damage booster
+ # by default backstab multiply damage by 1.15 but you can still modify it
+ backstab:
   enable: true
   function:
   maximum: 1.15
@@ -478,11 +528,17 @@ player_attributes:
  total_mana:
   enable: true
   function:
+  #max and min for mana isn't use, (use race base and max mana instead)
+  maximum: 50
+  minimum: 10
   variables:
    intelligence: 1.0
  total_health:
   enable: true
   function:
+  #max and min for health isn't use, (use race base and max health instead)
+  maximum: 50
+  minimum: 10
   variables:
    vitality: 1.0
  mana_regen:

@@ -56,11 +56,8 @@ public class LowbrainCore extends JavaPlugin {
 	 */
 	@Override
     public void onEnable() {
-
 		try {
 			instance = this;
-
-			this.getLogger().info("Loading LowbrainCore.jar");
 
 			playerHandler = new PlayerHandler(this);
 
@@ -91,9 +88,9 @@ public class LowbrainCore extends JavaPlugin {
 
 			getServer().getPluginManager().registerEvents(new CoreListener(this), this);
 
-			if(useArmorEquipEvent){
+			if(useArmorEquipEvent)
 				getServer().getPluginManager().registerEvents(new ArmorEquipListener(this), this);
-			}
+
 			this.getCommand("lbcore").setExecutor(new CommandHandler(this));
 			log(getDescription().getVersion() + " enabled!");
 
@@ -116,6 +113,7 @@ public class LowbrainCore extends JavaPlugin {
 	 */
 	private void InitialisingConfigFile(){
 		try {
+		    DefaultParameters.getInstance();
 			Config.getInstance();
 			Classes.getInstance();
 			ItemsRequirements.getInstance();
@@ -152,7 +150,7 @@ public class LowbrainCore extends JavaPlugin {
 	 */
 	public void debugInfo(Object msg) {
 	    if(Settings.getInstance().isDebug())
-	        this.getLogger().info("[LowbrainCore] [DEBUG]: " + msg);
+	        this.getLogger().info("[DEBUG]: " + msg);
     }
 
 	/**
@@ -161,7 +159,7 @@ public class LowbrainCore extends JavaPlugin {
 	 */
 	public void debugWarning(Object msg) {
 		if(Settings.getInstance().isDebug())
-			this.getLogger().warning("[LowbrainCore] [DEBUG]: " + msg);
+			this.getLogger().warning("[DEBUG]: " + msg);
 	}
 
     /**
@@ -169,7 +167,7 @@ public class LowbrainCore extends JavaPlugin {
      * @param msg message
      */
 	public void warn(Object msg) {
-	    this.getLogger().warning("[LowbrainCore]" + msg);
+	    this.getLogger().warning("" + msg);
     }
 
     /**
@@ -177,7 +175,7 @@ public class LowbrainCore extends JavaPlugin {
      * @param msg
      */
     public void log(Object msg) {
-        this.getLogger().info("[LowbrainCore]" + msg);
+        this.getLogger().info("" + msg);
     }
 
 	/**

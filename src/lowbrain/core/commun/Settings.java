@@ -4,7 +4,7 @@ import lowbrain.core.config.Config;
 import org.bukkit.configuration.file.FileConfiguration;
 
 /**
- * Created by Moofy on 14/07/2016.
+ * represents all settings from config.yml
  */
 public class Settings {
 
@@ -16,7 +16,7 @@ public class Settings {
     private int maxStats;
     private boolean canSwitchClass;
     private boolean canSwitchRace;
-    private boolean allowDeductionPoints;
+    private boolean allowPointDeduction;
     private int pointsPerLvl;
     private int startingPoints;
     private boolean autoSave;
@@ -29,7 +29,7 @@ public class Settings {
     private int skillPointsLevelInterval;
     private int skillPointsPerInterval;
     private boolean disableMobNoTickDamage;
-    private float reduceBreedingSpawn;
+    private float reduceSpawnFromBreeding;
     private boolean hardCoreEnable;
     private int hardCoreMaxDeaths;
 
@@ -51,43 +51,43 @@ public class Settings {
     private Parameters parameters;
 
     private Settings(FileConfiguration config){
-        hardCoreEnable = config.getBoolean("hard_core.enable");
-        hardCoreMaxDeaths = config.getInt("hard_core.max_deaths");
-        disableMobNoTickDamage = config.getBoolean("disable_mob_no_tick_damage");
-        reduceBreedingSpawn = (float)config.getDouble("reduce_breeding_spawn", 1);
-        opBypassPermission = config.getBoolean("op_bypass_permission");
-        allowDeductionPoints = config.getBoolean("allow_deduction_points");
-        canSwitchClass = config.getBoolean("can_switch_class");
-        canSwitchRace = config.getBoolean("can_switch_race");
-        firstLvlExp = (float)config.getDouble("first_lvl_exp");
-        maxLvl = config.getInt("max_lvl");
-        maxStats = config.getInt("max_stats");
-        pointsPerLvl = config.getInt("points_per_lvl");
-        startingPoints = config.getInt("startingPoints");
-        autoSave = config.getBoolean("auto_save");
-        saveInterval = config.getInt("save_interval");
-        allowStatsReset = config.getBoolean("allow_stats_reset");
-        allowCompleteReset = config.getBoolean("allow_complete_reset");
-        debug = config.getBoolean("debug");
-        manaRegenInterval = config.getInt("mana_regen_interval");
+        hardCoreEnable = config.getBoolean("hard_core.enable", false);
+        hardCoreMaxDeaths = config.getInt("hard_core.max_deaths", 1);
+        disableMobNoTickDamage = config.getBoolean("disable_mob_no_tick_damage", true);
+        reduceSpawnFromBreeding = (float)config.getDouble("reduce_spawn_from_breeding", 0.5);
+        opBypassPermission = config.getBoolean("op_bypass_permission", true);
+        allowPointDeduction = config.getBoolean("allow_point_deduction", false);
+        canSwitchClass = config.getBoolean("can_switch_class", false);
+        canSwitchRace = config.getBoolean("can_switch_race", false);
+        firstLvlExp = (float)config.getDouble("first_lvl_exp", 75);
+        maxLvl = config.getInt("max_lvl", 100);
+        maxStats = config.getInt("max_stats", 100);
+        pointsPerLvl = config.getInt("points_per_lvl", 2);
+        startingPoints = config.getInt("startingPoints", 3);
+        autoSave = config.getBoolean("auto_save", true);
+        saveInterval = config.getInt("save_interval", 360);
+        allowStatsReset = config.getBoolean("allow_stats_reset", false);
+        allowCompleteReset = config.getBoolean("allow_complete_reset", true);
+        debug = config.getBoolean("debug", false);
+        manaRegenInterval = config.getInt("mana_regen_interval", 5);
 
-        asdEnable = config.getBoolean("automatic_server_difficulty.enable");
-        asdEasyFrom = config.getInt("automatic_server_difficulty.easy.from");
-        asdEasyTo = config.getInt("automatic_server_difficulty.easy.to");
-        asdMediumFrom = config.getInt("automatic_server_difficulty.medium.from");
-        asdMediumTo = config.getInt("automatic_server_difficulty.medium.to");
-        asdHardFrom = config.getInt("automatic_server_difficulty.hard.from");
-        asdHardTo = config.getInt("automatic_server_difficulty.hard.to");
+        asdEnable = config.getBoolean("automatic_server_difficulty.enable", true);
+        asdEasyFrom = config.getInt("automatic_server_difficulty.easy.from", 0);
+        asdEasyTo = config.getInt("automatic_server_difficulty.easy.to", 25);
+        asdMediumFrom = config.getInt("automatic_server_difficulty.medium.from",26);
+        asdMediumTo = config.getInt("automatic_server_difficulty.medium.to", 55);
+        asdHardFrom = config.getInt("automatic_server_difficulty.hard.from", 56);
+        asdHardTo = config.getInt("automatic_server_difficulty.hard.to", -1);
 
-        groupXpEnable = config.getBoolean("group_xp.enable");
-        groupXpEnableParties = config.getBoolean("group_ep_enable.enable_parties");
-        groupXpRange = (float)config.getDouble("group_xp.range");
-        groupXpMain = (float)config.getDouble("group_xp.main");
-        groupXpOthers = (float)config.getDouble("group_xp.others");
+        groupXpEnable = config.getBoolean("group_xp.enable", true);
+        groupXpEnableParties = config.getBoolean("group_ep_enable.enable_parties", true);
+        groupXpRange = (float)config.getDouble("group_xp.range",15);
+        groupXpMain = (float)config.getDouble("group_xp.main", 0.667);
+        groupXpOthers = (float)config.getDouble("group_xp.others", 0.333);
 
-        startingSkillPoints = config.getInt("starting_skill_points");
-        skillPointsLevelInterval = config.getInt("skill_points_level_interval");
-        skillPointsPerInterval = config.getInt("skill_points_per_interval");
+        startingSkillPoints = config.getInt("starting_skill_points", 0);
+        skillPointsLevelInterval = config.getInt("skill_points_level_interval", 5);
+        skillPointsPerInterval = config.getInt("skill_points_per_interval", 1);
 
         parametersFile = config.getString("parameters_file", "default_parameters.yml");
 
@@ -95,14 +95,15 @@ public class Settings {
     }
 
     public static Settings getInstance(){
-        if(instance == null){
+        if(instance == null)
             instance = new Settings(Config.getInstance());
-        }
+
         return instance;
     }
 
     public static void reload(){
         instance = null;
+        getInstance();
     }
 
     public Parameters getParameters() {
@@ -133,8 +134,8 @@ public class Settings {
         return canSwitchRace;
     }
 
-    public boolean isAllowDeductionPoints() {
-        return allowDeductionPoints;
+    public boolean isAllowPointDeduction() {
+        return allowPointDeduction;
     }
 
     public int getPointsPerLvl() {
@@ -183,10 +184,6 @@ public class Settings {
 
     public boolean isDisableMobNoTickDamage() {
         return disableMobNoTickDamage;
-    }
-
-    public float getReduceBreedingSpawn() {
-        return reduceBreedingSpawn;
     }
 
     public boolean isHardCoreEnable() {
@@ -247,6 +244,10 @@ public class Settings {
 
     public String getParametersFile() {
         return parametersFile;
+    }
+
+    public float getReduceSpawnFromBreeding() {
+        return reduceSpawnFromBreeding;
     }
 }
 

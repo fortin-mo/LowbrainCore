@@ -50,7 +50,7 @@ public class LowbrainClass {
 	}
 
 	/**
-	 * Create a formated string with all the informations of the specific class
+	 * Create a formatted string with all the informations of the specific class
 	 * @return class's information
 	 */
 	public String toString() {

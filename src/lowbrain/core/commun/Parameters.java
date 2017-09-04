@@ -1,7 +1,9 @@
 package lowbrain.core.commun;
 
+import lowbrain.core.config.DefaultParameters;
 import lowbrain.core.main.LowbrainCore;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.Contract;
 
@@ -30,35 +32,29 @@ public class Parameters {
     private OnPlayerDies onPlayerDies;
 
     public Parameters(String path) {
-
         LowbrainCore plugin = LowbrainCore.getInstance();
 
-        if (path == null) {
-            path = getDefaultParameters();
-            plugin.warn("parameters_file wasn't set in config.yml");
-            plugin.warn(getDefaultParameters() + " will be use as default");
-        }
+        FileConfiguration config = null;
 
-        File file = new File(plugin.getDataFolder(), path);
-
-        if (!file.exists() && path != getDefaultParameters()) {
-            plugin.warn("parameters_file : cannot find " + path);
-            plugin.warn(getDefaultParameters() + " will be use as default");
-            path = getDefaultParameters();
-            file = new File(plugin.getDataFolder(), path);
-        }
-
-        if (!file.exists()) {
-            file.getParentFile().mkdirs();
-            plugin.saveResource(getDefaultParameters(), false);
-        }
-
-        YamlConfiguration config = new YamlConfiguration();
-
-        try {
-            config.load(file);
-        }catch (Exception e){
-            e.printStackTrace();
+        if (path == null || path == DEFAULT_PARAMETERS) {
+            plugin.log("using default parameters");
+            config = DefaultParameters.getInstance();
+        } else {
+            File file = new File(plugin.getDataFolder(), path);
+            if (!file.exists()) {
+                plugin.warn("could not find : " + path);
+                plugin.warn("using default parameters");
+                config = DefaultParameters.getInstance();
+            } else {
+                config = new YamlConfiguration();
+                try {
+                    config.load(file);
+                } catch (Exception e) {
+                    plugin.warn("error while loading parameters file !!!!");
+                    plugin.onDisable();
+                    return;
+                }
+            }
         }
 
         this.functionType = FunctionType.get(config.getInt("function_type", -1));
@@ -75,11 +71,6 @@ public class Parameters {
         playerAttributes = new PlayerAttributes(config.getConfigurationSection("player_attributes"));
         onPlayerGetDamaged = new OnPlayerGetDamaged(config.getConfigurationSection("on_player_get_damaged"));
         onPlayerDies = new OnPlayerDies(config.getConfigurationSection("on_player_dies"));
-    }
-
-    @Contract(pure = true)
-    public static String getDefaultParameters() {
-        return DEFAULT_PARAMETERS;
     }
 
     public float getNextLvlMultiplier() {
@@ -144,7 +135,9 @@ public class Parameters {
 
         @Contract("null -> fail")
         public OnPlayerAttackEntity(ConfigurationSection config){
-            if(config == null) throw new NullPointerException("ConfigurationSection for onPlayerAttackEntity cannot be null");
+            if(config == null)
+                throw new NullPointerException("ConfigurationSection for onPlayerAttackEntity cannot be null");
+
             chanceOfCreatingMagicAttack = new Multiplier(config.getConfigurationSection("chance_of_creating_magic_attack"));
             creatingMagicAttack = new creatingMagicAttack(config.getConfigurationSection("creating_magic_attack"));
             attackEntityBy = new attackEntityBy(config);
@@ -202,7 +195,11 @@ public class Parameters {
             public Multiplier confusion;
 
 
+            @Contract("null -> fail")
             public creatingMagicAttack(ConfigurationSection config){
+                if (config == null)
+                    throw new NullPointerException("ConfigurationSection for creatingMagicAttack cannot be null");
+
                 this.enable = config.getBoolean("enable");
                 duration = new Multiplier(config.getConfigurationSection("duration"));
                 harm = new Multiplier(config.getConfigurationSection("harm"));

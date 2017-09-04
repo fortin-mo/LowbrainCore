@@ -546,58 +546,56 @@ public class LowbrainPlayer extends Attributable {
 	 * @param override by pass settings restriction
 	 */
 	public void resetAll(boolean override){
-		if(getSettings().isAllowCompleteReset() || override){
-			// reset stats
-			strength = 0;
-			intelligence = 0;
-			vitality = 0;
-			defence = 0;
-			dexterity = 0;
-			magicResistance = 0;
-			classIsSet = false;
-			className = "";
-			raceIsSet = false;
-			lowbrainClass = null;
-			lowbrainRace = null;
-			raceName = "";
-			experience = 0;
-			points = getSettings().getStartingPoints();
-			lvl = 1;
-			nextLvl = getSettings().getFirstLvlExp();
-			kills = 0;
-			deaths = 0;
-			currentMana = 0;
-			agility = 0;
+	    if (!getSettings().isAllowCompleteReset() && !override) {
+            sendMessage(Internationalization.format("not_allowed_to_reset_stats"));
+            return;
+        }
 
-			// reset generic attributes with original minecraft attributes
-			this.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(2);
-			this.getPlayer().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(0);
-			this.getPlayer().setWalkSpeed(0.2F);
-			this.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(10);
-			this.getPlayer().getAttribute(Attribute.GENERIC_LUCK).setBaseValue(0);
+        // reset stats
+        strength = 0;
+        intelligence = 0;
+        vitality = 0;
+        defence = 0;
+        dexterity = 0;
+        magicResistance = 0;
+        classIsSet = false;
+        className = "";
+        raceIsSet = false;
+        lowbrainClass = null;
+        lowbrainRace = null;
+        raceName = "";
+        experience = 0;
+        points = getSettings().getStartingPoints();
+        lvl = 1;
+        nextLvl = getSettings().getFirstLvlExp();
+        kills = 0;
+        deaths = 0;
+        currentMana = 0;
+        agility = 0;
 
-			// stop mana regen task
-			this.stopManaRegenTask();
+        // reset generic attributes with original minecraft attributes
+        this.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(2);
+        this.getPlayer().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(0);
+        this.getPlayer().setWalkSpeed(0.2F);
+        this.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(10);
+        this.getPlayer().getAttribute(Attribute.GENERIC_LUCK).setBaseValue(0);
 
-			// set all skill level to zero
-			for (String k : this.getSkills().keySet()) {
-				this.getSkills().get(k).setCurrentLevel(0);
-			}
+        // stop mana regen task
+        this.stopManaRegenTask();
 
-			// reset mob kills count
-			for (String k : this.getMobKills().keySet()) {
-				this.getMobKills().put(k,0);
-			}
+        // set all skill level to zero
+        for (String k : this.getSkills().keySet())
+            this.getSkills().get(k).setCurrentLevel(0);
 
-			setDisplayName();
-			sendMessage(Internationalization.format("stats_reset"));
-		}
-		else{
-			sendMessage(Internationalization.format("not_allowed_to_reset_stats"));
-		}
+        // reset mob kills count
+        for (String k : this.getMobKills().keySet())
+            this.getMobKills().put(k,0);
+
+        setDisplayName();
+        sendMessage(Internationalization.format("stats_reset"));
 	}
 
-	//=================================================== END OF USEFULL =====================================
+	//=================================================== END OF USEFUL =====================================
 
 	//=====================================================  ADD AND SETTER METHODS =================================
 
@@ -891,42 +889,42 @@ public class LowbrainPlayer extends Attributable {
 	 * @return player's information
      */
 	public String toString(){
-		if(classIsSet && raceIsSet) {
-			String s = "Level : " + lvl + "\n";
-			s += "Class : " + getClassName() + "\n";
-			s += "Race : " + getRaceName() + "\n";
-			s += "Defence : " + defence + "\n";
-			s += "Strength : " + strength + "\n";
-			s += "Health : " + vitality + "\n";
-			s += "Dexterity : " + dexterity + "\n";
-			s += "Intelligence : " + intelligence + "\n";
-			s += "Magic Resistance : " + magicResistance + "\n";
-			s += "Agility : " + agility + "\n";
-			s += "Kills : " + kills + "\n";
-			s += "Deaths : " + deaths + "\n";
-			s += "Points : " + points + "\n";
-			s += "Skill points: " + skillPoints + "\n";
-			s += "Experience : " + experience + "\n";
-			s += "Next lvl in : " + (nextLvl - experience) + " xp" + "\n";
+	    if (!classIsSet || !raceIsSet)
+            return "You must set your class and your race first !";
 
-			s += "Attack speed : " + this.getAttackSpeed()+ "\n";
-			s += "Movement speed : " + this.getMovementSpeed()+ "\n";
-			s += "Mana regen : " + this.getMultipliers().getPlayerManaRegen()+ "\n";
-			s += "Max maxMana : " + this.getMaxMana()+ "\n";
-			s += "Max vitality : " + this.getMaxHealth()+ "\n";
-			s += "Luck : " + this.getLuck()+ "\n";
-			s += "Knockback resistance : " + this.getKnockBackResistance()+ "\n";
+	    String s = "\n\n" + "*******" + this.getPlayer().getName() + "'s stats *******";
+        s += "Level : " + lvl + "\n";
+        s += "Class : " + getClassName() + "\n";
+        s += "Race : " + getRaceName() + "\n";
+        s += "Defence : " + defence + "\n";
+        s += "Strength : " + strength + "\n";
+        s += "Health : " + vitality + "\n";
+        s += "Dexterity : " + dexterity + "\n";
+        s += "Intelligence : " + intelligence + "\n";
+        s += "Magic Resistance : " + magicResistance + "\n";
+        s += "Agility : " + agility + "\n";
+        s += "Kills : " + kills + "\n";
+        s += "Deaths : " + deaths + "\n";
+        s += "Points : " + points + "\n";
+        s += "Skill points: " + skillPoints + "\n";
+        s += "Experience : " + experience + "\n";
+        s += "Next lvl in : " + (nextLvl - experience) + " xp" + "\n";
 
-			s += "Powers : ";
-			for (LowbrainPower powa :
-					this.powers.values()) {
-				s += powa.getName() + ", ";
-			}
-			s += "\n";
+        s += "Attack speed : " + this.getAttackSpeed()+ "\n";
+        s += "Movement speed : " + this.getMovementSpeed()+ "\n";
+        s += "Mana regen : " + this.getMultipliers().getPlayerManaRegen()+ "\n";
+        s += "Max Mana : " + this.getMaxMana()+ "\n";
+        s += "Max vitality : " + this.getMaxHealth()+ "\n";
+        s += "Luck : " + this.getLuck()+ "\n";
+        s += "Knockback resistance : " + this.getKnockBackResistance()+ "\n";
 
-			return s;
-		}
-		return "You must set your class and your race first !";
+        s += "Powers : ";
+        for (LowbrainPower powa : this.powers.values())
+            s += powa.getName() + ", ";
+
+        s += "******************************************\n";
+
+        return s;
 	}
 
     /**
@@ -1075,47 +1073,42 @@ public class LowbrainPlayer extends Attributable {
      * set the player generic attribute of attack speed using his attributes
      */
 	private void setAttackSpeed(){
-		if(getSettings().getParameters().getPlayerAttributes().getAttackSpeed().isEnabled()) {
+		if(getSettings().getParameters().getPlayerAttributes().getAttackSpeed().isEnabled())
 			this.getPlayer().getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(this.getMultipliers().getPlayerAttackSpeed());
-		}
 	}
 
     /**
      * set the player generic attribute of knockback resistance using his attributes
      */
 	private void setKnockBackResistance(){
-		if(getSettings().getParameters().getPlayerAttributes().getKnockbackResistance().isEnabled()) {
+		if(getSettings().getParameters().getPlayerAttributes().getKnockbackResistance().isEnabled())
 			this.getPlayer().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(this.getMultipliers().getPlayerKnockbackResistance());
-		}
 	}
 
     /**
      * set the player generic attribute of movement speed using his attributes
      */
 	private void setMovementSpeed(){
-		if(getSettings().getParameters().getPlayerAttributes().getMovementSpeed().isEnabled()){
+		if(getSettings().getParameters().getPlayerAttributes().getMovementSpeed().isEnabled())
 			//this.getPlayer().getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)
 			this.getPlayer().setWalkSpeed(this.getMultipliers().getPlayerMovementSpeed());
-		}
-
 	}
 
     /**
      * set the player generic attribute of luck using his attributes
      */
     private void setLuck(){
-        if(getSettings().getParameters().getPlayerAttributes().getLuck().isEnabled()){
+        if(getSettings().getParameters().getPlayerAttributes().getLuck().isEnabled())
             this.getPlayer().getAttribute(Attribute.GENERIC_LUCK).setBaseValue(this.getMultipliers().getPlayerLuck());
-        }
+
     }
 
 	/**
 	 * set player maximum vitality based on his attributes
 	 */
 	private void setPlayerMaxHealth(){
-		if(getSettings().getParameters().getPlayerAttributes().getTotalHealth().isEnabled()) {
+		if(getSettings().getParameters().getPlayerAttributes().getTotalHealth().isEnabled())
 			this.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(this.getMultipliers().getPlayerMaxHealth());
-		}
 	}
 
 	/**
@@ -1170,15 +1163,16 @@ public class LowbrainPlayer extends Attributable {
 	 * start a new maxMana regeneration task on the server
      */
 	private void startManaRegenTask(){
-		if(this.manaRegenTask == null) {
-			this.manaRegenTask = CoreListener.plugin.getServer().getScheduler().runTaskTimer(CoreListener.plugin, new Runnable() {
-				@Override
-				public void run() {
-					regenMana();
-				}
-			}, 0, getSettings().getManaRegenInterval() * 20);
-			CoreListener.plugin.debugInfo("Start regen maxMana task !");
-		}
+	    if (this.manaRegenTask != null)
+	        return;
+
+        this.manaRegenTask = CoreListener.plugin.getServer().getScheduler().runTaskTimer(CoreListener.plugin, new Runnable() {
+            @Override
+            public void run() {
+                regenMana();
+            }
+        }, 0, getSettings().getManaRegenInterval() * 20);
+        CoreListener.plugin.debugInfo("Start regen maxMana task !");
 	}
 
 	/**
@@ -1204,8 +1198,7 @@ public class LowbrainPlayer extends Attributable {
      * @param nb increment by nb
      */
 	private void addBonusAttributes(int nb){
-		for (String attribute :
-				this.lowbrainRace.getBonusAttributes()) {
+		for (String attribute : this.lowbrainRace.getBonusAttributes()) {
 			switch (attribute){
 				case "vitality":
 					addVitality(nb,false,false);

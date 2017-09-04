@@ -20,10 +20,10 @@ public class LowbrainRace {
     private int magicResistance = 0;
     private int agility = 0;
 
-    private float max_health = 0F;
-    private float base_health= 0F;
-    private float max_mana = 0F;
-    private float base_mana = 0F;
+    private float maxHealth = 0F;
+    private float baseHealth = 0F;
+    private float maxMana = 0F;
+    private float baseMana = 0F;
 
     private List<String> bonusAttributes = new ArrayList<String>();
     private List<String> powers = new ArrayList<>();
@@ -54,10 +54,10 @@ public class LowbrainRace {
         magicResistance = config.getInt(name+".magic_resistance",0);
         agility = config.getInt(name+".agility",0);
 
-        max_health = (float)config.getDouble(name+".max_health",0);
-        base_health = (float)config.getDouble(name+".base_health",0);
-        max_mana = (float)config.getDouble(name+".max_mana",0);
-        base_mana = (float)config.getDouble(name+".base_mana",0);
+        maxHealth = (float)config.getDouble(name+".max_health",0);
+        baseHealth = (float)config.getDouble(name+".base_health",0);
+        maxMana = (float)config.getDouble(name+".max_mana",0);
+        baseMana = (float)config.getDouble(name+".base_mana",0);
 
         bonusAttributes = config.getStringList(name+".bonus_attributes");
         if(bonusAttributes == null)bonusAttributes = new ArrayList<String>();
@@ -86,10 +86,10 @@ public class LowbrainRace {
         s += "Dexterity : " + dexterity + "\n";
         s += "Intelligence : " + intelligence + "\n";
         s += "Magic Resistance : " + magicResistance + "\n";
-        s += "Max vitality : " + max_health + "\n";
-        s += "Base vitality : " + base_health + "\n";
-        s += "Max mana : " + max_mana + "\n";
-        s += "Base mana : " + base_mana + "\n";
+        s += "Max vitality : " + maxHealth + "\n";
+        s += "Base vitality : " + baseHealth + "\n";
+        s += "Max mana : " + maxMana + "\n";
+        s += "Base mana : " + baseMana + "\n";
         s += "Bonus Attributes : ";
         for (String attributes :
                 bonusAttributes) {
@@ -199,31 +199,31 @@ public class LowbrainRace {
      * get the race max vitality
      * @return max health
      */
-    public float getMax_health() {
-        return max_health;
+    public float getMaxHealth() {
+        return maxHealth;
     }
 
     /**
      * get the race base vitality / minimum
      * @return base health
      */
-    public float getBase_health() {
-        return base_health;
+    public float getBaseHealth() {
+        return baseHealth;
     }
 
     /**
      * get the race max mana
      * @return max mana
      */
-    public float getMax_mana() {
-        return max_mana;
+    public float getMaxMana() {
+        return maxMana;
     }
 
     /**
      * get the race base mana / minimum
      * @return base mana
      */
-    public float getBase_mana() {
-        return base_mana;
+    public float getBaseMana() {
+        return baseMana;
     }
 }

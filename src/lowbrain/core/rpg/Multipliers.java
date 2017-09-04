@@ -168,14 +168,18 @@ public class Multipliers {
     //PLAYER ATTRIBUTES
 
     private void setPlayerMaxHealth() {
-        float max = this.p.getLowbrainRace().getMax_health();
-        float min = this.p.getLowbrainRace().getBase_health();
-        this.PlayerMaxHealth = Settings.getInstance().getParameters().getPlayerAttributes().getTotalHealth().computeWith(p, max, min);
+        this.PlayerMaxHealth = Settings.getInstance()
+                .getParameters()
+                .getPlayerAttributes()
+                .getTotalHealth()
+                .computeWith(p, this.p.getLowbrainRace().getBaseHealth(), this.p.getLowbrainRace().getMaxHealth());
     }
     private void setPlayerMaxMana() {
-        float max = this.p.getLowbrainRace().getMax_mana();
-        float min = this.p.getLowbrainRace().getBase_mana();
-        this.PlayerMaxMana = Settings.getInstance().getParameters().getPlayerAttributes().getTotalMana().computeWith(p, max, min);
+        this.PlayerMaxMana = Settings.getInstance()
+                .getParameters()
+                .getPlayerAttributes()
+                .getTotalMana()
+                .computeWith(p, this.p.getLowbrainRace().getBaseMana(), this.p.getLowbrainRace().getMaxMana());
     }
     private void setPlayerManaRegen() {
         this.PlayerManaRegen = Settings.getInstance().getParameters().getPlayerAttributes().getManaRegen().compute(p);

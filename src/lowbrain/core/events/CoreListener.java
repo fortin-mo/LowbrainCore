@@ -4,13 +4,13 @@ import com.alessiodp.parties.Parties;
 import com.alessiodp.parties.objects.Party;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import lowbrain.core.Abstraction.Playable;
 import lowbrain.core.commun.Helper;
 import lowbrain.core.commun.Settings;
 import lowbrain.core.config.Internationalization;
 import lowbrain.core.config.MobsXP;
 import lowbrain.core.main.LowbrainCore;
 import lowbrain.core.rpg.LowbrainPlayer;
+import lowbrain.items.main.LowbrainItems;
 import org.apache.commons.lang.mutable.MutableBoolean;
 import org.apache.commons.lang.mutable.MutableFloat;
 import org.bukkit.*;
@@ -59,13 +59,13 @@ public class CoreListener implements Listener {
             e.getEntity().setNoDamageTicks(0);
 
         // animal spawned from breeding
-        if (e.getEntity() instanceof Animals && e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.BREEDING) {
-            float limit = 0.5F;
+        if (e.getEntity() instanceof Animals
+                && e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.BREEDING) {
+            float limit = Settings.getInstance().getReduceSpawnFromBreeding();
 
-            if (limit < Math.random()) {
-                // cancel spawning
-                e.setCancelled(true);
-            }
+            if (limit < Math.random())
+                e.setCancelled(true); // cancel spawning
+
         }
     }
 
@@ -111,7 +111,7 @@ public class CoreListener implements Listener {
 
                 if(n.startsWith("STAFF") && plugin.useLowbrainItems){
 
-                    ConfigurationSection staffSection = lowbrain.items.main.Main.getInstance().getStaffConfig().getConfigurationSection(n);
+                    ConfigurationSection staffSection = LowbrainItems.getInstance().getStaffConfig().getConfigurationSection(n);
 
                     if (staffSection == null)
                         return;
@@ -177,25 +177,36 @@ public class CoreListener implements Listener {
                 }
             }
             else if(killed.getLastDamageCause() != null && killed.getLastDamageCause().getEntity() != null){
-                if(killed.getLastDamageCause().getEntity() instanceof Player){
+                if(killed.getLastDamageCause().getEntity() instanceof Player)
                     rpKiller = plugin.getPlayerHandler().getList().get(killed.getLastDamageCause().getEntity().getUniqueId());
-                }
-                else if(killed.getLastDamageCause().getEntity() instanceof Projectile && ((Projectile) killed.getLastDamageCause().getEntity()).getShooter() instanceof Player){
+
+                else if(killed.getLastDamageCause().getEntity() instanceof Projectile
+                        && ((Projectile) killed.getLastDamageCause().getEntity()).getShooter() instanceof Player)
                     rpKiller = plugin.getPlayerHandler().getList().get(((Player) ((Projectile) killed.getLastDamageCause().getEntity()).getShooter()).getUniqueId());
-                }
+
             }
 
             if(rpKiller != null && Settings.getInstance().getParameters().isPlayerKillsPlayerExpEnable()){
                 int diffLvl = Math.abs(rpKilled.getLvl() - rpKiller.getLvl());
                 rpKiller.addKills(1);
                 float xpGained = 0.0F;
-                if(diffLvl == 0){
-                    xpGained = Settings.getInstance().getParameters().getKillerBaseExp() * rpKiller.getLvl() * Settings.getInstance().getParameters().getLevelDifferenceMultiplier();
-                }else if(rpKilled.getLvl() < rpKiller.getLvl()){
-                    xpGained = Settings.getInstance().getParameters().getKillerBaseExp() / (diffLvl * Settings.getInstance().getParameters().getLevelDifferenceMultiplier()) * rpKiller.getLvl() * Settings.getInstance().getParameters().getKillerLevelGainMultiplier();
-                }else{
-                    xpGained = Settings.getInstance().getParameters().getKillerBaseExp() * (diffLvl * Settings.getInstance().getParameters().getLevelDifferenceMultiplier()) * rpKiller.getLvl() * Settings.getInstance().getParameters().getKillerLevelGainMultiplier();
-                }
+
+                if(diffLvl == 0)
+                    xpGained = Settings.getInstance().getParameters().getKillerBaseExp()
+                            * rpKiller.getLvl()
+                            * Settings.getInstance().getParameters().getLevelDifferenceMultiplier();
+
+                else if(rpKilled.getLvl() < rpKiller.getLvl())
+                    xpGained = Settings.getInstance().getParameters().getKillerBaseExp()
+                            / (diffLvl * Settings.getInstance().getParameters().getLevelDifferenceMultiplier())
+                            * rpKiller.getLvl()
+                            * Settings.getInstance().getParameters().getKillerLevelGainMultiplier();
+                else
+                    xpGained = Settings.getInstance().getParameters().getKillerBaseExp()
+                            * (diffLvl * Settings.getInstance().getParameters().getLevelDifferenceMultiplier())
+                            * rpKiller.getLvl()
+                            * Settings.getInstance().getParameters().getKillerLevelGainMultiplier();
+
                 rpKiller.addExperience(xpGained);
                 plugin.debugInfo("              Killer gained : "+ xpGained+" xp!");
             }
@@ -223,26 +234,22 @@ public class CoreListener implements Listener {
                 plugin.debugInfo("              Items dropped : " + count);
             }
             rpKilled.addDeaths(1);
-
         }
         //MOB DIES
         else {
             LowbrainPlayer rpKiller = null;
-            if(e.getEntity().getKiller() != null && e.getEntity().getKiller() instanceof Player){
+
+            if(e.getEntity().getKiller() != null && e.getEntity().getKiller() instanceof Player)
                 rpKiller = plugin.getPlayerHandler().getList().get(e.getEntity().getKiller().getUniqueId());
-            }
             else if(e.getEntity().getLastDamageCause() != null
                     && e.getEntity().getLastDamageCause().getEntity() instanceof Projectile
-                    && ((Projectile) e.getEntity().getLastDamageCause().getEntity()).getShooter() instanceof Player){
+                    && ((Projectile) e.getEntity().getLastDamageCause().getEntity()).getShooter() instanceof Player)
                 rpKiller = plugin.getPlayerHandler().getList().get(((Player) ((Projectile) e.getEntity().getLastDamageCause().getEntity()).getShooter()).getUniqueId());
-            }
             else if(e.getEntity().getLastDamageCause() != null
-                    && e.getEntity().getLastDamageCause().getEntity() instanceof Player){
+                    && e.getEntity().getLastDamageCause().getEntity() instanceof Player)
                 rpKiller = plugin.getPlayerHandler().getList().get(e.getEntity().getLastDamageCause().getEntity().getUniqueId());
-            }
 
             if(rpKiller != null){
-
                 plugin.debugInfo("************* On Mob get killed **************");
                 plugin.debugInfo("              Killed by : " + rpKiller.getPlayer().getName());
                 String mobName = e.getEntity().getType().name().toLowerCase();
@@ -250,8 +257,10 @@ public class CoreListener implements Listener {
                 rpKiller.getMobKills().put(mobName,rpKiller.getMobKills().getOrDefault(mobName,0) + 1);
 
                 int killsCount = rpKiller.getMobKills().get(mobName);
+
                 ConfigurationSection section = MobsXP.getInstance().getConfigurationSection(mobName);
-                if(section == null)section = MobsXP.getInstance().getConfigurationSection("default");
+                if(section == null)
+                    section = MobsXP.getInstance().getConfigurationSection("default");
 
                 if(section != null){
                     int interval = section.getInt("xp_bonus_interval");
@@ -269,15 +278,14 @@ public class CoreListener implements Listener {
                             others = new ArrayList<>();
                             Party party = Parties.getInstance().getPlayerHandler().getPartyFromPlayer(rpKiller.getPlayer());
                             if(party != null){
-                                for (Player p :
-                                        party.getOnlinePlayers()) {
+                                for (Player p : party.getOnlinePlayers()) {
                                     if (!p.equals(rpKiller.getPlayer())){
                                         if(Settings.getInstance().getGroupXpRange() == -1
                                                 || Helper.getDistanceBetweenTwoPlayers(rpKiller.getPlayer(),p) <= Settings.getInstance().getGroupXpRange()){
                                             LowbrainPlayer p2 = plugin.getPlayerHandler().getList().get(p.getUniqueId());
-                                            if(p2 != null){
+                                            if(p2 != null)
                                                 others.add(p2);
-                                            }
+
                                         }
                                     }
                                 }
@@ -286,6 +294,7 @@ public class CoreListener implements Listener {
                         else {
                             others = Helper.getNearbyPlayers(rpKiller, Settings.getInstance().getGroupXpRange());
                         }
+
                         double mainXP = others != null && others.size() > 0 ? Settings.getInstance().getGroupXpMain() : 1;
                         rpKiller.addExperience(xp * mainXP);
                         plugin.debugInfo("              Killer gained : " + ( xp * mainXP ) +" xp!");
@@ -877,19 +886,24 @@ public class CoreListener implements Listener {
 
                 switch (effect.getKey()){
                     case "poison":
-                        po = new PotionEffect(PotionEffectType.WITHER,(int)(eventSource.skill.getEffectValue(effect.getValue()) *20),eventSource.skill.getCurrentLevel(),true,true);
+                        po = new PotionEffect(PotionEffectType.WITHER
+                                , (int)(eventSource.skill.getEffectValue(effect.getValue()) *20),eventSource.skill.getCurrentLevel()
+                                ,true,true);
                         break;
                     case "fire_tick":
                         e.getEntity().setFireTicks((int)(eventSource.skill.getEffectValue(effect.getValue()) * 20));
                         break;
                     case "freeze":
-                        po = new PotionEffect(PotionEffectType.SLOW,(int)(eventSource.skill.getEffectValue(effect.getValue()) *20),eventSource.skill.getCurrentLevel(),true,true);
+                        po = new PotionEffect(PotionEffectType.SLOW
+                                , (int)(eventSource.skill.getEffectValue(effect.getValue()) *20),eventSource.skill.getCurrentLevel(),true,true);
                         break;
                     case "absorb":
                         absorbDamage = eventSource.skill.getEffectValue(effect.getValue());
                         break;
                     case "knockback":
-                        e.getEntity().setVelocity(((LivingEntity) e.getEntity()).getEyeLocation().getDirection().multiply(-1 * eventSource.skill.getEffectValue(effect.getValue())));
+                        e.getEntity()
+                                .setVelocity(((LivingEntity) e.getEntity()).getEyeLocation().getDirection()
+                                        .multiply(-1 * eventSource.skill.getEffectValue(effect.getValue())));
                         break;
                     case "lightning":
                         e.getEntity().getWorld().strikeLightningEffect(e.getEntity().getLocation());

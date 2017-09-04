@@ -27,8 +27,10 @@ public abstract class Parametable {
 
     @Contract("null -> fail")
     protected Parametable(ConfigurationSection config) {
-        if(config == null) throw new NullPointerException("Cannot construct Multiplier with null config !");
-        setEnabled(config.getBoolean("enable"));
+        if(config == null)
+            throw new NullPointerException("Cannot construct Multiplier with null config !");
+
+        setEnabled(config.getBoolean("enable", true));
         setRange((float)config.getDouble("range"));
         setMax((float)config.getDouble("maximum"));
         setMin((float)config.getDouble("minimum"));
@@ -36,16 +38,14 @@ public abstract class Parametable {
         setRangeType(RangeType.get(config.getInt("range_type", 0)));
 
         int ftypeValue = config.getInt("function_type", -1);
-        if (ftypeValue >= 0) {
+        if (ftypeValue >= 0)
             setFunctionType(FunctionType.get(ftypeValue));
-        }
+
 
         ConfigurationSection vars = config.getConfigurationSection("variables");
         if(vars != null){
-            for (String k :
-                    vars.getKeys(false)) {
+            for (String k : vars.getKeys(false))
                 variables.put(k,(float)vars.getDouble(k,0));
-            }
         }
     }
 

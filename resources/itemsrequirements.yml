@@ -1,5 +1,5 @@
 # use real name case (generally uppercase)
-# for vanilla item, use material name such as diamond_sword, diamond_chestplate, etc. Dont forget the underscore
+# for vanilla item, use material name such as diamond_sword, diamond_chestplate, etc. Don't forget the underscore
 # for custom item, use item name such as diamond_sword_plus, emerald_sword
 # possible requirements : level, intelligence, dexterity, agility, strength, defence, magic_resistance, vitality, race (race name), class (class name), kills, deaths,
 
