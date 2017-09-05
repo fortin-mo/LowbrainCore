@@ -64,7 +64,8 @@ public class PlayerHandler {
      * @return true
      */
     public boolean add(Player p){
-        if(p == null) return false;
+        if(p == null)
+            return false;
         getList().put(p.getUniqueId(), new LowbrainPlayer(p));
         computeAverageLevel();
         return true;
@@ -76,7 +77,8 @@ public class PlayerHandler {
      * @return
      */
     public boolean add(UUID uuid){
-        if(uuid == null) return false;
+        if(uuid == null)
+            return false;
         return add(Bukkit.getServer().getPlayer(uuid));
     }
 
@@ -86,8 +88,11 @@ public class PlayerHandler {
      * @return true
      */
     public boolean add(LowbrainPlayer p){
-        if(p == null) return false;
-        if(p.getPlayer() == null) return false;
+        if(p == null)
+            return false;
+        if(p.getPlayer() == null)
+            return false;
+
         getList().put(p.getPlayer().getUniqueId(),p);
         computeAverageLevel();
         return true;
@@ -123,6 +128,19 @@ public class PlayerHandler {
 
     public LowbrainPlayer get(UUID uuid) {
         return this.getList().getOrDefault(uuid, null);
+    }
+
+    public LowbrainPlayer getPlayable(UUID uuid) {
+        LowbrainPlayer p = this.get(uuid);
+
+        if (p == null || !p.isPlayable())
+            return null;
+
+        return p;
+    }
+
+    public LowbrainPlayer getPlayable(Player p) {
+        return this.getPlayable(p.getUniqueId());
     }
 
     /**

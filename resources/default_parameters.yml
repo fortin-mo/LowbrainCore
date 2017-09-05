@@ -88,9 +88,9 @@ on_player_kills_player:
  enable: true
  # the initial amount of experience gained on kill
  base_exp: 25
- # multiplier by wich base exp is multiply by level
+ # multiplier by which base exp is multiply by level
  killer_level_gain_multiplier: 0.5
- # multiplier by wich base exp is multiply by level difference between players (low lvl player kill high lvl player = higher exp gain and vice-versa)
+ # multiplier by which base exp is multiply by level difference between players (low lvl player kill high lvl player = higher exp gain and vice-versa)
  level_difference_multiplier: 0.5
 
 # mathematic to when a player attack another entity

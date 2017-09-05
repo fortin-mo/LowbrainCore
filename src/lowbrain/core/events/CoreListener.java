@@ -4,6 +4,8 @@ import com.alessiodp.parties.Parties;
 import com.alessiodp.parties.objects.Party;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import lowbrain.core.Abstraction.Playable;
+import lowbrain.core.commun.FunctionType;
 import lowbrain.core.commun.Helper;
 import lowbrain.core.commun.Settings;
 import lowbrain.core.config.Internationalization;
@@ -11,6 +13,7 @@ import lowbrain.core.config.MobsXP;
 import lowbrain.core.main.LowbrainCore;
 import lowbrain.core.rpg.LowbrainPlayer;
 import lowbrain.items.main.LowbrainItems;
+import lowbrain.items.main.Staff;
 import org.apache.commons.lang.mutable.MutableBoolean;
 import org.apache.commons.lang.mutable.MutableFloat;
 import org.bukkit.*;
@@ -42,6 +45,10 @@ import java.util.*;
  */
 public class CoreListener implements Listener {
 
+    public final static String LAST_USED_LORE = "last used : ";
+    public final static String DURABILITY_LORE = "durability : ";
+    public final static String SPLIT_LORE = " : ";
+
 	public static LowbrainCore plugin;
 
     public CoreListener(LowbrainCore instance) {
@@ -65,7 +72,6 @@ public class CoreListener implements Listener {
 
             if (limit < Math.random())
                 e.setCancelled(true); // cancel spawning
-
         }
     }
 
@@ -89,9 +95,11 @@ public class CoreListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e){
         LowbrainPlayer rp = plugin.getPlayerHandler().getList().get(e.getPlayer().getUniqueId());
-        if(rp == null)return;
+        if(rp == null)
+            return;
 
-        if(e.getItem() == null) return;
+        if(e.getItem() == null)
+            return;
 
         String requirements =  rp.canEquipItemString(e.getItem());
         if(!Helper.StringIsNullOrEmpty(requirements)) {
@@ -128,18 +136,18 @@ public class CoreListener implements Listener {
      */
     @EventHandler
     public void onPlayerExpChange(PlayerExpChangeEvent e){
-        if(e.getAmount() > 0) {
-            Player p = e.getPlayer();
-            LowbrainPlayer rp = plugin.getPlayerHandler().getList().get(p.getUniqueId());
+        if (e.getAmount() < 0)
+            return;
 
-            if(rp == null)
-                return;
+        LowbrainPlayer rp = plugin.getPlayerHandler().getPlayable(e.getPlayer());
 
-            plugin.debugInfo("************* On Player Exp Change ( naturally ) **************");
-            plugin.debugInfo("              Player gains : " + e.getAmount() * Settings.getInstance().getParameters().getNaturalXpGainMultiplier() + " xp");
-            rp.addExperience(e.getAmount() * Settings.getInstance().getParameters().getNaturalXpGainMultiplier());
-            plugin.debugInfo("************* ------------------------ **************");
-        }
+        if(rp == null)
+            return;
+
+        plugin.debugInfo("************* On Player Exp Change ( naturally ) **************");
+        plugin.debugInfo("              Player gains : " + e.getAmount() * Settings.getInstance().getParameters().getNaturalXpGainMultiplier() + " xp");
+        rp.addExperience(e.getAmount() * Settings.getInstance().getParameters().getNaturalXpGainMultiplier());
+        plugin.debugInfo("************* ------------------------ **************");
     }
 
     /**
@@ -161,160 +169,10 @@ public class CoreListener implements Listener {
      */
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e){
-        //PLAYER DIES
-        if(e.getEntity() instanceof Player){
-            plugin.debugInfo("************* On Player died **************");
-            plugin.debugInfo("              name : " + e.getEntity().getName());
-
-            LowbrainPlayer rpKiller = null;
-            Player killed = (Player) e.getEntity();
-            LowbrainPlayer rpKilled = plugin.getPlayerHandler().getList().get(killed.getUniqueId());
-            if(killed.getKiller() != null) {
-                if(killed.getKiller() instanceof Player) {
-                    Player killer = killed.getKiller();
-                    rpKiller = plugin.getPlayerHandler().getList().get(killer.getUniqueId());
-                    plugin.debugInfo("              Killed by player : " + killed.getKiller().getName());
-                }
-            }
-            else if(killed.getLastDamageCause() != null && killed.getLastDamageCause().getEntity() != null){
-                if(killed.getLastDamageCause().getEntity() instanceof Player)
-                    rpKiller = plugin.getPlayerHandler().getList().get(killed.getLastDamageCause().getEntity().getUniqueId());
-
-                else if(killed.getLastDamageCause().getEntity() instanceof Projectile
-                        && ((Projectile) killed.getLastDamageCause().getEntity()).getShooter() instanceof Player)
-                    rpKiller = plugin.getPlayerHandler().getList().get(((Player) ((Projectile) killed.getLastDamageCause().getEntity()).getShooter()).getUniqueId());
-
-            }
-
-            if(rpKiller != null && Settings.getInstance().getParameters().isPlayerKillsPlayerExpEnable()){
-                int diffLvl = Math.abs(rpKilled.getLvl() - rpKiller.getLvl());
-                rpKiller.addKills(1);
-                float xpGained = 0.0F;
-
-                if(diffLvl == 0)
-                    xpGained = Settings.getInstance().getParameters().getKillerBaseExp()
-                            * rpKiller.getLvl()
-                            * Settings.getInstance().getParameters().getLevelDifferenceMultiplier();
-
-                else if(rpKilled.getLvl() < rpKiller.getLvl())
-                    xpGained = Settings.getInstance().getParameters().getKillerBaseExp()
-                            / (diffLvl * Settings.getInstance().getParameters().getLevelDifferenceMultiplier())
-                            * rpKiller.getLvl()
-                            * Settings.getInstance().getParameters().getKillerLevelGainMultiplier();
-                else
-                    xpGained = Settings.getInstance().getParameters().getKillerBaseExp()
-                            * (diffLvl * Settings.getInstance().getParameters().getLevelDifferenceMultiplier())
-                            * rpKiller.getLvl()
-                            * Settings.getInstance().getParameters().getKillerLevelGainMultiplier();
-
-                rpKiller.addExperience(xpGained);
-                plugin.debugInfo("              Killer gained : "+ xpGained+" xp!");
-            }
-
-            if(Settings.getInstance().getParameters().getOnPlayerDies().isEnable()){
-                rpKilled.addExperience(-(Settings.getInstance().getParameters().getOnPlayerDies().getXp_loss() / 100 * rpKilled.getExperience()));
-
-                double dropPercentage = rpKilled.getMultipliers().getPlayerDropPercentage();
-
-                plugin.debugInfo("              Percentage of dropped items : " + dropPercentage);
-
-                int count = (int)(rpKilled.getPlayer().getInventory().getSize() * dropPercentage);
-
-                for (int i = 0; i < count; i++) {
-                    int rdm = Helper.randomInt(0,rpKilled.getPlayer().getInventory().getSize() - 1);
-
-                    ItemStack item = rpKilled.getPlayer().getInventory().getItem(rdm);
-
-                    if(item != null){
-                        rpKilled.getPlayer().getWorld().dropItemNaturally(rpKilled.getPlayer().getLocation(),item);
-                        rpKilled.getPlayer().getInventory().remove(item);
-                    }
-                }
-
-                plugin.debugInfo("              Items dropped : " + count);
-            }
-            rpKilled.addDeaths(1);
-        }
-        //MOB DIES
-        else {
-            LowbrainPlayer rpKiller = null;
-
-            if(e.getEntity().getKiller() != null && e.getEntity().getKiller() instanceof Player)
-                rpKiller = plugin.getPlayerHandler().getList().get(e.getEntity().getKiller().getUniqueId());
-            else if(e.getEntity().getLastDamageCause() != null
-                    && e.getEntity().getLastDamageCause().getEntity() instanceof Projectile
-                    && ((Projectile) e.getEntity().getLastDamageCause().getEntity()).getShooter() instanceof Player)
-                rpKiller = plugin.getPlayerHandler().getList().get(((Player) ((Projectile) e.getEntity().getLastDamageCause().getEntity()).getShooter()).getUniqueId());
-            else if(e.getEntity().getLastDamageCause() != null
-                    && e.getEntity().getLastDamageCause().getEntity() instanceof Player)
-                rpKiller = plugin.getPlayerHandler().getList().get(e.getEntity().getLastDamageCause().getEntity().getUniqueId());
-
-            if(rpKiller != null){
-                plugin.debugInfo("************* On Mob get killed **************");
-                plugin.debugInfo("              Killed by : " + rpKiller.getPlayer().getName());
-                String mobName = e.getEntity().getType().name().toLowerCase();
-
-                rpKiller.getMobKills().put(mobName,rpKiller.getMobKills().getOrDefault(mobName,0) + 1);
-
-                int killsCount = rpKiller.getMobKills().get(mobName);
-
-                ConfigurationSection section = MobsXP.getInstance().getConfigurationSection(mobName);
-                if(section == null)
-                    section = MobsXP.getInstance().getConfigurationSection("default");
-
-                if(section != null){
-                    int interval = section.getInt("xp_bonus_interval");
-                    double xp = section.getDouble("base_xp");
-                    if(killsCount % interval == 0){
-                        rpKiller.sendMessage("You've just killed your " + killsCount + " " + mobName);
-                        xp = killsCount / interval * section.getDouble("xp_bonus_multiplier");
-                    }
-
-                    if(Settings.getInstance().isGroupXpEnable()){
-
-                        List<LowbrainPlayer> others = null;
-
-                        if(plugin.useParties){
-                            others = new ArrayList<>();
-                            Party party = Parties.getInstance().getPlayerHandler().getPartyFromPlayer(rpKiller.getPlayer());
-                            if(party != null){
-                                for (Player p : party.getOnlinePlayers()) {
-                                    if (!p.equals(rpKiller.getPlayer())){
-                                        if(Settings.getInstance().getGroupXpRange() == -1
-                                                || Helper.getDistanceBetweenTwoPlayers(rpKiller.getPlayer(),p) <= Settings.getInstance().getGroupXpRange()){
-                                            LowbrainPlayer p2 = plugin.getPlayerHandler().getList().get(p.getUniqueId());
-                                            if(p2 != null)
-                                                others.add(p2);
-
-                                        }
-                                    }
-                                }
-                            }
-                        } 
-                        else {
-                            others = Helper.getNearbyPlayers(rpKiller, Settings.getInstance().getGroupXpRange());
-                        }
-
-                        double mainXP = others != null && others.size() > 0 ? Settings.getInstance().getGroupXpMain() : 1;
-                        rpKiller.addExperience(xp * mainXP);
-                        plugin.debugInfo("              Killer gained : " + ( xp * mainXP ) +" xp!");
-
-                        if(others != null && others.size() > 0) {
-                            double othersXP = xp * Settings.getInstance().getGroupXpOthers() / others.size();
-                            plugin.debugInfo("              - In party");
-                            for (LowbrainPlayer other : others) {
-                                other.addExperience(othersXP);
-                                plugin.debugInfo("                      " + other.getPlayer().getName() + " gained " + othersXP + " xp!");
-                            }
-                        }
-                    }
-                    else{
-                        rpKiller.addExperience(xp);
-                        plugin.debugInfo("              Killer gained : " + ( xp ) +" xp!");;
-                    }
-                }
-            }
-        }
+        if (e.getEntity() instanceof Player)
+            onPlayersDeath(e);
+        else
+            onMobsDeath(e);
     }
 
     @EventHandler
@@ -389,7 +247,7 @@ public class CoreListener implements Listener {
                 }.runTaskTimer(plugin, 1L, 1L);
             }
         }
-        plugin.debugInfo("************* ------------------------ **************");
+        plugin.debugInfo("*****************************************************");
     }
 
     /**
@@ -405,90 +263,90 @@ public class CoreListener implements Listener {
         if(e.getDamage() <= 0 )
             return;
 
-        LowbrainPlayer damagee = plugin.getPlayerHandler().get(e.getEntity().getUniqueId());
+        LowbrainPlayer damaged = plugin.getPlayerHandler().get(e.getEntity().getUniqueId());
 
-        if(damagee == null)
+        if(damaged == null)
             return;
 
         float multiplier = 1;
 
         plugin.debugInfo("************* On Player get Damaged **************");
-        plugin.debugInfo("              Damage caused by : " +e.getCause().name());
-        plugin.debugInfo("              Initial damage : " +e.getDamage());
+        plugin.debugInfo("              Damage caused by : " + e.getCause().name());
+        plugin.debugInfo("              Initial damage : " + e.getDamage());
 
         switch (e.getCause()){
             case BLOCK_EXPLOSION:
-                multiplier = damagee.getMultipliers().getDamagedByExplosion();
+                multiplier = damaged.getMultipliers().getDamagedByExplosion();
                 break;
             case CONTACT:
-                multiplier = damagee.getMultipliers().getDamagedByContact();
+                multiplier = damaged.getMultipliers().getDamagedByContact();
                 break;
             case DRAGON_BREATH:
-                multiplier = damagee.getMultipliers().getDamagedByFire();
+                multiplier = damaged.getMultipliers().getDamagedByFire();
                 break;
             case DROWNING:
-                multiplier = damagee.getMultipliers().getDamagedByDrowning();
+                multiplier = damaged.getMultipliers().getDamagedByDrowning();
                 break;
             case ENTITY_EXPLOSION:
-                multiplier = damagee.getMultipliers().getDamagedByExplosion();
+                multiplier = damaged.getMultipliers().getDamagedByExplosion();
                 break;
             case FALL:
-                multiplier = damagee.getMultipliers().getDamagedByFall();
+                multiplier = damaged.getMultipliers().getDamagedByFall();
                 break;
             case FALLING_BLOCK:
-                multiplier = damagee.getMultipliers().getDamagedByWeapon();
+                multiplier = damaged.getMultipliers().getDamagedByWeapon();
                 break;
             case FIRE:
-                multiplier = damagee.getMultipliers().getDamagedByFire();
+                multiplier = damaged.getMultipliers().getDamagedByFire();
                 break;
             case FIRE_TICK:
-                multiplier = damagee.getMultipliers().getDamagedByFireTick();
+                multiplier = damaged.getMultipliers().getDamagedByFireTick();
                 break;
             case FLY_INTO_WALL:
-                multiplier = damagee.getMultipliers().getDamagedByFlyIntoWall();
+                multiplier = damaged.getMultipliers().getDamagedByFlyIntoWall();
                 break;
             case HOT_FLOOR:
-                multiplier = damagee.getMultipliers().getDamagedByHotFloor();
+                multiplier = damaged.getMultipliers().getDamagedByHotFloor();
                 break;
             case LAVA:
-                multiplier = damagee.getMultipliers().getDamagedByLava();
+                multiplier = damaged.getMultipliers().getDamagedByLava();
                 break;
             case LIGHTNING:
-                multiplier = damagee.getMultipliers().getDamagedByLightning();
+                multiplier = damaged.getMultipliers().getDamagedByLightning();
                 break;
             case MAGIC:
-                multiplier = damagee.getMultipliers().getDamagedByMagic();
+                multiplier = damaged.getMultipliers().getDamagedByMagic();
                 break;
             case MELTING:
-                multiplier = damagee.getMultipliers().getDamagedByMagic();
+                multiplier = damaged.getMultipliers().getDamagedByMagic();
                 break;
             case POISON:
-                multiplier = damagee.getMultipliers().getDamagedByPoison();
+                multiplier = damaged.getMultipliers().getDamagedByPoison();
                 break;
             case STARVATION:
-                multiplier = damagee.getMultipliers().getDamagedByStarvation();
+                multiplier = damaged.getMultipliers().getDamagedByStarvation();
                 break;
             case SUFFOCATION:
-                multiplier = damagee.getMultipliers().getDamagedBySuffocation();
+                multiplier = damaged.getMultipliers().getDamagedBySuffocation();
                 break;
             case THORNS:
-                multiplier = damagee.getMultipliers().getDamagedByWeapon();
+                multiplier = damaged.getMultipliers().getDamagedByWeapon();
                 break;
             case VOID:
-                multiplier = damagee.getMultipliers().getDamagedByVoid();
+                multiplier = damaged.getMultipliers().getDamagedByVoid();
                 break;
             case WITHER:
-                multiplier = damagee.getMultipliers().getDamagedByWither();
+                multiplier = damaged.getMultipliers().getDamagedByWither();
                 break;
             default:
-                multiplier = damagee.getMultipliers().getDamagedByDefault();
+                multiplier = damaged.getMultipliers().getDamagedByDefault();
                 break;
         }
 
         plugin.debugInfo("              Defensive damage multiplier : " + multiplier);
         e.setDamage(e.getDamage() * multiplier);
         plugin.debugInfo("              Damage after multiplier : " + e.getDamage());
-        plugin.debugInfo("************* ------------------------ **************");
+        plugin.debugInfo("*****************************************************");
     }
 
     /**
@@ -501,7 +359,7 @@ public class CoreListener implements Listener {
                 && e.getItem().getType().equals(Material.POTION)
                 && Settings.getInstance().getParameters().getOnPlayerConsumePotion().isEnabled()){
 
-            LowbrainPlayer rp = plugin.getPlayerHandler().get(e.getPlayer().getUniqueId());
+            LowbrainPlayer rp = plugin.getPlayerHandler().get(e.getPlayer());
             if(rp != null && !rp.getPlayer().getActivePotionEffects().isEmpty()) {
 
                 float result = rp.getMultipliers().getConsumedPotionMultiplier();
@@ -515,7 +373,7 @@ public class CoreListener implements Listener {
 
                 plugin.debugInfo("************* On Player Consume Potion **************");
                 plugin.debugInfo("              Duration multiplied by : " + result);
-                plugin.debugInfo("************* ------------------------ **************");
+                plugin.debugInfo("*****************************************************");
             }
         }
     }
@@ -532,9 +390,13 @@ public class CoreListener implements Listener {
 
         //set new force
         Arrow ar = (Arrow) e.getProjectile();
+
         LowbrainPlayer rpPlayer = plugin.getPlayerHandler().get(e.getEntity().getUniqueId());
 
-        plugin.debugInfo("************* On Player Consume Potion **************");
+        if (rpPlayer == null)
+            return;
+
+        plugin.debugInfo("************* On Player Shoot Bow **************");
 
         float speed = rpPlayer.getMultipliers().getBowArrowSpeed();
 
@@ -588,6 +450,201 @@ public class CoreListener implements Listener {
     }
 
     // PRIVATES
+
+    private void onPlayersDeath(EntityDeathEvent e) {
+        plugin.debugInfo("************* On Player died **************");
+        plugin.debugInfo("              name : " + e.getEntity().getName());
+
+        LowbrainPlayer rpKiller = null;
+        Player killed = (Player) e.getEntity();
+
+        LowbrainPlayer rpKilled = plugin.getPlayerHandler().getPlayable(killed);
+
+        if (rpKilled == null)
+            return;
+
+        if (killed.getKiller() != null) {
+            if(killed.getKiller() instanceof Player) {
+                Player killer = killed.getKiller();
+                rpKiller = plugin.getPlayerHandler().getPlayable(killer.getUniqueId());
+                plugin.debugInfo("              Killed by player : " + killed.getKiller().getName());
+            }
+        } else if (killed.getLastDamageCause() != null && killed.getLastDamageCause().getEntity() != null) {
+            if (killed.getLastDamageCause().getEntity() instanceof Player)
+                rpKiller = plugin.getPlayerHandler().getPlayable(killed.getLastDamageCause().getEntity().getUniqueId());
+
+            else if (killed.getLastDamageCause().getEntity() instanceof Projectile
+                    && ((Projectile) killed.getLastDamageCause().getEntity()).getShooter() instanceof Player)
+                rpKiller = plugin.getPlayerHandler().getPlayable(((Player) ((Projectile) killed.getLastDamageCause().getEntity()).getShooter()).getUniqueId());
+
+        }
+
+        if (rpKiller != null)
+            onPlayerKillPlayer(rpKilled, rpKiller);
+
+
+        if (Settings.getInstance().getParameters().getOnPlayerDies().isEnable()) {
+            rpKilled.addExperience(-(Settings.getInstance().getParameters().getOnPlayerDies().getXp_loss() / 100 * rpKilled.getExperience()));
+
+            double dropPercentage = rpKilled.getMultipliers().getPlayerDropPercentage();
+
+            plugin.debugInfo("              Percentage of dropped items : " + dropPercentage);
+
+            int count = (int)(rpKilled.getPlayer().getInventory().getSize() * dropPercentage);
+
+            for (int i = 0; i < count; i++) {
+                int rdm = Helper.randomInt(0,rpKilled.getPlayer().getInventory().getSize() - 1);
+
+                ItemStack item = rpKilled.getPlayer().getInventory().getItem(rdm);
+
+                if(item != null){
+                    rpKilled.getPlayer().getWorld().dropItemNaturally(rpKilled.getPlayer().getLocation(),item);
+                    rpKilled.getPlayer().getInventory().remove(item);
+                }
+            }
+
+            plugin.debugInfo("              Items dropped : " + count);
+        }
+
+        if (Settings.getInstance().getParameters().getReputation().isEnabled())
+            rpKilled.addReputation(Settings.getInstance().getParameters().getReputation().getOnDeath());
+
+
+        if (Settings.getInstance().getParameters().getCourage().isEnabled())
+            rpKilled.addCourage(Settings.getInstance().getParameters().getCourage().getOnDeath());
+
+        rpKilled.addDeaths(1);
+    }
+
+    private void onPlayerKillPlayer(LowbrainPlayer killed, LowbrainPlayer killer) {
+        if (Settings.getInstance().getParameters().isPlayerKillsPlayerExpEnable()) {
+            int diffLvl = Math.abs(killed.getLvl() - killer.getLvl());
+            killer.addKills(1);
+            float xpGained = 0.0F;
+
+            if(diffLvl == 0)
+                xpGained = Settings.getInstance().getParameters().getKillerBaseExp()
+                        * killer.getLvl()
+                        * Settings.getInstance().getParameters().getLevelDifferenceMultiplier();
+
+            else if(killed.getLvl() < killer.getLvl())
+                xpGained = Settings.getInstance().getParameters().getKillerBaseExp()
+                        / (diffLvl * Settings.getInstance().getParameters().getLevelDifferenceMultiplier())
+                        * killer.getLvl()
+                        * Settings.getInstance().getParameters().getKillerLevelGainMultiplier();
+            else
+                xpGained = Settings.getInstance().getParameters().getKillerBaseExp()
+                        * (diffLvl * Settings.getInstance().getParameters().getLevelDifferenceMultiplier())
+                        * killer.getLvl()
+                        * Settings.getInstance().getParameters().getKillerLevelGainMultiplier();
+
+            killer.addExperience(xpGained);
+            plugin.debugInfo("              Killer gained : "+ xpGained+" xp!");
+        }
+
+        if (Settings.getInstance().getParameters().getReputation().isEnabled()) {
+            if (killed.getReputation() >= 0)
+                killer.addReputation(-(int)(killed.getReputation() * 0.25) + 5);
+            else if (killed.getReputation() < 0 && killer.getReputation() >= 0)
+                killer.addReputation(-(int)(killed.getReputation() * 0.25 + 5));
+        }
+
+        if (Settings.getInstance().getParameters().getCourage().isEnabled()) {
+            int diff = killed.getLvl() - killer.getLvl();
+            int courage = 0;
+            if (diff >= 0)
+                courage = diff * 10 + 25;
+            else
+                courage = (int)(Helper.Slope(0, 25, 100, FunctionType.LINEAR) * diff * -1 + 25);
+
+            killed.addCourage(-courage);
+            killer.addCourage(courage);
+        }
+    }
+
+    private void onMobsDeath(EntityDeathEvent e) {
+        LowbrainPlayer rpKiller = null;
+
+        // if the killer is not null and is a Player
+        if(e.getEntity().getKiller() != null && e.getEntity().getKiller() instanceof Player)
+            rpKiller = plugin.getPlayerHandler().getPlayable(e.getEntity().getKiller().getUniqueId());
+
+        // if the killer is null but the last damage was from a projectile shot by a Player
+        else if(e.getEntity().getLastDamageCause() != null
+                && e.getEntity().getLastDamageCause().getEntity() instanceof Projectile
+                && ((Projectile) e.getEntity().getLastDamageCause().getEntity()).getShooter() instanceof Player)
+            rpKiller = plugin.getPlayerHandler().getPlayable(((Player) ((Projectile) e.getEntity().getLastDamageCause().getEntity()).getShooter()).getUniqueId());
+
+        // otherwise if the last damage is from a Player
+        else if(e.getEntity().getLastDamageCause() != null
+                && e.getEntity().getLastDamageCause().getEntity() instanceof Player)
+            rpKiller = plugin.getPlayerHandler().getPlayable(e.getEntity().getLastDamageCause().getEntity().getUniqueId());
+
+        if (rpKiller == null)
+            return;
+
+        plugin.debugInfo("************* On Mob get killed **************");
+        plugin.debugInfo("              Killed by : " + rpKiller.getPlayer().getName());
+        String mobName = e.getEntity().getType().name().toLowerCase();
+
+        rpKiller.getMobKills().put(mobName,rpKiller.getMobKills().getOrDefault(mobName,0) + 1);
+
+        int killsCount = rpKiller.getMobKills().get(mobName);
+
+        ConfigurationSection section = MobsXP.getInstance().getConfigurationSection(mobName);
+        if(section == null)
+            section = MobsXP.getInstance().getConfigurationSection("default");
+
+        if (section != null) {
+            int interval = section.getInt("xp_bonus_interval", -1);
+            double xp = section.getDouble("base_xp", 0);
+            if (interval > 0 && killsCount % interval == 0) {
+                rpKiller.sendMessage("You've just killed your " + killsCount + " " + mobName);
+                xp = killsCount / interval * section.getDouble("xp_bonus_multiplier");
+            }
+
+            if (Settings.getInstance().isGroupXpEnable()) {
+
+                List<LowbrainPlayer> others = null;
+
+                if (plugin.useParties) {
+                    others = new ArrayList<>();
+                    Party party = Parties.getInstance().getPlayerHandler().getPartyFromPlayer(rpKiller.getPlayer());
+                    if(party != null){
+                        for (Player p : party.getOnlinePlayers()) {
+                            if (!p.equals(rpKiller.getPlayer())){
+                                if(Settings.getInstance().getGroupXpRange() == -1
+                                        || Helper.getDistanceBetweenTwoPlayers(rpKiller.getPlayer(),p) <= Settings.getInstance().getGroupXpRange()){
+                                    LowbrainPlayer p2 = plugin.getPlayerHandler().getList().get(p.getUniqueId());
+                                    if(p2 != null)
+                                        others.add(p2);
+
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    others = Helper.getNearbyPlayers(rpKiller, Settings.getInstance().getGroupXpRange());
+                }
+
+                double mainXP = others != null && others.size() > 0 ? Settings.getInstance().getGroupXpMain() : 1;
+                rpKiller.addExperience(xp * mainXP);
+                plugin.debugInfo("              Killer gained : " + ( xp * mainXP ) +" xp!");
+
+                if(others != null && others.size() > 0) {
+                    double othersXP = xp * Settings.getInstance().getGroupXpOthers() / others.size();
+                    plugin.debugInfo("              - In party");
+                    for (LowbrainPlayer other : others) {
+                        other.addExperience(othersXP);
+                        plugin.debugInfo("                      " + other.getPlayer().getName() + " gained " + othersXP + " xp!");
+                    }
+                }
+            } else {
+                rpKiller.addExperience(xp);
+                plugin.debugInfo("              Killer gained : " + ( xp ) +" xp!");;
+            }
+        }
+    }
 
     /**
      * create damaging effect depending on player attributes
@@ -684,7 +741,6 @@ public class CoreListener implements Listener {
 
         if(p.hasPotionEffect(PotionEffectType.WITHER))
             p.removePotionEffect(PotionEffectType.WITHER);
-
     }
 
     /**
@@ -731,17 +787,17 @@ public class CoreListener implements Listener {
         int averageLevel = plugin.getPlayerHandler().getAverageLevel();
 
         if(averageLevel >= Settings.getInstance().getAsdEasyFrom()
-                && averageLevel <= (Settings.getInstance().getAsdEasyTo() != -1 ? Settings.getInstance().getAsdEasyTo() : 9999999)){
+                && averageLevel <= (Settings.getInstance().getAsdEasyTo() != -1 ? Settings.getInstance().getAsdEasyTo() : 9999999))
             diff = Difficulty.EASY;
-        }
+
         else if(averageLevel >= Settings.getInstance().getAsdMediumFrom()
-                && averageLevel <= (Settings.getInstance().getAsdMediumTo() != -1 ? Settings.getInstance().getAsdMediumTo() : 9999999)){
+                && averageLevel <= (Settings.getInstance().getAsdMediumTo() != -1 ? Settings.getInstance().getAsdMediumTo() : 9999999))
             diff = Difficulty.NORMAL;
-        }
+
         else if(averageLevel >= Settings.getInstance().getAsdHardFrom()
-                && averageLevel <= (Settings.getInstance().getAsdHardTo() != -1 ? Settings.getInstance().getAsdHardTo() : 9999999)){
+                && averageLevel <= (Settings.getInstance().getAsdHardTo() != -1 ? Settings.getInstance().getAsdHardTo() : 9999999))
             diff = Difficulty.HARD;
-        }
+
 
 
         for (World world : this.plugin.getServer().getWorlds())
@@ -867,8 +923,7 @@ public class CoreListener implements Listener {
      * @return true if multiplier was applied
      */
     private boolean applyOffensiveAttack(EntityDamageByEntityEvent e, MutableBoolean isCritical, MutableFloat missChance){
-
-        plugin.debugInfo("------------- Applying Offensive Attack ------------------");
+        plugin.debugInfo("              Applying Offensive Attack ---------------------------------");
         EventSource eventSource = EventSource.getFromAttack(e);
 
         float absorbDamage = 0F;
@@ -912,9 +967,10 @@ public class CoreListener implements Listener {
                         ((LivingEntity) e.getEntity()).damage(eventSource.skill.getEffectValue(effect.getValue()));
                         break;
                 }
-                if(po != null){
+
+                if(po != null)
                     po.apply((LivingEntity)e.getEntity());
-                }
+
 
                 plugin.debugInfo("              skilled attack effect : " + effect.getKey());
             }
@@ -924,7 +980,7 @@ public class CoreListener implements Listener {
             double baseDamage = eventSource.staffSection.getDouble("base_damage",-1);
             String effect = eventSource.staffSection.getString("effect","");
             int effectDuration = eventSource.staffSection.getInt("effect_duration",3);
-            plugin.debugInfo("              ---- Attacked by magic projectile : " + effect);
+            plugin.debugInfo("              -Attacked by magic projectile : " + effect);
 
             if(baseDamage >= 0) {
                 e.setDamage(baseDamage);
@@ -946,7 +1002,7 @@ public class CoreListener implements Listener {
         if(eventSource.damager.getPlayer().getInventory().getItemInMainHand() != null){
             if(!eventSource.damager.canEquipItem(eventSource.damager.getPlayer().getInventory().getItemInMainHand())){
                 e.setCancelled(true);
-                plugin.debugInfo("              ---- Player can't use this item !");
+                plugin.debugInfo("              -Player can't use this item !");
                 return false;
             }
         }
@@ -964,7 +1020,10 @@ public class CoreListener implements Listener {
                 PotionEffect effect = createMagicAttack(eventSource.damager);
                 if(e.getEntity() instanceof LivingEntity && effect != null){
                     ((LivingEntity) e.getEntity()).addPotionEffect(effect);
-                    plugin.debugInfo("              Magic effect added : " + effect.getType().getName() + ", " + effect.getDuration()/20 + ", " + effect.getAmplifier());
+                    plugin.debugInfo("              Magic effect added : "
+                            + effect.getType().getName() + ", "
+                            + effect.getDuration()/20 + ", "
+                            + effect.getAmplifier());
                 }
             }
         }
@@ -1055,38 +1114,48 @@ public class CoreListener implements Listener {
         if (item == null || item.getItemMeta() == null)
             return;
 
-        lowbrain.items.main.Staff staff = new lowbrain.items.main.Staff(staffSection);
+        Staff staff = new lowbrain.items.main.Staff(staffSection);
 
         ItemMeta iMeta = item.getItemMeta();
         int durability = staff.getDurability();
-        String sDurability = "";
-        String sLastUsed = "";
+        String sDurability = null;
+        String sLastUsed = null;
         Calendar lastUsed = Calendar.getInstance();
         lastUsed.add(Calendar.SECOND,-staff.getCooldown() - 1);
         String n = iMeta.getDisplayName().substring(2);
 
         if(iMeta.hasLore()){
-            int lastUsedIntex = iMeta.getLore().indexOf("last used : ");
-            int durabilityIndex = iMeta.getLore().indexOf("durability : ");
-            //sLastUsed = iMeta.getLore().get(e.getItem().getItemMeta().getLore().size() - 2); //before last lore
-            //sDurability = iMeta.getLore().get(e.getItem().getItemMeta().getLore().size() - 1); //last lore
-            sLastUsed = lastUsedIntex >= 0 ? iMeta.getLore().get(lastUsedIntex) : "";
-            sDurability = durabilityIndex >= 0 ? iMeta.getLore().get(durabilityIndex) : "";
+            // find corresponding lore
+            for (String lore : iMeta.getLore()) {
+                if (sDurability != null && sLastUsed != null)
+                    break;
+
+                if (sLastUsed == null && lore.indexOf(LAST_USED_LORE) >= 0) {
+                    sLastUsed = lore;
+                    continue;
+                }
+
+                if (sDurability == null && lore.indexOf(DURABILITY_LORE) >= 0) {
+                    sDurability = lore;
+                    continue;
+                }
+            }
         }
 
         //if has durability lore, get the durability
         if(!Helper.StringIsNullOrEmpty(sDurability)){
-            String[] tmp = sDurability.split(" : ");
-            durability = tmp.length > 1 ? Helper.intTryParse(tmp[1],durability) : durability;
+            String[] tmp = sDurability.split(SPLIT_LORE);
+            durability = tmp.length > 1 ? Helper.intTryParse(tmp[1], durability) : durability;
         }
         //if has lastUsed lore, get the last used date
         if(!Helper.StringIsNullOrEmpty(sLastUsed)){
-            String[] tmp = sLastUsed.split(" : ");
+            String[] tmp = sLastUsed.split(SPLIT_LORE);
             lastUsed = tmp.length > 1 ? Helper.dateTryParse(tmp[1],lastUsed) : lastUsed;
         }
 
         lastUsed.add(Calendar.SECOND, staff.getCooldown());
-        if(lastUsed.after(Calendar.getInstance())) return;
+        if(lastUsed.after(Calendar.getInstance()))
+            return;
 
         durability -= 1;
 
@@ -1121,20 +1190,20 @@ public class CoreListener implements Listener {
                 rp.getPlayer().getWorld().playEffect(rp.getPlayer().getLocation(),Effect.BOW_FIRE,1,0);
                 break;
         }
-        if(durability <= 0){
+        if (durability <= 0) {
             rp.getPlayer().getInventory().remove(item);
             rp.getPlayer().updateInventory();
             rp.sendMessage(Internationalization.format("item_destroyed"),ChatColor.GRAY);
-        }
-        else{
-            if(durability <= 10)rp.sendMessage(Internationalization.format("only_10_cast_left"));
+        } else {
+            if (durability <= 10)
+                rp.sendMessage(Internationalization.format("only_10_cast_left"));
 
             List<String> lores = iMeta.getLore();
-            lores.remove(lores.size() - 1);
-            lores.remove(lores.size() - 1);
+            lores.remove(sDurability);
+            lores.remove(sLastUsed);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-            lores.add("last_used : "  + sdf.format(Calendar.getInstance().getTime()));
-            lores.add("durability : " + durability);
+            lores.add(LAST_USED_LORE  + sdf.format(Calendar.getInstance().getTime()));
+            lores.add(DURABILITY_LORE + durability);
             iMeta.setLore(lores);
             item.setItemMeta(iMeta);
         }

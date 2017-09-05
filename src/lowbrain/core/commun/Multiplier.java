@@ -10,14 +10,6 @@ import org.jetbrains.annotations.Contract;
  */
 public class Multiplier extends Parametable {
     /**
-     * empty constructor
-     * should not be used
-     */
-    public Multiplier(){
-        super();
-    }
-
-    /**
      * constructor
      * @param config
      */

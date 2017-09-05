@@ -437,4 +437,17 @@ public class Helper {
     public static float getRandomBetween(float value, float range) {
         return getRandomBetween(value, value, value, range, true);
     }
+
+    @Contract(pure = true)
+    public static boolean isBetween(int value, int left, int right) {
+        return Helper.isBetween(value, left, right, false);
+    }
+
+    @Contract(pure = true)
+    public static boolean isBetween(int value, int left, int right, boolean included) {
+        if (included)
+            return value >= left && value <= right;
+
+        return value > left && value < right;
+    }
 }

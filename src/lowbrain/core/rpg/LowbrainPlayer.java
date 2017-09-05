@@ -1,11 +1,10 @@
 package lowbrain.core.rpg;
 import lowbrain.core.Abstraction.Attributable;
-import lowbrain.core.Abstraction.Playable;
 import lowbrain.core.commun.Settings;
 import lowbrain.core.commun.Helper;
+import lowbrain.core.commun.SubParameters.ReputationStatus;
 import lowbrain.core.config.Internationalization;
 import lowbrain.core.main.LowbrainCore;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
@@ -13,14 +12,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-
-import lowbrain.core.events.CoreListener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -48,6 +41,7 @@ public class LowbrainPlayer extends Attributable {
 	private HashMap<String,LowbrainPower> powers;
 	private String currentSkill;
 	private Multipliers multipliers;
+	private ReputationStatus repStatus;
 
 	private StatsBoard statsBoard;
 
@@ -67,10 +61,10 @@ public class LowbrainPlayer extends Attributable {
 	 * read player config yml to initialize current player
 	 */
 	private void initializePlayer(){
-		if(CoreListener.plugin == null)
+		if(LowbrainCore.getInstance() == null)
 			return;
 
-		File userdata = new File(CoreListener.plugin.getDataFolder(), File.separator + "PlayerDB");
+		File userdata = new File(LowbrainCore.getInstance().getDataFolder(), File.separator + "PlayerDB");
         File f = new File(userdata, File.separator + player.getUniqueId() + ".yml");
         FileConfiguration playerData = YamlConfiguration.loadConfiguration(f);
 
@@ -105,17 +99,15 @@ public class LowbrainPlayer extends Attributable {
 			playerData.set("stats.current_mana",0);
 			playerData.set("stats.skill_points", getSettings().getStartingSkillPoints());
 			playerData.set("stats.current_skill","");
-			playerData.set("stats.reputation", 0);
+			playerData.set("stats.reputation", getSettings().getParameters().getReputation().getInitial());
+            playerData.set("stats.courage", getSettings().getParameters().getCourage().getInitial());
 
 			playerData.createSection("mob_kills");
 
 			playerData.createSection("skills");
 
-			for (LowbrainSkill skill :
-					LowbrainCore.getInstance().getSkills().values()) {
+			for (LowbrainSkill skill : LowbrainCore.getInstance().getSkills().values())
 				playerData.set("skills." + skill.getName(),0);
-			}
-
 
 			playerData.createSection("settings");
 			playerData.set("settings.show_stats",true);
@@ -148,29 +140,26 @@ public class LowbrainPlayer extends Attributable {
 		deaths = playerData.getInt("stats.deaths",0);
 		currentMana = (float)playerData.getDouble("stats.current_mana",0);
 		agility = playerData.getInt("stats.agility",0);
-		reputation = playerData.getInt("stats.reputation, 0");
+		reputation = playerData.getInt("stats.reputation", 0);
+        courage = playerData.getInt("stats.courage", 0);
 
 		ConfigurationSection skillsSection = playerData.getConfigurationSection("skills");
 
 		//in case of new skills added
 		this.skills = (HashMap<String, LowbrainSkill>) LowbrainCore.getInstance().getSkills().clone();
 
-		if(skillsSection != null){
-			for (String skill :
-					skillsSection.getKeys(false)) {
+		if(skillsSection != null)
+			for (String skill : skillsSection.getKeys(false))
 				this.skills.put(skill,new LowbrainSkill(skill,skillsSection.getInt(skill)));
-			}
-		}
-
-		currentSkill = this.skills.containsKey(playerData.getString("stats.current_skill")) ? playerData.getString("stats.current_skill") : "";
+        
+		currentSkill = this.skills.containsKey(playerData.getString("stats.current_skill"))
+                ? playerData.getString("stats.current_skill")
+                : "";
 
 		ConfigurationSection mob = playerData.getConfigurationSection("mob_kills");
-		if(mob != null){
-			for (String key :mob.getKeys(false)) {
+		if(mob != null)
+			for (String key :mob.getKeys(false))
 				this.mobKills.put(key,mob.getInt(key));
-			}
-		}
-
 
 		showStats = playerData.getBoolean("settings.show_stats");
 
@@ -187,28 +176,26 @@ public class LowbrainPlayer extends Attributable {
      */
 	private void initializePowers(){
 		this.powers = new HashMap<>();
-		if(classIsSet && this.lowbrainClass != null ){
-			for (String powa : this.lowbrainClass.getPowers()) {
+		if(classIsSet && this.lowbrainClass != null )
+			for (String powa : this.lowbrainClass.getPowers())
 				this.powers.put(powa,new LowbrainPower(powa));
-			}
-		}
-		if(raceIsSet && this.lowbrainRace != null ){
-			for (String powa : this.lowbrainRace.getPowers()){
+		
+		if(raceIsSet && this.lowbrainRace != null )
+			for (String powa : this.lowbrainRace.getPowers())
 				this.powers.put(powa,new LowbrainPower(powa));
-			}
-		}
 	}
 
 	private void start(){
-		if(classIsSet && raceIsSet && this.lowbrainClass != null && this.lowbrainRace != null){
-			if (statsBoard == null)
-			    statsBoard = new StatsBoard(this);
+	    if (!isPlayable())
+	        return;
 
-			validateEquippedArmor();
-			onAttributeChange();
-			setDisplayName();
-			startManaRegenTask();
-		}
+	    if (statsBoard == null)
+            statsBoard = new StatsBoard(this);
+
+        validateEquippedArmor();
+        onAttributeChange();
+        setDisplayName();
+        startManaRegenTask();
 	}
 
 	//==========================================================END OF CONSTRUCTOR=============================
@@ -232,67 +219,96 @@ public class LowbrainPlayer extends Attributable {
 					v1 = this.getStrength();
 					v2 = (int)v;
 					break;
+
 				case "intelligence":
 				case "intel":
 					v1 = this.getIntelligence();
 					v2 = (int)v;
 					break;
+
 				case "dexterity":
 				case "dext":
 					v1 = this.getDexterity();
 					v2 = (int)v;
 					break;
+
 				case "defence":
 				case "def":
 					v1 = this.getDefence();
 					v2 = (int)v;
 					break;
+
 				case "agility":
 				case "agi":
 					v1 = this.getAgility();
 					v2 = (int)v;
 					break;
+
 				case "magic_resistance":
 				case "magicresistance":
 				case "mr":
 					v1 = this.getMagicResistance();
 					v2 = (int)v;
 					break;
+
 				case "vitality":
 				case "vit":
 					v1 = this.getVitality();
 					v2 = (int)v;
 					break;
+
 				case "level":
 				case "lvl":
 					v1 = this.getLvl();
 					v2 = (int)v;
 					break;
+
 				case "class":
-					if(this.getLowbrainClass() != null){
+					if(this.getLowbrainClass() != null)
 						return this.getLowbrainClass().getName().equals(v) ? 0 : -1;
-					}else return -1;
+					else
+					    return -1;
+
 				case "race":
-					if(this.getLowbrainRace() != null){
+					if(this.getLowbrainRace() != null)
 						return this.getLowbrainRace().getName().equals(v) ? 0 : -1;
-					}else return -1;
+					else
+					    return -1;
+
 				case "kills":
 				case "kill":
 					v1 = this.getKills();
 					v2 = (int)v;
 					break;
+
 				case "deaths":
 				case "death":
 					v1 = this.getDeaths();
 					v2 = (int)v;
 					break;
+
+                case "rep":
+                case "reputation":
+                    if (v instanceof String) {
+                        ReputationStatus status = getSettings().getParameters().getReputation().getRepFrom(this.reputation);
+                        return status == null || status.getName() != v ? -1 : 0;
+                    }
+                    v1 = this.getCourage();
+                    v2 = (int)v;
+                    break;
+
+                case "courage":
+                    v1 = this.getCourage();
+                    v2 = (int)v;
+                    break;
+
 				default:
 					return -1;
 			}
 
-			return v1-v2;
+			return v1 - v2;
 
-		}catch (Exception e){
+		} catch (Exception e){
 			e.printStackTrace();
 			return -1;
 		}
@@ -346,6 +362,7 @@ public class LowbrainPlayer extends Attributable {
 		LowbrainCore.ItemRequirements i = LowbrainCore.getInstance().getItemsRequirements().get(name);
 		if(i == null)
 		    return true;
+
 		return meetRequirements(i.getRequirements());
 	}
 
@@ -367,7 +384,9 @@ public class LowbrainPlayer extends Attributable {
 			name = item.getType().name();
 
 		LowbrainCore.ItemRequirements i = LowbrainCore.getInstance().getItemsRequirements().get(name);
-		if(i == null)return msg;
+		if(i == null)
+		    return msg;
+
 		return meetRequirementsString(i.getRequirements());
 	}
 
@@ -377,7 +396,9 @@ public class LowbrainPlayer extends Attributable {
 	 * @return true if passes, false if not
 	 */
 	public boolean meetRequirements(Map<String,Integer> requirements){
-		if(requirements == null)return true;
+		if(requirements == null)
+		    return true;
+
 		for(Map.Entry<String, Integer> r : requirements.entrySet()) {
 			String n = r.getKey().toLowerCase();
 			int v = r.getValue();
@@ -395,13 +416,15 @@ public class LowbrainPlayer extends Attributable {
 	 */
 	public String meetRequirementsString(Map<String,Integer> requirements){
 		String msg = "";
-		if(requirements == null)return msg;
+		if(requirements == null)
+		    return msg;
+
 		for(Map.Entry<String, Integer> r : requirements.entrySet()) {
 			String n = r.getKey().toLowerCase();
 			int v = r.getValue();
-			if(this.compareAttributesByName(n,v) < 0){
+
+			if(this.compareAttributesByName(n,v) < 0)
 				msg += " " + n + ":" + v;
-			}
 		}
 		return msg;
 	}
@@ -413,15 +436,14 @@ public class LowbrainPlayer extends Attributable {
      * @return true if the cast has succeeded
      */
 	public boolean castSpell(String name, LowbrainPlayer to){
-
 		LowbrainPower powa = this.powers.get(name);
 
-		if(powa == null){
+		if (powa == null) {
 			sendMessage(Internationalization.format("you_cannot_cast_this_spell"), powa.getName());
 			return false;
 		}
 
-		if(powa.Cast(this,to == null ? this : to)){
+		if (powa.cast(this, to == null ? this : to)) {
 			statsBoard.refresh();
 			return true;
 		}
@@ -433,7 +455,7 @@ public class LowbrainPlayer extends Attributable {
 	 */
 	public void saveData(){
 		try {
-	        File userdata = new File(CoreListener.plugin.getDataFolder(), File.separator + "PlayerDB");
+	        File userdata = new File(LowbrainCore.getInstance().getDataFolder(), File.separator + "PlayerDB");
 	        File f = new File(userdata, File.separator + this.player.getUniqueId() + ".yml");
 	        FileConfiguration playerData = YamlConfiguration.loadConfiguration(f);
 
@@ -459,6 +481,7 @@ public class LowbrainPlayer extends Attributable {
 			playerData.set("stats.current_mana", this.currentMana);
 			playerData.set("stats.skill_points", this.skillPoints);
 			playerData.set("stats.reputation", this.reputation);
+            playerData.set("stats.courage", this.courage);
 
 			for(Map.Entry<String, Integer> r : this.mobKills.entrySet()) {
 				String n = r.getKey();
@@ -474,12 +497,12 @@ public class LowbrainPlayer extends Attributable {
 				playerData.set("skills." + n,v);
 			}
 
-			playerData.set("settings.show_stats",showStats);
+			playerData.set("settings.show_stats", showStats);
 
             
             playerData.save(f);
 		} catch (Exception e) {
-			CoreListener.plugin.getLogger().info(e.getMessage());// TODO: handle exception
+			LowbrainCore.getInstance().warn(e.getMessage());// TODO: handle exception
 		}
 	}
 
@@ -507,26 +530,26 @@ public class LowbrainPlayer extends Attributable {
 	 * level up add one level... increment player points
 	 */
 	public void levelUP(){
-		if((getSettings().getMaxLvl() < 0 || this.lvl < getSettings().getMaxLvl())){
-			this.lvl += 1;
+        if((getSettings().getMaxLvl() >= 0 && this.lvl >= getSettings().getMaxLvl()))
+            return;
 
-			addBonusAttributes(1);
+        this.lvl += 1;
 
-			this.addPoints(getSettings().getPointsPerLvl());
+        addBonusAttributes(1);
 
-			if(this.lvl % getSettings().getSkillPointsLevelInterval() == 0){
-				this.addSkillPoints(getSettings().getSkillPointsPerInterval());
-			}
+        this.addPoints(getSettings().getPointsPerLvl());
 
-			double lvlExponential = getSettings().getParameters().getNextLvlMultiplier();
-			this.nextLvl += this.nextLvl * lvlExponential;
-			setDisplayName();
+        if(this.lvl % getSettings().getSkillPointsLevelInterval() == 0)
+            this.addSkillPoints(getSettings().getSkillPointsPerInterval());
 
-			player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()); //restore health on level up
-			this.currentMana = this.maxMana;//restore maxMana on level up
-			sendMessage(Internationalization.format("level_up", this.lvl));
-			this.getPlayer().getWorld().playSound(this.getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,0);
-		}
+        double lvlExponential = getSettings().getParameters().getNextLvlMultiplier();
+        this.nextLvl += this.nextLvl * lvlExponential;
+        setDisplayName();
+
+        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()); //restore health on level up
+        this.currentMana = this.maxMana;//restore maxMana on level up
+        sendMessage(Internationalization.format("level_up", this.lvl));
+        this.getPlayer().getWorld().playSound(this.getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,0);
 	}
 
 	/**
@@ -694,7 +717,7 @@ public class LowbrainPlayer extends Attributable {
 	 * @param override override current configuration (can reset race, can switch race)
      */
 	public void setRace(String n, boolean override){
-		if(!raceIsSet || override){
+		if (!raceIsSet || override) {
 			this.lowbrainRace = new LowbrainRace(n);
 
 			this.defence += lowbrainRace.getDefence();
@@ -713,8 +736,7 @@ public class LowbrainPlayer extends Attributable {
 			this.raceIsSet = true;
 			initializePowers();
 			start();
-		}
-		else if(getSettings().isCanSwitchRace()){
+		} else if(getSettings().canSwitchRace()){
 			if(this.raceName == n){
                 sendMessage(Internationalization.format("set_race_and_class_same", lowbrainRace.getName()));
 				return;
@@ -745,8 +767,7 @@ public class LowbrainPlayer extends Attributable {
             sendMessage(Internationalization.format("set_race_and_class", newRace.getName()));
 			initializePowers();
 			start();
-		}
-		else{
+		} else{
             sendMessage(Internationalization.format("cant_switch_race"));
 		}
 		this.raceIsSet = true;
@@ -778,8 +799,7 @@ public class LowbrainPlayer extends Attributable {
 
 			initializePowers();
 			start();
-		}
-		else if(getSettings().isCanSwitchClass()){
+		} else if (getSettings().canSwitchClass()) {
 			if(this.className == n){
 				sendMessage(Internationalization.format("set_race_and_class_same", lowbrainClass.getName()));
 				return;
@@ -811,8 +831,7 @@ public class LowbrainPlayer extends Attributable {
 			initializePowers();
 			start();
 			sendMessage(Internationalization.format("set_race_and_class", newClass.getName()));
-		}
-		else{
+		} else{
 			sendMessage(Internationalization.format("cant_switch_class"));
 		}
 		this.classIsSet = true;
@@ -823,14 +842,13 @@ public class LowbrainPlayer extends Attributable {
 	 * @param n name of the skill
 	 */
 	public void setCurrentSkill(String n) {
-		if(this.skills.containsKey(n)) {
+		if (this.skills.containsKey(n)) {
 			if(this.skills.get(n).getCurrentLevel() == 0){
 				this.sendMessage(Internationalization.format("cannot_use_skill", n),ChatColor.RED);
 				return;
 			}
 			this.currentSkill = n;
-		}
-		else{
+		} else {
 			this.sendMessage(Internationalization.format("no_such_skill", n),ChatColor.RED);
 		}
 	}
@@ -840,18 +858,18 @@ public class LowbrainPlayer extends Attributable {
 	 * @param n name of the skill
 	 */
 	public void upgradeSkill(String n){
-		if(!LowbrainCore.getInstance().getSkills().containsKey(n)){
+		if (!LowbrainCore.getInstance().getSkills().containsKey(n)){
 			this.sendMessage(Internationalization.format("no_such_skill", n),ChatColor.RED);
 			return;
 		}
 
 		LowbrainSkill s = this.skills.get(n);
-		if(!s.isEnable()){
+		if (!s.isEnable()) {
 			this.sendMessage(Internationalization.format("skill_is_disabled", s.getName()),ChatColor.RED);
 			return;
 		}
 
-		if(s.getMaxLevel() <= s.getCurrentLevel()){
+		if (s.getMaxLevel() <= s.getCurrentLevel()) {
 			this.sendMessage(Internationalization.format("skill_fully_upgraded", s.getName()),ChatColor.RED);
 			return;
 		}
@@ -860,17 +878,17 @@ public class LowbrainPlayer extends Attributable {
 		for(Map.Entry<String, Integer> r : s.getBaseRequirements().entrySet()) {
 			String requirement = r.getKey().toLowerCase();
 			int value = s.operation(r.getValue(),s.getRequirementsOperationValue(),s.getRequirementsOperation());
-			if(this.compareAttributesByName(requirement,value) < 0){
+			if(this.compareAttributesByName(requirement,value) < 0)
 				msg += " " + n + ":" + value;
-			}
+
 		}
 
-		if(!Helper.StringIsNullOrEmpty(msg)){
+		if (!Helper.StringIsNullOrEmpty(msg)) {
 			this.sendMessage(Internationalization.format("skill_requirement_to_high", new Object[] {msg, s.getName()}),ChatColor.RED);
 			return;
 		}
 
-		if(s.getSkillpointsCost() > this.skillPoints){
+		if (s.getSkillpointsCost() > this.skillPoints) {
 			this.sendMessage(Internationalization.format("skills_required_points", new Object[] {s.getBaseSkillpointsCost(), s.getName()}),ChatColor.RED);
 			return;
 		}
@@ -890,7 +908,7 @@ public class LowbrainPlayer extends Attributable {
      */
 	public String toString(){
 	    if (!classIsSet || !raceIsSet)
-            return "You must set your class and your race first !";
+            return "Class or (both) Race is not set. No stats available !";
 
 	    String s = "\n\n" + "*******" + this.getPlayer().getName() + "'s stats *******";
         s += "Level : " + lvl + "\n";
@@ -905,6 +923,8 @@ public class LowbrainPlayer extends Attributable {
         s += "Agility : " + agility + "\n";
         s += "Kills : " + kills + "\n";
         s += "Deaths : " + deaths + "\n";
+        s += "Reputation : " + reputation + "\n";
+        s += "Courage : " + courage + "\n";
         s += "Points : " + points + "\n";
         s += "Skill points: " + skillPoints + "\n";
         s += "Experience : " + experience + "\n";
@@ -1100,7 +1120,6 @@ public class LowbrainPlayer extends Attributable {
     private void setLuck(){
         if(getSettings().getParameters().getPlayerAttributes().getLuck().isEnabled())
             this.getPlayer().getAttribute(Attribute.GENERIC_LUCK).setBaseValue(this.getMultipliers().getPlayerLuck());
-
     }
 
 	/**
@@ -1130,8 +1149,7 @@ public class LowbrainPlayer extends Attributable {
 			String name =  ChatColor.WHITE + getPlayer().getName();
 			getPlayer().setCustomName(prefix + name + suffix);
 			getPlayer().setDisplayName(prefix + name + suffix);
-		}
-		else {
+		} else {
 			getPlayer().setCustomName(getPlayer().getName());
 			getPlayer().setDisplayName(getPlayer().getName());
 		}
@@ -1166,21 +1184,21 @@ public class LowbrainPlayer extends Attributable {
 	    if (this.manaRegenTask != null)
 	        return;
 
-        this.manaRegenTask = CoreListener.plugin.getServer().getScheduler().runTaskTimer(CoreListener.plugin, new Runnable() {
+        this.manaRegenTask = LowbrainCore.getInstance().getServer().getScheduler().runTaskTimer(LowbrainCore.getInstance(), new Runnable() {
             @Override
             public void run() {
                 regenMana();
             }
         }, 0, getSettings().getManaRegenInterval() * 20);
-        CoreListener.plugin.debugInfo("Start regen maxMana task !");
+        LowbrainCore.getInstance().debugInfo("Start regen maxMana task !");
 	}
 
 	/**
 	 * stop maxMana regeneration task on server
      */
 	private void stopManaRegenTask(){
-		if (CoreListener.plugin != null && this.manaRegenTask != null){
-			CoreListener.plugin.getServer().getScheduler().cancelTask(this.manaRegenTask.getTaskId());
+		if (LowbrainCore.getInstance() != null && this.manaRegenTask != null){
+			LowbrainCore.getInstance().getServer().getScheduler().cancelTask(this.manaRegenTask.getTaskId());
 			this.manaRegenTask = null;
 		}
 	}
@@ -1242,28 +1260,29 @@ public class LowbrainPlayer extends Attributable {
      * @return multiplier object
      */
 	public Multipliers getMultipliers() {
-		return multipliers;
+		return multipliers != null ? multipliers : (this.multipliers = new Multipliers(this));
 	}
 
 	//===============================================END OF PRIVATE METHODES HELPER===============================
 
     protected void onAttributeChange(){
-        if(classIsSet && raceIsSet) {
+	    if (!classIsSet || !raceIsSet)
+	        return;
 
-            if(multipliers == null)
-                multipliers = new Multipliers(this);
-            else
-                multipliers.update();
+        if(multipliers == null)
+            multipliers = new Multipliers(this);
+        else
+            multipliers.update();
 
+        this.repStatus = getSettings().getParameters().getReputation().getRepFrom(this.reputation);
 
-            setPlayerMaxHealth();
-            setLuck();
-            setMana();
-            setKnockBackResistance();
-            setAttackSpeed();
-            setMovementSpeed();
-            statsBoard.refresh();
-        }
+        setPlayerMaxHealth();
+        setLuck();
+        setMana();
+        setKnockBackResistance();
+        setAttackSpeed();
+        setMovementSpeed();
+        statsBoard.refresh();
     }
 
     public boolean isShowStats() {
@@ -1276,6 +1295,10 @@ public class LowbrainPlayer extends Attributable {
 
     public StatsBoard getStatsBoard() {
         return this.statsBoard;
+    }
+
+    public boolean isPlayable() {
+        return this.classIsSet && this.raceIsSet && this.lowbrainClass != null && this.lowbrainRace != null;
     }
 }
 

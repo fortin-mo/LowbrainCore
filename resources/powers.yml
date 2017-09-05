@@ -8,8 +8,8 @@
 #   maximum: maximum duration at top level in second
 #   minimum: minimum duration at low level in second
 #   range: generate a range
-#   intelligence: the amount by wich intelligence is multiplied by
-#   dexterity: the amount by wich dexterity is multiplied by
+#   intelligence: the amount by which intelligence is multiplied by
+#   dexterity: the amount by which dexterity is multiplied by
 # amplifier:
 #   function: set a function if you want, ex: 0.5 * (0.75 * {0} + 0.25 * {1}) + 0, intelligence, dexterity
 #   maximum: maximum amplifier at top level
@@ -27,6 +27,7 @@ healing:
  cast:
   duration:
    function:
+   # 0.05 equals a single tick (0.05 * 20) meaning the healing will happen only once
    maximum: 0.05
    minimum: 0.05
    range: 0
@@ -34,7 +35,7 @@ healing:
     intelligence: 1.0
   amplifier: #Healing is 2 (Heart.svg) × 2level.
    function:
-   maximum: 3
+   maximum: 6
    minimum: 0
    range: 0
    variables:

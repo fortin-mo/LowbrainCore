@@ -9,7 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="HolographicDisplays" level="project" />
     <orderEntry type="library" name="Parties-1.7.6" level="project" />
-    <orderEntry type="library" name="ArmorEquipEvent" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -19,7 +18,8 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="LowbrainItems" level="project" />
     <orderEntry type="library" name="spigot-1.12.1" level="project" />
+    <orderEntry type="module" module-name="LowbrainItems" />
+    <orderEntry type="module" module-name="ArmorEquipEvent" />
   </component>
 </module>

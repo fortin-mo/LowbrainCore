@@ -99,7 +99,7 @@ public class LowbrainPower {
      * @return cast duration value
      */
     private int getCastDuration(LowbrainPlayer from){
-        return (int)duration.randomize(duration.compute(from));
+        return (int)(duration.randomize(duration.compute(from)) * 20);
     }
 
     /**
@@ -182,7 +182,7 @@ public class LowbrainPower {
      * @param to to this LowbrainPlayer (if set to null, will cast to from/self)
      * @return true if cast succeeded
      */
-    public boolean Cast(LowbrainPlayer from, LowbrainPlayer to){
+    public boolean cast(LowbrainPlayer from, LowbrainPlayer to){
         try{
             if(from == null || to == null)
                 return false;
@@ -226,7 +226,7 @@ public class LowbrainPower {
                 return false;
             }
 
-            PotionEffect p =  new PotionEffect(this.potionEffectType,this.getCastDuration(from),this.getCastAmplifier(from),true,true);
+            PotionEffect p =  new PotionEffect(this.potionEffectType, this.getCastDuration(from), this.getCastAmplifier(from),true,true);
             p.apply(to.getPlayer());
 
             from.setCurrentMana(from.getCurrentMana() - this.getMana());

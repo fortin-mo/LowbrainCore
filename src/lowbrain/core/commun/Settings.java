@@ -126,11 +126,11 @@ public class Settings {
         return maxStats;
     }
 
-    public boolean isCanSwitchClass() {
+    public boolean canSwitchClass() {
         return canSwitchClass;
     }
 
-    public boolean isCanSwitchRace() {
+    public boolean canSwitchRace() {
         return canSwitchRace;
     }
 

@@ -15,7 +15,6 @@ public abstract class Attributable extends Playable {
         super(player);
     }
 
-    protected int reputation = 0;
     protected int strength = 0;
     protected int intelligence = 0;
     protected int dexterity = 0;
@@ -29,7 +28,10 @@ public abstract class Attributable extends Playable {
     protected int lvl = 0;
     protected int kills = 0;
     protected int deaths = 0;
+    protected int reputation = 0;
+    protected int courage = 0;
 
+    public int getCourage() {return courage;}
     public int getReputation(){return reputation;}
     public int getStrength(){return strength;}
     public int getIntelligence(){return intelligence;}
@@ -51,6 +53,12 @@ public abstract class Attributable extends Playable {
     public void setLvl(int n) {this.lvl = n < 0 ? 0 : n; onAttributeChange();}
     public void setKills(int n) {this.kills = n < 0 ? 0 : n; onAttributeChange();}
     public void setDeaths(int n) {this.deaths = n < 0 ? 0 : n; onAttributeChange();}
+
+    public void setReputation(int n){this.reputation = n; onAttributeChange();}
+    public void setCourage(int n){this.courage = n; onAttributeChange();}
+
+    public void addCourage(int n) {this.courage += n; onAttributeChange();}
+    public void addReputation(int n) {this.reputation += n; onAttributeChange();}
 
     public void addPoints(int n) {points += n; points = points < 0 ? 0 : points; onAttributeChange();}
     public void addLvl(int n) {lvl += n; lvl = lvl < 0 ? 0 : lvl; onAttributeChange();}
@@ -516,16 +524,6 @@ public abstract class Attributable extends Playable {
         }
     }
 
-    public void addReputation(int n) {
-        this.reputation += n;
-        onAttributeChange();
-    }
-
-    public void setReputation(int n) {
-        this.reputation = n;
-        onAttributeChange();
-    }
-
     protected abstract void onAttributeChange();
 
     /**
@@ -590,6 +588,9 @@ public abstract class Attributable extends Playable {
             case "reputation" :
             case "rep" :
                 return this.getReputation();
+
+            case "courage":
+                return this.getCourage();
         }
         return d;
     }
