@@ -1,6 +1,6 @@
 package lowbrain.core.rpg;
 
-import lowbrain.core.config.Classes;
+import lowbrain.core.main.LowbrainCore;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.*;
@@ -35,7 +35,7 @@ public class LowbrainClass {
 	 * initialize
 	 */
 	public void Initialize(){
-		FileConfiguration config = Classes.getInstance();
+		FileConfiguration config = LowbrainCore.getInstance().getConfigHandler().classes();
 		tag = config.getString(name+".tag","");
 		vitality = config.getInt(name+".vitality",0);
 		strength = config.getInt(name+".strength",0);
@@ -163,7 +163,7 @@ public class LowbrainClass {
 	 * set the list of powers available for a particular class
      */
 	private void initPowers(){
-		this.powers = Classes.getInstance().getStringList(name+".powers");
+		this.powers = LowbrainCore.getInstance().getConfigHandler().classes().getStringList(name+".powers");
 
 		if(this.powers == null)
 		    this.powers = new ArrayList<String>();

@@ -4,16 +4,14 @@ import com.alessiodp.parties.Parties;
 import com.alessiodp.parties.objects.Party;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import lowbrain.core.Abstraction.Playable;
-import lowbrain.core.commun.FunctionType;
 import lowbrain.core.commun.Helper;
 import lowbrain.core.commun.Settings;
-import lowbrain.core.config.Internationalization;
-import lowbrain.core.config.MobsXP;
 import lowbrain.core.main.LowbrainCore;
 import lowbrain.core.rpg.LowbrainPlayer;
 import lowbrain.items.main.LowbrainItems;
 import lowbrain.items.main.Staff;
+import lowbrain.library.FunctionType;
+import lowbrain.library.fn;
 import org.apache.commons.lang.mutable.MutableBoolean;
 import org.apache.commons.lang.mutable.MutableFloat;
 import org.bukkit.*;
@@ -44,7 +42,6 @@ import java.util.*;
  * core event listener for LowbrainCore plugin
  */
 public class CoreListener implements Listener {
-
     public final static String LAST_USED_LORE = "last used : ";
     public final static String DURABILITY_LORE = "durability : ";
     public final static String SPLIT_LORE = " : ";
@@ -102,16 +99,16 @@ public class CoreListener implements Listener {
             return;
 
         String requirements =  rp.canEquipItemString(e.getItem());
-        if(!Helper.StringIsNullOrEmpty(requirements)) {
+        if(!fn.StringIsNullOrEmpty(requirements)) {
             e.setUseItemInHand(Event.Result.DENY);
-            rp.sendMessage(Internationalization.format("cannot_equit_armor_or_item", requirements), ChatColor.RED);
+            rp.sendMessage(plugin.getConfigHandler().internationalization().format("cannot_equit_armor_or_item", requirements), ChatColor.RED);
             e.setCancelled(true);
             return;
         }
 
         if(e.getAction().equals(Action.RIGHT_CLICK_AIR) /*|| e.getAction().equals(Action.RIGHT_CLICK_AIR.RIGHT_CLICK_BLOCK)*/){
 
-            if(e.getItem().getItemMeta() != null && !Helper.StringIsNullOrEmpty(e.getItem().getItemMeta().getDisplayName())){
+            if(e.getItem().getItemMeta() != null && !fn.StringIsNullOrEmpty(e.getItem().getItemMeta().getDisplayName())){
                 ItemMeta iMeta = e.getItem().getItemMeta();
 
                 //String n = iMeta.getDisplayName().substring(2);
@@ -229,8 +226,8 @@ public class CoreListener implements Listener {
                     holoDamage.appendTextLine(color + formatter.format(e.getFinalDamage()));
 
 
-                int directionX = Helper.randomInt(0,1) == 0 ? -1 : 1;
-                int directionZ = Helper.randomInt(0,1) == 0 ? -1 : 1;
+                int directionX = fn.randomInt(0,1) == 0 ? -1 : 1;
+                int directionZ = fn.randomInt(0,1) == 0 ? -1 : 1;
 
                 new BukkitRunnable() {
                     int ticksRun;
@@ -405,17 +402,17 @@ public class CoreListener implements Listener {
 
         float precX = rpPlayer.getMultipliers().getBowPrecision();
 
-        int direction = Helper.randomInt(0,1) == 0 ? -1 : 1;
+        int direction = fn.randomInt(0,1) == 0 ? -1 : 1;
         precX = 1 + (1-precX)*direction;
 
         float precY = rpPlayer.getMultipliers().getBowPrecision();
 
-        direction = Helper.randomInt(0,1) == 0 ? -1 : 1;
+        direction = fn.randomInt(0,1) == 0 ? -1 : 1;
         precY = 1 + (1-precY)*direction;
 
         float precZ = rpPlayer.getMultipliers().getBowPrecision();
 
-        direction = Helper.randomInt(0,1) == 0 ? -1 : 1;
+        direction = fn.randomInt(0,1) == 0 ? -1 : 1;
         precZ = 1 + (1-precZ)*direction;
 
         plugin.debugInfo("              Arrow precision multiplier : " + precX);
@@ -493,7 +490,7 @@ public class CoreListener implements Listener {
             int count = (int)(rpKilled.getPlayer().getInventory().getSize() * dropPercentage);
 
             for (int i = 0; i < count; i++) {
-                int rdm = Helper.randomInt(0,rpKilled.getPlayer().getInventory().getSize() - 1);
+                int rdm = fn.randomInt(0,rpKilled.getPlayer().getInventory().getSize() - 1);
 
                 ItemStack item = rpKilled.getPlayer().getInventory().getItem(rdm);
 
@@ -591,9 +588,9 @@ public class CoreListener implements Listener {
 
         int killsCount = rpKiller.getMobKills().get(mobName);
 
-        ConfigurationSection section = MobsXP.getInstance().getConfigurationSection(mobName);
+        ConfigurationSection section = plugin.getConfigHandler().mobsxp().getConfigurationSection(mobName);
         if(section == null)
-            section = MobsXP.getInstance().getConfigurationSection("default");
+            section = plugin.getConfigHandler().mobsxp().getConfigurationSection("default");
 
         if (section != null) {
             int interval = section.getInt("xp_bonus_interval", -1);
@@ -614,7 +611,7 @@ public class CoreListener implements Listener {
                         for (Player p : party.getOnlinePlayers()) {
                             if (!p.equals(rpKiller.getPlayer())){
                                 if(Settings.getInstance().getGroupXpRange() == -1
-                                        || Helper.getDistanceBetweenTwoPlayers(rpKiller.getPlayer(),p) <= Settings.getInstance().getGroupXpRange()){
+                                        || fn.distanceBetweenPlayers(rpKiller.getPlayer(),p) <= Settings.getInstance().getGroupXpRange()){
                                     LowbrainPlayer p2 = plugin.getPlayerHandler().getList().get(p.getUniqueId());
                                     if(p2 != null)
                                         others.add(p2);
@@ -644,6 +641,13 @@ public class CoreListener implements Listener {
                 plugin.debugInfo("              Killer gained : " + ( xp ) +" xp!");;
             }
         }
+
+        if (Settings.getInstance().getParameters().getCourage().isEnabled()) {
+            int courage = Settings.getInstance().getParameters().getCourage().getOnMobKills().getOrDefault(mobName
+                ,Settings.getInstance().getParameters().getCourage().getOnMobKills().getOrDefault("default", 0));
+
+            rpKiller.addCourage(courage);
+        }
     }
 
     /**
@@ -653,7 +657,7 @@ public class CoreListener implements Listener {
      */
     @Nullable
     private PotionEffect createMagicAttack(LowbrainPlayer p){
-        int rdm = Helper.randomInt(1,7);
+        int rdm = fn.randomInt(1,7);
         int duration = 0;
         int amplifier = 0;
 
@@ -864,7 +868,7 @@ public class CoreListener implements Listener {
         else if(e.getDamager() instanceof Projectile){
             Projectile projectile = (Projectile) e.getDamager();
 
-            if(projectile.getShooter() instanceof Player && Helper.StringIsNullOrEmpty(projectile.getCustomName())){
+            if(projectile.getShooter() instanceof Player && fn.StringIsNullOrEmpty(projectile.getCustomName())){
                 if(Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByMagic().isEnabled()){
                     multiplier = damagee.getMultipliers().getDamagedByMagic();
                     damageSet = true;
@@ -1143,14 +1147,14 @@ public class CoreListener implements Listener {
         }
 
         //if has durability lore, get the durability
-        if(!Helper.StringIsNullOrEmpty(sDurability)){
+        if(!fn.StringIsNullOrEmpty(sDurability)){
             String[] tmp = sDurability.split(SPLIT_LORE);
-            durability = tmp.length > 1 ? Helper.intTryParse(tmp[1], durability) : durability;
+            durability = tmp.length > 1 ? fn.toInteger(tmp[1], durability) : durability;
         }
         //if has lastUsed lore, get the last used date
-        if(!Helper.StringIsNullOrEmpty(sLastUsed)){
+        if(!fn.StringIsNullOrEmpty(sLastUsed)){
             String[] tmp = sLastUsed.split(SPLIT_LORE);
-            lastUsed = tmp.length > 1 ? Helper.dateTryParse(tmp[1],lastUsed) : lastUsed;
+            lastUsed = tmp.length > 1 ? fn.toDate(tmp[1],lastUsed) : lastUsed;
         }
 
         lastUsed.add(Calendar.SECOND, staff.getCooldown());
@@ -1193,10 +1197,10 @@ public class CoreListener implements Listener {
         if (durability <= 0) {
             rp.getPlayer().getInventory().remove(item);
             rp.getPlayer().updateInventory();
-            rp.sendMessage(Internationalization.format("item_destroyed"),ChatColor.GRAY);
+            rp.sendMessage(plugin.getConfigHandler().internationalization().format("item_destroyed"),ChatColor.GRAY);
         } else {
             if (durability <= 10)
-                rp.sendMessage(Internationalization.format("only_10_cast_left"));
+                rp.sendMessage(plugin.getConfigHandler().internationalization().format("only_10_cast_left"));
 
             List<String> lores = iMeta.getLore();
             lores.remove(sDurability);

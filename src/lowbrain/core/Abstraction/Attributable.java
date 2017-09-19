@@ -1,8 +1,8 @@
-package lowbrain.core.Abstraction;
+package lowbrain.core.abstraction;
 
-import lowbrain.core.commun.Helper;
 import lowbrain.core.commun.Settings;
-import lowbrain.core.config.Internationalization;
+import lowbrain.core.main.LowbrainCore;
+import lowbrain.library.fn;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -192,11 +192,11 @@ public abstract class Attributable extends Playable {
             return;
         }
         else if(!Settings.getInstance().isAllowPointDeduction() && nb < 0){
-            sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("cannot_deduct_anymore_point"));
             return;
         }
         else if (Settings.getInstance().isAllowPointDeduction() && nb < 0 && this.agility == 0){
-            sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("cannot_deduct_anymore_point"));
             return;
         }
         else if(usePoints && this.points >= nb){
@@ -210,20 +210,20 @@ public abstract class Attributable extends Playable {
             double dif = this.agility - oldAgility;
             this.points -= dif;
             if(callChange) onAttributeChange();
-            sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"agility", dif}));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("attribute_incremented_by", new Object[]{"agility", dif}));
         }
         else if(!usePoints){
             this.agility += nb;
             if(maxStats >= 0 && this.agility > maxStats){
                 this.agility = maxStats;
-                sendMessage(Internationalization.format("attribute_set_to", new Object[]{"agility", Settings.getInstance().getMaxStats()}));
+                sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("attribute_set_to", new Object[]{"agility", Settings.getInstance().getMaxStats()}));
             }else{
-                sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"agility", nb}));
+                sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("attribute_incremented_by", new Object[]{"agility", nb}));
             }
             if(callChange) onAttributeChange();
         }
         else{
-            sendMessage(Internationalization.format("not_enough_points"),ChatColor.RED);
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("not_enough_points"),ChatColor.RED);
             return;
         }
     }
@@ -239,11 +239,11 @@ public abstract class Attributable extends Playable {
             return;
         }
         else if(!Settings.getInstance().isAllowPointDeduction() && nb < 0){
-            sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("cannot_deduct_anymore_point"));
             return;
         }
         else if (Settings.getInstance().isAllowPointDeduction() && nb < 0 && this.strength == 0){
-            sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("cannot_deduct_anymore_point"));
             return;
         }
         else if(usePoints && this.points >= nb){
@@ -260,20 +260,20 @@ public abstract class Attributable extends Playable {
 
             this.points -= dif;
             if(callChange) onAttributeChange();
-            sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"strength", dif}));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("attribute_incremented_by", new Object[]{"strength", dif}));
         }
         else if(!usePoints){
             this.strength += nb;
             if(maxStats >= 0 && this.strength > maxStats){
                 this.strength = maxStats;
-                sendMessage(Internationalization.format("attribute_set_to", new Object[]{"strength", Settings.getInstance().getMaxStats()}));
+                sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("attribute_set_to", new Object[]{"strength", Settings.getInstance().getMaxStats()}));
             }else {
-                sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"strength", nb}));
+                sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("attribute_incremented_by", new Object[]{"strength", nb}));
             }
             if(callChange) onAttributeChange();
         }
         else{
-            sendMessage(Internationalization.format("not_enough_points"),ChatColor.RED);
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("not_enough_points"),ChatColor.RED);
             return;
         }
     }
@@ -289,11 +289,11 @@ public abstract class Attributable extends Playable {
             return;
         }
         else if(!Settings.getInstance().isAllowPointDeduction() && nb < 0){
-            sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("cannot_deduct_anymore_point"));
             return;
         }
         else if (Settings.getInstance().isAllowPointDeduction() && nb < 0 && this.intelligence == 0){
-            sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("cannot_deduct_anymore_point"));
             return;
         }
         else if(usePoints && this.points >= nb){
@@ -309,22 +309,22 @@ public abstract class Attributable extends Playable {
 
             this.points -= dif;
             if(callChange) onAttributeChange();
-            sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"intelligence", dif}));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("attribute_incremented_by", new Object[]{"intelligence", dif}));
 
         }
         else if(!usePoints){
             this.intelligence += nb;
             if(maxStats >= 0 && this.intelligence > maxStats){
                 this.intelligence = maxStats;
-                sendMessage(Internationalization.format("attribute_set_to", new Object[]{"intelligence", Settings.getInstance().getMaxStats()}));
+                sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("attribute_set_to", new Object[]{"intelligence", Settings.getInstance().getMaxStats()}));
             }
             else{
-                sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"intelligence", nb}));
+                sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("attribute_incremented_by", new Object[]{"intelligence", nb}));
             }
             if(callChange) onAttributeChange();
         }
         else{
-            sendMessage(Internationalization.format("not_enough_points"),ChatColor.RED);
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("not_enough_points"),ChatColor.RED);
             return;
         }
     }
@@ -340,11 +340,11 @@ public abstract class Attributable extends Playable {
             return;
         }
         else if(!Settings.getInstance().isAllowPointDeduction() && nb < 0){
-            sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("cannot_deduct_anymore_point"));
             return;
         }
         else if (Settings.getInstance().isAllowPointDeduction() && nb < 0 && this.dexterity == 0){
-            sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("cannot_deduct_anymore_point"));
             return;
         }
         else if(usePoints && this.points >= nb){
@@ -360,20 +360,20 @@ public abstract class Attributable extends Playable {
 
             this.points -= dif;
             if(callChange) onAttributeChange();
-            sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"dexterity", nb}));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("attribute_incremented_by", new Object[]{"dexterity", nb}));
         }
         else if(!usePoints){
             this.dexterity += nb;
             if(maxStats >= 0 && this.dexterity > maxStats){
                 this.dexterity = maxStats;
-                sendMessage(Internationalization.format("attribute_set_to", new Object[]{"dexterity", Settings.getInstance().getMaxStats()}));
+                sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("attribute_set_to", new Object[]{"dexterity", Settings.getInstance().getMaxStats()}));
             }else {
-                sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"dexterity", nb}));
+                sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("attribute_incremented_by", new Object[]{"dexterity", nb}));
             }
             if(callChange) onAttributeChange();
         }
         else{
-            sendMessage(Internationalization.format("not_enough_points"),ChatColor.RED);
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("not_enough_points"),ChatColor.RED);
             return;
         }
     }
@@ -389,11 +389,11 @@ public abstract class Attributable extends Playable {
             return;
         }
         else if(!Settings.getInstance().isAllowPointDeduction() && nb < 0){
-            sendMessage(Internationalization.format("cannot_deduct_anymore_point", null));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("cannot_deduct_anymore_point", null));
             return;
         }
         else if (Settings.getInstance().isAllowPointDeduction() && nb < 0 && this.vitality == 0){
-            sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("cannot_deduct_anymore_point"));
             return;
         }
         else if(usePoints && this.points >= nb){
@@ -408,20 +408,20 @@ public abstract class Attributable extends Playable {
 
             this.points -= dif;
             if(callChange) onAttributeChange();
-            sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"vitality", dif}));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("attribute_incremented_by", new Object[]{"vitality", dif}));
         }
         else if(!usePoints){
             this.vitality += nb;
             if(maxStats >= 0 && this.vitality > maxStats){
                 this.vitality = maxStats;
-                sendMessage(Internationalization.format("attribute_set_to", new Object[]{"vitality", Settings.getInstance().getMaxStats()}));
+                sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("attribute_set_to", new Object[]{"vitality", Settings.getInstance().getMaxStats()}));
             }else{
-                sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"vitality", nb}));
+                sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("attribute_incremented_by", new Object[]{"vitality", nb}));
             }
             if(callChange) onAttributeChange();
         }
         else{
-            sendMessage(Internationalization.format("not_enough_points"),ChatColor.RED);
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("not_enough_points"),ChatColor.RED);
             return;
         }
     }
@@ -438,11 +438,11 @@ public abstract class Attributable extends Playable {
             return;
         }
         else if(!Settings.getInstance().isAllowPointDeduction() && nb < 0){
-            sendMessage(Internationalization.format("cannot_deduct_anymore_point", null));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("cannot_deduct_anymore_point", null));
             return;
         }
         else if (Settings.getInstance().isAllowPointDeduction() && nb < 0 && this.defence == 0){
-            sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("cannot_deduct_anymore_point"));
             return;
         }
         else if(usePoints && this.points >= nb){
@@ -457,20 +457,20 @@ public abstract class Attributable extends Playable {
 
             this.points -= dif;
             if(callChange) onAttributeChange();
-            sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"defence", dif}));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("attribute_incremented_by", new Object[]{"defence", dif}));
         }
         else if(!usePoints){
             this.defence += nb;
             if(maxStats >= 0 && this.defence > maxStats){
                 this.defence = maxStats;
-                sendMessage(Internationalization.format("attribute_set_to", new Object[]{"defence", Settings.getInstance().getMaxStats()}));
+                sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("attribute_set_to", new Object[]{"defence", Settings.getInstance().getMaxStats()}));
             }else{
-                sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"defence", nb}));
+                sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("attribute_incremented_by", new Object[]{"defence", nb}));
             }
             if(callChange) onAttributeChange();
         }
         else{
-            sendMessage(Internationalization.format("not_enough_points"),ChatColor.RED);
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("not_enough_points"),ChatColor.RED);
             return;
         }
     }
@@ -487,11 +487,11 @@ public abstract class Attributable extends Playable {
             return;
         }
         else if(!Settings.getInstance().isAllowPointDeduction() && nb < 0){
-            sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("cannot_deduct_anymore_point"));
             return;
         }
         else if (Settings.getInstance().isAllowPointDeduction() && nb < 0 && this.magicResistance == 0){
-            sendMessage(Internationalization.format("cannot_deduct_anymore_point"));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("cannot_deduct_anymore_point"));
             return;
         }
         else if(usePoints && this.points >= nb){
@@ -506,20 +506,20 @@ public abstract class Attributable extends Playable {
             if(callChange) onAttributeChange();
             this.points -= dif;
 
-            sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"magic resistance", dif}));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("attribute_incremented_by", new Object[]{"magic resistance", dif}));
         }
         else if(!usePoints){
             this.magicResistance += nb;
             if(maxStats >= 0 && this.magicResistance > maxStats){
                 this.magicResistance = maxStats;
-                sendMessage(Internationalization.format("attribute_set_to", new Object[]{"magic resistance", Settings.getInstance().getMaxStats()}));
+                sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("attribute_set_to", new Object[]{"magic resistance", Settings.getInstance().getMaxStats()}));
             } else{
-                sendMessage(Internationalization.format("attribute_incremented_by", new Object[]{"magic resistance", nb}));
+                sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("attribute_incremented_by", new Object[]{"magic resistance", nb}));
             }
             if(callChange) onAttributeChange();
         }
         else{
-            sendMessage(Internationalization.format("not_enough_points"),ChatColor.RED);
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("not_enough_points"),ChatColor.RED);
             return;
         }
     }
@@ -542,7 +542,7 @@ public abstract class Attributable extends Playable {
      * @return value
      */
     public int getAttribute(String n, int d){
-        if(Helper.StringIsNullOrEmpty(n))return d;
+        if(fn.StringIsNullOrEmpty(n))return d;
 
         switch (n.toLowerCase()){
             case "level":

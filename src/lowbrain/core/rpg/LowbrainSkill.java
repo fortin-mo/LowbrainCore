@@ -1,11 +1,10 @@
 package lowbrain.core.rpg;
 
-import lowbrain.core.commun.FunctionType;
 import lowbrain.core.commun.Helper;
-import lowbrain.core.config.Internationalization;
-import lowbrain.core.config.Skills;
 import lowbrain.core.events.CoreListener;
 import lowbrain.core.main.LowbrainCore;
+import lowbrain.library.FunctionType;
+import lowbrain.library.fn;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.configuration.ConfigurationSection;
@@ -106,7 +105,7 @@ public class LowbrainSkill {
     }
 
     private void initialize(){
-        ConfigurationSection sec = Skills.getInstance().getConfigurationSection(this.name);
+        ConfigurationSection sec = LowbrainCore.getInstance().getConfigHandler().skills().getConfigurationSection(this.name);
         if(sec == null) {
             LowbrainCore.getInstance().warn("Could not find configuration section for skill => " + this.name);
             enable = false;
@@ -214,7 +213,7 @@ public class LowbrainSkill {
 
                     for (int angle : angles) {
                         Vector vec;
-                        vec = Helper.rotateYAxis(p.getPlayer().getLocation().getDirection().clone().normalize(), angle);
+                        vec = fn.rotateYAxis(p.getPlayer().getLocation().getDirection().clone().normalize(), angle);
                         Arrow marrow = p.getPlayer().launchProjectile(Arrow.class,vec.clone().multiply(ar.getVelocity().length()));
                         applyEffectToArrow(marrow);
                         marrow.setShooter(p.getPlayer());
@@ -262,7 +261,7 @@ public class LowbrainSkill {
                 this.setLastExecuted(Calendar.getInstance());
                 p.setCurrentMana(p.getCurrentMana() - getBaseManaCost());
                 CoreListener.plugin.debugInfo(this.name);
-                p.sendMessage(Internationalization.format("skilled_attack_succesfull"));
+                p.sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("skilled_attack_succesfull"));
             }
 
             return succeed;
@@ -282,22 +281,22 @@ public class LowbrainSkill {
 
     private void applyEffectToArrow(Arrow arrow){
         String speed = this.getEffects().getOrDefault("speed",null);
-        if(!Helper.StringIsNullOrEmpty(speed)){
+        if(!fn.StringIsNullOrEmpty(speed)){
             arrow.setVelocity(arrow.getVelocity().normalize().multiply(getEffectValue(speed)));
         }
-        int gravity = Helper.intTryParse(this.getEffects().getOrDefault("gravity","1"),1);
+        int gravity = fn.toInteger(this.getEffects().getOrDefault("gravity","1"),1);
         arrow.setGravity(gravity <= 0 ? false : true);
     }
 
     public float getEffectValue(String effect){
-        if(Helper.StringIsNullOrEmpty(effect))return 0F;
+        if(fn.StringIsNullOrEmpty(effect))return 0F;
 
         String[] tmp = effect.split(",");
         float min = 0F;
         float max = 0F;
 
-        min = tmp.length > 0 ? Helper.floatTryParse(tmp[0],0F) : 0F;
-        max = tmp.length > 1 ? Helper.floatTryParse(tmp[1],0F) : min * this.getMaxLevel();
+        min = tmp.length > 0 ? fn.toFloat(tmp[0], 0F) : 0F;
+        max = tmp.length > 1 ? fn.toFloat(tmp[1],0F) : min * this.getMaxLevel();
 
         return Helper.Slope(max,min,this.getMaxLevel(),this.getFunctionType()) * this.getCurrentLevel() + min;
     }
@@ -353,7 +352,7 @@ public class LowbrainSkill {
             this.setLastExecuted(Calendar.getInstance());
             p.setCurrentMana(p.getCurrentMana() - getBaseManaCost());
             CoreListener.plugin.debugInfo(this.name);
-            p.sendMessage(Internationalization.format("skilled_attack_succesfull"));
+            p.sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("skilled_attack_succesfull"));
 
             return true;
         }catch (Exception e){
@@ -372,7 +371,7 @@ public class LowbrainSkill {
 
             if(this.getLastExecuted().before(cooldownTime)){
                 if(p.getCurrentMana() < this.getManaCost()){
-                    p.sendMessage(Internationalization.format("insufficient_mana"), ChatColor.RED);
+                    p.sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("insufficient_mana"), ChatColor.RED);
                     return false;
                 } else {
                     return true;

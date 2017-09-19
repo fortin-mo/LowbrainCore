@@ -3,10 +3,13 @@ package lowbrain.core.main;
 import java.util.*;
 
 import lowbrain.core.commun.Settings;
-import lowbrain.core.config.*;
 import lowbrain.core.events.ArmorEquipListener;
 import lowbrain.core.events.CoreListener;
+import lowbrain.core.handlers.CommandHandler;
+import lowbrain.core.handlers.ConfigHandler;
+import lowbrain.core.handlers.PlayerHandler;
 import lowbrain.core.rpg.LowbrainSkill;
+import lowbrain.library.fn;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
@@ -27,6 +30,7 @@ public class LowbrainCore extends JavaPlugin {
 	private HashMap<String,ItemRequirements> itemsRequirements;
 	private HashMap<String,LowbrainSkill> skills;
 	private PlayerHandler playerHandler;
+	private ConfigHandler configHandler;
 
 	private static final String CLASSES_V = "1.0";
 	private static final String CONFIG_V = "1.0";
@@ -63,7 +67,7 @@ public class LowbrainCore extends JavaPlugin {
 
 			namespacedKey = new NamespacedKey(this, "LowbrainCore");
 
-			InitialisingConfigFile();
+            configHandler = new ConfigHandler(this).load();
 
 			validateConfigVersion();
 
@@ -82,7 +86,7 @@ public class LowbrainCore extends JavaPlugin {
 			if(!evaluateFunctions()){
 				this.warn("[ERROR] functions in config file are not correctly formatted !!!");
 				this.warn("[ERROR] LowbrainCore cannot load !");
-				this.onDisable();
+                getServer().getPluginManager().disablePlugin(this);
 				return;
 			}
 
@@ -92,6 +96,7 @@ public class LowbrainCore extends JavaPlugin {
 				getServer().getPluginManager().registerEvents(new ArmorEquipListener(this), this);
 
 			this.getCommand("lbcore").setExecutor(new CommandHandler(this));
+
 			log(getDescription().getVersion() + " enabled!");
 
 			if(Settings.getInstance().isAutoSave()) {
@@ -107,28 +112,6 @@ public class LowbrainCore extends JavaPlugin {
 			e.printStackTrace();
 		}
     }
-
-	/**
-	 * first load config file
-	 */
-	private void InitialisingConfigFile(){
-		try {
-		    DefaultParameters.getInstance();
-			Config.getInstance();
-			Classes.getInstance();
-			ItemsRequirements.getInstance();
-			MobsXP.getInstance();
-			Powers.getInstance();
-			Races.getInstance();
-			Skills.getInstance();
-			Settings.getInstance();
-
-			loadSkills();
-			loadItemsRequirements();
-		}catch (Exception e){
-			e.printStackTrace();
-		}
-	}
 
     @Override
     public void onDisable() {
@@ -179,36 +162,21 @@ public class LowbrainCore extends JavaPlugin {
     }
 
 	/**
-	 * reload config
-	 */
-    public void reloadConfig(){
-    	Classes.reload();
-		Config.reload();
-		ItemsRequirements.reload();
-		MobsXP.reload();
-		Powers.reload();
-		Skills.reload();
-		Races.reload();
-		Settings.reload();
-		getPlayerHandler().reload();
-	}
-
-	/**
 	 * evaluate all string functions from config file
 	 * @return false if one function fails
 	 */
     private boolean evaluateFunctions(){
     	List<String> functions = new ArrayList<String>();
 
-		functionsLookup(Config.getInstance(),functions);
+		functionsLookup(configHandler.config(),functions);
 
-		for (String key: Powers.getInstance().getKeys(false))
-			functionsLookup(Powers.getInstance().getConfigurationSection(key),functions);
+		for (String key: configHandler.powers().getKeys(false))
+			functionsLookup(configHandler.powers().getConfigurationSection(key),functions);
 
 		boolean succeed = true;
 		try{
 			for (String func: functions)
-				Helper.eval(Helper.FormatStringWithValues(func.split(","),null));
+				fn.eval(Helper.FormatStringWithValues(func.split(","),null));
 		}
 		catch(Exception e){
 			succeed = false;
@@ -230,7 +198,7 @@ public class LowbrainCore extends JavaPlugin {
 			return;
 		}
 		for (String key: start.getKeys(false)) {
-			if(key.equals("function") && !Helper.StringIsNullOrEmpty(start.getString(key)))
+			if(key.equals("function") && !fn.StringIsNullOrEmpty(start.getString(key)))
 				functions.add(start.getString(key));
 			else if(start.getConfigurationSection(key) != null)
 				functionsLookup(start.getConfigurationSection(key),functions);
@@ -243,8 +211,8 @@ public class LowbrainCore extends JavaPlugin {
 	 */
 	private void loadSkills(){
 		this.skills = new HashMap<>();
-		for (String skillName: Skills.getInstance().getKeys(false)) {
-			if(Skills.getInstance().getBoolean(skillName + ".enable"))
+		for (String skillName: configHandler.skills().getKeys(false)) {
+			if(configHandler.skills().getBoolean(skillName + ".enable"))
 				this.skills.put(skillName,new LowbrainSkill(skillName));
 
 		}
@@ -255,10 +223,10 @@ public class LowbrainCore extends JavaPlugin {
 	 */
 	private void loadItemsRequirements(){
 		this.itemsRequirements = new HashMap<String,ItemRequirements>();
-		for (String n:ItemsRequirements.getInstance().getKeys(false)) {
+		for (String n:configHandler.itemsRequirements().getKeys(false)) {
 			ItemRequirements i = new ItemRequirements(n);
 
-			ConfigurationSection sec = ItemsRequirements.getInstance().getConfigurationSection(n);
+			ConfigurationSection sec = configHandler.itemsRequirements().getConfigurationSection(n);
 
 			for (String r: sec.getKeys(false))
 				i.getRequirements().put(r,sec.getInt(r));
@@ -271,7 +239,7 @@ public class LowbrainCore extends JavaPlugin {
 	 * validate config file versions
 	 */
 	private void validateConfigVersion(){
-		ConfigurationSection versions = Config.getInstance().getConfigurationSection("versions");
+		ConfigurationSection versions = configHandler.config().getConfigurationSection("versions");
 
 		if(versions == null)
 		    return;
@@ -344,6 +312,14 @@ public class LowbrainCore extends JavaPlugin {
 	}
 
     /**
+     * get Configuration handler
+     * @return this.configHandler
+     */
+    public ConfigHandler getConfigHandler() {
+        return configHandler;
+    }
+
+    /**
      * get the lowbrain namespaced key
      * @return namespaceKey
      */
@@ -370,6 +346,5 @@ public class LowbrainCore extends JavaPlugin {
 			return requirements;
 		}
 	}
-
 }
 

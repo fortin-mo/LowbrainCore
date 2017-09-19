@@ -1,6 +1,7 @@
 package lowbrain.core.commun.SubParameters;
 
 import lowbrain.core.commun.Helper;
+import lowbrain.library.fn;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Contract;
 
@@ -17,7 +18,7 @@ public class ReputationStatus {
         if (config == null)
             throw new Error("failed to initiate ReputationStatus : null config");
 
-        if (Helper.StringIsNullOrEmpty(name))
+        if (fn.StringIsNullOrEmpty(name))
             throw new Error("failed to initiate ReputationStatus: null name");
 
         this.name = name;

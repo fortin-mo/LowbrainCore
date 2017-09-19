@@ -1,7 +1,8 @@
 package lowbrain.core.commun;
 
-import lowbrain.core.Abstraction.Parametable;
+import lowbrain.core.abstraction.Parametable;
 import lowbrain.core.rpg.LowbrainPlayer;
+import lowbrain.library.fn;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Contract;
 
@@ -41,7 +42,7 @@ public class Multiplier extends Parametable {
 
         if (range != 0 && rangeType == RangeType.ON_MULTIPLIER)
             // we can only take the on_multiplier range here because the value it self is not available
-            multiplier = Helper.getRandomBetween(min, max, multiplier, range, false);
+            multiplier = fn.randomBetween(min, max, multiplier, range, false);
 
         return multiplier;
     }
@@ -56,7 +57,7 @@ public class Multiplier extends Parametable {
         if (range == 0)
             return value;
 
-        return Helper.getRandomBetween(min, max, value, range, false);
+        return fn.randomBetween(min, max, value, range, false);
     }
 
     /**
@@ -69,7 +70,7 @@ public class Multiplier extends Parametable {
         float multiplier = value;
 
         if (range != 0 && rangeType == RangeType.ON_MULTIPLIER)
-            multiplier = Helper.getRandomBetween(min, max, multiplier, range, false);
+            multiplier = fn.randomBetween(min, max, multiplier, range, false);
 
         return multiplier;
     }
@@ -84,7 +85,7 @@ public class Multiplier extends Parametable {
         float val = value;
 
         if (range != 0 && rangeType == RangeType.ON_VALUE)
-            val = Helper.getRandomBetween(min, max, val, range, false);
+            val = fn.randomBetween(min, max, val, range, false);
 
         return val;
     }
@@ -104,7 +105,7 @@ public class Multiplier extends Parametable {
 
         if (range != 0 && rangeType == RangeType.ON_MULTIPLIER)
             // we can only take the on_multiplier range here because the value it self is not available
-            multiplier = Helper.getRandomBetween(min, max, multiplier, useRange, false);
+            multiplier = fn.randomBetween(min, max, multiplier, useRange, false);
 
         return multiplier;
     }
@@ -124,14 +125,14 @@ public class Multiplier extends Parametable {
         float useMin = min == null ? this.getMin() : min;
 
         float result = 0F;
-        if (Helper.StringIsNullOrEmpty(function)) {
+        if (fn.StringIsNullOrEmpty(function)) {
             result = Helper.valueFromFunction(useMax, useMin, this.getVariables(), p, this.functionType);
         } else {
             String[] st = function.split(",");
             if (st.length > 1)
-                result = Helper.eval(Helper.FormatStringWithValues(st, p));
+                result = fn.eval(Helper.FormatStringWithValues(st, p));
             else
-                result = Helper.eval(st[0]);
+                result = fn.eval(st[0]);
 
         }
 
@@ -152,7 +153,7 @@ public class Multiplier extends Parametable {
             // in range is apply to the value
             // min is set to zero to avoid negative values
             // max is set to Float.MAX_VALUE to avoid exeding possible float value
-            val = Helper.getRandomBetween(0, Float.MAX_VALUE, val, range, false);
+            val = fn.randomBetween(0, Float.MAX_VALUE, val, range, false);
 
 
         return val;

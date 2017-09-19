@@ -1,5 +1,6 @@
-package lowbrain.core.main;
+package lowbrain.core.handlers;
 
+import lowbrain.core.main.LowbrainCore;
 import lowbrain.core.rpg.LowbrainPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

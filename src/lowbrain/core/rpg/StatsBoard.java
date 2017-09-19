@@ -6,21 +6,48 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
+import java.util.HashMap;
+
 public class StatsBoard {
 
     //CONSTANTS
-    final static String CURRENT_MANA = ChatColor.GREEN + "CURRENT MANA: ";
-    final static String MANA_PERCENTAGE = ChatColor.GREEN + "MANA %: ";
-    final static String LEVEL = ChatColor.GREEN + "LEVEL: ";
-    final static String XP = ChatColor.GREEN + "XP: ";
-    final static String NEXT_LEVEL_IN = ChatColor.GREEN + "NEXT LEVEL IN: ";
-    final static String POINTS = ChatColor.GREEN + "POINTS: ";
-    final static String SKILL_POINTS = ChatColor.GREEN + "SKILL POINTS: ";
-    final static String KILLS = ChatColor.GREEN + "KILLS: ";
-    final static String DEATHS = ChatColor.GREEN + "DEATHS: ";
+    final static String SPACER = "  ";
+    final static String INFO_OBJECTIVE = "LOWBRAIN INFO";
+    final static String MANA = "MANA";
+    final static String NEXT_LEVEL_IN = "NEXT LEVEL IN";
+    final static String POINTS = "POINTS";
+    final static String SKILL_POINTS = "SKILL POINTS";
+    final static String KD = "KILLS";
+
+    final static String DEXTERITY = "Dexterity";
+    final static String AGILITY = "Agility";
+    final static String INTELLIGENCE = "Intelligence";
+    final static String DEFENCE = "Defence";
+    final static String MAGIC_RESISTANCE = "Magic resistance";
+    final static String STRENGTH = "Strength";
+    final static String VITALITY = "Vitality";
+    final static String COURAGE = "Courage";
+    final static String REPUTATION = "Reputation";
+
+    final static String MANA_PREFIX = ChatColor.GREEN + "MANA: " + ChatColor.WHITE;
+    final static String NEXT_LEVEL_IN_PREFIX = ChatColor.GREEN + "LEVEL UP IN: " + ChatColor.WHITE;
+    final static String POINTS_PREFIX = ChatColor.GREEN + "POINTS: " + ChatColor.WHITE;
+    final static String SKILL_POINTS_PREFIX = ChatColor.GREEN + "SKILL POINTS: " + ChatColor.WHITE;
+    final static String KD_PREFIX = ChatColor.GREEN + "K / D: " + ChatColor.WHITE;
+
+    final static String DEXTERITY_PREFIX = ChatColor.GREEN + "Dexterity: " + ChatColor.WHITE;
+    final static String AGILITY_PREFIX = ChatColor.GREEN + "Agility: " + ChatColor.WHITE;
+    final static String INTELLIGENCE_PREFIX = ChatColor.GREEN + "Intelligence: " + ChatColor.WHITE;
+    final static String DEFENCE_PREFIX = ChatColor.GREEN + "Defence: " + ChatColor.WHITE;
+    final static String MAGIC_RESISTANCE_PREFIX = ChatColor.GREEN + "Magic resistance: " + ChatColor.WHITE;
+    final static String STRENGTH_PREFIX = ChatColor.GREEN + "Strength: " + ChatColor.WHITE;
+    final static String VITALITY_PREFIX = ChatColor.GREEN + "Vitality: " + ChatColor.WHITE;
+    final static String COURAGE_PREFIX = ChatColor.GREEN + "Courage: " + ChatColor.WHITE;
+    final static String REPUTATION_PREFIX = ChatColor.GREEN + "Reputation: " + ChatColor.WHITE;
 
     private LowbrainPlayer p;
     private Scoreboard scoreboard;
+    private HashMap<String, Score> layout;
 
     /**
      * constructor for stats board
@@ -29,6 +56,26 @@ public class StatsBoard {
     public StatsBoard(LowbrainPlayer p) {
         this.p = p;
         this.init();
+    }
+
+    private void loadLayout() {
+        layout = new HashMap<>();
+
+        layout.put(MANA, new Score(MANA, MANA_PREFIX , 14));
+        layout.put(NEXT_LEVEL_IN, new Score(NEXT_LEVEL_IN, NEXT_LEVEL_IN_PREFIX , 13));
+        layout.put(POINTS, new Score(POINTS, POINTS_PREFIX , 12));
+        layout.put(SKILL_POINTS, new Score(SKILL_POINTS, SKILL_POINTS_PREFIX , 11));
+        layout.put(KD, new Score(KD, KD_PREFIX , 10));
+        layout.put(SPACER, new Score(SPACER, SPACER, 9));
+        layout.put(DEXTERITY, new Score(DEXTERITY, DEXTERITY_PREFIX , 8));
+        layout.put(AGILITY, new Score(AGILITY, AGILITY_PREFIX , 7));
+        layout.put(INTELLIGENCE, new Score(INTELLIGENCE, INTELLIGENCE_PREFIX , 6));
+        layout.put(DEFENCE, new Score(DEFENCE, DEFENCE_PREFIX , 5));
+        layout.put(MAGIC_RESISTANCE, new Score(MAGIC_RESISTANCE, MAGIC_RESISTANCE_PREFIX , 4));
+        layout.put(STRENGTH, new Score(STRENGTH, STRENGTH_PREFIX , 3));
+        layout.put(VITALITY, new Score(VITALITY, VITALITY_PREFIX , 2));
+        layout.put(COURAGE, new Score(COURAGE, COURAGE_PREFIX , 1));
+        layout.put(REPUTATION, new Score(REPUTATION, REPUTATION_PREFIX , 0));
     }
 
     /**
@@ -40,13 +87,12 @@ public class StatsBoard {
 
         scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 
-        Objective objectiveInfo = scoreboard.registerNewObjective("Info", "dummy");
-        objectiveInfo.setDisplayName("Info");
+        Objective objectiveInfo = scoreboard.registerNewObjective(INFO_OBJECTIVE, "dummy");
+        objectiveInfo.setDisplayName(INFO_OBJECTIVE);
 
-        if(p.isShowStats())
-            objectiveInfo.setDisplaySlot(DisplaySlot.SIDEBAR);
-        else
-            objectiveInfo.setDisplaySlot(DisplaySlot.PLAYER_LIST);
+        loadLayout();
+
+        display();
 
         this.p.getPlayer().setScoreboard(scoreboard);
     }
@@ -84,12 +130,7 @@ public class StatsBoard {
             show = !p.isShowStats();
 
         p.setShowStats(show);
-        Objective info = scoreboard.getObjective("Info");
-
-        if(p.isShowStats())
-            info.setDisplaySlot(DisplaySlot.SIDEBAR);
-        else
-            info.setDisplaySlot(DisplaySlot.PLAYER_LIST);
+        display();
     }
 
     /**
@@ -99,18 +140,34 @@ public class StatsBoard {
         if (scoreboard == null)
             return;
 
-        Objective info = scoreboard.getObjective("Info");
-        info.getScore(CURRENT_MANA).setScore((int)p.getCurrentMana());
-        info.getScore(MANA_PERCENTAGE).setScore((int)(p.getCurrentMana() / p.getMaxMana() * 100));
-        info.getScore(LEVEL).setScore(p.getLvl());
-        info.getScore(XP).setScore((int)p.getExperience());
-        info.getScore(NEXT_LEVEL_IN).setScore((int)(p.getNextLvl() - p.getExperience()));
-        info.getScore(POINTS).setScore(p.getPoints());
-        info.getScore(SKILL_POINTS).setScore(p.getSkillPoints());
-        info.getScore(KILLS).setScore(p.getKills());
-        info.getScore(DEATHS).setScore(p.getDeaths());
+        Objective info = scoreboard.getObjective(INFO_OBJECTIVE);
 
-        Objective level = scoreboard.getObjective("Level");
-        //level.getScore(this.getPlayer()).setScore(this.lvl);
+        info.setDisplayName(INFO_OBJECTIVE + " [" + p.getLvl() + "]");
+
+        layout.get(MANA).setValue("" + (int)p.getCurrentMana() + " / " + (int)p.getMaxMana()).updateObjective(info);
+        layout.get(NEXT_LEVEL_IN).setValue((int)(p.getNextLvl() - p.getExperience())).updateObjective(info);
+        layout.get(POINTS).setValue(p.getPoints()).updateObjective(info);
+        layout.get(SKILL_POINTS).setValue(p.getSkillPoints()).updateObjective(info);
+        layout.get(KD).setValue("" + p.getKills() + " / " + p.getDeaths()).updateObjective(info);
+        layout.get(SPACER).setValue("").updateObjective(info);
+        layout.get(DEXTERITY).setValue(p.getDexterity()).updateObjective(info);
+        layout.get(AGILITY).setValue(p.getAgility()).updateObjective(info);
+        layout.get(INTELLIGENCE).setValue(p.getIntelligence()).updateObjective(info);
+        layout.get(DEFENCE).setValue(p.getDefence()).updateObjective(info);
+        layout.get(MAGIC_RESISTANCE).setValue(p.getMagicResistance()).updateObjective(info);
+        layout.get(STRENGTH).setValue(p.getStrength()).updateObjective(info);
+        layout.get(VITALITY).setValue(p.getVitality()).updateObjective(info);
+        layout.get(COURAGE).setValue(p.getCourage()).updateObjective(info);
+        layout.get(REPUTATION).setValue(p.getReputation()).updateObjective(info);
+    }
+
+    public void display() {
+        Objective info = scoreboard.getObjective(INFO_OBJECTIVE);
+
+        if(p.isShowStats()) {
+            info.setDisplaySlot(DisplaySlot.SIDEBAR);
+        } else {
+            info.setDisplaySlot(DisplaySlot.PLAYER_LIST);
+        }
     }
 }

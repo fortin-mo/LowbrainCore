@@ -1,8 +1,8 @@
-package lowbrain.core.Abstraction;
+package lowbrain.core.abstraction;
 
-import lowbrain.core.commun.FunctionType;
 import lowbrain.core.commun.RangeType;
 import lowbrain.core.main.LowbrainCore;
+import lowbrain.library.FunctionType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Contract;
 

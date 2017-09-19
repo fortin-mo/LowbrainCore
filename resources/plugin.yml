@@ -2,7 +2,8 @@ main: lowbrain.core.main.LowbrainCore
 name: LowbrainCore
 version: 0.0.1
 author: Lowbrain
-softdepend: [HolographicDisplays , ArmorEquipEvent, NickNamer, PacketListenerApi, Parties, LowbrainItems]
+depend: [LowbrainLibrary]
+softdepend: [HolographicDisplays , ArmorEquipEvent, PacketListenerApi, Parties, LowbrainItems]
 description: Add a tones of rpg elements to the game. Such as attributes, skills, spells, new items (armor, weapon, staff), races, classes, etc.
 permission:
  core.save-all:

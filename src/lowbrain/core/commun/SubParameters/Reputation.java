@@ -2,6 +2,7 @@ package lowbrain.core.commun.SubParameters;
 
 import lowbrain.core.commun.Helper;
 import lowbrain.core.main.LowbrainCore;
+import lowbrain.library.fn;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Contract;
@@ -58,7 +59,7 @@ public class Reputation {
         ReputationStatus found = null;
 
         for (ReputationStatus status : repStatus.values()) {
-            if (Helper.isBetween(value, status.getFrom(), status.getTo())) {
+            if (fn.isBetween(value, status.getFrom(), status.getTo())) {
                 found = status;
                 break;
             }

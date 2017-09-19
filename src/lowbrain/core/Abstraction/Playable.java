@@ -1,4 +1,4 @@
-package lowbrain.core.Abstraction;
+package lowbrain.core.abstraction;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

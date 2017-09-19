@@ -1,8 +1,8 @@
 package lowbrain.core.commun;
 
 import lowbrain.core.commun.SubParameters.*;
-import lowbrain.core.config.DefaultParameters;
 import lowbrain.core.main.LowbrainCore;
+import lowbrain.library.FunctionType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -42,13 +42,13 @@ public class Parameters {
 
         if (path == null || path == DEFAULT_PARAMETERS) {
             plugin.log("using default parameters");
-            config = DefaultParameters.getInstance();
+            config = LowbrainCore.getInstance().getConfigHandler().parameters();
         } else {
             File file = new File(plugin.getDataFolder(), path);
             if (!file.exists()) {
                 plugin.warn("could not find : " + path);
                 plugin.warn("using default parameters");
-                config = DefaultParameters.getInstance();
+                config = LowbrainCore.getInstance().getConfigHandler().parameters();
             } else {
                 config = new YamlConfiguration();
                 try {

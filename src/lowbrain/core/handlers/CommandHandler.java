@@ -1,11 +1,9 @@
-package lowbrain.core.main;
+package lowbrain.core.handlers;
 
-import lowbrain.core.commun.Helper;
 import lowbrain.core.commun.Settings;
-import lowbrain.core.config.Classes;
-import lowbrain.core.config.Internationalization;
-import lowbrain.core.config.Races;
+import lowbrain.core.main.LowbrainCore;
 import lowbrain.core.rpg.*;
+import lowbrain.library.fn;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -88,12 +86,12 @@ public class CommandHandler implements CommandExecutor{
                 case "completereset":
                     return onCompleteReset(rp, args);
                 case "nextlvl":
-                    rp.sendMessage(Internationalization.format("next_level_at", rp.getNextLvl()));
+                    rp.sendMessage(plugin.getConfigHandler().internationalization().format("next_level_at", rp.getNextLvl()));
                     return true;
                 case "save":
                     if(senderHasPermission(sender,"core.save")){
                         rp.saveData();
-                        rp.sendMessage(Internationalization.format("stats_saved"));
+                        rp.sendMessage(plugin.getConfigHandler().internationalization().format("stats_saved"));
                     }
                     return true;
                 case "cast":
@@ -113,9 +111,9 @@ public class CommandHandler implements CommandExecutor{
                     return true;
                 case "getskill":
                     if(rp.getCurrentSkill() != null)
-                        rp.sendMessage(Internationalization.format("current_skill", rp.getCurrentSkill().getName()));
+                        rp.sendMessage(plugin.getConfigHandler().internationalization().format("current_skill", rp.getCurrentSkill().getName()));
                     else
-                        rp.sendMessage(Internationalization.format("no_current_skill"));
+                        rp.sendMessage(plugin.getConfigHandler().internationalization().format("no_current_skill"));
 
                     return true;
                 case "upskill":
@@ -160,19 +158,19 @@ public class CommandHandler implements CommandExecutor{
         LowbrainPlayer rp = p != null ? LowbrainCore.getInstance().getPlayerHandler().getList().get(p.getUniqueId()) : null;
 
         if(rp == null){
-            sender.sendMessage(Internationalization.format("player_not_connected"));
+            sender.sendMessage(plugin.getConfigHandler().internationalization().format("player_not_connected"));
             return true;
         }
 
-        int value = Helper.intTryParse(sValue,-1);
+        int value = fn.toInteger(sValue,-1);
         if(value < 0){
-            sender.sendMessage(Internationalization.format("invalid_value"));
+            sender.sendMessage(plugin.getConfigHandler().internationalization().format("invalid_value"));
             return true;
         }
 
         switch (attribute){
             default:
-                sender.sendMessage(Internationalization.format("invalid_attribute"));
+                sender.sendMessage(plugin.getConfigHandler().internationalization().format("invalid_attribute"));
                 break;
             case "intelligence":
             case "intel":
@@ -241,7 +239,7 @@ public class CommandHandler implements CommandExecutor{
     private boolean onReload (CommandSender sender, String[] args){
         if(senderHasPermission(sender,"core.reload")){
             plugin.reloadConfig();
-            sender.sendMessage(Internationalization.format("config_file_reloaded"));
+            sender.sendMessage(plugin.getConfigHandler().internationalization().format("config_file_reloaded"));
         }
         return true;
     }
@@ -249,7 +247,7 @@ public class CommandHandler implements CommandExecutor{
     private boolean onSaveAll(CommandSender sender, String[] args){
         if(senderHasPermission(sender,"core.save-all")) {
             plugin.saveData();
-            sender.sendMessage(Internationalization.format("all_stats_saved"));
+            sender.sendMessage(plugin.getConfigHandler().internationalization().format("all_stats_saved"));
         }
         return true;
     }
@@ -260,14 +258,14 @@ public class CommandHandler implements CommandExecutor{
         if (args.length != 2)
             return false;
 
-        if (Races.getInstance().getKeys(false).contains(args[1])) {
+        if (plugin.getConfigHandler().races().getKeys(false).contains(args[1])) {
             rp.setRace(args[1], false);
         } else if (args[1].equalsIgnoreCase("rdm") || args[1].equalsIgnoreCase("random")) {
-            int max = Races.getInstance().getKeys(false).size() - 1;
-            int rdm = Helper.randomInt(0,max);
-            rp.setRace((String)Races.getInstance().getKeys(false).toArray()[rdm],false);
+            int max = plugin.getConfigHandler().races().getKeys(false).size() - 1;
+            int rdm = fn.randomInt(0,max);
+            rp.setRace((String)plugin.getConfigHandler().races().getKeys(false).toArray()[rdm],false);
         } else {
-            rp.sendMessage(Internationalization.format("invalid_race"));
+            rp.sendMessage(plugin.getConfigHandler().internationalization().format("invalid_race"));
         }
 
         return true;
@@ -277,21 +275,21 @@ public class CommandHandler implements CommandExecutor{
         if (args.length != 2)
             return false;
 
-        if (Classes.getInstance().getKeys(false).contains(args[1])) {
+        if (plugin.getConfigHandler().classes().getKeys(false).contains(args[1])) {
             rp.setClass(args[1], false);
         } else if (args[1].equalsIgnoreCase("rdm") || args[1].equalsIgnoreCase("random")) {
-            int max = Classes.getInstance().getKeys(false).size() - 1;
-            int rdm = Helper.randomInt(0,max);
-            rp.setClass((String)Classes.getInstance().getKeys(false).toArray()[rdm],false);
+            int max = plugin.getConfigHandler().classes().getKeys(false).size() - 1;
+            int rdm = fn.randomInt(0,max);
+            rp.setClass((String)plugin.getConfigHandler().classes().getKeys(false).toArray()[rdm],false);
         } else {
-            rp.sendMessage(Internationalization.format("invalid_class"));
+            rp.sendMessage(plugin.getConfigHandler().internationalization().format("invalid_class"));
         }
         return true;
     }
 
     private boolean onXp(LowbrainPlayer rp, String[] args){
         double xp = rp.getNextLvl() - rp.getExperience();
-        rp.sendMessage(Internationalization.format("you_will_reach_level", new Object[]{rp.getLvl()+1, xp}));
+        rp.sendMessage(plugin.getConfigHandler().internationalization().format("you_will_reach_level", new Object[]{rp.getLvl()+1, xp}));
         return true;
     }
 
@@ -303,11 +301,11 @@ public class CommandHandler implements CommandExecutor{
                 if(rp2 != null){
                     rp.sendMessage(rp2.toString());
                 }else{
-                    rp.sendMessage(Internationalization.format("player_not_connected"));
+                    rp.sendMessage(plugin.getConfigHandler().internationalization().format("player_not_connected"));
                 }
             }
             else{
-                rp.sendMessage(Internationalization.format("player_not_connected"));
+                rp.sendMessage(plugin.getConfigHandler().internationalization().format("player_not_connected"));
             }
         }
         else{
@@ -318,16 +316,16 @@ public class CommandHandler implements CommandExecutor{
 
     private boolean onReset(LowbrainPlayer rp, String[] args){
         if(args.length == 2){
-            if(Classes.getInstance().getKeys(false).contains(args[1]))
+            if(plugin.getConfigHandler().classes().getKeys(false).contains(args[1]))
                 rp.reset(args[1],null);
             else
-                rp.sendMessage(Internationalization.format("no_such_class"));
+                rp.sendMessage(plugin.getConfigHandler().internationalization().format("no_such_class"));
 
         } else if(args.length == 3){
-            if(Classes.getInstance().getKeys(false).contains(args[1]) && Classes.getInstance().getKeys(false).contains(args[2]))
+            if(plugin.getConfigHandler().classes().getKeys(false).contains(args[1]) && plugin.getConfigHandler().classes().getKeys(false).contains(args[2]))
                 rp.reset(args[1],args[2]);
             else
-                rp.sendMessage(ChatColor.RED + Internationalization.format("no_such_class_or_race"));
+                rp.sendMessage(ChatColor.RED + plugin.getConfigHandler().internationalization().format("no_such_class_or_race"));
 
         } else{
             rp.reset(rp.getClassName(),rp.getRaceName());
@@ -340,7 +338,7 @@ public class CommandHandler implements CommandExecutor{
             rp.resetAll(false);
 
         else
-            rp.sendMessage(Internationalization.format("validate_complete_reset"));
+            rp.sendMessage(plugin.getConfigHandler().internationalization().format("validate_complete_reset"));
 
         return true;
     }
@@ -354,7 +352,7 @@ public class CommandHandler implements CommandExecutor{
             rp.sendMessage(s.toString(),ChatColor.LIGHT_PURPLE);
 
         else
-            rp.sendMessage(Internationalization.format("no_such_skill"),ChatColor.RED);
+            rp.sendMessage(plugin.getConfigHandler().internationalization().format("no_such_skill"),ChatColor.RED);
 
         return true;
     }
@@ -376,12 +374,12 @@ public class CommandHandler implements CommandExecutor{
         } else if(args.length == 3){
             Player p = plugin.getServer().getPlayer(args[2]);
             if(p == null){
-                rp.sendMessage(Internationalization.format("player_not_connected"));
+                rp.sendMessage(plugin.getConfigHandler().internationalization().format("player_not_connected"));
             }
             else {
                 LowbrainPlayer to = LowbrainCore.getInstance().getPlayerHandler().getList().get(p.getUniqueId());
                 if(to == null)
-                    rp.sendMessage(Internationalization.format("player_not_connected"));
+                    rp.sendMessage(plugin.getConfigHandler().internationalization().format("player_not_connected"));
                 else
                     rp.castSpell(args[1],to);
 
@@ -398,7 +396,7 @@ public class CommandHandler implements CommandExecutor{
                 rp.getPowers().values()) {
             pws += power.getName() + ", ";
         }
-        rp.sendMessage(Helper.StringIsNullOrEmpty(pws) ? Internationalization.format("no_powers_available") : pws);
+        rp.sendMessage(fn.StringIsNullOrEmpty(pws) ? plugin.getConfigHandler().internationalization().format("no_powers_available") : pws);
         return true;
     }
 
@@ -410,7 +408,7 @@ public class CommandHandler implements CommandExecutor{
         if(s != null)
             rp.sendMessage(s.info(),ChatColor.LIGHT_PURPLE);
         else
-            rp.sendMessage(Internationalization.format("no_such_skill"),ChatColor.RED);
+            rp.sendMessage(plugin.getConfigHandler().internationalization().format("no_such_skill"),ChatColor.RED);
 
         return true;
     }
@@ -425,11 +423,11 @@ public class CommandHandler implements CommandExecutor{
                 amount = Integer.parseInt(args[2]);
             }
             catch (Exception e){
-                rp.sendMessage(Internationalization.format("use_help"));
+                rp.sendMessage(plugin.getConfigHandler().internationalization().format("use_help"));
             }
         }
         if(amount <= 0)
-            rp.sendMessage(Internationalization.format("number_higher_then_zero"));
+            rp.sendMessage(plugin.getConfigHandler().internationalization().format("number_higher_then_zero"));
 
         switch (args[1].toLowerCase()){
             case "defence":
@@ -461,7 +459,7 @@ public class CommandHandler implements CommandExecutor{
                 rp.addAgility(amount,true,true);
                 break;
             default:
-                rp.sendMessage(Internationalization.format("invalid_attribute"));
+                rp.sendMessage(plugin.getConfigHandler().internationalization().format("invalid_attribute"));
         }
         return true;
     }
@@ -518,7 +516,7 @@ public class CommandHandler implements CommandExecutor{
     private boolean onClasses(LowbrainPlayer rp, String[] args) {
         String cls = "";
         for (String s :
-                Classes.getInstance().getKeys(false)) {
+                plugin.getConfigHandler().classes().getKeys(false)) {
             LowbrainClass rc = new LowbrainClass(s);
             cls += "-----------------------------" + "\n";
             cls += rc.toString() + "\n";
@@ -530,7 +528,7 @@ public class CommandHandler implements CommandExecutor{
     private boolean onRaces(LowbrainPlayer rp, String[] args) {
         String rcs = "";
         for (String s :
-                Races.getInstance().getKeys(false)) {
+                plugin.getConfigHandler().races().getKeys(false)) {
             LowbrainRace rr = new LowbrainRace(s);
             rcs += "-----------------------------" + "\n";
             rcs += rr.toString() + "\n";
@@ -555,7 +553,7 @@ public class CommandHandler implements CommandExecutor{
 		if(sender.hasPermission(permission)){
 			return true;
 		}
-		sender.sendMessage(ChatColor.RED + Internationalization.format("insufficient_permission"));
+		sender.sendMessage(ChatColor.RED + plugin.getConfigHandler().internationalization().format("insufficient_permission"));
 		return false;
 	}
 }

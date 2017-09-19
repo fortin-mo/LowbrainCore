@@ -1,6 +1,6 @@
 package lowbrain.core.commun;
 
-import lowbrain.core.config.Config;
+import lowbrain.core.main.LowbrainCore;
 import org.bukkit.configuration.file.FileConfiguration;
 
 /**
@@ -96,7 +96,7 @@ public class Settings {
 
     public static Settings getInstance(){
         if(instance == null)
-            instance = new Settings(Config.getInstance());
+            instance = new Settings(LowbrainCore.getInstance().getConfigHandler().config());
 
         return instance;
     }
