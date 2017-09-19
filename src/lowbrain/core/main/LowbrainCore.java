@@ -68,6 +68,8 @@ public class LowbrainCore extends JavaPlugin {
 			namespacedKey = new NamespacedKey(this, "LowbrainCore");
 
             configHandler = new ConfigHandler(this).load();
+            loadItemsRequirements();
+            loadSkills();
 
 			validateConfigVersion();
 
@@ -292,6 +294,8 @@ public class LowbrainCore extends JavaPlugin {
      * @return item requirements
      */
 	public HashMap<String, ItemRequirements> getItemsRequirements() {
+        if (itemsRequirements == null)
+            itemsRequirements = new HashMap<>();
 		return itemsRequirements;
 	}
 
@@ -300,6 +304,8 @@ public class LowbrainCore extends JavaPlugin {
      * @return skills
      */
 	public HashMap<String, LowbrainSkill> getSkills() {
+	    if (skills == null)
+	        skills = new HashMap<>();
 		return skills;
 	}
 

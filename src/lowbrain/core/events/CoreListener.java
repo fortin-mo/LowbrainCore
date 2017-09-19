@@ -196,7 +196,7 @@ public class CoreListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerAttack(EntityDamageByEntityEvent e) {
-        plugin.debugInfo("************* On Player Attack (EntityDamageByEntityEvent) **************");
+        plugin.debugInfo("************* EntityDamageByEntityEvent **************");
 
         MutableBoolean isCritical = new MutableBoolean(false);
         MutableFloat missChance = new MutableFloat(0F);
@@ -927,7 +927,6 @@ public class CoreListener implements Listener {
      * @return true if multiplier was applied
      */
     private boolean applyOffensiveAttack(EntityDamageByEntityEvent e, MutableBoolean isCritical, MutableFloat missChance){
-        plugin.debugInfo("              Applying Offensive Attack ---------------------------------");
         EventSource eventSource = EventSource.getFromAttack(e);
 
         float absorbDamage = 0F;
@@ -936,6 +935,8 @@ public class CoreListener implements Listener {
 
         if (eventSource == null || eventSource.damager == null)
             return false;
+
+        plugin.debugInfo("              Applying Offensive Attack");
 
         if (eventSource.skill != null) {
             for (Map.Entry<String, String> effect :

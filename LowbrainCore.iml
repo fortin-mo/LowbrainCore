@@ -18,10 +18,10 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="spigot-1.12.1" level="project" />
     <orderEntry type="module" module-name="LowbrainItems" />
     <orderEntry type="module" module-name="ArmorEquipEvent" />
     <orderEntry type="library" name="BindManager" level="project" />
     <orderEntry type="module" module-name="LowbrainLibrary" />
+    <orderEntry type="library" name="spigot-1.12.2" level="project" />
   </component>
 </module>

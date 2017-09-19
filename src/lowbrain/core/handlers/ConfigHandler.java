@@ -23,14 +23,14 @@ public class ConfigHandler {
         this.plugin = plugin;
         this.loaded = false;
 
-        classes = new YamlConfig("classes", plugin, false);
-        config = new YamlConfig("config", plugin, false);
+        classes = new YamlConfig("classes.yml", plugin, false);
+        config = new YamlConfig("config.yml", plugin, false);
         parameters = new YamlConfig("default_parameters.yml", plugin, false);
         internationalization = new Internationalization("internationalization.yml", plugin, false);
         itemsRequirements = new YamlConfig("itemsrequirements.yml", plugin, false);
         mobsxp = new YamlConfig("mobsxp.yml", plugin, false);
         powers = new YamlConfig("powers.yml", plugin, false);
-        races = new YamlConfig("race.yml", plugin, false);
+        races = new YamlConfig("races.yml", plugin, false);
         skills = new YamlConfig("skills.yml", plugin, false);
     }
 
