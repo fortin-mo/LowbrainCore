@@ -2,6 +2,7 @@ package lowbrain.core.main;
 
 import java.util.*;
 
+import lowbrain.core.commands.*;
 import lowbrain.core.commun.Settings;
 import lowbrain.core.events.ArmorEquipListener;
 import lowbrain.core.events.CoreListener;
@@ -10,6 +11,7 @@ import lowbrain.core.handlers.ConfigHandler;
 import lowbrain.core.handlers.PlayerHandler;
 import lowbrain.core.rpg.LowbrainSkill;
 import lowbrain.library.fn;
+import lowbrain.library.main.LowbrainLibrary;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
@@ -113,6 +115,30 @@ public class LowbrainCore extends JavaPlugin {
 		} catch (Exception e){
 			e.printStackTrace();
 		}
+    }
+
+    private void registerCommands() {
+	    lowbrain.library.command.CommandHandler c = LowbrainLibrary.getInstance().getBaseCmdHandler();
+        c.register("add", new AddCommand());
+        c.register("cast", new CastCommand());
+        c.register("classes", new ClassesCommand());
+        c.register("completereset", new CompleteResetCommand());
+        c.register("hidestats", new HideStatsCommand());
+        c.register("mobkills", new MobKillsCommand());
+        c.register("mypowers", new MyPowersCommand());
+        c.register("myskill", new MySkillCommand());
+        c.register("races", new RacesCommand());
+        c.register("reload", new ReloadCommand());
+        c.register("reset", new ResetCommand());
+        c.register("saveall", new SaveAllCommand());
+        c.register("setclass", new SetClassCommand());
+        c.register("set", new SetCommand());
+        c.register("setrace", new SetRaceCommand());
+        c.register("skill", new SkillCommand());
+        c.register("skills", new SkillsCommand());
+        c.register("stats", new StatsCommand());
+        c.register("togglestats", new ToggleStatsCommand());
+        c.register("xp", new XpCommand());
     }
 
     @Override

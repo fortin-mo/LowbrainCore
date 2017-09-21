@@ -89,7 +89,7 @@ public class CommandHandler implements CommandExecutor{
                     rp.sendMessage(plugin.getConfigHandler().internationalization().format("next_level_at", rp.getNextLvl()));
                     return true;
                 case "save":
-                    if(senderHasPermission(sender,"core.save")){
+                    if(senderHasPermission(sender,"lb.core.save")){
                         rp.saveData();
                         rp.sendMessage(plugin.getConfigHandler().internationalization().format("stats_saved"));
                     }
@@ -147,7 +147,7 @@ public class CommandHandler implements CommandExecutor{
 	    if (args.length != 4)
 	        return false;
 
-        if(!senderHasPermission(sender,"core.setattributes-others"))
+        if(!senderHasPermission(sender,"lb.core.setattributes-others"))
             return true;
 
         String pName = args[1];
@@ -237,7 +237,7 @@ public class CommandHandler implements CommandExecutor{
     }
 
     private boolean onReload (CommandSender sender, String[] args){
-        if(senderHasPermission(sender,"core.reload")){
+        if(senderHasPermission(sender,"lb.core.reload")){
             plugin.reloadConfig();
             sender.sendMessage(plugin.getConfigHandler().internationalization().format("config_file_reloaded"));
         }
@@ -245,7 +245,7 @@ public class CommandHandler implements CommandExecutor{
     }
 
     private boolean onSaveAll(CommandSender sender, String[] args){
-        if(senderHasPermission(sender,"core.save-all")) {
+        if(senderHasPermission(sender,"lb.core.save-all")) {
             plugin.saveData();
             sender.sendMessage(plugin.getConfigHandler().internationalization().format("all_stats_saved"));
         }
@@ -294,7 +294,7 @@ public class CommandHandler implements CommandExecutor{
     }
 
     private boolean onStats(LowbrainPlayer rp, String[] args, CommandSender sender){
-        if(args.length == 2 && senderHasPermission(sender,"core.stats-others")){
+        if(args.length == 2 && senderHasPermission(sender,"lb.core.stats-others")){
             Player p = plugin.getServer().getPlayer(args[1]);
             if(p != null){
                 LowbrainPlayer rp2 = LowbrainCore.getInstance().getPlayerHandler().getList().get(p.getUniqueId());

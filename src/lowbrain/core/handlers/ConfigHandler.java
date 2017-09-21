@@ -1,15 +1,15 @@
 package lowbrain.core.handlers;
 
-import lowbrain.core.commun.Internationalization;
 import lowbrain.core.main.LowbrainCore;
 import lowbrain.library.config.YamlConfig;
+import lowbrain.library.config.YamlLocalize;
 
 public class ConfigHandler {
 
     private YamlConfig classes;
     private YamlConfig config;
     private YamlConfig parameters;
-    private Internationalization internationalization;
+    private YamlLocalize localization;
     private YamlConfig itemsRequirements;
     private YamlConfig mobsxp;
     private YamlConfig powers;
@@ -26,7 +26,7 @@ public class ConfigHandler {
         classes = new YamlConfig("classes.yml", plugin, false);
         config = new YamlConfig("config.yml", plugin, false);
         parameters = new YamlConfig("default_parameters.yml", plugin, false);
-        internationalization = new Internationalization("internationalization.yml", plugin, false);
+        localization = new YamlLocalize("localization.yml", plugin, false);
         itemsRequirements = new YamlConfig("itemsrequirements.yml", plugin, false);
         mobsxp = new YamlConfig("mobsxp.yml", plugin, false);
         powers = new YamlConfig("powers.yml", plugin, false);
@@ -49,7 +49,7 @@ public class ConfigHandler {
         classes.reload();
         config.reload();
         parameters.reload();
-        internationalization.reload();
+        localization.reload();
         itemsRequirements.reload();
         mobsxp.reload();
         powers.reload();
@@ -73,8 +73,8 @@ public class ConfigHandler {
         return parameters;
     }
 
-    public Internationalization internationalization() {
-        return internationalization;
+    public YamlLocalize internationalization() {
+        return localization;
     }
 
     public YamlConfig itemsRequirements() {

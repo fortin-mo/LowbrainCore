@@ -6,16 +6,21 @@ depend: [LowbrainLibrary]
 softdepend: [HolographicDisplays , ArmorEquipEvent, PacketListenerApi, Parties, LowbrainItems]
 description: Add a tones of rpg elements to the game. Such as attributes, skills, spells, new items (armor, weapon, staff), races, classes, etc.
 permission:
- core.save-all:
+ lb.core.save-all:
   description: save all connected player stats
- core.save:
+  default: op
+ lb.core.save:
   description: save you own stats
- core.stats-others:
+  default: op
+ lb.core.stats-others:
   description: show other players stats
- core.reload:
+  default: op
+ lb.core.reload:
   description: reload plugin
- core.setattributes-others:
+  default: op
+ lb.core.setattributes-others:
   description: set / change other players attributes by command
+  default: op
 commands:
    lbcore:
       usage: |

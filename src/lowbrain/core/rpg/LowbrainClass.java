@@ -45,7 +45,10 @@ public class LowbrainClass {
 		magicResistance = config.getInt(name+".magic_resistance",0);
 		agility = config.getInt(name+".agility",0);
 		bonusAttributes = config.getStringList(name+".bonus_attributes");
-		if(bonusAttributes == null)bonusAttributes = new ArrayList<String>();
+
+		if(bonusAttributes == null)
+		    bonusAttributes = new ArrayList<String>();
+
 		initPowers();
 	}
 
