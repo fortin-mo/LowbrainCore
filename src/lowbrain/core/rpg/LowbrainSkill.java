@@ -27,16 +27,16 @@ public class LowbrainSkill {
     private String name;
     private int maxLevel;
     private int baseCooldown;
-    private float baseManaCost;
+    private double baseManaCost;
     private int baseSkillpointsCost;
     private int skillpointsOperation;
     private int manaCostOperation;
     private int cooldownOperation;
     private int requirementsOperation;
-    private float skillpointsOperationValue;
-    private float manaCostOperationValue;
-    private float cooldownOperationValue;
-    private float requirementsOperationValue;
+    private double skillpointsOperationValue;
+    private double manaCostOperationValue;
+    private double cooldownOperationValue;
+    private double requirementsOperationValue;
     private HashMap<String,Integer> baseRequirements;
     private boolean enable;
     private Calendar lastExecuted;
@@ -118,7 +118,7 @@ public class LowbrainSkill {
         this.functionType = FunctionType.get(sec.getInt("effects_function_type",-1));
         this.maxLevel = sec.getInt("max_level");
         this.baseCooldown = sec.getInt("base_cooldown");
-        this.baseManaCost = (float)sec.getDouble("base_mana_cost",0);
+        this.baseManaCost = sec.getDouble("base_mana_cost",0);
         this.baseSkillpointsCost = sec.getInt("base_skillpoints_cost");
         this.eventType = sec.getString("event_type");
         this.skillpointsOperation = sec.getInt("base_skillpoints_operation");
@@ -165,7 +165,7 @@ public class LowbrainSkill {
         return operation(this.baseCooldown,this.cooldownOperationValue,this.cooldownOperation);
     }
 
-    public float getManaCost(){
+    public double getManaCost(){
         return operation(this.baseManaCost,this.manaCostOperationValue,this.manaCostOperation);
     }
 
@@ -173,7 +173,7 @@ public class LowbrainSkill {
         return operation(this.baseSkillpointsCost,this.skillpointsOperationValue,this.skillpointsOperation);
     }
 
-    public float getBaseManaCost() {
+    public double getBaseManaCost() {
         return baseManaCost;
     }
 
@@ -193,7 +193,7 @@ public class LowbrainSkill {
         return enable;
     }
 
-    public boolean executeBowSkill(LowbrainPlayer p, Arrow ar, float speed) {
+    public boolean executeBowSkill(LowbrainPlayer p, Arrow ar, double speed) {
         try {
             boolean succeed = false;
 
@@ -288,15 +288,15 @@ public class LowbrainSkill {
         arrow.setGravity(gravity <= 0 ? false : true);
     }
 
-    public float getEffectValue(String effect){
+    public double getEffectValue(String effect){
         if(fn.StringIsNullOrEmpty(effect))return 0F;
 
         String[] tmp = effect.split(",");
-        float min = 0F;
-        float max = 0F;
+        double min = 0F;
+        double max = 0F;
 
-        min = tmp.length > 0 ? fn.toFloat(tmp[0], 0F) : 0F;
-        max = tmp.length > 1 ? fn.toFloat(tmp[1],0F) : min * this.getMaxLevel();
+        min = tmp.length > 0 ? fn.toDouble(tmp[0], 0F) : 0F;
+        max = tmp.length > 1 ? fn.toDouble(tmp[1],0F) : min * this.getMaxLevel();
 
         return Helper.Slope(max,min,this.getMaxLevel(),this.getFunctionType()) * this.getCurrentLevel() + min;
     }
@@ -408,7 +408,7 @@ public class LowbrainSkill {
         this.currentLevel += lvl;
     }
 
-    public int operation(int baseValue, float opValue,int operation){
+    public int operation(int baseValue, double opValue,int operation){
         int returnValue = baseValue;
         switch (operation){
             case 1:
@@ -424,7 +424,7 @@ public class LowbrainSkill {
         return returnValue;
     }
 
-    public float operation(float baseValue, float opValue,int operation){
+    public double operation(double baseValue, double opValue,int operation){
         double returnValue = baseValue;
         switch (operation){
             case 1:
@@ -437,7 +437,7 @@ public class LowbrainSkill {
                 returnValue = baseValue + opValue * ( getCurrentLevel() - 1 );
                 break;
         }
-        return (float)returnValue;
+        return returnValue;
     }
 
     public int getSkillpointsOperation() {
@@ -456,19 +456,19 @@ public class LowbrainSkill {
         return requirementsOperation;
     }
 
-    public float getSkillpointsOperationValue() {
+    public double getSkillpointsOperationValue() {
         return skillpointsOperationValue;
     }
 
-    public float getManaCostOperationValue() {
+    public double getManaCostOperationValue() {
         return manaCostOperationValue;
     }
 
-    public float getCooldownOperationValue() {
+    public double getCooldownOperationValue() {
         return cooldownOperationValue;
     }
 
-    public float getRequirementsOperationValue() {
+    public double getRequirementsOperationValue() {
         return requirementsOperationValue;
     }
 

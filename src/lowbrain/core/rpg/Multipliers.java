@@ -12,54 +12,54 @@ public class Multipliers {
     LowbrainPlayer p;
 
     // ON PLAYER ATTACK
-    private float BowArrowSpeed;
-    private float BowPrecision;
-    private float AttackByWeapon;
-    private float AttackByProjectile;
-    private float AttackByMagic;
-    private float CriticalHitChance;
-    private float CriticalHitMultiplier;
-    private float ChanceOfMissing;
-    private float BackStabMultiplier;
-    private float ChanceOfMagicEffect;
+    private double BowArrowSpeed;
+    private double BowPrecision;
+    private double AttackByWeapon;
+    private double AttackByProjectile;
+    private double AttackByMagic;
+    private double CriticalHitChance;
+    private double CriticalHitMultiplier;
+    private double ChanceOfMissing;
+    private double BackStabMultiplier;
+    private double ChanceOfMagicEffect;
 
     // ON PLAYER CONSUME POTION
-    private float ConsumedPotionMultiplier;
+    private double ConsumedPotionMultiplier;
 
     //PLAYER ATTRIBUTES
-    private float PlayerMaxHealth;
-    private float PlayerMaxMana;
-    private float PlayerManaRegen;
-    private float PlayerAttackSpeed;
-    private float PlayerMovementSpeed;
-    private float PlayerKnockbackResistance;
-    private float PlayerLuck;
-    private float PlayerDropPercentage;
+    private double PlayerMaxHealth;
+    private double PlayerMaxMana;
+    private double PlayerManaRegen;
+    private double PlayerAttackSpeed;
+    private double PlayerMovementSpeed;
+    private double PlayerKnockbackResistance;
+    private double PlayerLuck;
+    private double PlayerDropPercentage;
 
     //ON PLAYER GET DAMAGED
-    private float ChanceOfRemovingPotionEffect;
-    private float ReducingPotionEffect;
-    private float DamagedByFire;
-    private float DamagedByFireTick;
-    private float DamagedByPoison;
-    private float DamagedByWither;
-    private float DamagedByContact;
-    private float DamagedByFlyIntoWall;
-    private float DamagedByFall;
-    private float DamagedByWeapon;
-    private float DamagedByArrow;
-    private float DamagedByProjectile;
-    private float DamagedByMagic;
-    private float DamagedBySuffocation;
-    private float DamagedByDrowning;
-    private float DamagedByStarvation;
-    private float DamagedByLightning;
-    private float DamagedByVoid;
-    private float DamagedByHotFloor;
-    private float DamagedByExplosion;
-    private float DamagedByLava;
-    private float DamagedByDefault;
-    private float ChanceOfDodging;
+    private double ChanceOfRemovingPotionEffect;
+    private double ReducingPotionEffect;
+    private double DamagedByFire;
+    private double DamagedByFireTick;
+    private double DamagedByPoison;
+    private double DamagedByWither;
+    private double DamagedByContact;
+    private double DamagedByFlyIntoWall;
+    private double DamagedByFall;
+    private double DamagedByWeapon;
+    private double DamagedByArrow;
+    private double DamagedByProjectile;
+    private double DamagedByMagic;
+    private double DamagedBySuffocation;
+    private double DamagedByDrowning;
+    private double DamagedByStarvation;
+    private double DamagedByLightning;
+    private double DamagedByVoid;
+    private double DamagedByHotFloor;
+    private double DamagedByExplosion;
+    private double DamagedByLava;
+    private double DamagedByDefault;
+    private double ChanceOfDodging;
 
     public Multipliers(LowbrainPlayer p){
         this.p = p;
@@ -272,132 +272,132 @@ public class Multipliers {
         this.DamagedByDefault = Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByDefault().compute(p);
     }
 
-    public float getChanceOfMagicEffect() {
+    public double getChanceOfMagicEffect() {
         return Settings.getInstance().getParameters().getOnPlayerAttackEntity().getChanceOfCreatingMagicAttack().randomizeFromMultiplier(ChanceOfMagicEffect);
     }
-    public float getChanceOfMissing() {
+    public double getChanceOfMissing() {
         return Settings.getInstance().getParameters().getOnPlayerAttackEntity().getChanceOfMissing().randomizeFromMultiplier(ChanceOfMissing);
     }
-    public float getChanceOfDodging() {
+    public double getChanceOfDodging() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getChanceOfDodging().randomizeFromMultiplier(ChanceOfDodging);
     }
-    public float getBowArrowSpeed() {
+    public double getBowArrowSpeed() {
         return Settings.getInstance().getParameters().getOnPlayerShootBow().getSpeed().randomizeFromMultiplier(BowArrowSpeed);
     }
-    public float getBowPrecision() {
+    public double getBowPrecision() {
         return Settings.getInstance().getParameters().getOnPlayerShootBow().getPrecision().randomizeFromMultiplier(BowPrecision);
     }
-    public float getAttackByWeapon() {
+    public double getAttackByWeapon() {
         return Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().weapon.randomizeFromMultiplier(AttackByWeapon);
     }
-    public float getAttackByProjectile() {
+    public double getAttackByProjectile() {
         return Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().projectile.randomizeFromMultiplier(AttackByProjectile);
     }
-    public float getAttackByMagic() {
+    public double getAttackByMagic() {
         return Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().magic.randomizeFromMultiplier(AttackByMagic);
     }
-    public float getCriticalHitChance() {
+    public double getCriticalHitChance() {
         return Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCriticalHit().chance.randomizeFromMultiplier(CriticalHitChance);
     }
-    public float getCriticalHitMultiplier() {
+    public double getCriticalHitMultiplier() {
         return Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCriticalHit().damage.randomizeFromMultiplier(CriticalHitMultiplier);
     }
-    public float getBackStabMultiplier() {
+    public double getBackStabMultiplier() {
         return Settings.getInstance().getParameters().getOnPlayerAttackEntity().getBackStab().randomizeFromMultiplier(BackStabMultiplier);
     }
-    public float getConsumedPotionMultiplier() {
+    public double getConsumedPotionMultiplier() {
         return Settings.getInstance().getParameters().getOnPlayerConsumePotion().randomizeFromMultiplier(ConsumedPotionMultiplier);
     }
-    public float getPlayerDropPercentage() {
+    public double getPlayerDropPercentage() {
         return Settings.getInstance().getParameters().getOnPlayerDies().getItems_drops().randomizeFromMultiplier(PlayerDropPercentage);
     }
-    public float getChanceOfRemovingPotionEffect() {
+    public double getChanceOfRemovingPotionEffect() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getChanceOfRemovingMagicEffect().randomizeFromMultiplier(ChanceOfRemovingPotionEffect);
     }
-    public float getReducingPotionEffect() {
+    public double getReducingPotionEffect() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getReducingBadPotionEffect().randomizeFromMultiplier(ReducingPotionEffect);
     }
-    public float getDamagedByFire() {
+    public double getDamagedByFire() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByFire().randomizeFromMultiplier(DamagedByFire);
     }
-    public float getDamagedByFireTick() {
+    public double getDamagedByFireTick() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByFireTick().randomizeFromMultiplier(DamagedByFireTick);
     }
-    public float getDamagedByPoison() {
+    public double getDamagedByPoison() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByPoison().randomizeFromMultiplier(DamagedByPoison);
     }
-    public float getDamagedByWither() {
+    public double getDamagedByWither() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByWither().randomizeFromMultiplier(DamagedByWither);
     }
-    public float getDamagedByContact() {
+    public double getDamagedByContact() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByContact().randomizeFromMultiplier(DamagedByContact);
     }
-    public float getDamagedByFlyIntoWall() {
+    public double getDamagedByFlyIntoWall() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByFlyIntoWall().randomizeFromMultiplier(DamagedByFlyIntoWall);
     }
-    public float getDamagedByFall() {
+    public double getDamagedByFall() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByFall().randomizeFromMultiplier(DamagedByFall);
     }
-    public float getDamagedByWeapon() {
+    public double getDamagedByWeapon() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByWeapon().randomizeFromMultiplier(DamagedByWeapon);
     }
-    public float getDamagedByArrow() {
+    public double getDamagedByArrow() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByArrow().randomizeFromMultiplier(DamagedByArrow);
     }
-    public float getDamagedByProjectile() {
+    public double getDamagedByProjectile() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByProjectile().randomizeFromMultiplier(DamagedByProjectile);
     }
-    public float getDamagedByMagic() {
+    public double getDamagedByMagic() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByMagic().randomizeFromMultiplier(DamagedByMagic);
     }
-    public float getDamagedBySuffocation() {
+    public double getDamagedBySuffocation() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getBySuffocation().randomizeFromMultiplier(DamagedBySuffocation);
     }
-    public float getDamagedByDrowning() {
+    public double getDamagedByDrowning() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByDrowning().randomizeFromMultiplier(DamagedByDrowning);
     }
-    public float getDamagedByStarvation() {
+    public double getDamagedByStarvation() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByStarvation().randomizeFromMultiplier(DamagedByStarvation);
     }
-    public float getDamagedByLightning() {
+    public double getDamagedByLightning() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByLightning().randomizeFromMultiplier(DamagedByLightning);
     }
-    public float getDamagedByVoid() {
+    public double getDamagedByVoid() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByVoid().randomizeFromMultiplier(DamagedByVoid);
     }
-    public float getDamagedByHotFloor() {
+    public double getDamagedByHotFloor() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByHotFloor().randomizeFromMultiplier(DamagedByHotFloor);
     }
-    public float getDamagedByExplosion() {
+    public double getDamagedByExplosion() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByExplosion().randomizeFromMultiplier(DamagedByExplosion);
     }
-    public float getDamagedByLava() {
+    public double getDamagedByLava() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByLava().randomizeFromMultiplier(DamagedByLava);
     }
-    public float getDamagedByDefault() {
+    public double getDamagedByDefault() {
         return Settings.getInstance().getParameters().getOnPlayerGetDamaged().getByDefault().randomizeFromMultiplier(DamagedByDefault);
     }
 
     // these cannot be randomize as it wouldnt make sense
-    public float getPlayerMaxHealth() {
+    public double getPlayerMaxHealth() {
         return PlayerMaxHealth;
     }
-    public float getPlayerMaxMana() {
+    public double getPlayerMaxMana() {
         return PlayerMaxMana;
     }
-    public float getPlayerManaRegen() {
+    public double getPlayerManaRegen() {
         return PlayerManaRegen;
     }
-    public float getPlayerAttackSpeed() {
+    public double getPlayerAttackSpeed() {
         return PlayerAttackSpeed;
     }
-    public float getPlayerMovementSpeed() {
+    public double getPlayerMovementSpeed() {
         return PlayerMovementSpeed;
     }
-    public float getPlayerKnockbackResistance() {
+    public double getPlayerKnockbackResistance() {
         return PlayerKnockbackResistance;
     }
-    public float getPlayerLuck() {
+    public double getPlayerLuck() {
         return PlayerLuck;
     }
 }

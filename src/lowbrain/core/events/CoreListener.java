@@ -13,7 +13,7 @@ import lowbrain.items.main.Staff;
 import lowbrain.library.FunctionType;
 import lowbrain.library.fn;
 import org.apache.commons.lang.mutable.MutableBoolean;
-import org.apache.commons.lang.mutable.MutableFloat;
+import org.apache.commons.lang.mutable.MutableDouble;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.*;
@@ -65,7 +65,7 @@ public class CoreListener implements Listener {
         // animal spawned from breeding
         if (e.getEntity() instanceof Animals
                 && e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.BREEDING) {
-            float limit = Settings.getInstance().getReduceSpawnFromBreeding();
+            double limit = Settings.getInstance().getReduceSpawnFromBreeding();
 
             if (limit < Math.random())
                 e.setCancelled(true); // cancel spawning
@@ -199,15 +199,15 @@ public class CoreListener implements Listener {
         plugin.debugInfo("************* EntityDamageByEntityEvent **************");
 
         MutableBoolean isCritical = new MutableBoolean(false);
-        MutableFloat missChance = new MutableFloat(0F);
+        MutableDouble missChance = new MutableDouble(0F);
         boolean isMissed = false;
         boolean offense = applyOffensiveAttack(e,isCritical, missChance);
         boolean deffence = applyDefensive(e, missChance);
 
         double rdm = Math.random();
 
-        plugin.debugInfo("              Missing chance : " + missChance.floatValue());
-        if(rdm < missChance.floatValue()){
+        plugin.debugInfo("              Missing chance : " + missChance.doubleValue());
+        if(rdm < missChance.doubleValue()){
             plugin.debugInfo("              Attack was missed !");
             e.setDamage(0);
         }
@@ -265,7 +265,7 @@ public class CoreListener implements Listener {
         if(damaged == null)
             return;
 
-        float multiplier = 1;
+        double multiplier = 1;
 
         plugin.debugInfo("************* On Player get Damaged **************");
         plugin.debugInfo("              Damage caused by : " + e.getCause().name());
@@ -359,7 +359,7 @@ public class CoreListener implements Listener {
             LowbrainPlayer rp = plugin.getPlayerHandler().get(e.getPlayer());
             if(rp != null && !rp.getPlayer().getActivePotionEffects().isEmpty()) {
 
-                float result = rp.getMultipliers().getConsumedPotionMultiplier();
+                double result = rp.getMultipliers().getConsumedPotionMultiplier();
 
                 PotionEffect po = (PotionEffect) rp.getPlayer().getActivePotionEffects().toArray()[rp.getPlayer().getActivePotionEffects().size() -1];
 
@@ -395,22 +395,22 @@ public class CoreListener implements Listener {
 
         plugin.debugInfo("************* On Player Shoot Bow **************");
 
-        float speed = rpPlayer.getMultipliers().getBowArrowSpeed();
+        double speed = rpPlayer.getMultipliers().getBowArrowSpeed();
 
         plugin.debugInfo("              Arrow speed multiplier : " + speed);
         ar.setVelocity(ar.getVelocity().multiply(speed));
 
-        float precX = rpPlayer.getMultipliers().getBowPrecision();
+        double precX = rpPlayer.getMultipliers().getBowPrecision();
 
         int direction = fn.randomInt(0,1) == 0 ? -1 : 1;
         precX = 1 + (1-precX)*direction;
 
-        float precY = rpPlayer.getMultipliers().getBowPrecision();
+        double precY = rpPlayer.getMultipliers().getBowPrecision();
 
         direction = fn.randomInt(0,1) == 0 ? -1 : 1;
         precY = 1 + (1-precY)*direction;
 
-        float precZ = rpPlayer.getMultipliers().getBowPrecision();
+        double precZ = rpPlayer.getMultipliers().getBowPrecision();
 
         direction = fn.randomInt(0,1) == 0 ? -1 : 1;
         precZ = 1 + (1-precZ)*direction;
@@ -517,7 +517,7 @@ public class CoreListener implements Listener {
         if (Settings.getInstance().getParameters().isPlayerKillsPlayerExpEnable()) {
             int diffLvl = Math.abs(killed.getLvl() - killer.getLvl());
             killer.addKills(1);
-            float xpGained = 0.0F;
+            double xpGained = 0.0F;
 
             if(diffLvl == 0)
                 xpGained = Settings.getInstance().getParameters().getKillerBaseExp()
@@ -661,8 +661,8 @@ public class CoreListener implements Listener {
         int duration = 0;
         int amplifier = 0;
 
-        float max = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().duration.getMax();
-        float min = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().duration.getMin();
+        double max = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().duration.getMax();
+        double min = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCreatingMagicAttack().duration.getMin();
 
         PotionEffect effect;
         PotionEffectType type = PotionEffectType.POISON;
@@ -756,7 +756,7 @@ public class CoreListener implements Listener {
         if(rp.getPlayer().getActivePotionEffects().isEmpty())
             return;
 
-        float rdm = rp.getMultipliers().getReducingPotionEffect();
+        double rdm = rp.getMultipliers().getReducingPotionEffect();
         PotionEffect po = (PotionEffect) rp.getPlayer().getActivePotionEffects().toArray()[rp.getPlayer().getActivePotionEffects().size() -1];
 
         int newDuration = (int)Math.ceil(po.getDuration() * rdm);
@@ -815,10 +815,10 @@ public class CoreListener implements Listener {
     /**
      * apply deffensive multipler to damage from event
      * @param e EntityDamageByEntityEvent
-     * @param missChance mutable float, value of missing chance
+     * @param missChance mutable double, value of missing chance
      * @return true if multiplier was applied
      */
-    private boolean applyDefensive(EntityDamageByEntityEvent e, MutableFloat missChance){
+    private boolean applyDefensive(EntityDamageByEntityEvent e, MutableDouble missChance){
         if( !(e.getEntity() instanceof Player))
             return false;
 
@@ -843,7 +843,7 @@ public class CoreListener implements Listener {
                 damageSet = true;
             }
             plugin.debugInfo("              Damage from magic projectile reduced by : " + multiplier);
-            float chanceOfRemovingEffect = -1F;
+            double chanceOfRemovingEffect = -1F;
 
             if(Settings.getInstance().getParameters().getOnPlayerGetDamaged().getChanceOfRemovingMagicEffect().isEnabled()){
                 chanceOfRemovingEffect = damagee.getMultipliers().getChanceOfRemovingPotionEffect();
@@ -874,7 +874,7 @@ public class CoreListener implements Listener {
                     damageSet = true;
                 }
                 plugin.debugInfo("              Damage from magic projectile reduced by : " + multiplier);
-                float chanceOfRemovingEffect = -1F;
+                double chanceOfRemovingEffect = -1F;
 
                 if(Settings.getInstance().getParameters().getOnPlayerGetDamaged().getChanceOfRemovingMagicEffect().isEnabled()){
                     chanceOfRemovingEffect = damagee.getMultipliers().getChanceOfRemovingPotionEffect();
@@ -900,8 +900,8 @@ public class CoreListener implements Listener {
         }
 
         if(damagee != null && Settings.getInstance().getParameters().getOnPlayerGetDamaged().getChanceOfDodging().isEnabled()){
-            float oldChance = missChance.floatValue();
-            float newChance = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getChanceOfMissing().isEnabled() ?
+            double oldChance = missChance.doubleValue();
+            double newChance = Settings.getInstance().getParameters().getOnPlayerAttackEntity().getChanceOfMissing().isEnabled() ?
                     oldChance * damagee.getMultipliers().getChanceOfDodging() : damagee.getMultipliers().getChanceOfDodging();
             missChance.setValue(newChance);
         }
@@ -923,13 +923,13 @@ public class CoreListener implements Listener {
      * apply offensive multiplier to damage from event
      * @param e EntityDamageByEntityEvent
      * @param isCritical set to true if the hit was critical
-     * @param missChance mutable float, value of missing chance
+     * @param missChance mutable double, value of missing chance
      * @return true if multiplier was applied
      */
-    private boolean applyOffensiveAttack(EntityDamageByEntityEvent e, MutableBoolean isCritical, MutableFloat missChance){
+    private boolean applyOffensiveAttack(EntityDamageByEntityEvent e, MutableBoolean isCritical, MutableDouble missChance){
         EventSource eventSource = EventSource.getFromAttack(e);
 
-        float absorbDamage = 0F;
+        double absorbDamage = 0F;
 
         double oldDamage = e.getDamage();
 
@@ -1037,7 +1037,7 @@ public class CoreListener implements Listener {
         if(eventSource.source == EventSource.Source.ARROW && Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().projectile.isEnabled()){
             e.setDamage(
                     Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().projectile.randomizeFromValue(
-                            eventSource.damager.getMultipliers().getAttackByProjectile() * (float)e.getDamage()
+                            eventSource.damager.getMultipliers().getAttackByProjectile() * e.getDamage()
                     )
             );
         }
@@ -1045,7 +1045,7 @@ public class CoreListener implements Listener {
         else if(eventSource.source == EventSource.Source.NORMAL && Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().weapon.isEnabled()){
             e.setDamage(
                     Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().weapon.randomizeFromValue(
-                            eventSource.damager.getMultipliers().getAttackByWeapon() * (float)e.getDamage()
+                            eventSource.damager.getMultipliers().getAttackByWeapon() * e.getDamage()
                     )
             );
         }
@@ -1055,7 +1055,7 @@ public class CoreListener implements Listener {
                 && Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().magic.isEnabled()){
             e.setDamage(
                     Settings.getInstance().getParameters().getOnPlayerAttackEntity().getAttackEntityBy().magic.randomizeFromValue(
-                            eventSource.damager.getMultipliers().getAttackByMagic() * (float)e.getDamage()
+                            eventSource.damager.getMultipliers().getAttackByMagic() * e.getDamage()
                     )
             );
         }
@@ -1074,11 +1074,11 @@ public class CoreListener implements Listener {
 
         if(Settings.getInstance().getParameters().getOnPlayerAttackEntity().getCriticalHit().enable){
             double rdm = Math.random();
-            float chance = eventSource.damager.getMultipliers().getCriticalHitChance();
+            double chance = eventSource.damager.getMultipliers().getCriticalHitChance();
             plugin.debugInfo("              Chance of performing a critical hit : " + chance);
             if(rdm < chance){
                 isCritical.setValue(true);
-                float criticalHitMultiplier = eventSource.damager.getMultipliers().getCriticalHitMultiplier();
+                double criticalHitMultiplier = eventSource.damager.getMultipliers().getCriticalHitMultiplier();
                 plugin.debugInfo("              Critical hit multiplier : " + criticalHitMultiplier);
                 e.setDamage(e.getDamage() * criticalHitMultiplier);
             }
@@ -1091,7 +1091,7 @@ public class CoreListener implements Listener {
             //determine if the dot product between the vectors is greater than 0
             if (attackerDirection.dot(victimDirection) > 0) {
                 //player was backstabbed.}
-                float bs = eventSource.damager.getMultipliers().getBackStabMultiplier();
+                double bs = eventSource.damager.getMultipliers().getBackStabMultiplier();
                 e.setDamage(e.getDamage() * bs);
                 plugin.debugInfo("              Backstap multiplier : " + bs);
             }

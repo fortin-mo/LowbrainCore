@@ -1,6 +1,6 @@
 package lowbrain.core.commun;
 
-import lowbrain.core.abstraction.Parametable;
+import lowbrain.core.abstraction.Parametrise;
 import lowbrain.core.rpg.LowbrainPlayer;
 import lowbrain.library.fn;
 import org.bukkit.configuration.ConfigurationSection;
@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Contract;
 /**
  * represents a multiplier parameter
  */
-public class Multiplier extends Parametable {
+public class Multiplier extends Parametrise {
     /**
      * constructor
      * @param config
@@ -24,7 +24,7 @@ public class Multiplier extends Parametable {
      * @param p LowbrainPlayer
      * @return computed value
      */
-    public float compute(LowbrainPlayer p) {
+    public double compute(LowbrainPlayer p) {
         if (!enabled)
             return 1F; // returning a multiplier of 1 equals doing nothing
 
@@ -37,8 +37,8 @@ public class Multiplier extends Parametable {
      * @param p LowbrainPlayer
      * @return computed value
      */
-    public float randomize(LowbrainPlayer p) {
-        float multiplier = this.compute(p);
+    public double randomize(LowbrainPlayer p) {
+        double multiplier = this.compute(p);
 
         if (range != 0 && rangeType == RangeType.ON_MULTIPLIER)
             // we can only take the on_multiplier range here because the value it self is not available
@@ -53,7 +53,7 @@ public class Multiplier extends Parametable {
      * @param value value to randomize
      * @return randomized value
      */
-    public float randomize(float value) {
+    public double randomize(double value) {
         if (range == 0)
             return value;
 
@@ -66,8 +66,8 @@ public class Multiplier extends Parametable {
      * @param value value to randomize
      * @return randomized value
      */
-    public float randomizeFromMultiplier(float value) {
-        float multiplier = value;
+    public double randomizeFromMultiplier(double value) {
+        double multiplier = value;
 
         if (range != 0 && rangeType == RangeType.ON_MULTIPLIER)
             multiplier = fn.randomBetween(min, max, multiplier, range, false);
@@ -81,8 +81,8 @@ public class Multiplier extends Parametable {
      * @param value value to randomize
      * @return randomized value
      */
-    public float randomizeFromValue(float value) {
-        float val = value;
+    public double randomizeFromValue(double value) {
+        double val = value;
 
         if (range != 0 && rangeType == RangeType.ON_VALUE)
             val = fn.randomBetween(min, max, val, range, false);
@@ -98,10 +98,10 @@ public class Multiplier extends Parametable {
      * @param range range
      * @return randomized value
      */
-    public float randomizeWith(LowbrainPlayer p, Float min, Float max, Float range) {
-        float multiplier = this.computeWith(p, min, max);
+    public double randomizeWith(LowbrainPlayer p, Double min, Double max, Double range) {
+        double multiplier = this.computeWith(p, min, max);
 
-        float useRange = range == null ? this.getRange() : range;
+        double useRange = range == null ? this.getRange() : range;
 
         if (range != 0 && rangeType == RangeType.ON_MULTIPLIER)
             // we can only take the on_multiplier range here because the value it self is not available
@@ -117,14 +117,14 @@ public class Multiplier extends Parametable {
      * @param max maximum value
      * @return computed value
      */
-    public float computeWith(LowbrainPlayer p, Float min, Float max) {
+    public double computeWith(LowbrainPlayer p, Double min, Double max) {
         if (!enabled)
             return 1F; // returning a multiplier of 1 equals doing nothing
 
-        float useMax = max == null ? this.getMax() : max;
-        float useMin = min == null ? this.getMin() : min;
+        double useMax = max == null ? this.getMax() : max;
+        double useMin = min == null ? this.getMin() : min;
 
-        float result = 0F;
+        double result = 0F;
         if (fn.StringIsNullOrEmpty(function)) {
             result = Helper.valueFromFunction(useMax, useMin, this.getVariables(), p, this.functionType);
         } else {
@@ -146,14 +146,14 @@ public class Multiplier extends Parametable {
      * @param initialValue initial value
      * @return randomized value
      */
-    public float applyRandomizer(LowbrainPlayer p, float initialValue) {
-        float val = this.applyMultiplier(p, initialValue);
+    public double applyRandomizer(LowbrainPlayer p, double initialValue) {
+        double val = this.applyMultiplier(p, initialValue);
 
         if (range != 0 && rangeType == RangeType.ON_VALUE)
             // in range is apply to the value
             // min is set to zero to avoid negative values
-            // max is set to Float.MAX_VALUE to avoid exeding possible float value
-            val = fn.randomBetween(0, Float.MAX_VALUE, val, range, false);
+            // max is set to Double.MAX_VALUE to avoid exeding possible double value
+            val = fn.randomBetween(0, Double.MAX_VALUE, val, range, false);
 
 
         return val;
@@ -165,12 +165,12 @@ public class Multiplier extends Parametable {
      * @param initialValue initial value
      * @return multiplied value
      */
-    public float applyMultiplier(LowbrainPlayer p, float initialValue) {
+    public double applyMultiplier(LowbrainPlayer p, double initialValue) {
         if (!enabled)
             return initialValue;
 
-        float multiplier = this.randomize(p);
-        float result = initialValue * multiplier;
+        double multiplier = this.randomize(p);
+        double result = initialValue * multiplier;
 
         return result;
     };

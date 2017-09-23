@@ -11,7 +11,7 @@ public class Settings {
     private static Settings instance;
 
     private boolean opBypassPermission;
-    private float firstLvlExp;
+    private double firstLvlExp;
     private int maxLvl;
     private int maxStats;
     private boolean canSwitchClass;
@@ -29,7 +29,7 @@ public class Settings {
     private int skillPointsLevelInterval;
     private int skillPointsPerInterval;
     private boolean disableMobNoTickDamage;
-    private float reduceSpawnFromBreeding;
+    private double reduceSpawnFromBreeding;
     private boolean hardCoreEnable;
     private int hardCoreMaxDeaths;
 
@@ -43,9 +43,9 @@ public class Settings {
 
     private boolean groupXpEnable;
     private boolean groupXpEnableParties;
-    private float groupXpRange;
-    private float groupXpMain;
-    private float groupXpOthers;
+    private double groupXpRange;
+    private double groupXpMain;
+    private double groupXpOthers;
 
     private String parametersFile;
     private Parameters parameters;
@@ -54,12 +54,12 @@ public class Settings {
         hardCoreEnable = config.getBoolean("hard_core.enable", false);
         hardCoreMaxDeaths = config.getInt("hard_core.max_deaths", 1);
         disableMobNoTickDamage = config.getBoolean("disable_mob_no_tick_damage", true);
-        reduceSpawnFromBreeding = (float)config.getDouble("reduce_spawn_from_breeding", 0.5);
+        reduceSpawnFromBreeding = config.getDouble("reduce_spawn_from_breeding", 0.5);
         opBypassPermission = config.getBoolean("op_bypass_permission", true);
         allowPointDeduction = config.getBoolean("allow_point_deduction", false);
         canSwitchClass = config.getBoolean("can_switch_class", false);
         canSwitchRace = config.getBoolean("can_switch_race", false);
-        firstLvlExp = (float)config.getDouble("first_lvl_exp", 75);
+        firstLvlExp = config.getDouble("first_lvl_exp", 75);
         maxLvl = config.getInt("max_lvl", 100);
         maxStats = config.getInt("max_stats", 100);
         pointsPerLvl = config.getInt("points_per_lvl", 2);
@@ -81,9 +81,9 @@ public class Settings {
 
         groupXpEnable = config.getBoolean("group_xp.enable", true);
         groupXpEnableParties = config.getBoolean("group_ep_enable.enable_parties", true);
-        groupXpRange = (float)config.getDouble("group_xp.range",15);
-        groupXpMain = (float)config.getDouble("group_xp.main", 0.667);
-        groupXpOthers = (float)config.getDouble("group_xp.others", 0.333);
+        groupXpRange = config.getDouble("group_xp.range",15);
+        groupXpMain = config.getDouble("group_xp.main", 0.667);
+        groupXpOthers = config.getDouble("group_xp.others", 0.333);
 
         startingSkillPoints = config.getInt("starting_skill_points", 0);
         skillPointsLevelInterval = config.getInt("skill_points_level_interval", 5);
@@ -114,7 +114,7 @@ public class Settings {
         return opBypassPermission;
     }
 
-    public float getFirstLvlExp() {
+    public double getFirstLvlExp() {
         return firstLvlExp;
     }
 
@@ -230,15 +230,15 @@ public class Settings {
         return groupXpEnableParties;
     }
 
-    public float getGroupXpRange() {
+    public double getGroupXpRange() {
         return groupXpRange;
     }
 
-    public float getGroupXpMain() {
+    public double getGroupXpMain() {
         return groupXpMain;
     }
 
-    public float getGroupXpOthers() {
+    public double getGroupXpOthers() {
         return groupXpOthers;
     }
 
@@ -246,7 +246,7 @@ public class Settings {
         return parametersFile;
     }
 
-    public float getReduceSpawnFromBreeding() {
+    public double getReduceSpawnFromBreeding() {
         return reduceSpawnFromBreeding;
     }
 }

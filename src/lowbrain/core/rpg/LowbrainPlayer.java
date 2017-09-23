@@ -24,12 +24,12 @@ import java.util.Map;
  */
 public class LowbrainPlayer extends Attributable {
 
-	private float nextLvl = 0;
+	private double nextLvl = 0;
 	private String className = "";
 	private boolean classIsSet = false;
 
-	private float maxMana = 0;
-	private float currentMana = 0;
+	private double maxMana = 0;
+	private double currentMana = 0;
 	private BukkitTask manaRegenTask = null;
 	private LowbrainClass lowbrainClass = null;
 	private LowbrainRace lowbrainRace = null;
@@ -131,14 +131,14 @@ public class LowbrainPlayer extends Attributable {
         defence = playerData.getInt("stats.defence",0);
         dexterity = playerData.getInt("stats.dexterity",0);
 		magicResistance = playerData.getInt("stats.magic_resistance",0);
-        experience = (float)playerData.getDouble("stats.experience",0);
+        experience = playerData.getDouble("stats.experience",0);
         points = playerData.getInt("stats.points",0);
 		skillPoints = playerData.getInt("stats.skill_points",0);
         lvl = playerData.getInt("stats.lvl",0);
-        nextLvl = (float)playerData.getDouble("stats.next_lvl",0);
+        nextLvl = playerData.getDouble("stats.next_lvl",0);
 		kills = playerData.getInt("stats.kills",0);
 		deaths = playerData.getInt("stats.deaths",0);
-		currentMana = (float)playerData.getDouble("stats.current_mana",0);
+		currentMana = playerData.getDouble("stats.current_mana",0);
 		agility = playerData.getInt("stats.agility",0);
 		reputation = playerData.getInt("stats.reputation", 0);
         courage = playerData.getInt("stats.courage", 0);
@@ -151,7 +151,7 @@ public class LowbrainPlayer extends Attributable {
 		if(skillsSection != null)
 			for (String skill : skillsSection.getKeys(false))
 				this.skills.put(skill,new LowbrainSkill(skill,skillsSection.getInt(skill)));
-        
+
 		currentSkill = this.skills.containsKey(playerData.getString("stats.current_skill"))
                 ? playerData.getString("stats.current_skill")
                 : "";
@@ -179,7 +179,7 @@ public class LowbrainPlayer extends Attributable {
 		if(classIsSet && this.lowbrainClass != null )
 			for (String powa : this.lowbrainClass.getPowers())
 				this.powers.put(powa,new LowbrainPower(powa));
-		
+
 		if(raceIsSet && this.lowbrainRace != null )
 			for (String powa : this.lowbrainRace.getPowers())
 				this.powers.put(powa,new LowbrainPower(powa));
@@ -449,7 +449,7 @@ public class LowbrainPlayer extends Attributable {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * save player current data in yml
 	 */
@@ -464,7 +464,7 @@ public class LowbrainPlayer extends Attributable {
 
 			playerData.set("race.is_set", this.raceIsSet);
 			playerData.set("race.name", this.raceName);
-            
+
             playerData.set("stats.vitality",this.vitality);
             playerData.set("stats.lvl", this.lvl);
             playerData.set("stats.strength", this.strength);
@@ -499,7 +499,7 @@ public class LowbrainPlayer extends Attributable {
 
 			playerData.set("settings.show_stats", showStats);
 
-            
+
             playerData.save(f);
 		} catch (Exception e) {
 			LowbrainCore.getInstance().warn(e.getMessage());// TODO: handle exception
@@ -622,19 +622,11 @@ public class LowbrainPlayer extends Attributable {
 
 	//=====================================================  ADD AND SETTER METHODS =================================
 
-    /**
-     * add experience to current player
-     * @param exp experience
-     */
-    public void addExperience(double exp) {
-	    this.addExperience((float)exp);
-    }
-
 	/**
 	 * add experience to current player
 	 * @param exp experience
 	 */
-	public void addExperience(float exp){
+	public void addExperience(double exp){
 		this.experience += exp;
 		statsBoard.refresh();
 
@@ -664,7 +656,7 @@ public class LowbrainPlayer extends Attributable {
 	public void addLvl(int n) {
 	    this.addLvl(n, false);
     }
-	
+
 	/**
 	 * add lvl to current player. will add points as well
 	 * @param nbLvl lvl to add
@@ -675,12 +667,12 @@ public class LowbrainPlayer extends Attributable {
 		this.lvl += nbLvl;
 		int maxLvl = getSettings().getMaxLvl();
 		int nbPointsPerLevel = getSettings().getPointsPerLvl();
-		
+
 		if(maxLvl > 0 && this.lvl > maxLvl)
 		    this.lvl= maxLvl;
 		else if (this.lvl <= 0)
 		    this.lvl = 1;
-		
+
 		int dif = this.lvl - oldLvl;
 		this.setDisplayName();
 		if(ajust){
@@ -707,7 +699,7 @@ public class LowbrainPlayer extends Attributable {
 	 * set player current mana
 	 * @param currentMana set mana
      */
-	public void setCurrentMana(float currentMana) {
+	public void setCurrentMana(double currentMana) {
 		this.currentMana = currentMana;
 	}
 
@@ -987,7 +979,7 @@ public class LowbrainPlayer extends Attributable {
 	 * return experience needed to achieve next level
 	 * @return
 	 */
-	public float getNextLvl(){
+	public double getNextLvl(){
 		return this.nextLvl;
 	}
 
@@ -1011,7 +1003,7 @@ public class LowbrainPlayer extends Attributable {
      * get the max mana
      * @return maximum mana
      */
-	public float getMaxMana() {
+	public double getMaxMana() {
 		return maxMana;
 	}
 
@@ -1019,7 +1011,7 @@ public class LowbrainPlayer extends Attributable {
      * get the current amount of mana
      * @return current mana
      */
-	public float getCurrentMana() {
+	public double getCurrentMana() {
 		return currentMana;
 	}
 
@@ -1117,7 +1109,7 @@ public class LowbrainPlayer extends Attributable {
 	private void setMovementSpeed(){
 		if(getSettings().getParameters().getPlayerAttributes().getMovementSpeed().isEnabled())
 			//this.getPlayer().getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)
-			this.getPlayer().setWalkSpeed(this.getMultipliers().getPlayerMovementSpeed());
+			this.getPlayer().setWalkSpeed((float)this.getMultipliers().getPlayerMovementSpeed());
 	}
 
     /**
@@ -1173,7 +1165,7 @@ public class LowbrainPlayer extends Attributable {
 			return;
 
 		if(getSettings().getParameters().getPlayerAttributes().getManaRegen().isEnabled()){
-			float regen = this.getMultipliers().getPlayerManaRegen();
+			double regen = this.getMultipliers().getPlayerManaRegen();
 			this.currentMana += regen;
 
 			if(this.currentMana > maxMana)

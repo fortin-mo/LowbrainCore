@@ -43,11 +43,11 @@ public class Helper {
      * @param p LowbrainPlayer
      * @return x value from attributes
      */
-    public static float getXValue(HashMap<String,Float> variables, LowbrainPlayer p){
-        float x = 0;
-        for(Map.Entry<String, Float> inf : variables.entrySet()) {
+    public static double getXValue(HashMap<String,Double> variables, LowbrainPlayer p){
+        double x = 0;
+        for(Map.Entry<String, Double> inf : variables.entrySet()) {
             String n = inf.getKey().toLowerCase();
-            float v = inf.getValue();
+            double v = inf.getValue();
             x += (v * p.getAttribute(n,0));
         }
         return x;
@@ -67,7 +67,7 @@ public class Helper {
      * @param min minimum value
      * @return slope using maxStats and default function type
      */
-    public static float Slope(float max, float min){
+    public static double Slope(double max, double min){
         return Slope(max,min,getMaxStats());
     }
 
@@ -78,7 +78,7 @@ public class Helper {
      * @param functionType function type
      * @return slope using maxStats and default function type
      */
-    public static float Slope(float max, float min, FunctionType functionType){
+    public static double Slope(double max, double min, FunctionType functionType){
         return Slope(max,min,getMaxStats(), functionType);
     }
 
@@ -89,7 +89,7 @@ public class Helper {
      * @param y y value
      * @return slope using default function type
      */
-    public static float Slope(float max, float min, float y){
+    public static double Slope(double max, double min, double y){
         return Slope(max,min,y, Settings.getInstance().getParameters().getFunctionType());
     }
 
@@ -101,18 +101,18 @@ public class Helper {
      * @param functionType function type to use
      * @return slope
      */
-    public static float Slope(float max, float min, float y, FunctionType functionType){
-        float slope = 0;
+    public static double Slope(double max, double min, double y, FunctionType functionType){
+        double slope = 0;
         switch (functionType){
             case LINEAR:
                 slope = (max - min)/y;
                 break;
             default:
             case CUBIC:
-                slope = (max - min)/(float)Math.pow(y,2);
+                slope = (max - min)/Math.pow(y,2);
                 break;
             case SQUARE:
-                slope = (max - min)/(float)Math.pow(y,0.5);
+                slope = (max - min)/Math.pow(y,0.5);
                 break;
         }
         return slope;
@@ -125,12 +125,12 @@ public class Helper {
      * @param x value
      * @return value
      */
-    public static float valueFromFunction(float max, float min, float x){
+    public static double valueFromFunction(double max, double min, double x){
         return valueFromFunction(max, min, x, null);
     }
 
-    public static float valueFromFunction(float max, float min, float x, FunctionType functionType){
-        float result = 0;
+    public static double valueFromFunction(double max, double min, double x, FunctionType functionType){
+        double result = 0;
 
         FunctionType usedFT = functionType == null ? Settings.getInstance().getParameters().getFunctionType() : functionType;
 
@@ -140,21 +140,21 @@ public class Helper {
                 break;
             default:
             case CUBIC:
-                result = Slope(max,min,usedFT) * (float)Math.pow(x,2) + min;
+                result = Slope(max,min,usedFT) * Math.pow(x,2) + min;
                 break;
             case SQUARE:
-                result = Slope(max,min,usedFT) * (float)Math.pow(x,0.5) + min;
+                result = Slope(max,min,usedFT) * Math.pow(x,0.5) + min;
                 break;
         }
         return result;
     }
 
 
-    public static float valueFromFunction(float max, float min, HashMap<String,Float> variables, LowbrainPlayer p){
+    public static double valueFromFunction(double max, double min, HashMap<String,Double> variables, LowbrainPlayer p){
         return valueFromFunction(max,min,getXValue(variables,p));
     }
 
-    public static float valueFromFunction(float max, float min, HashMap<String,Float> variables, LowbrainPlayer p, FunctionType functionType){
+    public static double valueFromFunction(double max, double min, HashMap<String,Double> variables, LowbrainPlayer p, FunctionType functionType){
         return valueFromFunction(max,min,getXValue(variables,p), functionType);
     }
 

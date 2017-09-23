@@ -19,10 +19,10 @@ public class LowbrainRace {
     private int magicResistance = 0;
     private int agility = 0;
 
-    private float maxHealth = 0F;
-    private float baseHealth = 0F;
-    private float maxMana = 0F;
-    private float baseMana = 0F;
+    private double maxHealth = 0F;
+    private double baseHealth = 0F;
+    private double maxMana = 0F;
+    private double baseMana = 0F;
 
     private List<String> bonusAttributes = new ArrayList<String>();
     private List<String> powers = new ArrayList<>();
@@ -53,10 +53,10 @@ public class LowbrainRace {
         magicResistance = config.getInt(name+".magic_resistance",0);
         agility = config.getInt(name+".agility",0);
 
-        maxHealth = (float)config.getDouble(name+".max_health",0);
-        baseHealth = (float)config.getDouble(name+".base_health",0);
-        maxMana = (float)config.getDouble(name+".max_mana",0);
-        baseMana = (float)config.getDouble(name+".base_mana",0);
+        maxHealth = config.getDouble(name+".max_health",0);
+        baseHealth = config.getDouble(name+".base_health",0);
+        maxMana = config.getDouble(name+".max_mana",0);
+        baseMana = config.getDouble(name+".base_mana",0);
 
         bonusAttributes = config.getStringList(name+".bonus_attributes");
         if(bonusAttributes == null)bonusAttributes = new ArrayList<String>();
@@ -198,7 +198,7 @@ public class LowbrainRace {
      * get the race max vitality
      * @return max health
      */
-    public float getMaxHealth() {
+    public double getMaxHealth() {
         return maxHealth;
     }
 
@@ -206,7 +206,7 @@ public class LowbrainRace {
      * get the race base vitality / minimum
      * @return base health
      */
-    public float getBaseHealth() {
+    public double getBaseHealth() {
         return baseHealth;
     }
 
@@ -214,7 +214,7 @@ public class LowbrainRace {
      * get the race max mana
      * @return max mana
      */
-    public float getMaxMana() {
+    public double getMaxMana() {
         return maxMana;
     }
 
@@ -222,7 +222,7 @@ public class LowbrainRace {
      * get the race base mana / minimum
      * @return base mana
      */
-    public float getBaseMana() {
+    public double getBaseMana() {
         return baseMana;
     }
 }

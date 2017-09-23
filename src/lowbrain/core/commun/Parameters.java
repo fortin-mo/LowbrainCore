@@ -17,11 +17,11 @@ public class Parameters {
 
     private final static String DEFAULT_PARAMETERS = "default_parameters.yml";
 
-    private float nextLvlMultiplier;
-    private float naturalXpGainMultiplier;
-    private float killerLevelGainMultiplier;
-    private float levelDifferenceMultiplier;
-    private float killerBaseExp;
+    private double nextLvlMultiplier;
+    private double naturalXpGainMultiplier;
+    private double killerLevelGainMultiplier;
+    private double levelDifferenceMultiplier;
+    private double killerBaseExp;
     private boolean playerKillsPlayerExpEnable;
     private FunctionType functionType;
 
@@ -62,11 +62,11 @@ public class Parameters {
         }
 
         this.functionType = FunctionType.get(config.getInt("function_type", -1));
-        this.nextLvlMultiplier = (float)config.getDouble("next_lvl_multiplier");
-        this.naturalXpGainMultiplier = (float)config.getDouble("natural_xp_gain_multiplier");
-        this.killerLevelGainMultiplier = (float)config.getDouble("on_player_kills_player.killer_level_gain_multiplier");
-        this.levelDifferenceMultiplier = (float)config.getDouble("on_player_kills_player.level_difference_multiplier");
-        this.killerBaseExp = (float)config.getDouble("on_player_kills_player.killer_base_exp");
+        this.nextLvlMultiplier = config.getDouble("next_lvl_multiplier");
+        this.naturalXpGainMultiplier = config.getDouble("natural_xp_gain_multiplier");
+        this.killerLevelGainMultiplier = config.getDouble("on_player_kills_player.killer_level_gain_multiplier");
+        this.levelDifferenceMultiplier = config.getDouble("on_player_kills_player.level_difference_multiplier");
+        this.killerBaseExp = config.getDouble("on_player_kills_player.killer_base_exp");
         this.playerKillsPlayerExpEnable = config.getBoolean("on_player_kills_player.enable");
 
         onPlayerAttackEntity = new OnPlayerAttackEntity(config.getConfigurationSection("on_player_attack_entity"));
@@ -80,23 +80,23 @@ public class Parameters {
         reputation = new Reputation(config.getConfigurationSection("reputation"));
     }
 
-    public float getNextLvlMultiplier() {
+    public double getNextLvlMultiplier() {
         return nextLvlMultiplier;
     }
 
-    public float getNaturalXpGainMultiplier() {
+    public double getNaturalXpGainMultiplier() {
         return naturalXpGainMultiplier;
     }
 
-    public float getKillerLevelGainMultiplier() {
+    public double getKillerLevelGainMultiplier() {
         return killerLevelGainMultiplier;
     }
 
-    public float getLevelDifferenceMultiplier() {
+    public double getLevelDifferenceMultiplier() {
         return levelDifferenceMultiplier;
     }
 
-    public float getKillerBaseExp() {
+    public double getKillerBaseExp() {
         return killerBaseExp;
     }
 

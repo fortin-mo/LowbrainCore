@@ -93,8 +93,8 @@ on_player_kills_player:
  # multiplier by which base exp is multiply by level difference between players (low lvl player kill high lvl player = higher exp gain and vice-versa)
  level_difference_multiplier: 0.5
 
-# mathematic to when a player attack another entity
-# maximum doesnt necesseraly mean the higher value possible. it is meant to be the best value possible
+# mathematics to when a player attack another entity
+# maximum doesn't necessarily mean the higher value possible. it is meant to be the best value possible
 on_player_attack_entity:
 
  # enable critical hit
@@ -109,7 +109,7 @@ on_player_attack_entity:
     agility: 0.25
     intelligence: 0.5
     dexterity: 0.25
- # the multipler apply to the damage when a player succeed a critical hit
+ # the multiplier apply to the damage when a player succeed a critical hit
   damage_multiplier:
    function:
    maximum: 1.75
@@ -461,14 +461,14 @@ on_player_get_damaged:
 # mathematics to when a player shoots with a bow
 on_player_shoot_bow:
  enable: true
- # precision will affect arrow vector(directon) on both x and y axes
+ # precision will affect arrow vector(direction) on both x and y axes
  precision:
   function:
-  minimum: 0.25
+  minimum: 0.5
   maximum: 1
   variables:
    dexterity: 1
-  range: 0.05
+  range: 0.025
  # the speed will affect the arrow vector velocity
  speed:
   function:

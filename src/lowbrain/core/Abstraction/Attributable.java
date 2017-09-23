@@ -24,7 +24,7 @@ public abstract class Attributable extends Playable {
     protected int magicResistance = 0;
     protected int points = 0;
     protected int skillPoints = 0;
-    protected float experience = 0;
+    protected double experience = 0;
     protected int lvl = 0;
     protected int kills = 0;
     protected int deaths = 0;
@@ -43,13 +43,13 @@ public abstract class Attributable extends Playable {
     public int getLvl() {return lvl;}
     public int getKills() {return kills;}
     public int getDeaths() {return deaths;}
-    public float getExperience() {return experience;}
+    public double getExperience() {return experience;}
     public int getSkillPoints() {return skillPoints;}
     public int getMagicResistance() {return magicResistance;}
 
     public void setPoints(int n) {this.points = n < 0 ? 0 : n; onAttributeChange();}
     public void setSkillPoints(int n) {this.skillPoints = n < 0 ? 0 : n; onAttributeChange();}
-    public void setExperience(float n) {this.experience = n < 0 ? 0 : n; onAttributeChange();}
+    public void setExperience(double n) {this.experience = n < 0 ? 0 : n; onAttributeChange();}
     public void setLvl(int n) {this.lvl = n < 0 ? 0 : n; onAttributeChange();}
     public void setKills(int n) {this.kills = n < 0 ? 0 : n; onAttributeChange();}
     public void setDeaths(int n) {this.deaths = n < 0 ? 0 : n; onAttributeChange();}
@@ -64,7 +64,7 @@ public abstract class Attributable extends Playable {
     public void addLvl(int n) {lvl += n; lvl = lvl < 0 ? 0 : lvl; onAttributeChange();}
     public void addKills(int n) {kills += n; kills = kills < 0 ? 0 : kills; onAttributeChange();}
     public void addDeaths(int n) {deaths += n; deaths = deaths < 0 ? 0 : deaths; onAttributeChange();}
-    public void addExperience(float n) {experience += n; experience = experience < 0 ? 0 : experience; onAttributeChange();}
+    public void addExperience(double n) {experience += n; experience = experience < 0 ? 0 : experience; onAttributeChange();}
     public void addSkillPoints(int n) {skillPoints += n; skillPoints = skillPoints < 0 ? 0 : skillPoints; onAttributeChange();}
     public void addMagicResistance(int n) {magicResistance += n; magicResistance = magicResistance < 0 ? 0 : magicResistance; onAttributeChange();}
 

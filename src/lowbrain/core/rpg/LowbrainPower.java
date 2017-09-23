@@ -19,13 +19,13 @@ import java.util.HashMap;
  * represents a single lowbrain power / spell
  */
 public class LowbrainPower {
-    private float mana;
+    private double mana;
     private String name;
 
     private Multiplier duration;
     private Multiplier amplifier;
     private Multiplier cooldown;
-    private float castRange;
+    private double castRange;
     private PotionEffectType potionEffectType;
     private Calendar lastCast;
     private HashMap<String,Integer> requirements;
@@ -41,8 +41,8 @@ public class LowbrainPower {
         this.name = name;
         this.requirements = new HashMap<>();
         this.lastCast = Calendar.getInstance();
-        this.mana = (float)config.getDouble(this.name + ".mana",0);
-        this.castRange = (float)config.getDouble(this.name + ".cast_range",0);
+        this.mana = config.getDouble(this.name + ".mana",0);
+        this.castRange = config.getDouble(this.name + ".cast_range",0);
 
         ConfigurationSection castSection = config.getConfigurationSection(this.name + ".cast");
         ConfigurationSection amplifierSection;
@@ -73,7 +73,7 @@ public class LowbrainPower {
      * return the mana necessary to use the spell
      * @return
      */
-    public float getMana() {
+    public double getMana() {
         return mana;
     }
 
@@ -89,7 +89,7 @@ public class LowbrainPower {
      * return the cast range of the spell
      * @return cast range
      */
-    public float getCastRange() {
+    public double getCastRange() {
         return castRange;
     }
 

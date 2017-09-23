@@ -11,29 +11,29 @@ import java.util.HashMap;
 /**
  * Created by Mooffy on 2017-06-23.
  */
-public abstract class Parametable {
-    protected Float max = 1F;
-    protected Float min = 1F;
+public abstract class Parametrise {
+    protected double max = 1F;
+    protected double min = 1F;
     protected String function;
     protected Boolean enabled = true;
-    protected Float range = 0F;
+    protected double range = 0F;
     protected RangeType rangeType = RangeType.ON_MULTIPLIER;
     protected FunctionType functionType = null;
-    protected HashMap<String, Float> variables = new HashMap<>();
+    protected HashMap<String, Double> variables = new HashMap<>();
 
-    protected Parametable() {
+    protected Parametrise() {
         LowbrainCore.getInstance().warn("A Multiplier was created using default constructor !");
     }
 
     @Contract("null -> fail")
-    protected Parametable(ConfigurationSection config) {
+    protected Parametrise(ConfigurationSection config) {
         if(config == null)
             throw new NullPointerException("Cannot construct Multiplier with null config !");
 
         setEnabled(config.getBoolean("enable", true));
-        setRange((float)config.getDouble("range"));
-        setMax((float)config.getDouble("maximum"));
-        setMin((float)config.getDouble("minimum"));
+        setRange(config.getDouble("range"));
+        setMax(config.getDouble("maximum"));
+        setMin(config.getDouble("minimum"));
         setFunction(config.getString("function"));
         setRangeType(RangeType.get(config.getInt("range_type", 0)));
 
@@ -45,15 +45,15 @@ public abstract class Parametable {
         ConfigurationSection vars = config.getConfigurationSection("variables");
         if(vars != null){
             for (String k : vars.getKeys(false))
-                variables.put(k,(float)vars.getDouble(k,0));
+                variables.put(k,vars.getDouble(k,0));
         }
     }
 
-    public Float getMax() {
+    public double getMax() {
         return this.max;
     }
 
-    public Float getMin() {
+    public double getMin() {
         return this.min;
     }
 
@@ -65,7 +65,7 @@ public abstract class Parametable {
         return this.enabled;
     }
 
-    public Float getRange() {
+    public double getRange() {
         return this.range;
     }
 
@@ -73,15 +73,15 @@ public abstract class Parametable {
         return this.rangeType;
     }
 
-    public HashMap<String, Float> getVariables() {
+    public HashMap<String, Double> getVariables() {
         return this.variables;
     }
 
-    public void setMax(Float max) {
+    public void setMax(double max) {
         this.max = max;
     }
 
-    public void setMin(Float min) {
+    public void setMin(double min) {
         this.min = min;
     }
 
@@ -93,7 +93,7 @@ public abstract class Parametable {
         this.enabled = enabled;
     }
 
-    public void setRange(Float range) {
+    public void setRange(double range) {
         this.range = range;
     }
 
@@ -105,7 +105,7 @@ public abstract class Parametable {
         this.functionType = functionType;
     }
 
-    public void setVariables(HashMap<String, Float> variables) {
+    public void setVariables(HashMap<String, Double> variables) {
         this.variables = variables;
     }
 }
