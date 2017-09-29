@@ -101,7 +101,7 @@ public class CoreListener implements Listener {
         String requirements =  rp.canEquipItemString(e.getItem());
         if(!fn.StringIsNullOrEmpty(requirements)) {
             e.setUseItemInHand(Event.Result.DENY);
-            rp.sendMessage(plugin.getConfigHandler().internationalization().format("cannot_equit_armor_or_item", requirements), ChatColor.RED);
+            rp.sendMessage(plugin.getConfigHandler().localization().format("cannot_equit_armor_or_item", requirements));
             e.setCancelled(true);
             return;
         }
@@ -1198,10 +1198,10 @@ public class CoreListener implements Listener {
         if (durability <= 0) {
             rp.getPlayer().getInventory().remove(item);
             rp.getPlayer().updateInventory();
-            rp.sendMessage(plugin.getConfigHandler().internationalization().format("item_destroyed"),ChatColor.GRAY);
+            rp.sendMessage(plugin.getConfigHandler().localization().format("item_destroyed"));
         } else {
             if (durability <= 10)
-                rp.sendMessage(plugin.getConfigHandler().internationalization().format("only_10_cast_left"));
+                rp.sendMessage(plugin.getConfigHandler().localization().format("only_10_cast_left"));
 
             List<String> lores = iMeta.getLore();
             lores.remove(sDurability);

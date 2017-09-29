@@ -1,7 +1,6 @@
 package lowbrain.core.rpg;
 import lowbrain.core.abstraction.Attributable;
 import lowbrain.core.commun.Settings;
-import lowbrain.core.commun.Helper;
 import lowbrain.core.commun.SubParameters.ReputationStatus;
 import lowbrain.core.main.LowbrainCore;
 import lowbrain.library.fn;
@@ -439,7 +438,7 @@ public class LowbrainPlayer extends Attributable {
 		LowbrainPower powa = this.powers.get(name);
 
 		if (powa == null) {
-			sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("you_cannot_cast_this_spell"), powa.getName());
+			sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("you_cannot_cast_this_spell", powa.getName()));
 			return false;
 		}
 
@@ -548,7 +547,7 @@ public class LowbrainPlayer extends Attributable {
 
         player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()); //restore health on level up
         this.currentMana = this.maxMana;//restore maxMana on level up
-        sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("level_up", this.lvl));
+        sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("level_up", this.lvl));
         this.getPlayer().getWorld().playSound(this.getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,0);
 	}
 
@@ -570,7 +569,7 @@ public class LowbrainPlayer extends Attributable {
 	 */
 	public void resetAll(boolean override){
 	    if (!getSettings().isAllowCompleteReset() && !override) {
-            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("not_allowed_to_reset_stats"));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("not_allowed_to_reset_stats"));
             return;
         }
 
@@ -615,7 +614,7 @@ public class LowbrainPlayer extends Attributable {
             this.getMobKills().put(k,0);
 
         setDisplayName();
-        sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("stats_reset"));
+        sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("stats_reset"));
 	}
 
 	//=================================================== END OF USEFUL =====================================
@@ -690,7 +689,7 @@ public class LowbrainPlayer extends Attributable {
 	public void addDeaths(int deaths) {
 		this.deaths += deaths;
 		if(Settings.getInstance().isHardCoreEnable() && this.deaths >= Settings.getInstance().getHardCoreMaxDeaths()){
-			this.sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("player_dies_on_hardcore_mode"));
+			this.sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("player_dies_on_hardcore_mode"));
 			this.resetAll(true);
 		}
 	}
@@ -724,13 +723,13 @@ public class LowbrainPlayer extends Attributable {
 			this.experience = 0;
 			this.nextLvl = getSettings().getFirstLvlExp();
 			this.lvl = 1;
-			sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("set_race_and_class", lowbrainRace.getName()));
+			sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("set_race_and_class", lowbrainRace.getName()));
 			this.raceIsSet = true;
 			initializePowers();
 			start();
 		} else if(getSettings().canSwitchRace()){
 			if(this.raceName == n){
-                sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("set_race_and_class_same", lowbrainRace.getName()));
+                sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("set_race_and_class_same", lowbrainRace.getName()));
 				return;
 			}
 
@@ -756,11 +755,11 @@ public class LowbrainPlayer extends Attributable {
 			this.lowbrainRace = newRace;
 
 			addBonusAttributes(this.lvl -1);
-            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("set_race_and_class", newRace.getName()));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("set_race_and_class", newRace.getName()));
 			initializePowers();
 			start();
 		} else{
-            sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("cant_switch_race"));
+            sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("cant_switch_race"));
 		}
 		this.raceIsSet = true;
 	}
@@ -786,14 +785,14 @@ public class LowbrainPlayer extends Attributable {
 			this.experience = 0;
 			this.nextLvl = getSettings().getFirstLvlExp();
 			this.lvl = 1;
-			sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("set_race_and_class", lowbrainClass.getName()));
+			sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("set_race_and_class", lowbrainClass.getName()));
 			this.classIsSet = true;
 
 			initializePowers();
 			start();
 		} else if (getSettings().canSwitchClass()) {
 			if(this.className == n){
-				sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("set_race_and_class_same", lowbrainClass.getName()));
+				sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("set_race_and_class_same", lowbrainClass.getName()));
 				return;
 			}
 
@@ -822,9 +821,9 @@ public class LowbrainPlayer extends Attributable {
 
 			initializePowers();
 			start();
-			sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("set_race_and_class", newClass.getName()));
+			sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("set_race_and_class", newClass.getName()));
 		} else{
-			sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("cant_switch_class"));
+			sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("cant_switch_class"));
 		}
 		this.classIsSet = true;
 	}
@@ -836,12 +835,12 @@ public class LowbrainPlayer extends Attributable {
 	public void setCurrentSkill(String n) {
 		if (this.skills.containsKey(n)) {
 			if(this.skills.get(n).getCurrentLevel() == 0){
-				this.sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("cannot_use_skill", n),ChatColor.RED);
+				this.sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("cannot_use_skill", n));
 				return;
 			}
 			this.currentSkill = n;
 		} else {
-			this.sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("no_such_skill", n),ChatColor.RED);
+			this.sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("no_such_skill", n));
 		}
 	}
 
@@ -851,18 +850,18 @@ public class LowbrainPlayer extends Attributable {
 	 */
 	public void upgradeSkill(String n){
 		if (!LowbrainCore.getInstance().getSkills().containsKey(n)){
-			this.sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("no_such_skill", n),ChatColor.RED);
+			this.sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("no_such_skill", n));
 			return;
 		}
 
 		LowbrainSkill s = this.skills.get(n);
 		if (!s.isEnable()) {
-			this.sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("skill_is_disabled", s.getName()),ChatColor.RED);
+			this.sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("skill_is_disabled", s.getName()));
 			return;
 		}
 
 		if (s.getMaxLevel() <= s.getCurrentLevel()) {
-			this.sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("skill_fully_upgraded", s.getName()),ChatColor.RED);
+			this.sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("skill_fully_upgraded", s.getName()));
 			return;
 		}
 
@@ -877,17 +876,17 @@ public class LowbrainPlayer extends Attributable {
 
 		if (!fn.StringIsNullOrEmpty(msg)) {
 			this.sendMessage(
-			        LowbrainCore.getInstance().getConfigHandler().internationalization()
+			        LowbrainCore.getInstance().getConfigHandler().localization()
                             .format("skill_requirement_to_high",
-                                    new Object[] {msg, s.getName()}),ChatColor.RED);
+                                    new Object[] {msg, s.getName()}));
 			return;
 		}
 
 		if (s.getSkillpointsCost() > this.skillPoints) {
 			this.sendMessage(
-			        LowbrainCore.getInstance().getConfigHandler().internationalization()
+			        LowbrainCore.getInstance().getConfigHandler().localization()
                             .format("skills_required_points",
-                                    new Object[] {s.getBaseSkillpointsCost(), s.getName()}),ChatColor.RED);
+                                    new Object[] {s.getBaseSkillpointsCost(), s.getName()}));
 			return;
 		}
 

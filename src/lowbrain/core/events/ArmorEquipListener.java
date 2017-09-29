@@ -1,7 +1,6 @@
 package lowbrain.core.events;
 
 import com.codingforcookies.armorequip.ArmorEquipEvent;
-import lowbrain.core.commun.Helper;
 import lowbrain.core.main.LowbrainCore;
 import lowbrain.core.rpg.LowbrainPlayer;
 import lowbrain.library.fn;
@@ -35,7 +34,7 @@ public class ArmorEquipListener implements Listener {
 
             String requirements =  rp.canEquipItemString(e.getNewArmorPiece());
             if(!fn.StringIsNullOrEmpty(requirements)) {
-                rp.sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("cannot_equit_armor_or_item", requirements), ChatColor.RED);
+                rp.sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("cannot_equit_armor_or_item", requirements));
                 e.setCancelled(true);
             }
         }

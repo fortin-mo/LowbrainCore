@@ -27,9 +27,6 @@ hard_core:
  enable: false
  max_deaths: 1
 
-# sets if ops bypass permissions
-op_bypass_permission: true
-
 # experience needed for the first level
 first_lvl_exp: 75
 

@@ -22,18 +22,6 @@ public abstract class Playable {
     }
 
     public void sendMessage(String msg){
-        sendMessage(msg, ChatColor.GREEN,"");
-    }
-
-    public void sendMessage(String msg, ChatColor color){
-        sendMessage(msg, color,"");
-    }
-
-    public void sendMessage(String msg, String prefix){
-        sendMessage(msg,ChatColor.GREEN, prefix);
-    }
-
-    public void sendMessage(String msg, ChatColor color, String prefix){
-        this.getPlayer().sendMessage(prefix + color + msg);
+        this.getPlayer().sendMessage(msg);
     }
 }

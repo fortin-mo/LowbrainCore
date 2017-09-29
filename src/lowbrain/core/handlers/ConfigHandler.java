@@ -73,7 +73,7 @@ public class ConfigHandler {
         return parameters;
     }
 
-    public YamlLocalize internationalization() {
+    public YamlLocalize localization() {
         return localization;
     }
 

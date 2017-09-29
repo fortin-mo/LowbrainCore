@@ -4,18 +4,18 @@
 # possible requirements : level, intelligence, dexterity, agility, strength, defence, magic_resistance, vitality, race (race name), class (class name), kills, deaths,
 
 #armor
-GOLD_CHESTPLATE:
- level: 5
- strength: 15
-GOLD_LEGGINGS:
- level: 3
- strength: 10
-GOLD_BOOTS:
- level: 3
- strength: 10
-GOLD_HELMET:
- level: 3
- strength: 10
+#GOLD_CHESTPLATE:
+# level: 5
+# strength: 15
+#GOLD_LEGGINGS:
+# level: 3
+# strength: 10
+#GOLD_BOOTS:
+# level: 3
+# strength: 10
+#GOLD_HELMET:
+# level: 3
+# strength: 10
 
 GOLD_CHESTPLATE_PLUS:
  level: 10
@@ -30,18 +30,18 @@ GOLD_HELMET_PLUS:
  level: 5
  strength: 20
 
-IRON_CHESTPLATE:
- level: 10
- strength: 20
-IRON_LEGGINGS:
- level: 5
- strength: 15
-IRON_BOOTS:
- level: 5
- strength: 15
-IRON_HELMET:
- level: 5
- strength: 10
+#IRON_CHESTPLATE:
+# level: 10
+# strength: 20
+#IRON_LEGGINGS:
+# level: 5
+# strength: 15
+#IRON_BOOTS:
+# level: 5
+# strength: 15
+#IRON_HELMET:
+# level: 5
+# strength: 10
 
 IRON_CHESTPLATE_PLUS:
  level: 15
@@ -56,18 +56,18 @@ IRON_HELMET_PLUS:
  level: 10
  strength: 20
 
-DIAMOND_CHESTPLATE:
- level: 25
- strength: 50
-DIAMOND_LEGGINGS:
- level: 20
- strength: 40
-DIAMOND_BOOTS:
- level: 20
- strength: 40
-DIAMOND_HELMET:
- level: 20
- strength: 40
+#DIAMOND_CHESTPLATE:
+# level: 25
+# strength: 50
+#DIAMOND_LEGGINGS:
+# level: 20
+# strength: 40
+#DIAMOND_BOOTS:
+# level: 20
+# strength: 40
+#DIAMOND_HELMET:
+# level: 20
+# strength: 40
 
 DIAMOND_CHESTPLATE_PLUS:
  level: 30
@@ -141,25 +141,25 @@ EMERALD_SHIELD:
 
 #weapons
 
-IRON_SWORD:
- level: 5
- strength: 20
+#IRON_SWORD:
+# level: 5
+# strength: 20
 IRON_KATANA:
  level: 10
  strength: 30
-IRON_AXE:
- level: 5
- strength: 25
+#IRON_AXE:
+# level: 5
+# strength: 25
 
 DIAMOND_KATANA:
  level: 20
  strength: 40
-DIAMOND_AXE:
- level: 15
- strength: 35
-DIAMOND_SWORD:
- level: 15
- strength: 30
+#DIAMOND_AXE:
+# level: 15
+# strength: 35
+#DIAMOND_SWORD:
+# level: 15
+# strength: 30
 
 EMERALD_SWORD:
  level: 25
@@ -195,10 +195,10 @@ OP:
  defence: 100
  intelligence: 100
 
-BOW:
- level: 1
- strength: 5
- dexterity: 20
+#BOW:
+# level: 1
+# strength: 5
+# dexterity: 20
 COMPOUND_BOW:
  level: 10
  strength: 25

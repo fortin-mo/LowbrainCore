@@ -261,7 +261,7 @@ public class LowbrainSkill {
                 this.setLastExecuted(Calendar.getInstance());
                 p.setCurrentMana(p.getCurrentMana() - getBaseManaCost());
                 CoreListener.plugin.debugInfo(this.name);
-                p.sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("skilled_attack_succesfull"));
+                p.sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("skilled_attack_succesfull"));
             }
 
             return succeed;
@@ -352,7 +352,7 @@ public class LowbrainSkill {
             this.setLastExecuted(Calendar.getInstance());
             p.setCurrentMana(p.getCurrentMana() - getBaseManaCost());
             CoreListener.plugin.debugInfo(this.name);
-            p.sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("skilled_attack_succesfull"));
+            p.sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("skilled_attack_successful", this.name));
 
             return true;
         }catch (Exception e){
@@ -371,7 +371,7 @@ public class LowbrainSkill {
 
             if(this.getLastExecuted().before(cooldownTime)){
                 if(p.getCurrentMana() < this.getManaCost()){
-                    p.sendMessage(LowbrainCore.getInstance().getConfigHandler().internationalization().format("insufficient_mana"), ChatColor.RED);
+                    p.sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("insufficient_mana"));
                     return false;
                 } else {
                     return true;
@@ -379,7 +379,7 @@ public class LowbrainSkill {
             }
             else{
                 int rest = (int)((getLastExecuted().getTimeInMillis() - cooldownTime.getTimeInMillis()) / 1000);
-                p.sendMessage("Cooldown ! " + rest + " seconds left !",ChatColor.RED);
+                p.sendMessage(LowbrainCore.getInstance().getConfigHandler().localization().format("skill_in_cooldown", rest));
                 return false;
             }
         }

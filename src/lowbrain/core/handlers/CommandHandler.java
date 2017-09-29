@@ -1,559 +1,673 @@
 package lowbrain.core.handlers;
 
-import lowbrain.core.commun.Settings;
 import lowbrain.core.main.LowbrainCore;
 import lowbrain.core.rpg.*;
+import lowbrain.library.command.Command;
 import lowbrain.library.fn;
+import lowbrain.library.main.LowbrainLibrary;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
 
-public class CommandHandler implements CommandExecutor{
-	private final LowbrainCore plugin;
-	
-	public CommandHandler(LowbrainCore plugin) {
-		this.plugin = plugin;
-	}
-	
-	/**
-	 * Called when the plugin receice a command
-	 */
-	@Override
-    public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] args) {
-        if (!cmd.getName().equalsIgnoreCase("lbcore"))
+public class CommandHandler extends Command {
+    private final LowbrainCore plugin;
+
+    private Command onAdd;
+    private Command onCast;
+    private Command onClasses;
+    private Command onCompleteReset;
+    private Command onMobKills;
+    private Command onMyPowers;
+    private Command onMySkill;
+    private Command onRaces;
+    private Command onSetClass;
+    private Command onSetRace;
+    private Command onSkill;
+    private Command onSkills;
+    private Command onStats;
+    private Command onToggleStats;
+    private Command onShowStats;
+    private Command onHideStats;
+    private Command onXp;
+    private Command onSetSkill;
+    private Command onGetSkill;
+    private Command onUpSkill;
+    private Command onSave;
+    private Command onNextLvl;
+
+    private Command onSet;
+    private Command onReload;
+    private Command onSaveAll;
+    
+
+    public CommandHandler(LowbrainCore plugin) {
+        super("core");
+        this.plugin = plugin;
+
+        this.subs();
+
+        LowbrainLibrary.getInstance().getBaseCmdHandler().register("core", this);
+    }
+
+    @Override
+    public boolean beforeEach(CommandSender who, String[] args, String cmd) {
+        if (who instanceof Player && !plugin.getPlayerHandler().getList().containsKey(((Player) who).getUniqueId()))
             return false;
 
-        if (args.length <= 0)
-            return false;
+        return true;
+    }
 
-        if(sender instanceof Player){
-            LowbrainPlayer rp = LowbrainCore.getInstance().getPlayerHandler().getList().get(((Player) sender).getUniqueId());
+    private void subs() {
+        /**
+         * only player command section
+         */
 
-            if(rp == null)
-                return false;
+        this.register(new String[]{"add", "+"}, onAdd = new Command("add") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
 
-            switch (args[0].toLowerCase()){
-                case "xp":
-                    return onXp(rp, args);
-                case "add":
-                    return onAdd(rp, args);
-                case "+":
-                    return onAdd(rp, args);
-                case "+defence":
-                case "+def":
-                    rp.addDefence(1,true,true);
-                    return true;
-                case "+strength":
-                case "+str":
-                    rp.addStrength(1,true,true);
-                    return true;
-                case "+intelligence":
-                case "+int":
-                    rp.addIntelligence(1,true,true);
-                    return true;
-                case "+vitality":
-                case "+vit":
-                    rp.addVitality(1,true,true);
-                    return true;
-                case "+magicresistance":
-                case "+mr":
-                    rp.addMagicResistance(1,true,true);
-                    return true;
-                case "+dexterity":
-                case "+dext":
-                    rp.addDexterity(1,true,true);
-                    return true;
-                case "+agility":
-                case "+agi":
-                    rp.addAgility(1,true,true);
-                    return true;
-                case "stats":
-                    return onStats(rp, args, sender);
-                case "classes":
-                    return onClasses(rp, args);
-                case "races":
-                    return onRaces(rp, args);
-                case "setclass":
-                    return onSetClass(rp, args);
-                case "setrace":
-                    return onSetRace(rp, args);
-                case "reset":
-                    return onReset(rp, args);
-                case "completereset":
-                    return onCompleteReset(rp, args);
-                case "nextlvl":
-                    rp.sendMessage(plugin.getConfigHandler().internationalization().format("next_level_at", rp.getNextLvl()));
-                    return true;
-                case "save":
-                    if(senderHasPermission(sender,"lb.core.save")){
-                        rp.saveData();
-                        rp.sendMessage(plugin.getConfigHandler().internationalization().format("stats_saved"));
+                int amount = 0;
+
+                if(args.length == 1){
+                    amount = 1;
+                } else if(args.length == 2){
+                    try {
+                        amount = Integer.parseInt(args[1]);
                     }
-                    return true;
-                case "cast":
-                   return onCast(rp, args);
-                case "togglestats":
-                    return onToggleStats(rp, args);
-                case "showstats":
-                    return onShowStats(rp);
-                case "hidestats":
-                    return onHideStats(rp);
-                case "mobkills":
-                    return onMobKills(rp, args);
-                case "setskill":
-                    if (args.length != 2)
-                        return false;
-                    rp.setCurrentSkill(args[1].toLowerCase());
-                    return true;
-                case "getskill":
-                    if(rp.getCurrentSkill() != null)
-                        rp.sendMessage(plugin.getConfigHandler().internationalization().format("current_skill", rp.getCurrentSkill().getName()));
-                    else
-                        rp.sendMessage(plugin.getConfigHandler().internationalization().format("no_current_skill"));
-
-                    return true;
-                case "upskill":
-                    if (args.length != 2)
-                        return false;
-                    rp.upgradeSkill(args[1].toLowerCase());
-                    return true;
-                case "skills":
-                    return onSkills(rp, args);
-                case "myskill":
-                    return onMySkill(rp, args);
-                case "skill":
-                    return onSkill(rp, args);
-                case "mypowers":
-                    return onMyPowers(rp, args);
-            }
-        }
-
-        switch (args[0].toLowerCase()){
-            case "save-all":
-                return onSaveAll(sender, args);
-            case "reload":
-                return onReload(sender, args);
-            case "set":
-                return onSet(sender, args);
-        }
-        return false;
-    }
-
-    private boolean onSet(CommandSender sender, String[] args){
-	    if (args.length != 4)
-	        return false;
-
-        if(!senderHasPermission(sender,"lb.core.setattributes-others"))
-            return true;
-
-        String pName = args[1];
-        String attribute = args[2].toLowerCase();
-        String sValue = args[3];
-
-        Player p = plugin.getServer().getPlayer(pName);
-        LowbrainPlayer rp = p != null ? LowbrainCore.getInstance().getPlayerHandler().getList().get(p.getUniqueId()) : null;
-
-        if(rp == null){
-            sender.sendMessage(plugin.getConfigHandler().internationalization().format("player_not_connected"));
-            return true;
-        }
-
-        int value = fn.toInteger(sValue,-1);
-        if(value < 0){
-            sender.sendMessage(plugin.getConfigHandler().internationalization().format("invalid_value"));
-            return true;
-        }
-
-        switch (attribute){
-            default:
-                sender.sendMessage(plugin.getConfigHandler().internationalization().format("invalid_attribute"));
-                break;
-            case "intelligence":
-            case "intel":
-            case "int":
-                rp.setIntelligence(value);
-                break;
-            case "dexterity":
-            case "dext":
-                rp.setDexterity(value);
-                break;
-            case "level":
-            case "lvl":
-                rp.setLvl(value,true);
-                break;
-            case "agility":
-            case "agi":
-                rp.setAgility(value);
-                break;
-            case "health":
-            case "hp":
-                rp.setVitality(value);
-                break;
-            case "strength":
-            case "str":
-                rp.setStrength(value);
-                break;
-            case "defence":
-            case "def":
-                rp.setDefence(value);
-                break;
-            case "magicresistance":
-            case "mr":
-            case "magicresist":
-            case "magic_resistance":
-                rp.setMagicResistance(value);
-                break;
-            case "kills":
-            case "kill":
-                rp.setKills(value);
-                break;
-            case "deaths":
-            case "death":
-                rp.setDeaths(value);
-                break;
-            case "experience":
-            case "xp":
-            case "exp":
-                rp.setExperience(value);
-                break;
-            case "points":
-            case "point":
-            case "pts":
-                rp.setPoints(value);
-                break;
-            case "skillpoints":
-            case "skillpoint":
-            case "skp":
-                rp.setSkillPoints(value);
-                break;
-        }
-        sender.sendMessage("Done !");
-
-        return true;
-    }
-
-    private boolean onReload (CommandSender sender, String[] args){
-        if(senderHasPermission(sender,"lb.core.reload")){
-            plugin.reloadConfig();
-            sender.sendMessage(plugin.getConfigHandler().internationalization().format("config_file_reloaded"));
-        }
-        return true;
-    }
-
-    private boolean onSaveAll(CommandSender sender, String[] args){
-        if(senderHasPermission(sender,"lb.core.save-all")) {
-            plugin.saveData();
-            sender.sendMessage(plugin.getConfigHandler().internationalization().format("all_stats_saved"));
-        }
-        return true;
-    }
-
-    //private boolean onMinus(LowbrainPlayer rp, String[] args){}
-
-    private boolean onSetRace(LowbrainPlayer rp, String[] args){
-        if (args.length != 2)
-            return false;
-
-        if (plugin.getConfigHandler().races().getKeys(false).contains(args[1])) {
-            rp.setRace(args[1], false);
-        } else if (args[1].equalsIgnoreCase("rdm") || args[1].equalsIgnoreCase("random")) {
-            int max = plugin.getConfigHandler().races().getKeys(false).size() - 1;
-            int rdm = fn.randomInt(0,max);
-            rp.setRace((String)plugin.getConfigHandler().races().getKeys(false).toArray()[rdm],false);
-        } else {
-            rp.sendMessage(plugin.getConfigHandler().internationalization().format("invalid_race"));
-        }
-
-        return true;
-    }
-
-    private boolean onSetClass(LowbrainPlayer rp, String[] args){
-        if (args.length != 2)
-            return false;
-
-        if (plugin.getConfigHandler().classes().getKeys(false).contains(args[1])) {
-            rp.setClass(args[1], false);
-        } else if (args[1].equalsIgnoreCase("rdm") || args[1].equalsIgnoreCase("random")) {
-            int max = plugin.getConfigHandler().classes().getKeys(false).size() - 1;
-            int rdm = fn.randomInt(0,max);
-            rp.setClass((String)plugin.getConfigHandler().classes().getKeys(false).toArray()[rdm],false);
-        } else {
-            rp.sendMessage(plugin.getConfigHandler().internationalization().format("invalid_class"));
-        }
-        return true;
-    }
-
-    private boolean onXp(LowbrainPlayer rp, String[] args){
-        double xp = rp.getNextLvl() - rp.getExperience();
-        rp.sendMessage(plugin.getConfigHandler().internationalization().format("you_will_reach_level", new Object[]{rp.getLvl()+1, xp}));
-        return true;
-    }
-
-    private boolean onStats(LowbrainPlayer rp, String[] args, CommandSender sender){
-        if(args.length == 2 && senderHasPermission(sender,"lb.core.stats-others")){
-            Player p = plugin.getServer().getPlayer(args[1]);
-            if(p != null){
-                LowbrainPlayer rp2 = LowbrainCore.getInstance().getPlayerHandler().getList().get(p.getUniqueId());
-                if(rp2 != null){
-                    rp.sendMessage(rp2.toString());
-                }else{
-                    rp.sendMessage(plugin.getConfigHandler().internationalization().format("player_not_connected"));
+                    catch (Exception e){
+                        rp.sendMessage(plugin.getConfigHandler().localization().format("use_help"));
+                    }
                 }
+                
+                if(amount <= 0) {
+                    rp.sendMessage(plugin.getConfigHandler().localization().format("number_higher_then_zero"));
+                    return CommandStatus.VALID;
+                }
+                    
+
+                switch (args[0].toLowerCase()){
+                    case "defence":
+                    case "def":
+                        rp.addDefence(amount,true,true);
+                        break;
+                    case "vitality":
+                    case "vit":
+                        rp.addVitality(amount,true,true);
+                        break;
+                    case "dexterity":
+                    case "dext":
+                        rp.addDexterity(amount,true,true);
+                        break;
+                    case "strength":
+                    case "str":
+                        rp.addStrength(amount,true,true);
+                        break;
+                    case "intelligence":
+                    case "int":
+                        rp.addIntelligence(amount,true,true);
+                        break;
+                    case "magicresistance":
+                    case "mr":
+                        rp.addMagicResistance(amount,true,true);
+                        break;
+                    case "agility":
+                    case "agi":
+                        rp.addAgility(amount,true,true);
+                        break;
+                    default:
+                        rp.sendMessage(plugin.getConfigHandler().localization().format("invalid_attribute"));
+                }
+                
+                return CommandStatus.VALID;
             }
-            else{
-                rp.sendMessage(plugin.getConfigHandler().internationalization().format("player_not_connected"));
+        });
+
+        this.register("cast", onCast = new Command("cast") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
+                
+                if(args.length == 1){
+                    rp.castSpell(args[0],null);
+                } else if(args.length == 2){
+                    Player p = plugin.getServer().getPlayer(args[1]);
+                    if (p == null) {
+                        rp.sendMessage(plugin.getConfigHandler().localization().format("player_not_connected"));
+                    } else {
+                        LowbrainPlayer to = LowbrainCore.getInstance().getPlayerHandler().getList().get(p.getUniqueId());
+                        if(to == null)
+                            rp.sendMessage(plugin.getConfigHandler().localization().format("player_not_connected"));
+                        else
+                            rp.castSpell(args[0],to);
+
+                    }
+                } else {
+                    return CommandStatus.INVALID;
+                }
+                return CommandStatus.VALID;
             }
-        }
-        else{
-            rp.sendMessage(rp.toString());
-        }
-        return true;
-    }
+        });
 
-    private boolean onReset(LowbrainPlayer rp, String[] args){
-        if(args.length == 2){
-            if(plugin.getConfigHandler().classes().getKeys(false).contains(args[1]))
-                rp.reset(args[1],null);
-            else
-                rp.sendMessage(plugin.getConfigHandler().internationalization().format("no_such_class"));
+        this.register("classes", onClasses = new Command("classes") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
 
-        } else if(args.length == 3){
-            if(plugin.getConfigHandler().classes().getKeys(false).contains(args[1]) && plugin.getConfigHandler().classes().getKeys(false).contains(args[2]))
-                rp.reset(args[1],args[2]);
-            else
-                rp.sendMessage(ChatColor.RED + plugin.getConfigHandler().internationalization().format("no_such_class_or_race"));
-
-        } else{
-            rp.reset(rp.getClassName(),rp.getRaceName());
-        }
-        return true;
-    }
-
-    private boolean onCompleteReset(LowbrainPlayer rp, String[] args){
-        if(args.length == 2 && args[1].toLowerCase().equals("yes"))
-            rp.resetAll(false);
-
-        else
-            rp.sendMessage(plugin.getConfigHandler().internationalization().format("validate_complete_reset"));
-
-        return true;
-    }
-
-    private boolean onSkill(LowbrainPlayer rp, String[] args){
-        if(args.length != 2)
-            return false;
-
-        LowbrainSkill s = rp.getSkills().get(args[1]);
-        if(s != null)
-            rp.sendMessage(s.toString(),ChatColor.LIGHT_PURPLE);
-
-        else
-            rp.sendMessage(plugin.getConfigHandler().internationalization().format("no_such_skill"),ChatColor.RED);
-
-        return true;
-    }
-
-    private boolean onSkills(LowbrainPlayer rp, String[] args){
-        String sk = "";
-        for(Map.Entry<String, LowbrainSkill> s : rp.getSkills().entrySet()) {
-            String n = s.getValue().getName();
-            int v = s.getValue().getCurrentLevel();
-            sk += n + " : " + v + "\n";
-        }
-        rp.sendMessage(sk);
-        return true;
-    }
-
-    private boolean onCast(LowbrainPlayer rp, String[] args){
-        if(args.length == 2){
-            rp.castSpell(args[1],null);
-        } else if(args.length == 3){
-            Player p = plugin.getServer().getPlayer(args[2]);
-            if(p == null){
-                rp.sendMessage(plugin.getConfigHandler().internationalization().format("player_not_connected"));
+                String cls = "";
+                for (String s :
+                        plugin.getConfigHandler().classes().getKeys(false)) {
+                    LowbrainClass rc = new LowbrainClass(s);
+                    cls += "-----------------------------" + "\n";
+                    cls += rc.toString() + "\n";
+                }
+                rp.sendMessage(ChatColor.GREEN +cls);
+                return CommandStatus.VALID;
             }
-            else {
-                LowbrainPlayer to = LowbrainCore.getInstance().getPlayerHandler().getList().get(p.getUniqueId());
-                if(to == null)
-                    rp.sendMessage(plugin.getConfigHandler().internationalization().format("player_not_connected"));
+        });
+
+        this.register("completereset", onCompleteReset = new Command("completereset") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
+
+                if(args.length == 1 && args[0].toLowerCase().equals("yes"))
+                    rp.resetAll(false);
+
                 else
-                    rp.castSpell(args[1],to);
-
+                    rp.sendMessage(plugin.getConfigHandler().localization().format("validate_complete_reset"));
+                
+                return CommandStatus.VALID;
             }
-        } else {
-            return false;
-        }
-        return true;
-    }
+        });
 
-    private boolean onMyPowers(LowbrainPlayer rp, String[] args){
-        String pws = "";
-        for (LowbrainPower power :
-                rp.getPowers().values()) {
-            pws += power.getName() + ", ";
-        }
-        rp.sendMessage(fn.StringIsNullOrEmpty(pws) ? plugin.getConfigHandler().internationalization().format("no_powers_available") : pws);
-        return true;
-    }
+        this.register("getskill", onGetSkill = new Command("getskill") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
 
-    private boolean onMySkill(LowbrainPlayer rp, String[] args){
-        if (args.length != 2)
-            return false;
-
-        LowbrainSkill s = rp.getSkills().get(args[1]);
-        if(s != null)
-            rp.sendMessage(s.info(),ChatColor.LIGHT_PURPLE);
-        else
-            rp.sendMessage(plugin.getConfigHandler().internationalization().format("no_such_skill"),ChatColor.RED);
-
-        return true;
-    }
-
-    private boolean onAdd(LowbrainPlayer rp, String[] args){
-        int amount = 0;
-
-        if(args.length == 2){
-            amount = 1;
-        } else if(args.length == 3){
-            try {
-                amount = Integer.parseInt(args[2]);
+                if(rp.getCurrentSkill() != null)
+                    rp.sendMessage(plugin.getConfigHandler().localization().format("current_skill", rp.getCurrentSkill().getName()));
+                else
+                    rp.sendMessage(plugin.getConfigHandler().localization().format("no_current_skill"));
+                
+                return CommandStatus.VALID;
             }
-            catch (Exception e){
-                rp.sendMessage(plugin.getConfigHandler().internationalization().format("use_help"));
-            }
-        }
-        if(amount <= 0)
-            rp.sendMessage(plugin.getConfigHandler().internationalization().format("number_higher_then_zero"));
+        });
 
-        switch (args[1].toLowerCase()){
-            case "defence":
-            case "def":
-                rp.addDefence(amount,true,true);
-                break;
-            case "vitality":
-            case "vit":
-                rp.addVitality(amount,true,true);
-                break;
-            case "dexterity":
-            case "dext":
-                rp.addDexterity(amount,true,true);
-                break;
-            case "strength":
-            case "str":
-                rp.addStrength(amount,true,true);
-                break;
-            case "intelligence":
-            case "int":
-                rp.addIntelligence(amount,true,true);
-                break;
-            case "magicresistance":
-            case "mr":
-                rp.addMagicResistance(amount,true,true);
-                break;
-            case "agility":
-            case "agi":
-                rp.addAgility(amount,true,true);
-                break;
-            default:
-                rp.sendMessage(plugin.getConfigHandler().internationalization().format("invalid_attribute"));
-        }
-        return true;
+        this.register("hidestats", onHideStats = new Command("hidestats") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
+                rp.getStatsBoard().hide();
+                return CommandStatus.VALID;
+            }
+        });
+
+        this.register("showstats", onShowStats = new Command("showstats") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
+                rp.getStatsBoard().show();
+                return CommandStatus.VALID;
+            }
+        });
+
+        this.register("togglestats", onToggleStats = new Command("togglestats") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
+
+                if (args.length == 0) {
+                    rp.getStatsBoard().toggle();
+                } else if(args.length == 1){
+                    switch (args[0].toLowerCase()){
+                        case "true":
+                        case "1":
+                            rp.getStatsBoard().show();
+                            break;
+                        case "false":
+                        case "0":
+                            rp.getStatsBoard().hide();
+                            break;
+                    }
+                } else {
+                    return CommandStatus.INVALID;
+                }
+                return CommandStatus.VALID;
+            }
+        });
+
+        this.register("stats", onStats = new Command("stats") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
+                
+                if(args.length == 1 && who.hasPermission("lb.core.stats-others")){
+                    Player p = plugin.getServer().getPlayer(args[0]);
+                    if(p != null){
+                        LowbrainPlayer rp2 = LowbrainCore.getInstance().getPlayerHandler().getList().get(p.getUniqueId());
+                        if (rp2 != null)
+                            rp.sendMessage(rp2.toString());
+                        else
+                            rp.sendMessage(plugin.getConfigHandler().localization().format("player_not_connected"));
+                    }
+                    else{
+                        rp.sendMessage(plugin.getConfigHandler().localization().format("player_not_connected"));
+                    }
+                }
+                else{
+                    rp.sendMessage(rp.toString());
+                }
+                
+                return CommandStatus.VALID;
+            }
+        });
+
+        this.register("mobkills", onMobKills = new Command("mobkills") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
+
+                String msg = "";
+                if (args.length == 0) {
+                    for(Map.Entry<String, Integer> s : rp.getMobKills().entrySet()) {
+                        String n = s.getKey();
+                        int v = s.getValue();
+                        msg += n + " : " + v + "\n";
+                    }
+                    rp.sendMessage(msg);
+                } else if (args.length == 1 && rp.getMobKills().containsKey(args[0].toLowerCase())) {
+                    msg = args[0] + " : " + rp.getMobKills().get(args[0].toLowerCase());
+                    rp.sendMessage(msg);
+                } else {
+                    return CommandStatus.INVALID;
+                }
+                
+                return CommandStatus.VALID;
+            }
+        });
+        
+        this.register("mypowers", onMyPowers = new Command("mypowers") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
+
+                String pws = "";
+                for (LowbrainPower power :
+                        rp.getPowers().values()) {
+                    pws += power.getName() + ", ";
+                }
+                rp.sendMessage(fn.StringIsNullOrEmpty(pws) ? plugin.getConfigHandler().localization().format("no_powers_available") : pws);
+                
+                return CommandStatus.VALID;
+            }
+        });
+
+        this.register("myskill", onMySkill = new Command("myskill") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
+
+                if (args.length != 1)
+                    return CommandStatus.INVALID;
+
+                LowbrainSkill s = rp.getSkills().get(args[0]);
+                if(s != null)
+                    rp.sendMessage(s.info());
+                else
+                    rp.sendMessage(plugin.getConfigHandler().localization().format("no_such_skill"));
+                
+                return CommandStatus.VALID;
+            }
+        });
+
+        this.register("setclass", onSetClass = new Command("setclass") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
+
+                if (args.length != 1)
+                    return CommandStatus.INVALID;
+
+                if (plugin.getConfigHandler().classes().getKeys(false).contains(args[0])) {
+                    rp.setClass(args[0], false);
+                } else if (args[0].equalsIgnoreCase("rdm") || args[0].equalsIgnoreCase("random")) {
+                    int max = plugin.getConfigHandler().classes().getKeys(false).size() - 1;
+                    int rdm = fn.randomInt(0,max);
+                    rp.setClass((String)plugin.getConfigHandler().classes().getKeys(false).toArray()[rdm],false);
+                } else {
+                    rp.sendMessage(plugin.getConfigHandler().localization().format("invalid_class"));
+                }
+                
+                return CommandStatus.VALID;
+            }
+        });
+
+        this.register("setrace", onSetRace = new Command("setrace") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
+
+                if (args.length != 1)
+                    return CommandStatus.INVALID;
+
+                if (plugin.getConfigHandler().races().getKeys(false).contains(args[0])) {
+                    rp.setRace(args[0], false);
+                } else if (args[0].equalsIgnoreCase("rdm") || args[0].equalsIgnoreCase("random")) {
+                    int max = plugin.getConfigHandler().races().getKeys(false).size() - 1;
+                    int rdm = fn.randomInt(0,max);
+                    rp.setRace((String)plugin.getConfigHandler().races().getKeys(false).toArray()[rdm],false);
+                } else {
+                    rp.sendMessage(plugin.getConfigHandler().localization().format("invalid_race"));
+                }
+                return CommandStatus.VALID;
+            }
+        });
+
+        this.register("races", onRaces = new Command("races") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
+
+                String rcs = "";
+                for (String s :
+                        plugin.getConfigHandler().races().getKeys(false)) {
+                    LowbrainRace rr = new LowbrainRace(s);
+                    rcs += "-----------------------------" + "\n";
+                    rcs += rr.toString() + "\n";
+                }
+                rp.sendMessage(ChatColor.GREEN +rcs);
+                
+                return CommandStatus.VALID;
+            }
+        });
+
+        this.register("skill", onSkill = new Command("skill") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
+
+                if(args.length != 1)
+                    return CommandStatus.INVALID;
+
+                LowbrainSkill s = rp.getSkills().get(args[0]);
+                if(s != null)
+                    rp.sendMessage(s.toString());
+
+                else
+                    rp.sendMessage(plugin.getConfigHandler().localization().format("no_such_skill"));
+                
+                return CommandStatus.VALID;
+            }
+        });
+
+        this.register("skills", onSkills = new Command("skills") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
+
+                String sk = "";
+                for(Map.Entry<String, LowbrainSkill> s : rp.getSkills().entrySet()) {
+                    String n = s.getValue().getName();
+                    int v = s.getValue().getCurrentLevel();
+                    sk += n + " : " + v + "\n";
+                }
+                rp.sendMessage(sk);
+                
+                return CommandStatus.VALID;
+            }
+        });
+
+        this.register("xp", onXp = new Command("xp") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
+                double xp = rp.getNextLvl() - rp.getExperience();
+                rp.sendMessage(plugin.getConfigHandler().localization().format("you_will_reach_level", new Object[]{rp.getLvl()+1, xp}));
+                return CommandStatus.VALID;
+            }
+        });
+
+        this.register("setskill", onSetSkill = new Command("setskill") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
+                
+                if (args.length != 1)
+                    return CommandStatus.INVALID;
+                
+                rp.setCurrentSkill(args[0].toLowerCase());
+                
+                return CommandStatus.VALID;
+            }
+        });
+
+        this.register("upskill", onUpSkill = new Command("upskill") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
+
+                if (args.length != 1)
+                    return CommandStatus.INVALID;
+                
+                rp.upgradeSkill(args[0].toLowerCase());
+                
+                return CommandStatus.VALID;
+            }
+        });
+        
+        this.register("save", onSave = new Command("save") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
+                if(who.hasPermission("lb.core.save")){
+                    rp.saveData();
+                    rp.sendMessage(plugin.getConfigHandler().localization().format("stats_saved"));
+                    return CommandStatus.VALID;
+                }
+                return CommandStatus.INVALID;
+            }
+        });
+
+        this.register("nextlvl", onNextLvl = new Command("nextlvl") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                LowbrainPlayer rp = plugin.getPlayerHandler().get((Player)who);
+                rp.sendMessage(plugin.getConfigHandler().localization().format("next_level_at", rp.getNextLvl()));
+                return CommandStatus.VALID;
+            }
+        });
+        
+        onAdd.onlyPlayer(true);
+        onCast.onlyPlayer(true);
+        onClasses.onlyPlayer(true);
+        onCompleteReset.onlyPlayer(true);
+        onMobKills.onlyPlayer(true);
+        onMyPowers.onlyPlayer(true);
+        onMySkill.onlyPlayer(true);
+        onRaces.onlyPlayer(true);
+        onSetClass.onlyPlayer(true);
+        onSetRace.onlyPlayer(true);
+        onSkill.onlyPlayer(true);
+        onSkills.onlyPlayer(true);
+        onStats.onlyPlayer(true);
+        onToggleStats.onlyPlayer(true);
+        onShowStats.onlyPlayer(true);
+        onHideStats.onlyPlayer(true);
+        onXp.onlyPlayer(true);
+        onSetSkill.onlyPlayer(true);
+        onGetSkill.onlyPlayer(true);
+        onUpSkill.onlyPlayer(true);
+        onSave.onlyPlayer(true);
+        onNextLvl.onlyPlayer(true);
+
+        this.register("set", onSet = new Command("set") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                if (args.length != 3)
+                    return CommandStatus.INVALID;
+
+                String pName = args[0];
+                String attribute = args[1].toLowerCase();
+                String sValue = args[2];
+
+                Player p = plugin.getServer().getPlayer(pName);
+                LowbrainPlayer rp = p != null ? LowbrainCore.getInstance().getPlayerHandler().getList().get(p.getUniqueId()) : null;
+
+                if(rp == null){
+                    who.sendMessage(plugin.getConfigHandler().localization().format("player_not_connected"));
+                    return CommandStatus.VALID;
+                }
+
+                int value = fn.toInteger(sValue,-1);
+                if(value < 0){
+                    who.sendMessage(plugin.getConfigHandler().localization().format("invalid_value"));
+                    return CommandStatus.VALID;
+                }
+
+                switch (attribute){
+                    default:
+                        who.sendMessage(plugin.getConfigHandler().localization().format("invalid_attribute"));
+                        break;
+                    case "intelligence":
+                    case "intel":
+                    case "int":
+                        rp.setIntelligence(value);
+                        break;
+                    case "dexterity":
+                    case "dext":
+                        rp.setDexterity(value);
+                        break;
+                    case "level":
+                    case "lvl":
+                        rp.setLvl(value,true);
+                        break;
+                    case "agility":
+                    case "agi":
+                        rp.setAgility(value);
+                        break;
+                    case "health":
+                    case "hp":
+                        rp.setVitality(value);
+                        break;
+                    case "strength":
+                    case "str":
+                        rp.setStrength(value);
+                        break;
+                    case "defence":
+                    case "def":
+                        rp.setDefence(value);
+                        break;
+                    case "magicresistance":
+                    case "mr":
+                    case "magicresist":
+                    case "magic_resistance":
+                        rp.setMagicResistance(value);
+                        break;
+                    case "kills":
+                    case "kill":
+                        rp.setKills(value);
+                        break;
+                    case "deaths":
+                    case "death":
+                        rp.setDeaths(value);
+                        break;
+                    case "experience":
+                    case "xp":
+                    case "exp":
+                        rp.setExperience(value);
+                        break;
+                    case "points":
+                    case "point":
+                    case "pts":
+                        rp.setPoints(value);
+                        break;
+                    case "skillpoints":
+                    case "skillpoint":
+                    case "skp":
+                        rp.setSkillPoints(value);
+                        break;
+                }
+                who.sendMessage(plugin.getConfigHandler().localization().format("attribute_set_done"));
+
+                return CommandStatus.VALID;
+            }
+        });
+        onSet.addPermission("lb.core.setattributes-others");
+
+        this.register("save-all", onSaveAll = new Command("save-all") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                plugin.saveData();
+                who.sendMessage(plugin.getConfigHandler().localization().format("all_stats_saved"));
+                return CommandStatus.VALID;
+            }
+        });
+        onSaveAll.addPermission("lb.core.save-all");
+
+
+        this.register("reload", onReload = new Command("reload") {
+            @Override
+            public CommandStatus execute(CommandSender who, String[] args, String cmd) {
+                plugin.reloadConfig();
+                who.sendMessage(plugin.getConfigHandler().localization().format("config_file_reloaded"));
+                return CommandStatus.VALID;
+            }
+        });
+        onReload.addPermission("lb.core.reload");
+        
     }
 
-    private boolean onMobKills(LowbrainPlayer rp, String[] args) {
+    @Override
+    public CommandStatus execute(CommandSender who, String[] args, String cmd) {
         String msg = "";
-        if (args.length == 1) {
-            for(Map.Entry<String, Integer> s : rp.getMobKills().entrySet()) {
-                String n = s.getKey();
-                int v = s.getValue();
-                msg += n + " : " + v + "\n";
-            }
-            rp.sendMessage(msg);
-        } else if (args.length == 2) {
-            if(rp.getMobKills().containsKey(args[1].toLowerCase()));
-            msg = args[1] + " : " + rp.getMobKills().get(args[1].toLowerCase());
-            rp.sendMessage(msg);
-        } else {
-            return false;
-        }
-        return true;
-    }
+        msg += "<arg> required, <[arg]> optional argument";
+        msg += "\n/lb core stats - show your player stats";
+        msg += "\n/lb core stats <player> - show stats of player. requires special permission";
+        msg += "\n/lb core classes - show all class basic attributes";
+        msg += "\n/lb core setclass <name> - set your class";
+        msg += "\n/lb core setclass rdm/random - set a random class";
+        msg += "\n/lb core races - show all races basic attributes";
+        msg += "\n/lb core setrace <name> - set your race";
+        msg += "\n/lb core setrace rdm/random - set a random race";
+        msg += "\n/lb core cast <spell name> - cast a spell to yourself";
+        msg += "\n/lb core cast <spell name> <player name> - cast a spell to someone";
+        msg += "\n/lb core togglestats <false or true> - hide or show stats slbcoreboard";
+        msg += "\n/lb core togglestats <0 or 1> - hide or show stats slbcoreboard";
+        msg += "\n/lb core togglestats - toggle stats slbcoreboard";
+        msg += "\n/lb core showstats - toggle on stats slbcoreboard";
+        msg += "\n/lb core hidestats - toggle off stats slbcoreboard";
+        msg += "\n/lb core set <player-name> <attribute> <value> - set attribute value of a player. requires special permission";
+        
+        msg += "\n/lb core mobkills <name> - show how many time you killed this mob";
+        msg += "\n/lb core mobkills - show the number of kills you got for each mob";
+        
+        msg += "\n/lb core skills - show the list of skills and their current level";
+        msg += "\n/lb core setskill <name> - set the current skill to be used";
+        msg += "\n/lb core upskill <name> - upgrade skill";
+        msg += "\n/lb core getskill - get current skill";
+        msg += "\n/lb core skill <name> - get the skill description";
+        msg += "\n/lb core myskill <name> - get the skill info (level)";
+        msg += "\n/lb core mypowers - show your available powers";
+        
+        msg += "\n/lb core add <attribute> <[number]>  - add <number or 1> to <attribute>";
+        msg += "\n/lb core + <attribute> <[number]>  - add <number or 1> to <attribute>";
+        
+        msg += "\n/lb core reset - reset your attributes to your default class";
+        msg += "\n/lb core completereset true - reset you whole character (incluing level gained and xp)";
+        msg += "\n/lb core reset <class> - reset your attributes to your new class";
+        msg += "\n/lb core reset <class> <race>  - reset your attributes to your new class and new race";
+        msg += "\n/lb core nextlvl - show how much xp is need for next lvl";
+        msg += "\n/lb core save-all - save all player stats. requires special permission";
+        msg += "\n/lb core reload - reload plugin. requires special permission";
+        msg += "\n/lb core save - save your stats. requires special permission";
+        msg += "\n/lb core xp - amount of xp needed left to achieve next level";
 
-    private boolean onHideStats(LowbrainPlayer rp) {
-        rp.getStatsBoard().hide();
-        return true;
+        who.sendMessage(ChatColor.WHITE + msg);
+                
+        return CommandStatus.VALID;
     }
-
-    private boolean onShowStats(LowbrainPlayer rp) {
-        rp.getStatsBoard().show();
-        return true;
-    }
-
-    private boolean onToggleStats(LowbrainPlayer rp, String[] args) {
-        if (args.length == 1) {
-            rp.getStatsBoard().toggle();
-        } else if(args.length == 2){
-            switch (args[2].toLowerCase()){
-                case "true":
-                case "1":
-                    rp.getStatsBoard().show();
-                    break;
-                case "false":
-                case "0":
-                    rp.getStatsBoard().hide();
-                    break;
-            }
-        } else {
-            return false;
-        }
-        return true;
-    }
-
-    private boolean onClasses(LowbrainPlayer rp, String[] args) {
-        String cls = "";
-        for (String s :
-                plugin.getConfigHandler().classes().getKeys(false)) {
-            LowbrainClass rc = new LowbrainClass(s);
-            cls += "-----------------------------" + "\n";
-            cls += rc.toString() + "\n";
-        }
-        rp.sendMessage(ChatColor.GREEN +cls);
-        return true;
-    }
-
-    private boolean onRaces(LowbrainPlayer rp, String[] args) {
-        String rcs = "";
-        for (String s :
-                plugin.getConfigHandler().races().getKeys(false)) {
-            LowbrainRace rr = new LowbrainRace(s);
-            rcs += "-----------------------------" + "\n";
-            rcs += rr.toString() + "\n";
-        }
-        rp.sendMessage(ChatColor.GREEN +rcs);
-        return true;
-    }
-
-	/**
-	 * check sender pemission
-	 * @param sender
-	 * @param permission
-	 * @return
-	 */
-    private boolean senderHasPermission(CommandSender sender, String permission){
-    	if(sender.isOp() && Settings.getInstance().isOpBypassPermission()){
-    		return true;
-		}
-		if(sender instanceof  ConsoleCommandSender){
-			return true;
-		}
-		if(sender.hasPermission(permission)){
-			return true;
-		}
-		sender.sendMessage(ChatColor.RED + plugin.getConfigHandler().internationalization().format("insufficient_permission"));
-		return false;
-	}
 }

@@ -22,7 +22,7 @@ permission:
   description: set / change other players attributes by command
   default: op
 commands:
-   lbcore:
+   core:
       usage: |
                   Use /help lbcore [subcommand] for more information
                   /lbcore stats - show your player stats

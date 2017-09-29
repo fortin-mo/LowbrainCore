@@ -10,7 +10,6 @@ public class Settings {
 
     private static Settings instance;
 
-    private boolean opBypassPermission;
     private double firstLvlExp;
     private int maxLvl;
     private int maxStats;
@@ -55,7 +54,6 @@ public class Settings {
         hardCoreMaxDeaths = config.getInt("hard_core.max_deaths", 1);
         disableMobNoTickDamage = config.getBoolean("disable_mob_no_tick_damage", true);
         reduceSpawnFromBreeding = config.getDouble("reduce_spawn_from_breeding", 0.5);
-        opBypassPermission = config.getBoolean("op_bypass_permission", true);
         allowPointDeduction = config.getBoolean("allow_point_deduction", false);
         canSwitchClass = config.getBoolean("can_switch_class", false);
         canSwitchRace = config.getBoolean("can_switch_race", false);
@@ -108,10 +106,6 @@ public class Settings {
 
     public Parameters getParameters() {
         return parameters;
-    }
-
-    public boolean isOpBypassPermission() {
-        return opBypassPermission;
     }
 
     public double getFirstLvlExp() {
