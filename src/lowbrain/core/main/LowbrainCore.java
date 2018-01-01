@@ -2,6 +2,8 @@ package lowbrain.core.main;
 
 import java.util.*;
 
+import com.alessiodp.partiesapi.Parties;
+import com.alessiodp.partiesapi.interfaces.PartiesAPI;
 import lowbrain.core.commun.Settings;
 import lowbrain.core.events.ArmorEquipListener;
 import lowbrain.core.events.CoreListener;
@@ -330,6 +332,13 @@ public class LowbrainCore extends JavaPlugin {
 
     public CommandHandler getCommandHandler() {
         return commandHandler;
+    }
+
+    public PartiesAPI partiesAPI() {
+        if (useParties)
+            return Parties.getApi();
+
+        return null;
     }
 
     /**

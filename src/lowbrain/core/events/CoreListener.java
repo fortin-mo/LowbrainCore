@@ -2,6 +2,7 @@ package lowbrain.core.events;
 
 import com.alessiodp.parties.Parties;
 import com.alessiodp.parties.objects.Party;
+import com.alessiodp.partiesapi.interfaces.PartiesAPI;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import lowbrain.core.commun.Helper;
@@ -50,26 +51,6 @@ public class CoreListener implements Listener {
 
     public CoreListener(LowbrainCore instance) {
         plugin = instance;
-    }
-
-    /**
-     * called when create spawn in the world
-     * we only set no tick damage if needed
-     * @param e CreatureSpawnEvent
-     */
-    @EventHandler
-    public void onCreatureSpawn(CreatureSpawnEvent e){
-        if(Settings.getInstance().isDisableMobNoTickDamage())
-            e.getEntity().setNoDamageTicks(0);
-
-        // animal spawned from breeding
-        if (e.getEntity() instanceof Animals
-                && e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.BREEDING) {
-            double limit = Settings.getInstance().getReduceSpawnFromBreeding();
-
-            if (limit < Math.random())
-                e.setCancelled(true); // cancel spawning
-        }
     }
 
     /***
@@ -604,11 +585,16 @@ public class CoreListener implements Listener {
 
                 List<LowbrainPlayer> others = null;
 
-                if (plugin.useParties) {
+                PartiesAPI partiesAPI = plugin.partiesAPI();
+
+                if (partiesAPI != null) {
                     others = new ArrayList<>();
-                    Party party = Parties.getInstance().getPlayerHandler().getPartyFromPlayer(rpKiller.getPlayer());
-                    if(party != null){
-                        for (Player p : party.getOnlinePlayers()) {
+                    String pName = partiesAPI.getPartyName(rpKiller.getPlayer().getUniqueId());
+                    // Party party = Parties.getInstance().getPlayerHandler().getPlayer(rpKiller.getPlayer().getUniqueId()).
+                    // Party party = Parties.getInstance().getPlayerHandler().getPartyFromPlayer(rpKiller.getPlayer());
+
+                    if(!pName.isEmpty()){
+                        for (Player p : partiesAPI.getPartyOnlinePlayers(pName)) {
                             if (!p.equals(rpKiller.getPlayer())){
                                 if(Settings.getInstance().getGroupXpRange() == -1
                                         || fn.distanceBetweenPlayers(rpKiller.getPlayer(),p) <= Settings.getInstance().getGroupXpRange()){

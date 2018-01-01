@@ -8,7 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="HolographicDisplays" level="project" />
-    <orderEntry type="library" name="Parties-1.7.6" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -23,5 +22,6 @@
     <orderEntry type="library" name="BindManager" level="project" />
     <orderEntry type="module" module-name="LowbrainLibrary" />
     <orderEntry type="library" name="spigot-1.12.2" level="project" />
+    <orderEntry type="library" name="Parties-2.1.3" level="project" />
   </component>
 </module>

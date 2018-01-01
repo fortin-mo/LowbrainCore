@@ -11,16 +11,6 @@ versions:
  internationalization: 1.0
  parameters: 1.0
 
-# additional implemented feature
-additional_gameplay:
-  # disable mob no tick damage
-  disable_mob_no_tick_damage: true
-  # reduce the spawn of animal by breeding. default set to 50% chance of spawning
-  # setting this bellow 0 will remove any spawning form breeding
-  # settings this above 1 will in a way disable the functionality
-  reduce_spawn_from_breeding: 0.5
-
-
 # set an hardcore mod
 # if a player dies more than the defined max deaths, all stats will be reset
 hard_core:

@@ -27,8 +27,6 @@ public class Settings {
     private int startingSkillPoints;
     private int skillPointsLevelInterval;
     private int skillPointsPerInterval;
-    private boolean disableMobNoTickDamage;
-    private double reduceSpawnFromBreeding;
     private boolean hardCoreEnable;
     private int hardCoreMaxDeaths;
 
@@ -52,8 +50,6 @@ public class Settings {
     private Settings(FileConfiguration config){
         hardCoreEnable = config.getBoolean("hard_core.enable", false);
         hardCoreMaxDeaths = config.getInt("hard_core.max_deaths", 1);
-        disableMobNoTickDamage = config.getBoolean("disable_mob_no_tick_damage", true);
-        reduceSpawnFromBreeding = config.getDouble("reduce_spawn_from_breeding", 0.5);
         allowPointDeduction = config.getBoolean("allow_point_deduction", false);
         canSwitchClass = config.getBoolean("can_switch_class", false);
         canSwitchRace = config.getBoolean("can_switch_race", false);
@@ -176,10 +172,6 @@ public class Settings {
         return skillPointsPerInterval;
     }
 
-    public boolean isDisableMobNoTickDamage() {
-        return disableMobNoTickDamage;
-    }
-
     public boolean isHardCoreEnable() {
         return hardCoreEnable;
     }
@@ -238,10 +230,6 @@ public class Settings {
 
     public String getParametersFile() {
         return parametersFile;
-    }
-
-    public double getReduceSpawnFromBreeding() {
-        return reduceSpawnFromBreeding;
     }
 }
 

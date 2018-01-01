@@ -1,6 +1,6 @@
 main: lowbrain.core.main.LowbrainCore
 name: LowbrainCore
-version: 0.0.1
+version: 0.0.1.1
 author: Lowbrain
 depend: [LowbrainLibrary]
 softdepend: [HolographicDisplays , ArmorEquipEvent, PacketListenerApi, Parties, LowbrainItems]
