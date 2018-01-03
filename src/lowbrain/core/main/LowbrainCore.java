@@ -79,7 +79,7 @@ public class LowbrainCore extends JavaPlugin {
 			useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
 			log("HologramDisplays is "+(useHolographicDisplays ? "enabled" : "disabled")+" !");
 
-			useArmorEquipEvent = Bukkit.getPluginManager().isPluginEnabled("ArmorEquipEvent");
+			useArmorEquipEvent = Bukkit.getPluginManager().isPluginEnabled("LowbrainArmorEquip");
             log("ArmorEquipEvent is "+ (useArmorEquipEvent ? "enabled" : "disabled") +" !");
 
 			useParties = Settings.getInstance().isGroupXpEnableParties() && Bukkit.getPluginManager().isPluginEnabled("Parties");

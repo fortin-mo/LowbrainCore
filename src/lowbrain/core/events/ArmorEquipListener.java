@@ -1,10 +1,9 @@
 package lowbrain.core.events;
 
-import com.codingforcookies.armorequip.ArmorEquipEvent;
+import lowbrain.armorequip.ArmorEquipEvent;
 import lowbrain.core.main.LowbrainCore;
 import lowbrain.core.rpg.LowbrainPlayer;
 import lowbrain.library.fn;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
